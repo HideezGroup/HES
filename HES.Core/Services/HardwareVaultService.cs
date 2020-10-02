@@ -67,21 +67,16 @@ namespace HES.Core.Services
             return _hardwareVaultRepository.Query();
         }
 
-        public async Task<HardwareVault> GetVaultByIdAsync(string vaultId, bool asNoTracking = false)
+        public async Task<HardwareVault> GetVaultByIdAsync(string vaultId)
         {
-            var query = _hardwareVaultRepository
+            return await _hardwareVaultRepository
                 .Query()
                 .Include(d => d.Employee.Department.Company)
                 .Include(d => d.Employee.HardwareVaults)
                 .Include(d => d.Employee.SoftwareVaults)
                 .Include(d => d.HardwareVaultProfile)
                 .Include(d => d.HardwareVaultTasks)
-                .AsQueryable();
-
-            if (asNoTracking)
-                query = query.AsNoTracking();
-
-            return await query.FirstOrDefaultAsync(d => d.Id == vaultId);
+                .FirstOrDefaultAsync(d => d.Id == vaultId);
         }
 
         public async Task<List<HardwareVault>> GetVaultsWithoutLicenseAsync()

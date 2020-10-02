@@ -14,7 +14,7 @@ namespace HES.Core.Interfaces
     public interface IHardwareVaultService : IDisposable
     {
         IQueryable<HardwareVault> VaultQuery();
-        Task<HardwareVault> GetVaultByIdAsync(string id, bool asNoTracking = false);
+        Task<HardwareVault> GetVaultByIdAsync(string id);
         Task<List<HardwareVault>> GetVaultsWithoutLicenseAsync();
         Task<List<HardwareVault>> GetVaultsWithLicenseAsync();
         Task<List<HardwareVault>> GetVaultsAsync(DataLoadingOptions<HardwareVaultFilter> options);

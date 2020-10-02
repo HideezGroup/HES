@@ -1,4 +1,5 @@
-﻿using HES.Core.Enums;
+﻿using HES.Core.Entities;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.HES.DTO;
@@ -111,16 +112,7 @@ namespace HES.Core.Services
 
         public async Task<bool> CheckIsNeedUpdateHwVaultStatusAsync(HwVaultInfoFromClientDto dto)
         {
-            var vault = await _hardwareVaultService.GetVaultByIdAsync(dto.VaultSerialNo, asNoTracking: true);
-
-            if (vault == null)
-                throw new HideezException(HideezErrorCode.HesDeviceNotFound);
-
-            if (!dto.IsLinkRequired && vault.MasterPassword == null)
-                throw new HideezException(HideezErrorCode.HesDeviceLinkedToAnotherServer);
-
-            if (dto.IsLinkRequired && vault.MasterPassword != null)
-                throw new HideezException(HideezErrorCode.HesVaultWasManuallyWiped);
+            var vault = await ValidateAndGetHardwareVaultAsync(dto.VaultSerialNo, dto.IsLinkRequired);
 
             switch (vault.Status)
             {
@@ -161,6 +153,22 @@ namespace HES.Core.Services
             }
 
             return false;
+        }
+
+        private async Task<HardwareVault> ValidateAndGetHardwareVaultAsync(string vaultId, bool isLinkRequired)
+        {
+            var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
+
+            if (vault == null)
+                throw new HideezException(HideezErrorCode.HesDeviceNotFound);
+
+            if (!isLinkRequired && vault.MasterPassword == null)
+                throw new HideezException(HideezErrorCode.HesDeviceLinkedToAnotherServer);
+
+            if (isLinkRequired && vault.MasterPassword != null && vault.Status != VaultStatus.Reserved)
+                throw new HideezException(HideezErrorCode.HesVaultWasManuallyWiped);
+
+            return vault;
         }
 
         public async Task UpdateHardwareVaultStatusAsync(string vaultId, string workstationId)
@@ -255,19 +263,7 @@ namespace HES.Core.Services
             if (remoteDevice == null)
                 throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
 
-            var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId, asNoTracking: true);
-
-            if (vault == null)
-                throw new HideezException(HideezErrorCode.HesDeviceNotFound);
-
-            if (vault == null)
-                throw new Exception($"Vault {vaultId} not found. Contact your system administrator.");
-
-            if (!remoteDevice.AccessLevel.IsLinkRequired && vault.MasterPassword == null)
-                throw new Exception($"Vault {vaultId} is linked to another server. Contact your system administrator.");
-
-            if (remoteDevice.AccessLevel.IsLinkRequired && vault.MasterPassword != null)
-                throw new Exception($"Vault {vaultId} was wiped a non-current server. Contact your system administrator.");
+            var vault = await ValidateAndGetHardwareVaultAsync(vaultId, remoteDevice.AccessLevel.IsLinkRequired);
 
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
 

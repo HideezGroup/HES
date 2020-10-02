@@ -355,7 +355,7 @@ namespace HES.Core.Hubs
 
         private async Task<HwVaultInfoFromHesDto> GetHardwareVaultInfoAsync(HwVaultInfoFromClientDto dto)
         {
-            var vault = await _hardwareVaultService.GetVaultByIdAsync(dto.VaultSerialNo, asNoTracking: true);
+            var vault = await _hardwareVaultService.GetVaultByIdAsync(dto.VaultSerialNo);
 
             if (vault == null)
                 throw new HideezException(HideezErrorCode.HesDeviceNotFound);
