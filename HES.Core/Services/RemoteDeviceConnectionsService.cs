@@ -1,12 +1,15 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
 using Hideez.SDK.Communication;
+using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.PasswordManager;
 using Hideez.SDK.Communication.Remote;
 using Hideez.SDK.Communication.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,17 +19,26 @@ namespace HES.Core.Services
     {
         private static readonly ConcurrentDictionary<string, DeviceRemoteConnections> _deviceRemoteConnectionsList
             = new ConcurrentDictionary<string, DeviceRemoteConnections>();
+        private static readonly ConcurrentDictionary<string, TaskCompletionSource<bool>> _devicesInProgress
+            = new ConcurrentDictionary<string, TaskCompletionSource<bool>>();
+
+        private readonly IServiceProvider _services;
         private readonly IHardwareVaultService _hardwareVaultService;
+        private readonly IRemoteTaskService _remoteTaskService;
         private readonly IEmployeeService _employeeService;
         private readonly IDataProtectionService _dataProtectionService;
         private readonly ILogger<RemoteDeviceConnectionsService> _logger;
 
-        public RemoteDeviceConnectionsService(IHardwareVaultService hardwareVaultService,
+        public RemoteDeviceConnectionsService(IServiceProvider services,
+                                              IHardwareVaultService hardwareVaultService,
+                                              IRemoteTaskService remoteTaskService,
                                               IEmployeeService employeeService,
                                               IDataProtectionService dataProtectionService,
                                               ILogger<RemoteDeviceConnectionsService> logger)
         {
+            _services = services;
             _hardwareVaultService = hardwareVaultService;
+            _remoteTaskService = remoteTaskService;
             _employeeService = employeeService;
             _dataProtectionService = dataProtectionService;
             _logger = logger;
@@ -97,6 +109,171 @@ namespace HES.Core.Services
             return GetDeviceRemoteConnections(deviceId).GetRemoteDevice(workstationId);
         }
 
+        public async Task<bool> CheckIsNeedUpdateHwVaultStatusAsync(HwVaultInfoFromClientDto dto)
+        {
+            var vault = await _hardwareVaultService.GetVaultByIdAsync(dto.VaultSerialNo, asNoTracking: true);
+
+            if (vault == null)
+                throw new HideezException(HideezErrorCode.HesDeviceNotFound);
+
+            if (!dto.IsLinkRequired && vault.MasterPassword == null)
+                throw new HideezException(HideezErrorCode.HesDeviceLinkedToAnotherServer);
+
+            if (dto.IsLinkRequired && vault.MasterPassword != null)
+                throw new HideezException(HideezErrorCode.HesVaultWasManuallyWiped);
+
+            switch (vault.Status)
+            {
+                case VaultStatus.Ready:
+                    throw new HideezException(HideezErrorCode.HesDeviceNotAssignedToAnyUser);
+                case VaultStatus.Reserved:
+                    // Required Link
+                    if (dto.IsLinkRequired)
+                        return true;
+                    // Transition to Active status
+                    if (!dto.IsLocked)
+                        return true;
+                    // Transition to Locked status
+                    if (dto.IsLocked && !dto.IsCanUnlock)
+                        return true;
+                    break;
+                case VaultStatus.Active:
+                    // Transition to Locked status
+                    if (dto.IsLocked)
+                        return true;
+                    break;
+                case VaultStatus.Locked:
+                    throw new HideezException(HideezErrorCode.HesDeviceLocked);
+                case VaultStatus.Suspended:
+                    // Transition to Locked status
+                    if (dto.IsLocked && !dto.IsCanUnlock)
+                        return true;
+                    // Transition to Active status
+                    if (!dto.IsLocked)
+                        return true;
+                    break;
+                case VaultStatus.Deactivated:
+                    return true;
+                case VaultStatus.Compromised:
+                    throw new HideezException(HideezErrorCode.HesDeviceCompromised);
+                default:
+                    throw new Exception($"Unhandled vault status. ({vault.Status})");
+            }
+
+            return false;
+        }
+
+        public async Task UpdateHardwareVaultStatusAsync(string vaultId, string workstationId)
+        {
+            var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
+
+            await remoteDevice.RefreshDeviceInfo();
+
+            if (remoteDevice == null)
+                throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
+
+            var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
+
+            if (vault == null)
+                throw new HideezException(HideezErrorCode.HesDeviceNotFound);
+
+            switch (vault.Status)
+            {
+                case VaultStatus.Ready:
+                    throw new HideezException(HideezErrorCode.HesDeviceNotAssignedToAnyUser);
+                case VaultStatus.Reserved:
+                    // Required Link
+                    if (remoteDevice.AccessLevel.IsLinkRequired)
+                    {
+                        await _remoteTaskService.LinkVaultAsync(remoteDevice, vault);
+                        break;
+                    }
+                    // Transition to Active status
+                    if (!remoteDevice.IsLocked)
+                    {
+                        await _remoteTaskService.AccessVaultAsync(remoteDevice, vault);
+                        await _hardwareVaultService.SetActiveStatusAsync(vault);
+                        break;
+                    }
+                    // Transition to Locked status
+                    if (remoteDevice.IsLocked && !remoteDevice.IsCanUnlock)
+                    {
+                        await _hardwareVaultService.SetLockedStatusAsync(vault);
+                        break;
+                    }
+                    break;
+                case VaultStatus.Active:
+                    // Transition to Locked status
+                    if (remoteDevice.IsLocked)
+                    {
+                        await _hardwareVaultService.SetLockedStatusAsync(vault);
+                        break;
+                    }
+                    break;
+                case VaultStatus.Locked:
+                    throw new HideezException(HideezErrorCode.HesDeviceLocked);
+                case VaultStatus.Suspended:
+                    // Apply Suspend status
+                    if (!vault.IsStatusApplied)
+                    {
+                        await _remoteTaskService.SuspendVaultAsync(remoteDevice, vault);
+                        break;
+                    }
+                    else
+                    {
+                        // Transition to Locked status
+                        if (remoteDevice.IsLocked && !remoteDevice.IsCanUnlock)
+                        {
+                            await _hardwareVaultService.SetLockedStatusAsync(vault);
+                            break;
+                        }
+                        // Transition to Active status
+                        if (!remoteDevice.IsLocked)
+                        {
+                            await _hardwareVaultService.SetActiveStatusAsync(vault);
+                            break;
+                        }
+                    }
+                    break;
+                case VaultStatus.Deactivated:
+                    await _remoteTaskService.WipeVaultAsync(remoteDevice, vault);
+                    await _hardwareVaultService.SetReadyStatusAsync(vault);
+                    throw new HideezException(HideezErrorCode.DeviceHasBeenWiped);
+                case VaultStatus.Compromised:
+                    throw new HideezException(HideezErrorCode.HesDeviceCompromised);
+                default:
+                    throw new Exception($"Unhandled vault status. ({vault.Status})");
+            }
+        }
+
+        public async Task CheckPassphraseAsync(string vaultId, string workstationId)
+        {
+            var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
+
+            await remoteDevice.RefreshDeviceInfo();
+
+            if (remoteDevice == null)
+                throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
+
+            var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId, asNoTracking: true);
+
+            if (vault == null)
+                throw new HideezException(HideezErrorCode.HesDeviceNotFound);
+
+            if (vault == null)
+                throw new Exception($"Vault {vaultId} not found. Contact your system administrator.");
+
+            if (!remoteDevice.AccessLevel.IsLinkRequired && vault.MasterPassword == null)
+                throw new Exception($"Vault {vaultId} is linked to another server. Contact your system administrator.");
+
+            if (remoteDevice.AccessLevel.IsLinkRequired && vault.MasterPassword != null)
+                throw new Exception($"Vault {vaultId} was wiped a non-current server. Contact your system administrator.");
+
+            var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
+
+            await remoteDevice.CheckPassphrase(key);
+        }
+
         public async Task SyncHardwareVaults(string vaultId)
         {
             try
@@ -154,14 +331,14 @@ namespace HES.Core.Services
                         lockedVaultStorage = employeeVault.Id;
                     }
 
-                    await appConnection.LockDeviceStorage(lockedVaultStorage);
+                    await appConnection.LockHwVaultStorage(lockedVaultStorage);
                     try
                     {
                         await new DeviceStorageReplicator(firstRemoteDeviceTask.Result, secondRemoteDeviceTask.Result, null).Start();
                     }
                     finally
                     {
-                        await appConnection.LiftDeviceStorageLock(lockedVaultStorage);
+                        await appConnection.LiftHwVaultStorageLock(lockedVaultStorage);
                     }
 
                     if (vault.Timestamp > employeeVault.Timestamp)
@@ -178,13 +355,89 @@ namespace HES.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogDebug($"Sync Hardware Vaults - {ex.Message}");
+                _logger.LogError($"Sync Hardware Vaults - {ex.Message}");
             }
+        }
+
+        public async Task UpdateHardwareVaultAccountsAsync(string vaultId, string workstationId, bool onlyOsAccounts)
+        {
+            if (vaultId == null)
+                throw new ArgumentNullException(nameof(vaultId));
+
+            var isNew = false;
+            var tcs = _devicesInProgress.GetOrAdd(vaultId, (x) =>
+            {
+                isNew = true;
+                return new TaskCompletionSource<bool>();
+            });
+
+            if (!isNew)
+            {
+                await tcs.Task;
+                return;
+            }
+
+            try
+            {
+                var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
+                if (remoteDevice == null)
+                    throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
+
+                await _remoteTaskService.ExecuteRemoteTasks(vaultId, remoteDevice, onlyOsAccounts);
+
+                tcs.SetResult(true);
+            }
+            catch (Exception ex)
+            {
+                tcs.SetException(ex);
+                throw;
+            }
+            finally
+            {
+                _devicesInProgress.TryRemove(vaultId, out TaskCompletionSource<bool> _);
+            }
+        }
+
+        public void StartUpdateHardwareVaultAccounts(IList<string> vaultIds, bool onlyOsAccounts = false)
+        {
+            foreach (var vaultId in vaultIds)
+            {
+                StartUpdateHardwareVaultAccounts(vaultId, onlyOsAccounts);
+            }
+        }
+
+        public void StartUpdateHardwareVaultAccounts(string vaultId, bool onlyOsAccounts = false)
+        {
+            if (vaultId == null)
+                throw new ArgumentNullException(nameof(vaultId));
+
+            if (!IsDeviceConnectedToHost(vaultId))
+                return;
+
+            var scope = _services.CreateScope();
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var remoteDeviceConnectionsService = scope.ServiceProvider.GetRequiredService<IRemoteDeviceConnectionsService>();
+                    await remoteDeviceConnectionsService.UpdateHardwareVaultAccountsAsync(vaultId, workstationId: null, onlyOsAccounts);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"[{vaultId}] {ex.Message}");
+                }
+                finally
+                {
+                    scope.Dispose();
+                }
+            });
         }
 
         public void Dispose()
         {
             _hardwareVaultService.Dispose();
+            _remoteTaskService.Dispose();
             _employeeService.Dispose();
         }
     }

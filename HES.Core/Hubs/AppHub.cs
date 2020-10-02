@@ -18,14 +18,13 @@ namespace HES.Core.Hubs
     public class AppHub : Hub<IRemoteAppConnection>
     {
         private readonly IRemoteDeviceConnectionsService _remoteDeviceConnectionsService;
-        private readonly IAppSettingsService _appSettingsService;
         private readonly IRemoteWorkstationConnectionsService _remoteWorkstationConnectionsService;
         private readonly IWorkstationAuditService _workstationAuditService;
         private readonly IWorkstationService _workstationService;
         private readonly IHardwareVaultService _hardwareVaultService;
-        private readonly IHardwareVaultTaskService _deviceTaskService;
-        private readonly ILicenseService _licenseService;
         private readonly IEmployeeService _employeeService;
+        private readonly ILicenseService _licenseService;
+        private readonly IAppSettingsService _appSettingsService;
         private readonly IHubContext<RefreshHub> _hubContext;
         private readonly ILogger<AppHub> _logger;
 
@@ -34,11 +33,10 @@ namespace HES.Core.Hubs
                       IWorkstationAuditService workstationAuditService,
                       IWorkstationService workstationService,
                       IHardwareVaultService hardwareVaultService,
-                      IHardwareVaultTaskService deviceTaskService,
-                      ILicenseService licenseService,
                       IEmployeeService employeeService,
-                      IHubContext<RefreshHub> hubContext,
+                      ILicenseService licenseService,
                       IAppSettingsService appSettingsService,
+                      IHubContext<RefreshHub> hubContext,
                       ILogger<AppHub> logger)
         {
             _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
@@ -46,15 +44,12 @@ namespace HES.Core.Hubs
             _workstationAuditService = workstationAuditService;
             _workstationService = workstationService;
             _hardwareVaultService = hardwareVaultService;
-            _deviceTaskService = deviceTaskService;
-            _licenseService = licenseService;
             _employeeService = employeeService;
-            _hubContext = hubContext;
+            _licenseService = licenseService;
             _appSettingsService = appSettingsService;
+            _hubContext = hubContext;
             _logger = logger;
         }
-
-        #region Workstation
 
         public override async Task OnConnectedAsync()
         {
@@ -81,7 +76,7 @@ namespace HES.Core.Hubs
         {
             try
             {
-                var workstationId = await GetWorkstationId();
+                var workstationId = GetWorkstationId();
 
                 _remoteDeviceConnectionsService.OnAppHubDisconnected(workstationId);
                 await _remoteWorkstationConnectionsService.OnAppHubDisconnectedAsync(workstationId);
@@ -94,25 +89,43 @@ namespace HES.Core.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        // Incomming request
+        private async Task ValidateConnectionAsync()
+        {
+            // Check workstation approving
+            var approved = await _workstationService.CheckIsApprovedAsync(GetWorkstationId());
+
+            if (!approved)
+                throw new HideezException(HideezErrorCode.HesWorkstationNotApproved);
+
+            // Check alarm enabling
+            var alarmState = await _appSettingsService.GetAlarmStateAsync();
+
+            if (alarmState != null && alarmState.IsAlarm)
+                throw new HideezException(HideezErrorCode.HesAlarm);
+        }
+
+        #region Workstation
+
+        // Incoming request
         public async Task<HesResponse> RegisterWorkstationInfo(WorkstationInfoDto workstationInfo)
         {
             try
             {
-                var alarmTurnOn = await IsAlarmTurnOnAsync();
-                if (workstationInfo.IsAlarmTurnOn && !alarmTurnOn)
-                    await Clients.Caller.SetAlarmState(false);
-
+                // Add or Update workstation info
                 await _remoteWorkstationConnectionsService.RegisterWorkstationInfoAsync(Clients.Caller, workstationInfo);
 
-                // Workstation not approved
-                if (!await _workstationService.CheckIsApprovedAsync(workstationInfo.Id))
-                    return new HesResponse(HideezErrorCode.HesWorkstationNotApproved, $"Workstation not approved");
+                // Update alarm trigger if client was offline            
+                if (workstationInfo.IsAlarmTurnOn && !await _appSettingsService.GetAlarmEnabledAsync())
+                    await Clients.Caller.SetAlarmState(false);
 
-                if (await IsAlarmTurnOnAsync())
-                    return new HesResponse(HideezErrorCode.HesAlarm, "Failed to connect to the server.");
+                await ValidateConnectionAsync();
 
                 return HesResponse.Ok;
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse(ex);
             }
             catch (Exception ex)
             {
@@ -121,44 +134,52 @@ namespace HES.Core.Hubs
             }
         }
 
-        // Incomming request
+        // Incoming request
         public async Task<HesResponse> SaveClientEvents(WorkstationEventDto[] workstationEventsDto)
         {
-            if (await IsAlarmTurnOnAsync())
-                return new HesResponse(HideezErrorCode.HesAlarm, "Failed to connect to the server.");
-
-            // Workstation not approved
-            if (!await _workstationService.CheckIsApprovedAsync(await GetWorkstationId()))
-                return new HesResponse(HideezErrorCode.HesWorkstationNotApproved, $"Workstation not approved");
-
-            if (workstationEventsDto == null)
-                return new HesResponse(new ArgumentNullException(nameof(workstationEventsDto)));
-
-            foreach (var eventDto in workstationEventsDto)
+            try
             {
-                try
+                if (workstationEventsDto == null)
+                    throw new ArgumentNullException(nameof(workstationEventsDto));
+
+                await ValidateConnectionAsync();
+
+                foreach (var eventDto in workstationEventsDto)
                 {
-                    await _workstationAuditService.AddEventDtoAsync(eventDto);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"[Add Event] {ex.Message}");
+                    try
+                    {
+                        await _workstationAuditService.AddEventDtoAsync(eventDto);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"[Add Event] {ex.Message}");
+                    }
+
+                    try
+                    {
+                        await _workstationAuditService.AddOrUpdateWorkstationSession(eventDto);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"[Add/Update Session] {ex.Message}");
+                    }
                 }
 
-                try
-                {
-                    await _workstationAuditService.AddOrUpdateWorkstationSession(eventDto);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"[Add/Update Session] {ex.Message}");
-                }
+                return HesResponse.Ok;
             }
-
-            return HesResponse.Ok;
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new HesResponse(ex);
+            }
         }
 
-        private async Task<string> GetWorkstationId()
+        private string GetWorkstationId()
         {
             if (Context.Items.TryGetValue("WorkstationId", out object workstationId))
                 return (string)workstationId;
@@ -166,227 +187,339 @@ namespace HES.Core.Hubs
                 throw new Exception("AppHub does not contain WorkstationId!");
         }
 
-        private async Task<bool> IsAlarmTurnOnAsync()
-        {
-            var alarmState = await _appSettingsService.GetAlarmStateAsync();
-            return alarmState != null ? alarmState.IsAlarm : false;
-        }
-
         #endregion
 
-        #region Device
+        #region HwVault
 
         // Incoming request
-        public async Task<HesResponse> OnDeviceConnected(BleDeviceDto dto)
-        {
-            if (await IsAlarmTurnOnAsync())
-                return new HesResponse(HideezErrorCode.HesAlarm, "Failed to connect to the server.");
+        //public async Task<HesResponse> OnDeviceConnected(BleDeviceDto dto)
+        //{
+        //    if (await IsAlarmTurnOnAsync())
+        //        return new HesResponse(HideezErrorCode.HesAlarm, "Failed to connect to the server.");
 
-            try
-            {
-                // Workstation not approved
-                if (!await _workstationService.CheckIsApprovedAsync(await GetWorkstationId()))
-                    return new HesResponse(HideezErrorCode.HesWorkstationNotApproved, $"Workstation not approved.");
+        //    try
+        //    {
+        //        // Workstation not approved
+        //        if (!await _workstationService.CheckIsApprovedAsync(await GetWorkstationId()))
+        //            return new HesResponse(HideezErrorCode.HesWorkstationNotApproved, $"Workstation not approved.");
 
-                if (dto?.DeviceSerialNo == null)
-                    throw new ArgumentNullException(nameof(dto.DeviceSerialNo));
+        //        if (dto?.DeviceSerialNo == null)
+        //            throw new ArgumentNullException(nameof(dto.DeviceSerialNo));
 
-                _remoteDeviceConnectionsService.OnDeviceConnected(dto.DeviceSerialNo, await GetWorkstationId(), Clients.Caller);
+        //        _remoteDeviceConnectionsService.OnDeviceConnected(dto.DeviceSerialNo, await GetWorkstationId(), Clients.Caller);
 
-                await OnDevicePropertiesChanged(dto);
+        //        await OnDevicePropertiesChanged(dto);
 
-                if (dto.LicenseInfo == 0)
-                    return HesResponse.Ok;
+        //        if (dto.LicenseInfo == 0)
+        //            return HesResponse.Ok;
 
-                await InvokeVaultStateChanged(dto.DeviceSerialNo);
-                await CheckVaultStatusAsync(dto);
-                //await _remoteDeviceConnectionsService.SyncHardwareVaults(dto.DeviceSerialNo);
-                return HesResponse.Ok;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"[{dto.DeviceSerialNo}] {ex.Message}");
-                return new HesResponse(ex);
-            }
-        }
+        //        await InvokeVaultStateChanged(dto.DeviceSerialNo);
+        //        await CheckVaultStatusAsync(dto);
+        //        //await _remoteDeviceConnectionsService.SyncHardwareVaults(dto.DeviceSerialNo);
+        //        return HesResponse.Ok;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"[{dto.DeviceSerialNo}] {ex.Message}");
+        //        return new HesResponse(ex);
+        //    }
+        //}
 
         // Incoming request
-        public async Task<HesResponse> OnDeviceDisconnected(string vaultId)
+        //public async Task<HesResponse> OnDeviceDisconnected(string vaultId)
+        //{
+        //    try
+        //    {
+        //        if (!string.IsNullOrEmpty(vaultId))
+        //        {
+        //            await InvokeVaultStateChanged(vaultId);
+        //            _remoteDeviceConnectionsService.OnDeviceDisconnected(vaultId, await GetWorkstationId());
+        //            await _employeeService.UpdateLastSeenAsync(vaultId);
+        //        }
+        //        return HesResponse.Ok;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"[{vaultId}] {ex.Message}");
+        //        return new HesResponse(ex);
+        //    }
+        //}
+
+        // Incoming request
+        public async Task<HesResponse<HwVaultShortInfoFromHesDto>> GetHwVaultInfoByRfid(string rfid)
         {
             try
             {
-                if (!string.IsNullOrEmpty(vaultId))
+                await ValidateConnectionAsync();
+
+                var vault = await _hardwareVaultService
+                    .VaultQuery()
+                    .Include(d => d.Employee)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(d => d.RFID == rfid);
+
+                var info = new HwVaultShortInfoFromHesDto()
                 {
-                    await InvokeVaultStateChanged(vaultId);
-                    _remoteDeviceConnectionsService.OnDeviceDisconnected(vaultId, await GetWorkstationId());
-                    await _employeeService.UpdateLastSeenAsync(vaultId);
-                }
-                return HesResponse.Ok;
+                    OwnerName = vault.Employee?.FullName,
+                    OwnerEmail = vault.Employee?.Email,
+                    VaultMac = vault.MAC,
+                    VaultSerialNo = vault.Id,
+                    VaultRfid = vault.RFID
+                };
+
+                return new HesResponse<HwVaultShortInfoFromHesDto>(info);
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{vaultId}] {ex.Message}");
-                return new HesResponse(ex);
+                _logger.LogError(ex.Message);
+                return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
             }
         }
 
-        // Incomming request
-        public async Task<HesResponse> OnDevicePropertiesChanged(BleDeviceDto dto)
+        // Incoming request
+        public async Task<HesResponse<HwVaultShortInfoFromHesDto>> GetHwVaultInfoByMac(string mac)
         {
             try
             {
-                if (dto.DeviceSerialNo == null)
-                    throw new ArgumentNullException(nameof(dto.DeviceSerialNo));
+                await ValidateConnectionAsync();
 
-                await _hardwareVaultService.UpdateHardwareVaultInfoAsync(dto);
+                var vault = await _hardwareVaultService
+                    .VaultQuery()
+                    .Include(d => d.Employee)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(d => d.MAC == mac);
 
-                return HesResponse.Ok;
+                var info = new HwVaultShortInfoFromHesDto()
+                {
+                    OwnerName = vault.Employee?.FullName,
+                    OwnerEmail = vault.Employee?.Email,
+                    VaultMac = vault.MAC,
+                    VaultSerialNo = vault.Id,
+                    VaultRfid = vault.RFID
+                };
+
+                return new HesResponse<HwVaultShortInfoFromHesDto>(info);
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{dto.DeviceSerialNo}] {ex.Message}");
-                return new HesResponse(ex);
+                _logger.LogError(ex.Message);
+                return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
             }
         }
 
-        private async Task CheckVaultStatusAsync(BleDeviceDto dto)
+        // Incoming request
+        public async Task<HesResponse<HwVaultShortInfoFromHesDto>> GetHwVaultInfoBySerialNo(string serialNo)
         {
-            var vault = await _hardwareVaultService.GetVaultByIdAsync(dto.DeviceSerialNo);
+            try
+            {
+                await ValidateConnectionAsync();
+
+                var vault = await _hardwareVaultService
+                     .VaultQuery()
+                     .Include(d => d.Employee)
+                     .AsNoTracking()
+                     .FirstOrDefaultAsync(d => d.Id == serialNo);
+
+                var info = new HwVaultShortInfoFromHesDto()
+                {
+                    OwnerName = vault.Employee?.FullName,
+                    OwnerEmail = vault.Employee?.Email,
+                    VaultMac = vault.MAC,
+                    VaultSerialNo = vault.Id,
+                    VaultRfid = vault.RFID
+                };
+
+                return new HesResponse<HwVaultShortInfoFromHesDto>(info);
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
+            }
+        }
+
+        private async Task<HwVaultInfoFromHesDto> GetHardwareVaultInfoAsync(HwVaultInfoFromClientDto dto)
+        {
+            var vault = await _hardwareVaultService.GetVaultByIdAsync(dto.VaultSerialNo, asNoTracking: true);
 
             if (vault == null)
-                return;
+                throw new HideezException(HideezErrorCode.HesDeviceNotFound);
 
-            if (vault.Status == VaultStatus.Deactivated || vault.Status == VaultStatus.Compromised ||
-                vault.Status == VaultStatus.Suspended || vault.Status == VaultStatus.Reserved)
-                await _remoteWorkstationConnectionsService.UpdateRemoteDeviceAsync(dto.DeviceSerialNo, await GetWorkstationId(), primaryAccountOnly: false);
+            return new HwVaultInfoFromHesDto()
+            {
+                OwnerName = vault.Employee?.FullName,
+                OwnerEmail = vault.Employee?.Email,
+                VaultMac = vault.MAC,
+                VaultSerialNo = vault.Id,
+                VaultRfid = vault.RFID,
+                NeedUpdateLicense = vault.HasNewLicense,
+                NeedStateUpdate = await _remoteDeviceConnectionsService.CheckIsNeedUpdateHwVaultStatusAsync(dto),
+                NeedUpdateOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation == TaskOperation.Primary),
+                NeedUpdateNonOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation != TaskOperation.Primary)
+            };
         }
 
-        private async Task InvokeVaultStateChanged(string vaultId)
+        // Incoming request
+        public async Task<HesResponse<HwVaultInfoFromHesDto>> UpdateHwVaultProperties(HwVaultInfoFromClientDto dto, bool returnInfo = false)
         {
+            try
+            {
+                await ValidateConnectionAsync();
+
+                await _hardwareVaultService.UpdateVaultInfoAsync(dto);
+
+                switch (dto.ConnectionState)
+                {
+                    case HwVaultConnectionState.Offline:
+                        _remoteDeviceConnectionsService.OnDeviceDisconnected(dto.VaultSerialNo, GetWorkstationId());
+                        await _employeeService.UpdateLastSeenAsync(dto.VaultSerialNo);
+                        await InvokeVaultStateChangedAsync(dto.VaultSerialNo);
+                        break;
+                    case HwVaultConnectionState.Initializing:
+                        _remoteDeviceConnectionsService.OnDeviceConnected(dto.VaultSerialNo, GetWorkstationId(), Clients.Caller);
+                        break;
+                    case HwVaultConnectionState.Finalizing:
+                        break;
+                    case HwVaultConnectionState.Online:
+                        await InvokeVaultStateChangedAsync(dto.VaultSerialNo);
+                        break;
+                }
+
+                HwVaultInfoFromHesDto info = null;
+
+                if (returnInfo)
+                {
+                    info = await GetHardwareVaultInfoAsync(dto);
+
+                    return new HesResponse<HwVaultInfoFromHesDto>(info);
+                }
+
+                return new HesResponse<HwVaultInfoFromHesDto>(info);
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse<HwVaultInfoFromHesDto>(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new HesResponse<HwVaultInfoFromHesDto>(ex);
+            }
+        }
+
+        private async Task InvokeVaultStateChangedAsync(string vaultId)
+        {
+            // Update hardware vaults page
             await _hubContext.Clients.All.SendAsync(RefreshPage.HardwareVaultStateChanged, vaultId);
-            
+
+            // Update employee details page
             var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
 
             if (vault != null && vault?.EmployeeId != null)
                 await _hubContext.Clients.All.SendAsync(RefreshPage.EmployeesDetailsVaultState, vault.EmployeeId);
         }
 
-        // Incomming request
-        public async Task<HesResponse<DeviceInfoDto>> GetInfoByRfid(string rfid)
+        // Incoming request
+        public async Task<HesResponse<HwVaultInfoFromHesDto>> UpdateHwVaultStatus(HwVaultInfoFromClientDto dto)
         {
             try
             {
-                var device = await _hardwareVaultService
-                    .VaultQuery()
-                    .Include(d => d.Employee)
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(d => d.RFID == rfid);
+                await ValidateConnectionAsync();
 
-                var info = await GetDeviceInfo(device);
-                return new HesResponse<DeviceInfoDto>(info);
+                await _remoteDeviceConnectionsService.UpdateHardwareVaultStatusAsync(dto.VaultSerialNo, GetWorkstationId());
+
+                var info = await GetHardwareVaultInfoAsync(dto);
+
+                return new HesResponse<HwVaultInfoFromHesDto>(info);
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse<HwVaultInfoFromHesDto>(ex);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return new HesResponse<DeviceInfoDto>(ex);
+                return new HesResponse<HwVaultInfoFromHesDto>(ex);
             }
-        }
-
-        // Incomming request
-        public async Task<HesResponse<DeviceInfoDto>> GetInfoByMac(string mac)
-        {
-            try
-            {
-                var device = await _hardwareVaultService
-                    .VaultQuery()
-                    .Include(d => d.Employee)
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(d => d.MAC == mac);
-
-                var info = await GetDeviceInfo(device);
-                return new HesResponse<DeviceInfoDto>(info);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return new HesResponse<DeviceInfoDto>(ex);
-            }
-        }
-
-        // Incomming request
-        public async Task<HesResponse<DeviceInfoDto>> GetInfoBySerialNo(string deviceId)
-        {
-            try
-            {
-                var device = await _hardwareVaultService
-                    .VaultQuery()
-                    .Include(d => d.Employee)
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(d => d.Id == deviceId);
-
-                var info = await GetDeviceInfo(device);
-                return new HesResponse<DeviceInfoDto>(info);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"[{deviceId}] {ex.Message}");
-                return new HesResponse<DeviceInfoDto>(ex);
-            }
-        }
-
-        private async Task<DeviceInfoDto> GetDeviceInfo(HardwareVault device)
-        {
-            if (device == null)
-                return null;
-
-            bool needUpdate = await _deviceTaskService
-                .TaskQuery()
-                .Where(t => t.HardwareVaultId == device.Id)
-                .AsNoTracking()
-                .AnyAsync();
-
-            var info = new DeviceInfoDto()
-            {
-                OwnerName = device.Employee?.FullName,
-                OwnerEmail = device.Employee?.Email,
-                DeviceMac = device.MAC,
-                DeviceSerialNo = device.Id,
-                NeedUpdate = needUpdate,
-                HasNewLicense = device.HasNewLicense,
-                DeviceCompromised = device.Status == VaultStatus.Compromised ? true : false
-            };
-
-            return info;
         }
 
         // Incoming request
-        public async Task<HesResponse> FixDevice(string deviceId)
+        public async Task<HesResponse> AuthHwVault(string serialNo)
         {
             try
             {
-                await _remoteWorkstationConnectionsService.UpdateRemoteDeviceAsync(deviceId, await GetWorkstationId(), primaryAccountOnly: true);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(deviceId);
+                await ValidateConnectionAsync();
+
+                await _remoteDeviceConnectionsService.CheckPassphraseAsync(serialNo, GetWorkstationId());
+
                 return HesResponse.Ok;
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse(ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{deviceId}] {ex.Message}");
+                _logger.LogError(ex.Message);
                 return new HesResponse(ex);
             }
         }
 
         // Incoming request
-        public async Task<HesResponse<IList<DeviceLicenseDTO>>> GetNewDeviceLicenses(string deviceId)
+        public async Task<HesResponse> UpdateHwVaultAccounts(string serialNo, bool onlyOsAccounts)
         {
             try
             {
-                var licenses = await _licenseService.GetNotAppliedLicensesByHardwareVaultIdAsync(deviceId);
+                await ValidateConnectionAsync();
 
-                var deviceLicenseDto = new List<DeviceLicenseDTO>();
+                await _remoteDeviceConnectionsService.UpdateHardwareVaultAccountsAsync(serialNo, GetWorkstationId(), onlyOsAccounts);
+
+                return HesResponse.Ok;
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new HesResponse(ex);
+            }
+        }
+
+        // Incoming request
+        public async Task<HesResponse<IList<HwVaultLicenseDto>>> GetNewHwVaultLicenses(string vaultId)
+        {
+            try
+            {
+                await ValidateConnectionAsync();
+
+                var licenses = await _licenseService.GetNotAppliedLicensesByHardwareVaultIdAsync(vaultId);
+
+                var licensesDto = new List<HwVaultLicenseDto>();
 
                 foreach (var license in licenses)
                 {
-                    deviceLicenseDto.Add(new DeviceLicenseDTO
+                    licensesDto.Add(new HwVaultLicenseDto
                     {
                         Id = license.Id,
                         DeviceId = license.HardwareVaultId,
@@ -398,59 +531,38 @@ namespace HES.Core.Hubs
                     });
                 }
 
-                return new HesResponse<IList<DeviceLicenseDTO>>(deviceLicenseDto);
+                return new HesResponse<IList<HwVaultLicenseDto>>(licensesDto);
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation(ex.Message);
+                return new HesResponse<IList<HwVaultLicenseDto>>(ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{deviceId}] {ex.Message}");
-                return new HesResponse<IList<DeviceLicenseDTO>>(ex);
+                _logger.LogError(ex.Message);
+                return new HesResponse<IList<HwVaultLicenseDto>>(ex);
             }
         }
 
         // Incoming request
-        public async Task<HesResponse> OnDeviceLicenseApplied(string deviceId, string licenseId)
+        public async Task<HesResponse> HwVaultLicenseApplied(string vaultId, string licenseId)
         {
             try
             {
-                await _licenseService.ChangeLicenseAppliedAsync(deviceId, licenseId);
+                await ValidateConnectionAsync();
+                await _licenseService.ChangeLicenseAppliedAsync(vaultId, licenseId);
                 return HesResponse.Ok;
             }
-            catch (Exception ex)
+            catch (HideezException ex)
             {
-                _logger.LogError($"[{deviceId}] {ex.Message}");
+                _logger.LogInformation(ex.Message);
                 return new HesResponse(ex);
             }
-        }
-
-        // Incoming request
-        public async Task<HesResponse<IList<DeviceLicenseDTO>>> GetDeviceLicenses(string deviceId)
-        {
-            try
-            {
-                var licenses = await _licenseService.GetActiveLicensesAsync(deviceId);
-
-                var deviceLicenseDto = new List<DeviceLicenseDTO>();
-
-                foreach (var license in licenses)
-                {
-                    deviceLicenseDto.Add(new DeviceLicenseDTO
-                    {
-                        Id = license.Id,
-                        DeviceId = license.HardwareVaultId,
-                        ImportedAt = license.ImportedAt,
-                        AppliedAt = license.AppliedAt,
-                        EndDate = license.EndDate,
-                        LicenseOrderId = license.LicenseOrderId,
-                        Data = license.Data,
-                    });
-                }
-
-                return new HesResponse<IList<DeviceLicenseDTO>>(deviceLicenseDto);
-            }
             catch (Exception ex)
             {
-                _logger.LogError($"[{deviceId}] {ex.Message}");
-                return new HesResponse<IList<DeviceLicenseDTO>>(ex);
+                _logger.LogError(ex.Message);
+                return new HesResponse(ex);
             }
         }
 

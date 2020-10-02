@@ -480,14 +480,14 @@ namespace HES.Core.Services
             await _workstationProximityVaultRepository.DeleteRangeAsync(allProximity);
         }
 
-        public async Task<IReadOnlyList<DeviceProximitySettingsDto>> GetProximitySettingsAsync(string workstationId)
+        public async Task<IReadOnlyList<HwVaultProximitySettingsDto>> GetProximitySettingsAsync(string workstationId)
         {
             var workstation = await GetWorkstationByIdAsync(workstationId);
 
             if (workstation == null)
                 throw new Exception("Workstation not found");
 
-            var deviceProximitySettings = new List<DeviceProximitySettingsDto>();
+            var deviceProximitySettings = new List<HwVaultProximitySettingsDto>();
 
             var proximityDevices = await _workstationProximityVaultRepository
                 .Query()
@@ -500,7 +500,7 @@ namespace HES.Core.Services
             {
                 foreach (var proximity in proximityDevices)
                 {
-                    deviceProximitySettings.Add(new DeviceProximitySettingsDto()
+                    deviceProximitySettings.Add(new HwVaultProximitySettingsDto()
                     {
                         SerialNo = proximity.HardwareVaultId,
                         Mac = proximity.HardwareVault.MAC,

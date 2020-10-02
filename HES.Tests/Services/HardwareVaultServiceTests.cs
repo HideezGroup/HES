@@ -85,7 +85,7 @@ namespace HES.Tests.Services
         [Fact, Order(6)]
         public async Task UpdateAfterWipe()
         {
-            await _hardwareVaultService.UpdateAfterWipeAsync(_testingOptions.HardwareVaultId);
+            await _hardwareVaultService.SetReadyStatusAsync(_testingOptions.HardwareVault);
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 
@@ -179,7 +179,7 @@ namespace HES.Tests.Services
         [Fact, Order(14)]
         public async Task UpdateAfterWipeAsync()
         {
-            await _hardwareVaultService.UpdateAfterWipeAsync(_testingOptions.HardwareVaultId);
+            await _hardwareVaultService.SetReadyStatusAsync(_testingOptions.HardwareVault);
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 

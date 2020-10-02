@@ -20,7 +20,7 @@ namespace HES.Web.Pages.HardwareVaults
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }
         [Parameter] public VaultStatus VaultStatus { get; set; }
         [Parameter] public string ConnectionId { get; set; }
@@ -76,7 +76,7 @@ namespace HES.Web.Pages.HardwareVaults
                         break;
                 }
                 await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.HardwareVaults);
-                RemoteWorkstationConnectionsService.StartUpdateRemoteDevice(HardwareVault.Id);
+                RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(HardwareVault.Id);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

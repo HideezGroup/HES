@@ -20,7 +20,7 @@ namespace HES.Web.Pages.SharedAccounts
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public ILogger<EditSharedAccountPassword> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string ConnectionId { get; set; }
@@ -70,7 +70,7 @@ namespace HES.Web.Pages.SharedAccounts
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     var vaults = await SharedAccountService.EditSharedAccountPwdAsync(Account, AccountPassword);
-                    RemoteWorkstationConnectionsService.StartUpdateRemoteDevice(vaults);
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
                     await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
                     await ModalDialogService.CloseAsync();

@@ -12,6 +12,7 @@ namespace HES.Core.Interfaces
         Task SetEmailSettingsAsync(EmailSettings email);
         Task SetAlarmStateAsync(AlarmState alarmState);
         Task<AlarmState> GetAlarmStateAsync();
+        Task<bool> GetAlarmEnabledAsync();
         Task<ServerSettings> GetServerSettingsAsync();
         Task SetServerSettingsAsync(ServerSettings server);
         Task<LdapSettings> GetLdapSettingsAsync();

@@ -27,7 +27,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public ISharedAccountService SheredAccountSevice { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public ILogger<CreateEmployee> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -268,7 +268,7 @@ namespace HES.Web.Pages.Employees
                 }
 
                 if (SelectedHardwareVault != null)
-                    RemoteWorkstationConnectionsService.StartUpdateRemoteDevice(SelectedHardwareVault.Id);
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(SelectedHardwareVault.Id);
             }
             catch (Exception ex)
             {

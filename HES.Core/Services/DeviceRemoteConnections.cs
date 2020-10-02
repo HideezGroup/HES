@@ -99,7 +99,7 @@ namespace HES.Core.Services
             try
             {
                 // call Hideez Client to make remote channel
-                await descr.AppConnection.EstablishRemoteDeviceConnection(_deviceId, channelNo);
+                await descr.AppConnection.EstablishRemoteHwVaultConnection(_deviceId, channelNo);
 
                 await descr.Tcs.Task.TimeoutAfter(20_000);
 
@@ -135,7 +135,7 @@ namespace HES.Core.Services
                     _appConnections.TryGetValue(workstationId, out descr);
                     if (descr != null)
                     {
-                        var remoteDevice = new RemoteDevice(_deviceId, channelNo, caller, null, SdkConfig.DefaultRemoteCommandTimeout, null);
+                        var remoteDevice = new RemoteDevice(_deviceId, channelNo, caller, null, SdkConfig.DefaultRemoteCommandTimeout, null, null);
                         descr.Device = remoteDevice;
 
                         await remoteDevice.VerifyAndInitialize(new System.Threading.CancellationToken());

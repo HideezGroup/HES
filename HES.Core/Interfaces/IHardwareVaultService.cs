@@ -4,7 +4,6 @@ using HES.Core.Models.Web;
 using HES.Core.Models.Web.HardwareVaults;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
-using Hideez.SDK.Communication.Remote;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace HES.Core.Interfaces
     public interface IHardwareVaultService : IDisposable
     {
         IQueryable<HardwareVault> VaultQuery();
-        Task<HardwareVault> GetVaultByIdAsync(string id);
+        Task<HardwareVault> GetVaultByIdAsync(string id, bool asNoTracking = false);
         Task<List<HardwareVault>> GetVaultsWithoutLicenseAsync();
         Task<List<HardwareVault>> GetVaultsWithLicenseAsync();
         Task<List<HardwareVault>> GetVaultsAsync(DataLoadingOptions<HardwareVaultFilter> options);
@@ -24,12 +23,13 @@ namespace HES.Core.Interfaces
         Task<HardwareVault> UpdateVaultAsync(HardwareVault vault);
         Task<List<HardwareVault>> UpdateRangeVaultsAsync(IList<HardwareVault> vaults);
         Task UnchangedVaultAsync(HardwareVault vault);
-        Task UpdateAfterWipeAsync(string vaultId);
-        Task UpdateHardwareVaultInfoAsync(BleDeviceDto dto);
-        Task ChangeHardwareVaultStatusAsync(RemoteDevice remoteDevice, HardwareVault vault);
+        Task SetReadyStatusAsync(HardwareVault vault);
+        Task SetActiveStatusAsync(HardwareVault vault);
+        Task SetLockedStatusAsync(HardwareVault vault);
+        Task UpdateVaultInfoAsync(HwVaultInfoFromClientDto dto);
         Task<HardwareVaultActivation> CreateVaultActivationAsync(string vaultId);
         Task ChangeVaultActivationStatusAsync(string vaultId, HardwareVaultActivationStatus status);
-        Task SetStatusAppliedAsync(HardwareVault hardwareVault);
+        Task SetVaultStatusAppliedAsync(HardwareVault hardwareVault);
         Task<string> GetVaultActivationCodeAsync(string vaultId);
         Task ActivateVaultAsync(string vaultId);
         Task SuspendVaultAsync(string vaultId, string description);

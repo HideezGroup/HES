@@ -21,15 +21,15 @@ namespace HES.Web.Controllers
     public class HardwareVaultsController : ControllerBase
     {
         private readonly IHardwareVaultService _hardwareVaultService;
-        private readonly IRemoteWorkstationConnectionsService _remoteWorkstationConnectionsService;
+        private readonly IRemoteDeviceConnectionsService _remoteDeviceConnectionsService;
         private readonly ILogger<HardwareVaultsController> _logger;
 
         public HardwareVaultsController(IHardwareVaultService hardwareVaultService,
-                                        IRemoteWorkstationConnectionsService remoteWorkstationConnectionsService,
+                                        IRemoteDeviceConnectionsService remoteDeviceConnectionsService,                                    
                                         ILogger<HardwareVaultsController> logger)
         {
             _hardwareVaultService = hardwareVaultService;
-            _remoteWorkstationConnectionsService = remoteWorkstationConnectionsService;
+            _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
             _logger = logger;
         }
 
@@ -115,7 +115,7 @@ namespace HES.Web.Controllers
             try
             {
                 await _hardwareVaultService.ChangeVaultProfileAsync(hardwareVaultProfileDto.HardwareVaultId, hardwareVaultProfileDto.ProfileId);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(hardwareVaultProfileDto.HardwareVaultId);
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(hardwareVaultProfileDto.HardwareVaultId);
             }
             catch (Exception ex)
             {
@@ -212,7 +212,7 @@ namespace HES.Web.Controllers
                     PinTryCount = profileDto.PinTryCount
                 };
                 await _hardwareVaultService.EditProfileAsync(profile);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _hardwareVaultService.GetVaultIdsByProfileTaskAsync());
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _hardwareVaultService.GetVaultIdsByProfileTaskAsync());
             }
             catch (Exception ex)
             {

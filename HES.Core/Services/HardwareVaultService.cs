@@ -6,6 +6,7 @@ using HES.Core.Interfaces;
 using HES.Core.Models.API.HardwareVault;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.HardwareVaults;
+using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
@@ -66,15 +67,21 @@ namespace HES.Core.Services
             return _hardwareVaultRepository.Query();
         }
 
-        public async Task<HardwareVault> GetVaultByIdAsync(string vaultId)
+        public async Task<HardwareVault> GetVaultByIdAsync(string vaultId, bool asNoTracking = false)
         {
-            return await _hardwareVaultRepository
+            var query = _hardwareVaultRepository
                 .Query()
                 .Include(d => d.Employee.Department.Company)
                 .Include(d => d.Employee.HardwareVaults)
                 .Include(d => d.Employee.SoftwareVaults)
                 .Include(d => d.HardwareVaultProfile)
-                .FirstOrDefaultAsync(d => d.Id == vaultId);
+                .Include(d => d.HardwareVaultTasks)
+                .AsQueryable();
+
+            if (asNoTracking)
+                query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(d => d.Id == vaultId);
         }
 
         public async Task<List<HardwareVault>> GetVaultsWithoutLicenseAsync()
@@ -456,6 +463,11 @@ namespace HES.Core.Services
             await _licenseService.UpdateHardwareVaultsLicenseStatusAsync();
         }
 
+        public Task UnchangedVaultAsync(HardwareVault vault)
+        {
+            return _hardwareVaultRepository.UnchangedAsync(vault);
+        }
+
         public async Task<HardwareVault> UpdateVaultAsync(HardwareVault vault)
         {
             if (vault == null)
@@ -469,20 +481,25 @@ namespace HES.Core.Services
             return await _hardwareVaultRepository.UpdatRangeAsync(vaults) as List<HardwareVault>;
         }
 
-        public Task UnchangedVaultAsync(HardwareVault vault)
+        public async Task UpdateVaultInfoAsync(HwVaultInfoFromClientDto dto)
         {
-            return _hardwareVaultRepository.UnchangedAsync(vault);
-        }
-
-        public async Task UpdateAfterWipeAsync(string vaultId)
-        {
-            if (vaultId == null)
-                throw new ArgumentNullException(nameof(vaultId));
-
-            var vault = await GetVaultByIdAsync(vaultId);
+            var vault = await _hardwareVaultRepository.GetByIdAsync(dto.VaultSerialNo);
 
             if (vault == null)
-                throw new Exception($"Vault {vault.Id} not found");
+                throw new Exception($"Hardware vault {dto.VaultSerialNo} not found.");
+
+            vault.Timestamp = dto.StorageTimestamp;
+            vault.Battery = dto.Battery;
+            vault.Firmware = dto.FirmwareVersion;
+            vault.LastSynced = DateTime.UtcNow;
+
+            await _hardwareVaultRepository.UpdateAsync(vault);
+        }
+
+        public async Task SetReadyStatusAsync(HardwareVault vault)
+        {
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
 
             vault.LastSynced = DateTime.UtcNow;
             vault.EmployeeId = null;
@@ -499,54 +516,66 @@ namespace HES.Core.Services
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _hardwareVaultRepository.UpdateAsync(vault);
-                await _licenseService.ChangeLicenseNotAppliedAsync(vaultId);
-                await ChangeVaultActivationStatusAsync(vaultId, HardwareVaultActivationStatus.Canceled);
+                await _licenseService.ChangeLicenseNotAppliedAsync(vault.Id);
+                await ChangeVaultActivationStatusAsync(vault.Id, HardwareVaultActivationStatus.Canceled);
 
                 transactionScope.Complete();
             }
         }
 
-        public async Task UpdateHardwareVaultInfoAsync(BleDeviceDto device)
+        public async Task SetActiveStatusAsync(HardwareVault vault)
         {
-            var vault = await _hardwareVaultRepository.GetByIdAsync(device.DeviceSerialNo);
             if (vault == null)
-                throw new Exception($"Vault {device.DeviceSerialNo} not found");
+                throw new ArgumentNullException(nameof(vault));
 
-            vault.Timestamp = device.Timestamp;
-            vault.Battery = device.Battery;
-            vault.Firmware = device.FirmwareVersion;
-            vault.LastSynced = DateTime.UtcNow;
+            vault.Status = VaultStatus.Active;
+
+            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                await _hardwareVaultRepository.UpdateAsync(vault);
+                await ChangeVaultActivationStatusAsync(vault.Id, HardwareVaultActivationStatus.Activated);
+                transactionScope.Complete();
+            }
+        }
+
+        public async Task SetLockedStatusAsync(HardwareVault vault)
+        {
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
+
+            vault.Status = VaultStatus.Locked;
 
             await _hardwareVaultRepository.UpdateAsync(vault);
         }
 
-        public async Task ChangeHardwareVaultStatusAsync(RemoteDevice remoteDevice, HardwareVault vault)
-        {
-            if (remoteDevice.IsLocked && !remoteDevice.IsCanUnlock && vault.IsStatusApplied &&
-                (vault.Status == VaultStatus.Reserved || vault.Status == VaultStatus.Active || vault.Status == VaultStatus.Suspended))
-            {
-                vault.Status = VaultStatus.Locked;
-                await _hardwareVaultRepository.UpdateAsync(vault);
-                return;
-            }
+        //public async Task ChangeHardwareVaultStatusAsync(RemoteDevice remoteDevice, HardwareVault vault)
+        //{    
+        //---------------------------------------
+        //if (remoteDevice.IsLocked && !remoteDevice.IsCanUnlock && vault.IsStatusApplied &&
+        //    (vault.Status == VaultStatus.Reserved || vault.Status == VaultStatus.Active || vault.Status == VaultStatus.Suspended))
+        //{
+        //    vault.Status = VaultStatus.Locked;
+        //    await _hardwareVaultRepository.UpdateAsync(vault);
+        //    return;
+        //}
 
-            if (!remoteDevice.IsLocked && !remoteDevice.IsCanUnlock && !remoteDevice.AccessLevel.IsLinkRequired &&
-                vault.IsStatusApplied && (vault.Status == VaultStatus.Suspended || vault.Status == VaultStatus.Reserved))
-            {
-                if (vault.Status == VaultStatus.Reserved)
-                {
-                    var accessParams = await GetAccessParamsAsync(vault.Id);
-                    var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
-                    await remoteDevice.Access(DateTime.UtcNow, key, accessParams);
-                }
+        //if (!remoteDevice.IsLocked && !remoteDevice.IsCanUnlock && !remoteDevice.AccessLevel.IsLinkRequired &&
+        //    vault.IsStatusApplied && (vault.Status == VaultStatus.Suspended || vault.Status == VaultStatus.Reserved))
+        //{
+        //    if (vault.Status == VaultStatus.Reserved)
+        //    {
+        //        var accessParams = await GetAccessParamsAsync(vault.Id);
+        //        var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
+        //        await remoteDevice.Access(DateTime.UtcNow, key, accessParams);
+        //    }
 
-                vault.Status = VaultStatus.Active;
-                await _hardwareVaultRepository.UpdateAsync(vault);
-                await ChangeVaultActivationStatusAsync(vault.Id, HardwareVaultActivationStatus.Activated);
-            }
-        }
+        //    vault.Status = VaultStatus.Active;
+        //    await _hardwareVaultRepository.UpdateAsync(vault);
+        //    await ChangeVaultActivationStatusAsync(vault.Id, HardwareVaultActivationStatus.Activated);
+        //}
+        //}
 
-        public async Task SetStatusAppliedAsync(HardwareVault hardwareVault)
+        public async Task SetVaultStatusAppliedAsync(HardwareVault hardwareVault)
         {
             if (hardwareVault == null)
                 throw new ArgumentNullException(nameof(hardwareVault));
