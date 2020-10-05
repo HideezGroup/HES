@@ -271,6 +271,10 @@ namespace HES.Core.Services
                     var remoteDeviceConnectionsService = scope.ServiceProvider.GetRequiredService<IRemoteDeviceConnectionsService>();
                     await remoteDeviceConnectionsService.UpdateHardwareVaultStatusAsync(vaultId, workstationId: null);
                 }
+                catch (HideezException ex)
+                {
+                    _logger.LogInformation($"[{vaultId}] {ex.Message}");
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError($"[{vaultId}] {ex.Message}");
@@ -446,6 +450,10 @@ namespace HES.Core.Services
                 {
                     var remoteDeviceConnectionsService = scope.ServiceProvider.GetRequiredService<IRemoteDeviceConnectionsService>();
                     await remoteDeviceConnectionsService.UpdateHardwareVaultAccountsAsync(vaultId, workstationId: null, onlyOsAccounts);
+                }
+                catch (HideezException ex)
+                {
+                    _logger.LogInformation($"[{vaultId}] {ex.Message}");
                 }
                 catch (Exception ex)
                 {

@@ -271,7 +271,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[RFID {rfid}] {ex.Message}");
                 return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
             }
             catch (Exception ex)
@@ -307,7 +307,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[MAC {mac}] {ex.Message}");
                 return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
             }
             catch (Exception ex)
@@ -343,7 +343,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{serialNo}] {ex.Message}");
                 return new HesResponse<HwVaultShortInfoFromHesDto>(ex);
             }
             catch (Exception ex)
@@ -413,7 +413,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{dto.VaultSerialNo}] {ex.Message}");
                 return new HesResponse<HwVaultInfoFromHesDto>(ex);
             }
             catch (Exception ex)
@@ -450,7 +450,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{dto.VaultSerialNo}] {ex.Message}");
                 return new HesResponse<HwVaultInfoFromHesDto>(ex);
             }
             catch (Exception ex)
@@ -473,7 +473,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{serialNo}] {ex.Message}");
                 return new HesResponse(ex);
             }
             catch (Exception ex)
@@ -496,7 +496,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{serialNo}] {ex.Message}");
                 return new HesResponse(ex);
             }
             catch (Exception ex)
@@ -535,7 +535,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{vaultId}] {ex.Message}");
                 return new HesResponse<IList<HwVaultLicenseDto>>(ex);
             }
             catch (Exception ex)
@@ -556,7 +556,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{vaultId}] {ex.Message}");
                 return new HesResponse(ex);
             }
             catch (Exception ex)
