@@ -74,8 +74,8 @@ namespace HES.Web.Pages.SharedAccounts
                 {
                     var vaults = await SharedAccountService.EditSharedAccountOtpAsync(Account, AccountOtp);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
-                    await ToastService.ShowToastAsync("Account otp updated.", ToastType.Success);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
+                    await ToastService.ShowToastAsync("Account otp updated.", ToastType.Success);
                     await ModalDialogService.CloseAsync();
                 });
             }

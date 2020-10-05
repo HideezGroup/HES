@@ -22,7 +22,6 @@ namespace HES.Web.Pages.Employees
         [Inject] IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] ILdapService LdapService { get; set; }
         [Inject] IAppSettingsService AppSettingsService { get; set; }
-        [Inject] IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<AddHardwareVault> Logger { get; set; }
@@ -110,7 +109,6 @@ namespace HES.Web.Pages.Employees
                     transactionScope.Complete();
                 }
 
-                RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(SelectedHardwareVault.Id);
                 await Refresh.InvokeAsync(this);
                 await ToastService.ShowToastAsync("Vault added", ToastType.Success);
                 await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);

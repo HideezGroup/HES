@@ -24,6 +24,7 @@ namespace HES.Core.Interfaces
 
         Task<bool> CheckIsNeedUpdateHwVaultStatusAsync(HwVaultInfoFromClientDto dto);
         Task UpdateHardwareVaultStatusAsync(string vaultId, string workstationId);
+        void StartUpdateHardwareVaultStatus(string vaultId);
         Task CheckPassphraseAsync(string vaultId, string workstationId);
         Task SyncHardwareVaults(string vaultId);
         Task UpdateHardwareVaultAccountsAsync(string vaultId, string workstationId, bool onlyOsAccounts);

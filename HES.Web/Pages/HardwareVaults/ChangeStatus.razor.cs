@@ -76,7 +76,7 @@ namespace HES.Web.Pages.HardwareVaults
                         break;
                 }
                 await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.HardwareVaults);
-                RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(HardwareVault.Id);
+                RemoteDeviceConnectionsService.StartUpdateHardwareVaultStatus(HardwareVault.Id);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

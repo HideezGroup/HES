@@ -254,6 +254,34 @@ namespace HES.Core.Services
             }
         }
 
+        public void StartUpdateHardwareVaultStatus(string vaultId)
+        {
+            if (vaultId == null)
+                throw new ArgumentNullException(nameof(vaultId));
+
+            if (!IsDeviceConnectedToHost(vaultId))
+                return;
+
+            var scope = _services.CreateScope();
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var remoteDeviceConnectionsService = scope.ServiceProvider.GetRequiredService<IRemoteDeviceConnectionsService>();
+                    await remoteDeviceConnectionsService.UpdateHardwareVaultStatusAsync(vaultId, workstationId: null);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"[{vaultId}] {ex.Message}");
+                }
+                finally
+                {
+                    scope.Dispose();
+                }
+            });
+        }
+
         public async Task CheckPassphraseAsync(string vaultId, string workstationId)
         {
             var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);

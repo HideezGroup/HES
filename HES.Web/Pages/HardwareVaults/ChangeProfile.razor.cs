@@ -17,6 +17,7 @@ namespace HES.Web.Pages.HardwareVaults
     public partial class ChangeProfile : OwningComponentBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<ChangeProfile> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
@@ -60,6 +61,7 @@ namespace HES.Web.Pages.HardwareVaults
             try
             {
                 await HardwareVaultService.ChangeVaultProfileAsync(HardwareVault.Id, SelectedVaultProfileId);
+                RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(HardwareVault.Id);
                 await ToastService.ShowToastAsync("Vault profile updated", ToastType.Success);
                 await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.HardwareVaults);
                 await ModalDialogService.CloseAsync();

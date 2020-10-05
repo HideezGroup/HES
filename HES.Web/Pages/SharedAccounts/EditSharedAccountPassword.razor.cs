@@ -71,8 +71,8 @@ namespace HES.Web.Pages.SharedAccounts
                 {
                     var vaults = await SharedAccountService.EditSharedAccountPwdAsync(Account, AccountPassword);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
-                    await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
+                    await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
                     await ModalDialogService.CloseAsync();
                 });
             }

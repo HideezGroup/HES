@@ -61,8 +61,8 @@ namespace HES.Web.Pages.Employees
             {
                 var employeeId = HardwareVault.EmployeeId;
                 await EmployeeService.RemoveHardwareVaultAsync(HardwareVault.Id, Reason, IsNeedBackup);
-                RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(HardwareVault.Id);
                 await Refresh.InvokeAsync(this);
+                RemoteDeviceConnectionsService.StartUpdateHardwareVaultStatus(HardwareVault.Id);
                 await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, employeeId);
                 await HubContext.Clients.All.SendAsync(RefreshPage.HardwareVaultStateChanged, HardwareVault.Id);
                 await ToastService.ShowToastAsync("Vault removed.", ToastType.Success);
