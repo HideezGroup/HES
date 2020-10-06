@@ -40,10 +40,11 @@ namespace HES.Core.Services
         // overwrite if already exists
         public void OnDeviceConnected(string workstationId, IRemoteAppConnection appConnection)
         {
-            _appConnections.AddOrUpdate(workstationId, new RemoteDeviceDescription(appConnection), (conn, old) =>
-            {
-                return new RemoteDeviceDescription(appConnection);
-            });
+            //_appConnections.AddOrUpdate(workstationId, new RemoteDeviceDescription(appConnection), (conn, old) =>
+            //{
+            //    return new RemoteDeviceDescription(appConnection);
+            //});
+            _appConnections.TryAdd(workstationId, new RemoteDeviceDescription(appConnection));
         }
 
         // device disconnected from the workstation, removing it from the list of the connected devices
