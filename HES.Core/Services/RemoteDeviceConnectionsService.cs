@@ -165,7 +165,7 @@ namespace HES.Core.Services
             if (!isLinkRequired && vault.MasterPassword == null)
                 throw new HideezException(HideezErrorCode.HesDeviceLinkedToAnotherServer);
 
-            if (isLinkRequired && vault.MasterPassword != null && vault.Status != VaultStatus.Reserved)
+            if (isLinkRequired && vault.MasterPassword != null && vault.Status != VaultStatus.Reserved && vault.Status != VaultStatus.Deactivated)
                 throw new HideezException(HideezErrorCode.HesVaultWasManuallyWiped);
 
             return vault;

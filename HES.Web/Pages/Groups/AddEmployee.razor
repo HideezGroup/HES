@@ -1,4 +1,6 @@
-﻿@if (Employees == null)
+﻿@inherits OwningComponentBase
+
+@if (Employees == null)
 {
     <LoadingText />
 }

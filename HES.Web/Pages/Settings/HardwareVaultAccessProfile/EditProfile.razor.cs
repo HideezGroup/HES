@@ -6,20 +6,21 @@ using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class EditProfile : ComponentBase, IDisposable
+    public partial class EditProfile : OwningComponentBase, IDisposable
     {
+        public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditProfile> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Inject] public IHardwareVaultService HardwareVaultService { get; set; }
         [Parameter] public string HardwareVaultProfileId { get; set; }
         [Parameter] public string ConnectionId { get; set; }
 
@@ -35,6 +36,8 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
         {
             try
             {
+                HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+
                 ModalDialogService.OnCancel += OnCancelAsync;
 
                 AccessProfile = await HardwareVaultService.GetProfileByIdAsync(HardwareVaultProfileId);

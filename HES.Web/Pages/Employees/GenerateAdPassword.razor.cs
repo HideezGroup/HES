@@ -8,6 +8,7 @@ using Hideez.SDK.Communication.Security;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -15,9 +16,9 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class GenerateAdPassword : ComponentBase, IDisposable
+    public partial class GenerateAdPassword : OwningComponentBase, IDisposable
     {
-        [Inject] public IEmployeeService EmployeeService { get; set; }
+        public IEmployeeService EmployeeService { get; set; }
         [Inject] public IAccountService AccountService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILdapService LdapService { get; set; }
@@ -39,6 +40,8 @@ namespace HES.Web.Pages.Employees
         {
             try
             {
+                EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+
                 Account = await AccountService.GetAccountByIdAsync(AccountId);
                 if (Account == null)
                     throw new Exception("Account not found.");

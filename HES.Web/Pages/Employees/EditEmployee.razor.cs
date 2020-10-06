@@ -7,6 +7,7 @@ using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EditEmployee : ComponentBase, IDisposable
+    public partial class EditEmployee : OwningComponentBase, IDisposable
     {
-        [Inject] public IEmployeeService EmployeeService { get; set; }
+        public IEmployeeService EmployeeService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
@@ -40,6 +41,8 @@ namespace HES.Web.Pages.Employees
         {
             try
             {
+                EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+
                 ModalDialogService.OnCancel += ModalDialogService_OnCancel;
 
                 Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);

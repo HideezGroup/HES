@@ -4,6 +4,7 @@ using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class AddEmployee : ComponentBase
+    public partial class AddEmployee : OwningComponentBase
     {
-        [Inject] public IGroupService GroupService { get; set; }
+        public IGroupService GroupService { get; set; }
         [Inject] public ILogger<AddEmployee> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -31,6 +32,8 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
+                GroupService = ScopedServices.GetRequiredService<IGroupService>();
+
                 var employees = await GroupService.GetEmployeesSkipExistingInGroupAsync(GroupId);
                 Employees = employees.ToDictionary(k => k, v => false);
             }

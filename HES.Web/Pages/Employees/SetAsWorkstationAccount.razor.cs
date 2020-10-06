@@ -5,15 +5,16 @@ using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class SetAsWorkstationAccount : ComponentBase, IDisposable
+    public partial class SetAsWorkstationAccount : OwningComponentBase, IDisposable
     {
-        [Inject] public IEmployeeService EmployeeService { get; set; }
+        public IEmployeeService EmployeeService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -31,6 +32,8 @@ namespace HES.Web.Pages.Employees
         {
             try
             {
+                EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+
                 Account = await EmployeeService.GetAccountByIdAsync(AccountId);
                 if (Account == null)
                     throw new Exception("Account not found.");

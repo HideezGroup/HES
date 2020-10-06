@@ -1,4 +1,6 @@
-﻿@if (!Initialized)
+﻿@inherits OwningComponentBase
+
+@if (!Initialized)
 {
     <LoadingText />
 }
@@ -71,7 +73,7 @@ else
             </div>
             <div class="text-right">
                 <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>
-                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />   
+                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />
             </div>
         </EditForm>
     }

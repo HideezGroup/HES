@@ -8,15 +8,16 @@ using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EditPersonalAccountOtp : ComponentBase, IDisposable
+    public partial class EditPersonalAccountOtp : OwningComponentBase, IDisposable
     {
-        [Inject] public IEmployeeService EmployeeService { get; set; }
+        public IEmployeeService EmployeeService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILdapService LdapService { get; set; }
         [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
@@ -40,6 +41,8 @@ namespace HES.Web.Pages.Employees
         {
             try
             {
+                EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+
                 ModalDialogService.OnCancel += ModalDialogService_OnCancel;
 
                 Account = await EmployeeService.GetAccountByIdAsync(AccountId);
