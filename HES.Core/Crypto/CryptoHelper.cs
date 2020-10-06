@@ -56,6 +56,9 @@ namespace HES.Core.Crypto
 
         public static string Encrypt(int keyId, byte[] key, string plainText)
         {
+            if (plainText == null)
+                return null;
+
             var plainTextBuffer = Encoding.UTF8.GetBytes(MAGIC + plainText);
             var encryptedBuffer = Encrypt(plainTextBuffer, key, out byte[] iv);
 
@@ -72,6 +75,9 @@ namespace HES.Core.Crypto
 
         public static string Decrypt(int keyId, byte[] key, string cipherText)
         {
+            if (cipherText == null)
+                return null;
+
             var cipherTextBuffer = Convert.FromBase64String(cipherText);
 
             // KEY ID

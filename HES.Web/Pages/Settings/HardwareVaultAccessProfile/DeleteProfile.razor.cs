@@ -5,15 +5,16 @@ using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class DeleteProfile : ComponentBase, IDisposable
+    public partial class DeleteProfile : OwningComponentBase, IDisposable
     {
-        [Inject] public IHardwareVaultService HardwareVaultService { get; set; }
+        public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
@@ -29,6 +30,8 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
         {
             try
             {
+                HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+
                 AccessProfile = await HardwareVaultService.GetProfileByIdAsync(HardwareVaultProfileId);
                 if (AccessProfile == null)
                     throw new Exception("Hardware Vault Profile not found.");

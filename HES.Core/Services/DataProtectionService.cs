@@ -325,8 +325,6 @@ namespace HES.Core.Services
             // AppSettings
             var scopedAppSettingsRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<AppSettings>>();
             var domainSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Domain);
-            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
-
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -335,6 +333,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
+            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);
@@ -441,15 +440,14 @@ namespace HES.Core.Services
             // AppSettings
             var scopedAppSettingsRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<AppSettings>>();
             var domainSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Domain);
-            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
-
             if (domainSettings != null)
             {
-                var ldapSettings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
-                ldapSettings.Password = key.Encrypt(ldapSettings.Password);
-                var json = JsonConvert.SerializeObject(ldapSettings);
+                var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
+                settings.Password = key.Encrypt(settings.Password);
+                var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
+            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);
@@ -539,15 +537,14 @@ namespace HES.Core.Services
             // AppSettings
             var scopedAppSettingsRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<AppSettings>>();
             var domainSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Domain);
-            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
-
             if (domainSettings != null)
             {
-                var ldapSettings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
-                ldapSettings.Password = key.Decrypt(ldapSettings.Password);
-                var json = JsonConvert.SerializeObject(ldapSettings);
+                var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
+                settings.Password = key.Decrypt(settings.Password);
+                var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
+            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);

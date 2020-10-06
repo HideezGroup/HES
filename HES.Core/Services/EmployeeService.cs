@@ -894,9 +894,10 @@ namespace HES.Core.Services
             var exist = await _accountService.ExistAsync(x => x.Name == account.Name &&
                                                          x.Login == account.Login &&
                                                          x.Deleted == false &&
+                                                         x.EmployeeId == account.EmployeeId &&
                                                          x.Id != account.Id);
             if (exist)
-                throw new Exception("An account with the same name and login exist.");
+                throw new AlreadyExistException("An account with the same name and login exist.");
 
             var employee = await GetEmployeeByIdAsync(account.EmployeeId);
 

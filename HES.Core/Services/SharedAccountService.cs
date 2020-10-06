@@ -360,7 +360,7 @@ namespace HES.Core.Services
 
             _dataProtectionService.Validate();
 
-            Validation.VerifyOtpSecret(sharedAccount.OtpSecret);
+            Validation.VerifyOtpSecret(accountOtp.OtpSecret);
 
             // Update Shared Account
             sharedAccount.OtpSecret = !string.IsNullOrWhiteSpace(accountOtp.OtpSecret) ? _dataProtectionService.Encrypt(accountOtp.OtpSecret) : null;
