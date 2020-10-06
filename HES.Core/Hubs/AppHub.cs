@@ -566,6 +566,46 @@ namespace HES.Core.Hubs
             }
         }
 
+
+        // Incoming request
+        public async Task<HesResponse<IList<HwVaultLicenseDto>>> GetHwVaultLicenses(string vaultId)
+        {
+            try
+            {
+                await ValidateConnectionAsync();
+
+                var licenses = await _licenseService.GetActiveLicensesAsync(vaultId);
+
+                var licensesDto = new List<HwVaultLicenseDto>();
+
+                foreach (var license in licenses)
+                {
+                    licensesDto.Add(new HwVaultLicenseDto
+                    {
+                        Id = license.Id,
+                        DeviceId = license.HardwareVaultId,
+                        ImportedAt = license.ImportedAt,
+                        AppliedAt = license.AppliedAt,
+                        EndDate = license.EndDate,
+                        LicenseOrderId = license.LicenseOrderId,
+                        Data = license.Data,
+                    });                   
+                }
+
+                return new HesResponse<IList<HwVaultLicenseDto>>(licensesDto);
+            }
+            catch (HideezException ex)
+            {
+                _logger.LogInformation($"[{vaultId}] {ex.Message}");
+                return new HesResponse<IList<HwVaultLicenseDto>>(ex);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new HesResponse<IList<HwVaultLicenseDto>>(ex);
+            }
+        }
+
         #endregion
     }
 }
