@@ -869,6 +869,7 @@ namespace HES.Core.Services
             return await _hardwareVaultProfileRepository
                 .Query()
                 .Include(d => d.HardwareVaults)
+                .OrderBy(d => d.Name)
                 .ToListAsync();
         }
 
@@ -984,17 +985,17 @@ namespace HES.Core.Services
 
             return new AccessParams()
             {
-                MasterKey_Bond = vault.HardwareVaultProfile.MasterKeyBonding,
+                MasterKey_Bond = vault.HardwareVaultProfile.MasterKeyPairing,
                 MasterKey_Connect = vault.HardwareVaultProfile.MasterKeyConnection,
-                MasterKey_Channel = vault.HardwareVaultProfile.MasterKeyNewChannel,
+                MasterKey_Channel = vault.HardwareVaultProfile.MasterKeyStorageAccess,
 
-                Button_Bond = vault.HardwareVaultProfile.ButtonBonding,
+                Button_Bond = vault.HardwareVaultProfile.ButtonPairing,
                 Button_Connect = vault.HardwareVaultProfile.ButtonConnection,
-                Button_Channel = vault.HardwareVaultProfile.ButtonNewChannel,
+                Button_Channel = vault.HardwareVaultProfile.ButtonStorageAccess,
 
-                Pin_Bond = vault.HardwareVaultProfile.PinBonding,
+                Pin_Bond = vault.HardwareVaultProfile.PinPairing,
                 Pin_Connect = vault.HardwareVaultProfile.PinConnection,
-                Pin_Channel = vault.HardwareVaultProfile.PinNewChannel,
+                Pin_Channel = vault.HardwareVaultProfile.PinStorageAccess,
 
                 PinMinLength = vault.HardwareVaultProfile.PinLength,
                 PinMaxTries = vault.HardwareVaultProfile.PinTryCount,

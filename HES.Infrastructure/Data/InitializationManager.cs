@@ -71,15 +71,15 @@ namespace HES.Infrastructure.Data
                     Id = "default",
                     Name = "Default",
                     CreatedAt = DateTime.UtcNow,
-                    ButtonBonding = true,
+                    ButtonPairing = true,
                     ButtonConnection = false,
-                    ButtonNewChannel = false,
-                    PinBonding = false,
+                    ButtonStorageAccess = false,
+                    PinPairing = false,
                     PinConnection = false,
-                    PinNewChannel = false,
-                    MasterKeyBonding = true,
+                    PinStorageAccess = false,
+                    MasterKeyPairing = true,
                     MasterKeyConnection = false,
-                    MasterKeyNewChannel = false,
+                    MasterKeyStorageAccess = false,
                     PinExpiration = 86400,
                     PinLength = 4,
                     PinTryCount = 10,
@@ -91,9 +91,9 @@ namespace HES.Infrastructure.Data
                 var profiles = await context.HardwareVaultProfiles.ToListAsync();
                 foreach (var item in profiles)
                 {
-                    item.ButtonBonding = true;
-                    item.MasterKeyBonding = true;
-                    item.MasterKeyNewChannel = false;
+                    item.ButtonPairing = true;
+                    item.MasterKeyPairing = true;
+                    item.MasterKeyStorageAccess = false;
                 }
             }
 
