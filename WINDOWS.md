@@ -192,8 +192,7 @@ Add the Web Site
   > cd C:\
   > md Hideez
   > cd src\HES.Web
-  > cd src\HES.Web
-  > dotnet publish -c release -v d -o "..\..\HES" --framework netcoreapp3.1 --runtime win-x64 HES.Web.csproj
+  > dotnet publish -c release -v d -o "C:\Hideez\HES" --framework netcoreapp3.1 --runtime win-x64 HES.Web.csproj
 ```
   * **[Note]** Requires internet connectivity to download NuGet packages
 
@@ -212,7 +211,7 @@ Add the Web Site
 ```shell
   > md bkp
   > cd C:\Program Files\MySQL\MySQL Server 8.0\bin
-  > mysqldump -u <your_user> -p <your_db> > C:\Hideez\<your_db_bkp>.sql
+  > mysqldump -u <your_user> -p <your_db> > <path_to_your_db_bkp>.sql
   Enter password: ********
 ```
 
