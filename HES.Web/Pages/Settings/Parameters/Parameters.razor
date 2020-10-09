@@ -7,7 +7,7 @@
     <SettingsCard Title="Licensing" Description="API authentication key for ordering licenses and the address of the licensing server.">
         <div class="form-group">
             <label class="control-label text-gray">Api Address</label>
-            @if (LicensingSettings.ApiAddress != null)
+            @if (LicensingSettings?.ApiAddress != null)
             {
                 <div class="alert alert-secondary" role="alert">
                     @LicensingSettings.ApiAddress

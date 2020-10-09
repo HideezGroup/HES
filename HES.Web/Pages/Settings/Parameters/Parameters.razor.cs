@@ -58,7 +58,12 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task<LicensingSettings> LoadLicensingSettingsAsync()
         {
-            return await AppSettingsService.GetLicensingSettingsAsync();
+            var license = await AppSettingsService.GetLicensingSettingsAsync();
+
+            if (license == null)
+                return new LicensingSettings();
+
+            return license;
         }
 
         private async Task OpenDialogLicensingSettingsAsync()

@@ -5,6 +5,7 @@ using HES.Core.Models.Web.AppSettings;
 using HES.Core.Models.Web.SoftwareVault;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using QRCoder;
 using System;
 using System.Collections.Generic;
@@ -24,25 +25,35 @@ namespace HES.Core.Services
         private readonly IApplicationUserService _applicationUserService;
         private readonly IHostingEnvironment _env;
         private readonly IConfiguration _config;
+        private readonly ILogger<EmailSenderService> _logger;
 
         public EmailSenderService(IApplicationUserService applicationUserService,
                                   IHostingEnvironment env,
-                                  IConfiguration config)
+                                  IConfiguration config,
+                                  ILogger<EmailSenderService> logger)
         {
             _applicationUserService = applicationUserService;
             _env = env;
             _config = config;
+            _logger = logger;
         }
 
         private async Task SendAsync(MailMessage mailMessage, EmailSettings settings)
         {
-            using var client = new SmtpClient(settings.Host, settings.Port)
+            try
             {
-                Credentials = new NetworkCredential(settings.UserName, settings.Password),
-                EnableSsl = settings.EnableSSL
-            };
+                using var client = new SmtpClient(settings.Host, settings.Port)
+                {
+                    Credentials = new NetworkCredential(settings.UserName, settings.Password),
+                    EnableSsl = settings.EnableSSL
+                };
 
-            await client.SendMailAsync(mailMessage);
+                await client.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         public async Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status)

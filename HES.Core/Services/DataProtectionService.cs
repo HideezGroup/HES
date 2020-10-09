@@ -89,6 +89,10 @@ namespace HES.Core.Services
                 _protectionEnabled = true;
                 _notFinishedPasswordChange = true;
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
             finally
             {
                 if (_protectionEnabled && !_protectionActivated)
