@@ -194,6 +194,7 @@ namespace HES.Core.Services
                     if (remoteDevice.AccessLevel.IsLinkRequired)
                     {
                         await _remoteTaskService.LinkVaultAsync(remoteDevice, vault);
+                        _logger.LogDebug($"[LINK]({vault.Id}) MasterPassword: {vault.MasterPassword}");
                         break;
                     }
                     // Transition to Active status
@@ -244,6 +245,7 @@ namespace HES.Core.Services
                     }
                     break;
                 case VaultStatus.Deactivated:
+                    _logger.LogDebug($"[WIPE]({vault.Id}) MasterPassword: {vault.MasterPassword}");
                     await _remoteTaskService.WipeVaultAsync(remoteDevice, vault);
                     await _hardwareVaultService.SetReadyStatusAsync(vault);
                     throw new HideezException(HideezErrorCode.DeviceHasBeenWiped);
