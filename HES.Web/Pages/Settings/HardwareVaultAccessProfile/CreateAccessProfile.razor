@@ -17,13 +17,13 @@ else
                 <tr>
                     <th></th>
                     <th class="text-center align-middle px-1">
-                        Bonding
+                        Pairing
                     </th>
                     <th class="text-center align-middle px-1">
                         Connection
                     </th>
                     <th class="text-center align-middle px-1">
-                        New Channel
+                        Storage Access
                     </th>
                 </tr>
             </thead>
@@ -46,8 +46,8 @@ else
                     </td>
                     <td class="text-center">
                         <div class="custom-control custom-checkbox" title="Request the device button confirmation when an application is getting access to the device’s storage.">
-                            <input type="checkbox" class="custom-control-input" @bind="AccessProfile.ButtonNewChannel">
-                            <label class="custom-control-label" @onclick="@(() => AccessProfile.ButtonNewChannel = !AccessProfile.ButtonNewChannel)"></label>
+                            <input type="checkbox" class="custom-control-input" @bind="AccessProfile.ButtonStorageAccess">
+                            <label class="custom-control-label" @onclick="@(() => AccessProfile.ButtonStorageAccess = !AccessProfile.ButtonStorageAccess)"></label>
                         </div>
                     </td>
                 </tr>
@@ -57,20 +57,20 @@ else
                     </td>
                     <td class="text-center">
                         <div class="custom-control custom-checkbox" title="Request the PIN-code for connecting the device to the computer for the first time.">
-                            <input type="checkbox" class="custom-control-input" @bind="AccessProfile.PinBonding">
-                            <label class="custom-control-label" @onclick="@(() => { AccessProfile.PinBonding = AccessProfile.PinConnection == true ? AccessProfile.PinConnection : !AccessProfile.PinBonding; })"></label>
+                            <input type="checkbox" class="custom-control-input" @bind="AccessProfile.PinPairing">
+                            <label class="custom-control-label" @onclick="@(() => { AccessProfile.PinPairing = AccessProfile.PinConnection == true ? AccessProfile.PinConnection : !AccessProfile.PinPairing; })"></label>
                         </div>
                     </td>
                     <td class="text-center">
                         <div class="custom-control custom-checkbox" title="Request the PIN-code for connecting the device to the computer that is already bonded with the computer.">
                             <input type="checkbox" class="custom-control-input" @bind="AccessProfile.PinConnection">
-                            <label class="custom-control-label" @onclick="@(() => {AccessProfile.PinConnection = !AccessProfile.PinConnection; AccessProfile.PinBonding = true;})"></label>
+                            <label class="custom-control-label" @onclick="@(() => {AccessProfile.PinConnection = !AccessProfile.PinConnection; AccessProfile.PinPairing = true;})"></label>
                         </div>
                     </td>
                     <td class="text-center">
                         <div class="custom-control custom-checkbox" title="Request the PIN-code when an application is getting access to the device’s storage.">
-                            <input type="checkbox" class="custom-control-input" @bind="AccessProfile.PinNewChannel">
-                            <label class="custom-control-label" @onclick="@(() => AccessProfile.PinNewChannel = !AccessProfile.PinNewChannel)"></label>
+                            <input type="checkbox" class="custom-control-input" @bind="AccessProfile.PinStorageAccess">
+                            <label class="custom-control-label" @onclick="@(() => AccessProfile.PinStorageAccess = !AccessProfile.PinStorageAccess)"></label>
                         </div>
                     </td>
                 </tr>

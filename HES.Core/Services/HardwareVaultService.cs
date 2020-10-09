@@ -6,9 +6,11 @@ using HES.Core.Interfaces;
 using HES.Core.Models.API.HardwareVault;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.HardwareVaults;
+using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
+using Hideez.SDK.Communication.Security;
 using Hideez.SDK.Communication.Utils;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -74,6 +76,7 @@ namespace HES.Core.Services
                 .Include(d => d.Employee.HardwareVaults)
                 .Include(d => d.Employee.SoftwareVaults)
                 .Include(d => d.HardwareVaultProfile)
+                .Include(d => d.HardwareVaultTasks)
                 .FirstOrDefaultAsync(d => d.Id == vaultId);
         }
 
@@ -456,6 +459,46 @@ namespace HES.Core.Services
             await _licenseService.UpdateHardwareVaultsLicenseStatusAsync();
         }
 
+        public Task UnchangedVaultAsync(HardwareVault vault)
+        {
+            return _hardwareVaultRepository.UnchangedAsync(vault);
+        }
+
+        public async Task UpdateRfidAsync(HardwareVault vault)
+        {
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
+
+            await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, new string[] { nameof(HardwareVault.RFID) });
+        }
+
+        public async Task UpdateNeedSyncAsync(HardwareVault vault, bool needSync)
+        {
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
+
+            vault.NeedSync = needSync;
+            await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, new string[] { nameof(HardwareVault.NeedSync) });
+        }
+
+        public async Task UpdateNeedSyncAsync(List<HardwareVault> vaults, bool needSync)
+        {
+            if (vaults == null)
+                throw new ArgumentNullException(nameof(vaults));
+
+            vaults.ForEach(x => x.NeedSync = needSync);    
+            await _hardwareVaultRepository.UpdateOnlyPropAsync(vaults, new string[] { nameof(HardwareVault.NeedSync) });
+        }
+
+        public async Task UpdateTimestampAsync(HardwareVault vault, uint timestamp)
+        {
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
+
+            vault.Timestamp = timestamp;
+            await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, new string[] { nameof(HardwareVault.Timestamp) });
+        }
+
         public async Task<HardwareVault> UpdateVaultAsync(HardwareVault vault)
         {
             if (vault == null)
@@ -464,25 +507,33 @@ namespace HES.Core.Services
             return await _hardwareVaultRepository.UpdateAsync(vault);
         }
 
-        public async Task<List<HardwareVault>> UpdateRangeVaultsAsync(IList<HardwareVault> vaults)
+        public async Task UpdateVaultInfoAsync(HwVaultInfoFromClientDto dto)
         {
-            return await _hardwareVaultRepository.UpdatRangeAsync(vaults) as List<HardwareVault>;
-        }
-
-        public Task UnchangedVaultAsync(HardwareVault vault)
-        {
-            return _hardwareVaultRepository.UnchangedAsync(vault);
-        }
-
-        public async Task UpdateAfterWipeAsync(string vaultId)
-        {
-            if (vaultId == null)
-                throw new ArgumentNullException(nameof(vaultId));
-
-            var vault = await GetVaultByIdAsync(vaultId);
+            var vault = await _hardwareVaultRepository.GetByIdAsync(dto.VaultSerialNo);
 
             if (vault == null)
-                throw new Exception($"Vault {vault.Id} not found");
+                throw new HideezException(HideezErrorCode.HesDeviceNotFound);
+
+            vault.Timestamp = dto.StorageTimestamp;
+            vault.Battery = dto.Battery;
+            vault.Firmware = dto.FirmwareVersion;
+            vault.LastSynced = DateTime.UtcNow;
+
+            var properties = new string[]
+            {
+                nameof(HardwareVault.Timestamp),
+                nameof(HardwareVault.Battery),
+                nameof(HardwareVault.Firmware),
+                nameof(HardwareVault.LastSynced)
+            };
+
+            await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, properties);
+        }
+
+        public async Task SetReadyStatusAsync(HardwareVault vault)
+        {
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
 
             vault.LastSynced = DateTime.UtcNow;
             vault.EmployeeId = null;
@@ -491,69 +542,69 @@ namespace HES.Core.Services
             vault.Status = VaultStatus.Ready;
             vault.StatusReason = VaultStatusReason.None;
             vault.StatusDescription = null;
-            vault.HasNewLicense = true;
+            vault.HasNewLicense = false;
             vault.NeedSync = false;
             vault.IsStatusApplied = false;
             vault.Timestamp = 0;
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _hardwareVaultRepository.UpdateAsync(vault);
-                await _licenseService.ChangeLicenseNotAppliedAsync(vaultId);
-                await ChangeVaultActivationStatusAsync(vaultId, HardwareVaultActivationStatus.Canceled);
+                await _hardwareVaultRepository.UpdateAsync(vault);   
+                await ChangeVaultActivationStatusAsync(vault.Id, HardwareVaultActivationStatus.Canceled);
 
                 transactionScope.Complete();
             }
         }
 
-        public async Task UpdateHardwareVaultInfoAsync(BleDeviceDto device)
+        public async Task SetActiveStatusAsync(HardwareVault vault)
         {
-            var vault = await _hardwareVaultRepository.GetByIdAsync(device.DeviceSerialNo);
             if (vault == null)
-                throw new Exception($"Vault {device.DeviceSerialNo} not found");
+                throw new ArgumentNullException(nameof(vault));
 
-            vault.Timestamp = device.Timestamp;
-            vault.Battery = device.Battery;
-            vault.Firmware = device.FirmwareVersion;
-            vault.LastSynced = DateTime.UtcNow;
+            vault.Status = VaultStatus.Active;
 
-            await _hardwareVaultRepository.UpdateAsync(vault);
-        }
-
-        public async Task ChangeHardwareVaultStatusAsync(RemoteDevice remoteDevice, HardwareVault vault)
-        {
-            if (remoteDevice.IsLocked && !remoteDevice.IsCanUnlock && vault.IsStatusApplied &&
-                (vault.Status == VaultStatus.Reserved || vault.Status == VaultStatus.Active || vault.Status == VaultStatus.Suspended))
+            var properties = new string[]
             {
-                vault.Status = VaultStatus.Locked;
-                await _hardwareVaultRepository.UpdateAsync(vault);
-                return;
-            }
+                nameof(HardwareVault.Status)
+            };
 
-            if (!remoteDevice.IsLocked && !remoteDevice.IsCanUnlock && !remoteDevice.AccessLevel.IsLinkRequired &&
-                vault.IsStatusApplied && (vault.Status == VaultStatus.Suspended || vault.Status == VaultStatus.Reserved))
+            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                if (vault.Status == VaultStatus.Reserved)
-                {
-                    var accessParams = await GetAccessParamsAsync(vault.Id);
-                    var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
-                    await remoteDevice.Access(DateTime.UtcNow, key, accessParams);
-                }
-
-                vault.Status = VaultStatus.Active;
-                await _hardwareVaultRepository.UpdateAsync(vault);
+                await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, properties);
                 await ChangeVaultActivationStatusAsync(vault.Id, HardwareVaultActivationStatus.Activated);
+
+                transactionScope.Complete();
             }
         }
 
-        public async Task SetStatusAppliedAsync(HardwareVault hardwareVault)
+        public async Task SetLockedStatusAsync(HardwareVault vault)
         {
-            if (hardwareVault == null)
-                throw new ArgumentNullException(nameof(hardwareVault));
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
 
-            hardwareVault.IsStatusApplied = true;
+            vault.Status = VaultStatus.Locked;
 
-            await _hardwareVaultRepository.UpdateAsync(hardwareVault);
+            var properties = new string[]
+            {
+                nameof(HardwareVault.Status)
+            };
+
+            await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, properties);
+        }
+
+        public async Task SetVaultStatusAppliedAsync(HardwareVault vault)
+        {
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
+
+            vault.IsStatusApplied = true;
+
+            var properties = new string[]
+            {
+                nameof(HardwareVault.IsStatusApplied)
+            };
+
+            await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, properties);
         }
 
         public async Task<HardwareVaultActivation> CreateVaultActivationAsync(string vaultId)
@@ -631,10 +682,18 @@ namespace HES.Core.Services
             vault.StatusDescription = null;
             vault.IsStatusApplied = false;
 
+            var properties = new string[]
+            {
+                nameof(HardwareVault.Status),
+                nameof(HardwareVault.StatusReason),
+                nameof(HardwareVault.StatusDescription),
+                nameof(HardwareVault.IsStatusApplied)
+            };
+
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await CreateVaultActivationAsync(vaultId);
-                await _hardwareVaultRepository.UpdateAsync(vault);
+                await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, properties);
 
                 transactionScope.Complete();
             }
@@ -657,10 +716,18 @@ namespace HES.Core.Services
             vault.StatusDescription = description;
             vault.IsStatusApplied = false;
 
+            var properties = new string[]
+            {
+                nameof(HardwareVault.Status),
+                nameof(HardwareVault.StatusReason),
+                nameof(HardwareVault.StatusDescription),
+                nameof(HardwareVault.IsStatusApplied)
+            };
+
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await CreateVaultActivationAsync(vaultId);
-                await _hardwareVaultRepository.UpdateAsync(vault);
+                await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, properties);
 
                 transactionScope.Complete();
             }
@@ -845,6 +912,7 @@ namespace HES.Core.Services
             return await _hardwareVaultProfileRepository
                 .Query()
                 .Include(d => d.HardwareVaults)
+                .OrderBy(d => d.Name)
                 .ToListAsync();
         }
 
@@ -960,17 +1028,17 @@ namespace HES.Core.Services
 
             return new AccessParams()
             {
-                MasterKey_Bond = vault.HardwareVaultProfile.MasterKeyBonding,
+                MasterKey_Bond = vault.HardwareVaultProfile.MasterKeyPairing,
                 MasterKey_Connect = vault.HardwareVaultProfile.MasterKeyConnection,
-                MasterKey_Channel = vault.HardwareVaultProfile.MasterKeyNewChannel,
+                MasterKey_Channel = vault.HardwareVaultProfile.MasterKeyStorageAccess,
 
-                Button_Bond = vault.HardwareVaultProfile.ButtonBonding,
+                Button_Bond = vault.HardwareVaultProfile.ButtonPairing,
                 Button_Connect = vault.HardwareVaultProfile.ButtonConnection,
-                Button_Channel = vault.HardwareVaultProfile.ButtonNewChannel,
+                Button_Channel = vault.HardwareVaultProfile.ButtonStorageAccess,
 
-                Pin_Bond = vault.HardwareVaultProfile.PinBonding,
+                Pin_Bond = vault.HardwareVaultProfile.PinPairing,
                 Pin_Connect = vault.HardwareVaultProfile.PinConnection,
-                Pin_Channel = vault.HardwareVaultProfile.PinNewChannel,
+                Pin_Channel = vault.HardwareVaultProfile.PinStorageAccess,
 
                 PinMinLength = vault.HardwareVaultProfile.PinLength,
                 PinMaxTries = vault.HardwareVaultProfile.PinTryCount,

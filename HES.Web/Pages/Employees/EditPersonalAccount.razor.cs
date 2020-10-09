@@ -17,7 +17,7 @@ namespace HES.Web.Pages.Employees
     public partial class EditPersonalAccount : OwningComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -62,7 +62,7 @@ namespace HES.Web.Pages.Employees
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await EmployeeService.EditPersonalAccountAsync(Account);
-                    RemoteWorkstationConnectionsService.StartUpdateRemoteDevice(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
                     await ToastService.ShowToastAsync("Account updated.", ToastType.Success);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
                     await ModalDialogService.CloseAsync();

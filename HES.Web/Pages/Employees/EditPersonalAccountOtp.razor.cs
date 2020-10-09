@@ -20,7 +20,7 @@ namespace HES.Web.Pages.Employees
         public IEmployeeService EmployeeService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILdapService LdapService { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -68,7 +68,7 @@ namespace HES.Web.Pages.Employees
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await EmployeeService.EditPersonalAccountOtpAsync(Account, _accountOtp);
-                    RemoteWorkstationConnectionsService.StartUpdateRemoteDevice(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
                     await ToastService.ShowToastAsync("Account OTP updated.", ToastType.Success);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
                     await ModalDialogService.CloseAsync();

@@ -18,7 +18,7 @@ namespace HES.Web.Pages.Employees
     public partial class AddSharedAccount : ComponentBase
     {
         [Inject] ISharedAccountService SheredAccountSevice { get; set; }
-        [Inject] IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] IEmployeeService EmployeeService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
@@ -48,7 +48,7 @@ namespace HES.Web.Pages.Employees
             {
                 var account = await EmployeeService.AddSharedAccountAsync(EmployeeId, SelectedSharedAccount.Id);
                 var employee = await EmployeeService.GetEmployeeByIdAsync(account.EmployeeId);
-                RemoteWorkstationConnectionsService.StartUpdateRemoteDevice(employee.HardwareVaults.Select(x => x.Id).ToArray());
+                RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(employee.HardwareVaults.Select(x => x.Id).ToArray());
                 await ToastService.ShowToastAsync("Account added and will be recorded when the device is connected to the server.", ToastType.Success);
                 await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);
                 await ModalDialogService.CloseAsync();

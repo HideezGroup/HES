@@ -394,15 +394,15 @@ namespace HES.Core.Services
         {
             return await _hardwareVaultLicenseRepository
                 .Query()
-                .Where(x => x.EndDate >= DateTime.UtcNow.Date && x.HardwareVaultId == vaultId)
+                .Where(x => x.EndDate >= DateTime.UtcNow.Date && x.HardwareVaultId == vaultId && x.Data != null)
                 .ToListAsync();
         }
 
-        public async Task<List<HardwareVaultLicense>> GetNotAppliedLicensesByHardwareVaultIdAsync(string vaultId)
+        public async Task<List<HardwareVaultLicense>> GetNewLicensesByHardwareVaultIdAsync(string vaultId)
         {
             return await _hardwareVaultLicenseRepository
                 .Query()
-                .Where(d => d.AppliedAt == null && d.HardwareVaultId == vaultId && d.Data != null)
+                .Where(x => x.AppliedAt == null && x.HardwareVaultId == vaultId && x.Data != null)
                 .ToListAsync();
         }
 
@@ -505,43 +505,34 @@ namespace HES.Core.Services
             if (hardwareVaultLicense == null)
                 throw new Exception("Hardware vault license not found.");
 
+            var vault = await _hardwareVaultRepository.GetByIdAsync(vaultId);
+            if (vault == null)
+                throw new Exception($"[{vaultId}] Hardware vault not found.");
+
+            // Set license is applied
             hardwareVaultLicense.AppliedAt = DateTime.UtcNow;
-            await _hardwareVaultLicenseRepository.UpdateOnlyPropAsync(hardwareVaultLicense, new string[] { nameof(HardwareVaultLicense.AppliedAt) });
 
-            var notAppliedLicenses = await GetNotAppliedLicensesByHardwareVaultIdAsync(vaultId);
-            if (notAppliedLicenses.Count == 0)
-            {
-                var vault = await _hardwareVaultRepository.GetByIdAsync(vaultId);
-
-                if (vault == null)
-                    throw new Exception("Hardware vault not found.");
-
+            // Check if there are more licenses
+            var newLicenses = await GetNewLicensesByHardwareVaultIdAsync(vaultId);
+            if (newLicenses.Count == 0)
                 vault.HasNewLicense = false;
-                if (vault.LicenseEndDate.HasValue)
-                {
-                    vault.LicenseEndDate = vault.LicenseEndDate < hardwareVaultLicense.EndDate ? hardwareVaultLicense.EndDate : vault.LicenseEndDate;
-                }
-                else
-                {
-                    vault.LicenseEndDate = hardwareVaultLicense.EndDate;
-                }
-                await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, new string[] { nameof(HardwareVault.HasNewLicense), nameof(HardwareVault.LicenseEndDate) });
-            }
-        }
 
-        public async Task ChangeLicenseNotAppliedAsync(string vaultId)
-        {
-            var licenses = await _hardwareVaultLicenseRepository
-                .Query()
-                .Where(d => d.HardwareVaultId == vaultId)
-                .ToListAsync();
-
-            foreach (var license in licenses)
+            // Set license end date to vault
+            if (vault.LicenseEndDate.HasValue)
             {
-                license.AppliedAt = null;
+                vault.LicenseEndDate = vault.LicenseEndDate < hardwareVaultLicense.EndDate ? hardwareVaultLicense.EndDate : vault.LicenseEndDate;
+            }
+            else
+            {
+                vault.LicenseEndDate = hardwareVaultLicense.EndDate;
             }
 
-            await _hardwareVaultLicenseRepository.UpdateOnlyPropAsync(licenses, new string[] { nameof(HardwareVaultLicense.AppliedAt) });
+            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                await _hardwareVaultLicenseRepository.UpdateOnlyPropAsync(hardwareVaultLicense, new string[] { nameof(HardwareVaultLicense.AppliedAt) });
+                await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, new string[] { nameof(HardwareVault.HasNewLicense), nameof(HardwareVault.LicenseEndDate) });
+                transactionScope.Complete();
+            }
         }
 
         private async Task UpdateHardwareVaultsLicensesAsync(string orderId)

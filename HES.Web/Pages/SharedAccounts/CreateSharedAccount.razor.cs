@@ -21,7 +21,7 @@ namespace HES.Web.Pages.SharedAccounts
         public ISharedAccountService SharedAccountService { get; set; }
         public ITemplateService TemplateService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateSharedAccount> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }

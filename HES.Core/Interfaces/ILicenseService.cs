@@ -21,12 +21,11 @@ namespace HES.Core.Interfaces
         Task UpdateLicenseOrdersAsync();
         Task<List<HardwareVaultLicense>> GetLicensesAsync();
         Task<List<HardwareVaultLicense>> GetActiveLicensesAsync(string vaultId);
-        Task<List<HardwareVaultLicense>> GetNotAppliedLicensesByHardwareVaultIdAsync(string vaultId);
+        Task<List<HardwareVaultLicense>> GetNewLicensesByHardwareVaultIdAsync(string vaultId);
         Task<List<HardwareVaultLicense>> GetLicensesByOrderIdAsync(string orderId);
         Task<List<HardwareVaultLicense>> AddOrUpdateHardwareVaultEmptyLicensesAsync(string orderId, List<string> vaultIds);
         Task<List<HardwareVaultLicense>> AddHardwareVaultLicenseRangeAsync(List<HardwareVaultLicense> hardwareVaultLicenses);
         Task UpdateHardwareVaultsLicenseStatusAsync();
         Task ChangeLicenseAppliedAsync(string vaultId, string licenseId);
-        Task ChangeLicenseNotAppliedAsync(string vaultId);
     }
 }

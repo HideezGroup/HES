@@ -13,13 +13,13 @@ else
             <tr>
                 <th></th>
                 <th class="text-center align-middle px-1">
-                    Bonding
+                    Pairing
                 </th>
                 <th class="text-center align-middle px-1">
                     Connection
                 </th>
                 <th class="text-center align-middle px-1">
-                    New Channel
+                    Storage Access
                 </th>
             </tr>
         </thead>
@@ -29,7 +29,7 @@ else
                     Button
                 </td>
                 <td class="text-center">
-                    @if (AccessProfile.ButtonBonding)
+                    @if (AccessProfile.ButtonPairing)
                     {
                         <span class="badge badge-success">Yes</span>
                     }
@@ -49,7 +49,7 @@ else
                     }
                 </td>
                 <td class="text-center">
-                    @if (AccessProfile.ButtonNewChannel)
+                    @if (AccessProfile.ButtonStorageAccess)
                     {
                         <span class="badge badge-success">Yes</span>
                     }
@@ -64,7 +64,7 @@ else
                     PIN
                 </td>
                 <td class="text-center">
-                    @if (AccessProfile.PinBonding)
+                    @if (AccessProfile.PinPairing)
                     {
                         <span class="badge badge-success">Yes</span>
                     }
@@ -84,7 +84,7 @@ else
                     }
                 </td>
                 <td class="text-center">
-                    @if (AccessProfile.PinNewChannel)
+                    @if (AccessProfile.PinStorageAccess)
                     {
                         <span class="badge badge-success">Yes</span>
                     }
@@ -99,7 +99,7 @@ else
                     Server Confirmation
                 </td>
                 <td class="text-center">
-                    @if (AccessProfile.MasterKeyBonding)
+                    @if (AccessProfile.MasterKeyPairing)
                     {
                         <span class="badge badge-success">Yes</span>
                     }
@@ -119,7 +119,7 @@ else
                     }
                 </td>
                 <td class="text-center">
-                    @if (AccessProfile.MasterKeyNewChannel)
+                    @if (AccessProfile.MasterKeyStorageAccess)
                     {
                         <span class="badge badge-success">Yes</span>
                     }

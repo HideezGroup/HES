@@ -32,17 +32,19 @@
         <a class="dismiss">🗙</a>
     </div>
     <div id="components-reconnect-modal">
-        <div class="reconnecting flex-column justify-content-center align-items-center h-100">
-            <img class="rotating mb-1" src="~/svg/hideez-brand.svg" />
-            <h5>Reconnection to the server.</h5>
+        <div class="reconnecting flex-column justify-content-center align-items-center h-100">   
+            <h5 class="mb-3">Reconnection to the server.</h5>
+            <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
         </div>
         <div class="failed-to-connect flex-column justify-content-center align-items-center h-100">
-            <h5>Could not connect to the server.</h5>
-            <input type="button" class="btn btn-primary mt-1" value="Reconnect" onclick="window.Blazor.reconnect()" />
+            <h5 class="mb-3">Could not connect to the server.</h5>
+            <input type="button" class="btn btn-primary" value="Reconnect" onclick="window.Blazor.reconnect()" />
         </div>
         <div class="connection-rejected flex-column justify-content-center align-items-center h-100">
-            <h5>Could not reconnect to the server. <br /> Reload the page to restore functionality.</h5>
-            <input type="button" class="btn btn-primary mt-1" value="Reload" onclick="location.reload()" />
+            <h5 class="mb-3">Could not reconnect to the server. <br /> Reload the page to restore functionality.</h5>
+            <input type="button" class="btn btn-primary" value="Reload" onclick="location.reload()" />
         </div>
     </div>
     <script src="_framework/blazor.server.js" autostart="false"></script>

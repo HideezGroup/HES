@@ -1,6 +1,7 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Services;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -51,7 +52,10 @@ namespace HES.Core.Entities
         public uint Timestamp { get; set; }
 
         public bool HasNewLicense { get; set; }
+
         public bool IsStatusApplied { get; set; }
+
+        public List<HardwareVaultTask> HardwareVaultTasks { get; set; }
 
 
         [Display(Name = "License Status")]

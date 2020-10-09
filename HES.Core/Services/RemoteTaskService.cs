@@ -99,9 +99,8 @@ namespace HES.Core.Services
 
                 tasks = await query.ToListAsync();
             }
-
-            vault.NeedSync = false;
-            await _hardwareVaultService.UpdateVaultAsync(vault);
+    
+            await _hardwareVaultService.UpdateNeedSyncAsync(vault, false);
         }
 
         private async Task ExecuteRemoteTask(RemoteDevice remoteDevice, HardwareVaultTask task)
@@ -178,6 +177,13 @@ namespace HES.Core.Services
             await remoteDevice.Access(DateTime.UtcNow, key, accessParams);
         }
 
+        public async Task AccessVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
+        {
+            var accessParams = await _hardwareVaultService.GetAccessParamsAsync(vault.Id);
+            var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
+            await remoteDevice.Access(DateTime.UtcNow, key, accessParams);
+        }
+
         public async Task LinkVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
         {
             if (!remoteDevice.AccessLevel.IsLinkRequired)
@@ -186,7 +192,7 @@ namespace HES.Core.Services
             var code = Encoding.UTF8.GetBytes(await _hardwareVaultService.GetVaultActivationCodeAsync(vault.Id));
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
             await remoteDevice.Link(key, code, 3);
-            await _hardwareVaultService.SetStatusAppliedAsync(vault);
+            await _hardwareVaultService.SetVaultStatusAppliedAsync(vault);
         }
 
         public async Task SuspendVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
@@ -197,15 +203,13 @@ namespace HES.Core.Services
             var code = Encoding.UTF8.GetBytes(await _hardwareVaultService.GetVaultActivationCodeAsync(vault.Id));
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
             await remoteDevice.LockDeviceCode(key, code, 3);
-            await _hardwareVaultService.SetStatusAppliedAsync(vault);
+            await _hardwareVaultService.SetVaultStatusAppliedAsync(vault);
         }
 
         public async Task WipeVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
         {
             if (!remoteDevice.AccessLevel.IsLinkRequired)
-                await remoteDevice.Wipe(ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword)));
-
-            await _hardwareVaultService.UpdateAfterWipeAsync(vault.Id);
+                await remoteDevice.Wipe(ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword)));    
         }
 
         public void Dispose()
