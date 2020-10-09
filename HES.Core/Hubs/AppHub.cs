@@ -192,60 +192,6 @@ namespace HES.Core.Hubs
         #region HwVault
 
         // Incoming request
-        //public async Task<HesResponse> OnDeviceConnected(BleDeviceDto dto)
-        //{
-        //    if (await IsAlarmTurnOnAsync())
-        //        return new HesResponse(HideezErrorCode.HesAlarm, "Failed to connect to the server.");
-
-        //    try
-        //    {
-        //        // Workstation not approved
-        //        if (!await _workstationService.CheckIsApprovedAsync(await GetWorkstationId()))
-        //            return new HesResponse(HideezErrorCode.HesWorkstationNotApproved, $"Workstation not approved.");
-
-        //        if (dto?.DeviceSerialNo == null)
-        //            throw new ArgumentNullException(nameof(dto.DeviceSerialNo));
-
-        //        _remoteDeviceConnectionsService.OnDeviceConnected(dto.DeviceSerialNo, await GetWorkstationId(), Clients.Caller);
-
-        //        await OnDevicePropertiesChanged(dto);
-
-        //        if (dto.LicenseInfo == 0)
-        //            return HesResponse.Ok;
-
-        //        await InvokeVaultStateChanged(dto.DeviceSerialNo);
-        //        await CheckVaultStatusAsync(dto);
-        //        //await _remoteDeviceConnectionsService.SyncHardwareVaults(dto.DeviceSerialNo);
-        //        return HesResponse.Ok;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"[{dto.DeviceSerialNo}] {ex.Message}");
-        //        return new HesResponse(ex);
-        //    }
-        //}
-
-        // Incoming request
-        //public async Task<HesResponse> OnDeviceDisconnected(string vaultId)
-        //{
-        //    try
-        //    {
-        //        if (!string.IsNullOrEmpty(vaultId))
-        //        {
-        //            await InvokeVaultStateChanged(vaultId);
-        //            _remoteDeviceConnectionsService.OnDeviceDisconnected(vaultId, await GetWorkstationId());
-        //            await _employeeService.UpdateLastSeenAsync(vaultId);
-        //        }
-        //        return HesResponse.Ok;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"[{vaultId}] {ex.Message}");
-        //        return new HesResponse(ex);
-        //    }
-        //}
-
-        // Incoming request
         public async Task<HesResponse<HwVaultShortInfoFromHesDto>> GetHwVaultInfoByRfid(string rfid)
         {
             try
@@ -513,7 +459,7 @@ namespace HES.Core.Hubs
             {
                 await ValidateConnectionAsync();
 
-                var licenses = await _licenseService.GetNotAppliedLicensesByHardwareVaultIdAsync(vaultId);
+                var licenses = await _licenseService.GetNewLicensesByHardwareVaultIdAsync(vaultId);
 
                 var licensesDto = new List<HwVaultLicenseDto>();
 
@@ -565,7 +511,6 @@ namespace HES.Core.Hubs
                 return new HesResponse(ex);
             }
         }
-
 
         // Incoming request
         public async Task<HesResponse<IList<HwVaultLicenseDto>>> GetHwVaultLicenses(string vaultId)

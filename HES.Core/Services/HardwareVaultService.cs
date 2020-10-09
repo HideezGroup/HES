@@ -542,15 +542,14 @@ namespace HES.Core.Services
             vault.Status = VaultStatus.Ready;
             vault.StatusReason = VaultStatusReason.None;
             vault.StatusDescription = null;
-            vault.HasNewLicense = true;
+            vault.HasNewLicense = false;
             vault.NeedSync = false;
             vault.IsStatusApplied = false;
             vault.Timestamp = 0;
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _hardwareVaultRepository.UpdateAsync(vault);
-                await _licenseService.ChangeLicenseNotAppliedAsync(vault.Id);
+                await _hardwareVaultRepository.UpdateAsync(vault);   
                 await ChangeVaultActivationStatusAsync(vault.Id, HardwareVaultActivationStatus.Canceled);
 
                 transactionScope.Complete();
