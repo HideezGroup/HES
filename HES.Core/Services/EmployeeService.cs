@@ -770,8 +770,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -864,9 +863,7 @@ namespace HES.Core.Services
                 foreach (var vault in employee.HardwareVaults)
                 {
                     await _hardwareVaultTaskService.AddPrimaryAsync(vault.Id, accountId);
-
-                    vault.NeedSync = true;
-                    await _hardwareVaultService.UpdateVaultAsync(vault);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(vault, true);
                 }
 
                 transactionScope.Complete();
@@ -925,8 +922,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -974,8 +970,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -1023,8 +1018,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -1101,8 +1095,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -1154,9 +1147,7 @@ namespace HES.Core.Services
 
                 await _accountService.UpdateOnlyPropAsync(account, new string[] { nameof(Account.Deleted), nameof(Account.UpdatedAt), nameof(Account.Password), nameof(Account.OtpSecret) });
                 await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-
-                employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
 
                 transactionScope.Complete();
             }

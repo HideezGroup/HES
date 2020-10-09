@@ -372,14 +372,12 @@ namespace HES.Core.Services
                     }
 
                     if (vault.Timestamp > employeeVault.Timestamp)
-                    {
-                        employeeVault.Timestamp = vault.Timestamp;
-                        await _hardwareVaultService.UpdateVaultAsync(employeeVault);
+                    {                   
+                        await _hardwareVaultService.UpdateTimestampAsync(employeeVault, vault.Timestamp);
                     }
                     else
-                    {
-                        vault.Timestamp = employeeVault.Timestamp;
-                        await _hardwareVaultService.UpdateVaultAsync(vault);
+                    {                   
+                        await _hardwareVaultService.UpdateTimestampAsync(vault, employeeVault.Timestamp);
                     }
                 }
             }

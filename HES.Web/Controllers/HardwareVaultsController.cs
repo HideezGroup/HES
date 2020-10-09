@@ -97,7 +97,7 @@ namespace HES.Web.Controllers
                     RFID = vaultDto.RFID
                 };
 
-                await _hardwareVaultService.UpdateVaultAsync(vault);
+                await _hardwareVaultService.UpdateRfidAsync(vault);
             }
             catch (Exception ex)
             {

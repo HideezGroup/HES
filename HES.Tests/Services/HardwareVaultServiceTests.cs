@@ -61,7 +61,7 @@ namespace HES.Tests.Services
             var hardwareVault = _testingOptions.HardwareVault;
             hardwareVault.RFID = _testingOptions.NewHardwareVaultRFID;
 
-            await _hardwareVaultService.UpdateVaultAsync(hardwareVault);
+            await _hardwareVaultService.UpdateRfidAsync(hardwareVault);
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 
@@ -119,7 +119,7 @@ namespace HES.Tests.Services
             var hardwareVault = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
             hardwareVault.Status = VaultStatus.Locked;
 
-            await _hardwareVaultService.UpdateVaultAsync(hardwareVault);
+            await _hardwareVaultService.SetLockedStatusAsync(hardwareVault);
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 
@@ -141,14 +141,18 @@ namespace HES.Tests.Services
         [Fact, Order(11)]
         public async Task UpdateRangeVaultsAsync()
         {
-            var hardwareVault = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
-            hardwareVault.Status = VaultStatus.Active;
+            //----------------------------------------
+            // UpdateRangeVaultsAsync has been removed
+            //----------------------------------------
 
-            await _hardwareVaultService.UpdateRangeVaultsAsync(new HardwareVault[] { hardwareVault });
+            //var hardwareVault = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
+            //hardwareVault.Status = VaultStatus.Active;
 
-            var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
+            //await _hardwareVaultService.UpdateRangeVaultsAsync(new HardwareVault[] { hardwareVault });
 
-            Assert.Equal(VaultStatus.Active, result.Status);
+            //var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
+
+            //Assert.Equal(VaultStatus.Active, result.Status);
         }
 
         [Fact, Order(12)]
