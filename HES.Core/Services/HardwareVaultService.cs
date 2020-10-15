@@ -562,10 +562,14 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(vault));
 
             vault.Status = VaultStatus.Active;
+            vault.StatusReason = VaultStatusReason.None;
+            vault.StatusDescription = null;
 
             var properties = new string[]
             {
-                nameof(HardwareVault.Status)
+                nameof(HardwareVault.Status),
+                nameof(HardwareVault.StatusReason),
+                nameof(HardwareVault.StatusDescription)
             };
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))

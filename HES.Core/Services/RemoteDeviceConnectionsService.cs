@@ -198,7 +198,7 @@ namespace HES.Core.Services
                         break;
                     }
                     // Transition to Active status
-                    if (!remoteDevice.IsLocked)
+                    if (!remoteDevice.AccessLevel.IsLinkRequired && !remoteDevice.IsLocked)
                     {
                         await _remoteTaskService.AccessVaultAsync(remoteDevice, vault);
                         await _hardwareVaultService.SetActiveStatusAsync(vault);
