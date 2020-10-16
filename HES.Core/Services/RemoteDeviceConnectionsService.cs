@@ -194,20 +194,23 @@ namespace HES.Core.Services
                     if (remoteDevice.AccessLevel.IsLinkRequired)
                     {
                         await _remoteTaskService.LinkVaultAsync(remoteDevice, vault);
-                        _logger.LogDebug($"[LINK]({vault.Id}) MasterPassword: {vault.MasterPassword}");
+                        _logger.LogDebug($"[LINK]({vault.Id}) MasterPassword: {vault.MasterPassword} Status:{vault.Status}");
                         break;
                     }
                     // Transition to Active status
                     if (!remoteDevice.AccessLevel.IsLinkRequired && !remoteDevice.IsLocked)
                     {
                         await _remoteTaskService.AccessVaultAsync(remoteDevice, vault);
+                        _logger.LogDebug($"[ACCESS]({vault.Id}) MasterPassword: {vault.MasterPassword}  Status:{vault.Status}");
                         await _hardwareVaultService.SetActiveStatusAsync(vault);
+                        _logger.LogDebug($"[ACTIVATE]({vault.Id}) MasterPassword: {vault.MasterPassword}  Status:{vault.Status}");
                         break;
                     }
                     // Transition to Locked status
                     if (remoteDevice.IsLocked && !remoteDevice.IsCanUnlock)
                     {
                         await _hardwareVaultService.SetLockedStatusAsync(vault);
+                        _logger.LogDebug($"[LOCK]({vault.Id}) MasterPassword: {vault.MasterPassword}  Status:{vault.Status}");
                         break;
                     }
                     break;
@@ -216,6 +219,7 @@ namespace HES.Core.Services
                     if (remoteDevice.IsLocked)
                     {
                         await _hardwareVaultService.SetLockedStatusAsync(vault);
+                        _logger.LogDebug($"[LOCK]({vault.Id}) MasterPassword: {vault.MasterPassword}  Status:{vault.Status}");
                         break;
                     }
                     break;
@@ -245,7 +249,7 @@ namespace HES.Core.Services
                     }
                     break;
                 case VaultStatus.Deactivated:
-                    _logger.LogDebug($"[WIPE]({vault.Id}) MasterPassword: {vault.MasterPassword}");
+                    _logger.LogDebug($"[WIPE]({vault.Id}) MasterPassword: {vault.MasterPassword}  Status:{vault.Status}");
                     await _remoteTaskService.WipeVaultAsync(remoteDevice, vault);
                     await _hardwareVaultService.SetReadyStatusAsync(vault);
                     throw new HideezException(HideezErrorCode.DeviceHasBeenWiped);

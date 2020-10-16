@@ -328,6 +328,7 @@ namespace HES.Core.Hubs
                 await ValidateConnectionAsync();
 
                 await _hardwareVaultService.UpdateVaultInfoAsync(dto);
+                _logger.LogDebug($"UpdateHwVaultProperties [{dto.VaultSerialNo}] conn-state:{dto.ConnectionState}");
 
                 switch (dto.ConnectionState)
                 {
@@ -387,7 +388,7 @@ namespace HES.Core.Hubs
             try
             {
                 await ValidateConnectionAsync();
-
+                _logger.LogDebug($"UpdateHwVaultStatus [{dto.VaultSerialNo}] conn-state:{dto.ConnectionState}");
                 await _remoteDeviceConnectionsService.UpdateHardwareVaultStatusAsync(dto.VaultSerialNo, GetWorkstationId());
 
                 var info = await GetHardwareVaultInfoAsync(dto);
@@ -412,7 +413,7 @@ namespace HES.Core.Hubs
             try
             {
                 await ValidateConnectionAsync();
-
+                _logger.LogDebug($"AuthHwVault [{serialNo}]");
                 await _remoteDeviceConnectionsService.CheckPassphraseAsync(serialNo, GetWorkstationId());
 
                 return HesResponse.Ok;
