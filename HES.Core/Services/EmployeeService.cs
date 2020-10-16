@@ -528,16 +528,7 @@ namespace HES.Core.Services
             // Create a task for accounts that were created without a vault
             foreach (var account in accounts.Where(x => x.Password != null))
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Password = account.Password,
-                    OtpSecret = account.OtpSecret,
-                    CreatedAt = DateTime.UtcNow,
-                    Operation = TaskOperation.Create,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = vault.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));               
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -610,11 +601,6 @@ namespace HES.Core.Services
         #endregion
 
         #region Account
-
-        public async Task ReloadAccountAsync(string accountId)
-        {
-            await _accountService.ReloadAccountAsync(accountId);
-        }
 
         public async Task<Account> GetAccountByIdAsync(string accountId)
         {
@@ -750,16 +736,7 @@ namespace HES.Core.Services
 
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Password = _dataProtectionService.Encrypt(personalAccount.Password),
-                    OtpSecret = _dataProtectionService.Encrypt(personalAccount.OtpSecret),
-                    CreatedAt = DateTime.UtcNow,
-                    Operation = TaskOperation.Create,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = vault.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));           
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -905,14 +882,7 @@ namespace HES.Core.Services
             List<HardwareVaultTask> tasks = new List<HardwareVaultTask>();
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Operation = TaskOperation.Update,
-                    CreatedAt = DateTime.UtcNow,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = vault.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountUpdateTask(vault.Id, account.Id));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -950,17 +920,9 @@ namespace HES.Core.Services
 
             // Create tasks if there are vaults
             List<HardwareVaultTask> tasks = new List<HardwareVaultTask>();
-            foreach (var device in employee.HardwareVaults)
+            foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Password = _dataProtectionService.Encrypt(accountPassword.Password),
-                    Operation = TaskOperation.Update,
-                    CreatedAt = DateTime.UtcNow,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = device.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountPwdUpdateTask(vault.Id, account.Id, _dataProtectionService.Encrypt(accountPassword.Password)));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -998,17 +960,9 @@ namespace HES.Core.Services
 
             // Create tasks if there are vaults
             List<HardwareVaultTask> tasks = new List<HardwareVaultTask>();
-            foreach (var device in employee.HardwareVaults)
+            foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    OtpSecret = _dataProtectionService.Encrypt(accountOtp.OtpSecret ?? string.Empty),
-                    Operation = TaskOperation.Update,
-                    CreatedAt = DateTime.UtcNow,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = device.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountOtpUpdateTask(vault.Id, account.Id, _dataProtectionService.Encrypt(accountOtp.OtpSecret ?? string.Empty)));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -1073,18 +1027,9 @@ namespace HES.Core.Services
             var employee = await GetEmployeeByIdAsync(employeeId);
             var tasks = new List<HardwareVaultTask>();
 
-            foreach (var device in employee.HardwareVaults)
+            foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Password = sharedAccount.Password,
-                    OtpSecret = sharedAccount.OtpSecret,
-                    CreatedAt = DateTime.UtcNow,
-                    Operation = TaskOperation.Create,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = device.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, sharedAccount.Password, sharedAccount.OtpSecret));               
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -1130,14 +1075,7 @@ namespace HES.Core.Services
 
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    CreatedAt = DateTime.UtcNow,
-                    Operation = TaskOperation.Delete,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = vault.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountDeleteTask(vault.Id, account.Id));               
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))

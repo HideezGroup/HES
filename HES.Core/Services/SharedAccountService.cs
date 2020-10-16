@@ -278,13 +278,7 @@ namespace HES.Core.Services
 
                 foreach (var hardwareVault in account.Employee.HardwareVaults)
                 {
-                    tasks.Add(new HardwareVaultTask
-                    {
-                        AccountId = account.Id,
-                        CreatedAt = DateTime.UtcNow,
-                        Operation = TaskOperation.Update,
-                        HardwareVaultId = hardwareVault.Id
-                    });
+                    tasks.Add(_hardwareVaultTaskService.GetAccountUpdateTask(hardwareVault.Id, account.Id));
                 }
             }
 
@@ -329,14 +323,7 @@ namespace HES.Core.Services
 
                 foreach (var hardwareVault in account.Employee.HardwareVaults)
                 {
-                    tasks.Add(new HardwareVaultTask
-                    {
-                        Password = sharedAccount.Password,
-                        AccountId = account.Id,
-                        CreatedAt = DateTime.UtcNow,
-                        Operation = TaskOperation.Update,
-                        HardwareVaultId = hardwareVault.Id
-                    });
+                    tasks.Add(_hardwareVaultTaskService.GetAccountPwdUpdateTask(hardwareVault.Id, account.Id, sharedAccount.Password));
                 }
             }
 
@@ -381,16 +368,9 @@ namespace HES.Core.Services
                 account.UpdatedAt = DateTime.UtcNow;
                 account.OtpUpdatedAt = sharedAccount.OtpSecretChangedAt;
 
-                foreach (var device in account.Employee.HardwareVaults)
+                foreach (var vault in account.Employee.HardwareVaults)
                 {
-                    tasks.Add(new HardwareVaultTask
-                    {
-                        OtpSecret = sharedAccount.OtpSecret ?? string.Empty,
-                        AccountId = account.Id,
-                        CreatedAt = DateTime.UtcNow,
-                        Operation = TaskOperation.Update,
-                        HardwareVaultId = device.Id
-                    });
+                    tasks.Add(_hardwareVaultTaskService.GetAccountOtpUpdateTask(vault.Id, account.Id, sharedAccount.OtpSecret));
                 }
             }
 
@@ -435,13 +415,7 @@ namespace HES.Core.Services
 
                 foreach (var hardwareVault in account.Employee.HardwareVaults)
                 {
-                    tasks.Add(new HardwareVaultTask
-                    {
-                        AccountId = account.Id,
-                        CreatedAt = DateTime.UtcNow,
-                        Operation = TaskOperation.Delete,
-                        HardwareVaultId = hardwareVault.Id
-                    });
+                    tasks.Add(_hardwareVaultTaskService.GetAccountDeleteTask(hardwareVault.Id, account.Id));
                 }
             }
 
