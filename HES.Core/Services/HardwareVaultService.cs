@@ -486,7 +486,7 @@ namespace HES.Core.Services
             if (vaults == null)
                 throw new ArgumentNullException(nameof(vaults));
 
-            vaults.ForEach(x => x.NeedSync = needSync);    
+            vaults.ForEach(x => x.NeedSync = needSync);
             await _hardwareVaultRepository.UpdateOnlyPropAsync(vaults, new string[] { nameof(HardwareVault.NeedSync) });
         }
 
@@ -549,9 +549,8 @@ namespace HES.Core.Services
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _hardwareVaultRepository.UpdateAsync(vault);   
+                await _hardwareVaultRepository.UpdateAsync(vault);
                 await ChangeVaultActivationStatusAsync(vault.Id, HardwareVaultActivationStatus.Canceled);
-
                 transactionScope.Complete();
             }
         }
@@ -587,6 +586,22 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(vault));
 
             vault.Status = VaultStatus.Locked;
+
+            var properties = new string[]
+            {
+                nameof(HardwareVault.Status)
+            };
+
+            await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, properties);
+        }
+
+        public async Task SetDeactivatedStatusAsync(HardwareVault vault)
+        {
+            if (vault == null)
+                throw new ArgumentNullException(nameof(vault));
+
+            vault.EmployeeId = null;
+            vault.Status = VaultStatus.Deactivated;
 
             var properties = new string[]
             {

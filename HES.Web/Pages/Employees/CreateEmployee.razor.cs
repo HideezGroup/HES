@@ -9,6 +9,7 @@ using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using System;
@@ -20,10 +21,10 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class CreateEmployee : ComponentBase
+    public partial class CreateEmployee : OwningComponentBase
     {
         [Inject] public IEmployeeService EmployeeService { get; set; }
-        [Inject] public IHardwareVaultService HardwareVaultService { get; set; }
+        public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public ISharedAccountService SheredAccountSevice { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }
@@ -63,11 +64,14 @@ namespace HES.Web.Pages.Employees
 
         protected override async Task OnInitializedAsync()
         {
+            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+
             Companies = await OrgStructureService.GetCompaniesAsync();
             Departments = new List<Department>();
             Positions = await OrgStructureService.GetPositionsAsync();
             SharedAccounts = await SheredAccountSevice.GetWorkstationSharedAccountsAsync();
             SharedAccountId = SharedAccounts.FirstOrDefault()?.Id;
+
             await LoadHardwareVaultsAsync();
 
             Employee = new Employee() { Id = Guid.NewGuid().ToString() };

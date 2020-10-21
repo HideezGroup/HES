@@ -184,7 +184,7 @@ namespace HES.Core.Services
 
             if (vault == null)
                 throw new HideezException(HideezErrorCode.HesDeviceNotFound);
-
+            _logger.LogDebug($"[UpdateHardwareVaultStatusAsync] Status: {vault.Status} MasterPassword: {vault.MasterPassword}");
             switch (vault.Status)
             {
                 case VaultStatus.Ready:
@@ -243,6 +243,7 @@ namespace HES.Core.Services
                         // Transition to Active status
                         if (!remoteDevice.IsLocked)
                         {
+                            _logger.LogDebug($"[ACTIVE]({vault.Id}) MasterPassword: {vault.MasterPassword} in Status:{vault.Status}");
                             await _hardwareVaultService.SetActiveStatusAsync(vault);
                             break;
                         }
@@ -302,7 +303,7 @@ namespace HES.Core.Services
                 throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
 
             var vault = await ValidateAndGetHardwareVaultAsync(vaultId, remoteDevice.AccessLevel.IsLinkRequired);
-
+            _logger.LogDebug($"[CheckPassphrase] MasterPassword: {vault.MasterPassword}");
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
 
             await remoteDevice.CheckPassphrase(key);
@@ -376,11 +377,11 @@ namespace HES.Core.Services
                     }
 
                     if (vault.Timestamp > employeeVault.Timestamp)
-                    {                   
+                    {
                         await _hardwareVaultService.UpdateTimestampAsync(employeeVault, vault.Timestamp);
                     }
                     else
-                    {                   
+                    {
                         await _hardwareVaultService.UpdateTimestampAsync(vault, employeeVault.Timestamp);
                     }
                 }

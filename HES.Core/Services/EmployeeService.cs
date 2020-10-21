@@ -528,7 +528,7 @@ namespace HES.Core.Services
             // Create a task for accounts that were created without a vault
             foreach (var account in accounts.Where(x => x.Password != null))
             {
-                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));               
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -551,48 +551,44 @@ namespace HES.Core.Services
             _dataProtectionService.Validate();
 
             var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
-            if (vault == null)
-                throw new Exception($"Vault {vaultId} not found");
 
-            if (vault.Status != VaultStatus.Reserved &&
-                vault.Status != VaultStatus.Active &&
-                vault.Status != VaultStatus.Locked &&
-                vault.Status != VaultStatus.Suspended)
+            if (vault == null)
+                throw new Exception($"Vault {vaultId} not found.");
+
+            if (vault.Status != VaultStatus.Reserved && vault.Status != VaultStatus.Active &&
+                vault.Status != VaultStatus.Locked && vault.Status != VaultStatus.Suspended)
             {
                 throw new Exception($"Vault {vaultId} in a status that does not allow to remove.");
             }
 
             var employeeId = vault.EmployeeId;
-            var deleteAccounts = vault.Employee.HardwareVaults.Count() == 1 ? true : false;
+
+            var deleteAccounts = vault
+                .Employee
+                .HardwareVaults
+                .Where(x => x.Status == VaultStatus.Active && vault.Status == VaultStatus.Locked && vault.Status == VaultStatus.Suspended)
+                .Count() == 1 ? true : false;
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _hardwareVaultTaskService.DeleteTasksByVaultIdAsync(vaultId);
                 await _workstationService.DeleteProximityByVaultIdAsync(vaultId);
 
-                vault.EmployeeId = null;
-
                 if (vault.Status == VaultStatus.Reserved && !vault.IsStatusApplied)
                 {
-                    vault.Status = VaultStatus.Ready;
-                    vault.MasterPassword = null;
-                    await _hardwareVaultService.ChangeVaultActivationStatusAsync(vaultId, HardwareVaultActivationStatus.Canceled);
+                    await _hardwareVaultService.SetReadyStatusAsync(vault);
                 }
                 else
                 {
-                    vault.Status = VaultStatus.Deactivated;
                     vault.StatusReason = reason;
+                    await _hardwareVaultService.SetDeactivatedStatusAsync(vault);
 
                     if (!isNeedBackup && deleteAccounts)
                     {
-                        var employee = await GetEmployeeByIdAsync(employeeId);
-                        employee.PrimaryAccountId = null;
-                        await _employeeRepository.UpdateAsync(employee);
+                        await RemovePrimaryAccountIdAsync(employeeId);              
                         await _accountService.DeleteAccountsByEmployeeIdAsync(employeeId);
                     }
                 }
-
-                await _hardwareVaultService.UpdateVaultAsync(vault);
 
                 transactionScope.Complete();
             }
@@ -736,7 +732,7 @@ namespace HES.Core.Services
 
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));           
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -858,6 +854,17 @@ namespace HES.Core.Services
             }
         }
 
+        private async Task RemovePrimaryAccountIdAsync(string employeeId)
+        {
+            var employee = await _employeeRepository.GetByIdAsync(employeeId);
+
+            if (employee == null)
+                throw new Exception("Employee not found");
+
+            employee.PrimaryAccountId = null;
+
+            await _employeeRepository.UpdateOnlyPropAsync(employee, new string[] { nameof(Employee.PrimaryAccountId) });
+        }
         public async Task EditPersonalAccountAsync(Account account)
         {
             if (account == null)
@@ -1029,7 +1036,7 @@ namespace HES.Core.Services
 
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, sharedAccount.Password, sharedAccount.OtpSecret));               
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, sharedAccount.Password, sharedAccount.OtpSecret));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -1075,7 +1082,7 @@ namespace HES.Core.Services
 
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(_hardwareVaultTaskService.GetAccountDeleteTask(vault.Id, account.Id));               
+                tasks.Add(_hardwareVaultTaskService.GetAccountDeleteTask(vault.Id, account.Id));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))

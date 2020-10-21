@@ -29,6 +29,7 @@ namespace HES.Core.Interfaces
         Task SetReadyStatusAsync(HardwareVault vault);
         Task SetActiveStatusAsync(HardwareVault vault);
         Task SetLockedStatusAsync(HardwareVault vault);
+        Task SetDeactivatedStatusAsync(HardwareVault vault);
         Task UpdateVaultInfoAsync(HwVaultInfoFromClientDto dto);
         Task<HardwareVaultActivation> CreateVaultActivationAsync(string vaultId);
         Task ChangeVaultActivationStatusAsync(string vaultId, HardwareVaultActivationStatus status);
