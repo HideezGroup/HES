@@ -23,7 +23,7 @@ namespace HES.Web.Pages.Employees
 {
     public partial class CreateEmployee : OwningComponentBase
     {
-        [Inject] public IEmployeeService EmployeeService { get; set; }
+        public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public ISharedAccountService SheredAccountSevice { get; set; }
@@ -64,6 +64,7 @@ namespace HES.Web.Pages.Employees
 
         protected override async Task OnInitializedAsync()
         {
+            EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
             HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
 
             Companies = await OrgStructureService.GetCompaniesAsync();

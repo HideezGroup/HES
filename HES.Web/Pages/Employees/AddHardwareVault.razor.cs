@@ -19,7 +19,7 @@ namespace HES.Web.Pages.Employees
     public partial class AddHardwareVault : OwningComponentBase
     {
         IEmployeeService EmployeeService { get; set; }
-        [Inject] IHardwareVaultService HardwareVaultService { get; set; }
+        IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] ILdapService LdapService { get; set; }
         [Inject] IAppSettingsService AppSettingsService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
@@ -37,6 +37,7 @@ namespace HES.Web.Pages.Employees
         protected override async Task OnInitializedAsync()
         {
             EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
 
             SearchText = string.Empty;
             await LoadDataAsync();

@@ -531,6 +531,9 @@ namespace HES.Core.Services
                 tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));
             }
 
+            if (tasks.Count > 0)
+                vault.NeedSync = true;
+
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _hardwareVaultService.UpdateVaultAsync(vault);
@@ -561,14 +564,6 @@ namespace HES.Core.Services
                 throw new Exception($"Vault {vaultId} in a status that does not allow to remove.");
             }
 
-            var employeeId = vault.EmployeeId;
-
-            var deleteAccounts = vault
-                .Employee
-                .HardwareVaults
-                .Where(x => x.Status == VaultStatus.Active && vault.Status == VaultStatus.Locked && vault.Status == VaultStatus.Suspended)
-                .Count() == 1 ? true : false;
-
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _hardwareVaultTaskService.DeleteTasksByVaultIdAsync(vaultId);
@@ -580,14 +575,16 @@ namespace HES.Core.Services
                 }
                 else
                 {
+                    var employeeVaultsCount = vault.Employee.HardwareVaults.Count();
+
+                    if (employeeVaultsCount == 1)
+                    {
+                        await RemovePrimaryAccountIdAsync(vault.EmployeeId);
+                        await _accountService.DeleteAccountsByEmployeeIdAsync(vault.EmployeeId);
+                    }
+
                     vault.StatusReason = reason;
                     await _hardwareVaultService.SetDeactivatedStatusAsync(vault);
-
-                    if (!isNeedBackup && deleteAccounts)
-                    {
-                        await RemovePrimaryAccountIdAsync(employeeId);              
-                        await _accountService.DeleteAccountsByEmployeeIdAsync(employeeId);
-                    }
                 }
 
                 transactionScope.Complete();
