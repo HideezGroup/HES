@@ -142,8 +142,14 @@ namespace HES.Core.Services
             {
                 _logger.LogError(ex.Message);
             }
-            
+
             return alarmState;
+        }
+
+        public async Task<bool> GetAlarmEnabledAsync()
+        {
+            var alarmState = await GetAlarmStateAsync();
+            return alarmState != null ? alarmState.IsAlarm : false;
         }
 
         public async Task SetAlarmStateAsync(AlarmState alarmState)

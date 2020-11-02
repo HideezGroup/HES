@@ -528,17 +528,11 @@ namespace HES.Core.Services
             // Create a task for accounts that were created without a vault
             foreach (var account in accounts.Where(x => x.Password != null))
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Password = account.Password,
-                    OtpSecret = account.OtpSecret,
-                    CreatedAt = DateTime.UtcNow,
-                    Operation = TaskOperation.Create,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = vault.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));
             }
+
+            if (tasks.Count > 0)
+                vault.NeedSync = true;
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -560,48 +554,38 @@ namespace HES.Core.Services
             _dataProtectionService.Validate();
 
             var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
-            if (vault == null)
-                throw new Exception($"Vault {vaultId} not found");
 
-            if (vault.Status != VaultStatus.Reserved &&
-                vault.Status != VaultStatus.Active &&
-                vault.Status != VaultStatus.Locked &&
-                vault.Status != VaultStatus.Suspended)
+            if (vault == null)
+                throw new Exception($"Vault {vaultId} not found.");
+
+            if (vault.Status != VaultStatus.Reserved && vault.Status != VaultStatus.Active &&
+                vault.Status != VaultStatus.Locked && vault.Status != VaultStatus.Suspended)
             {
                 throw new Exception($"Vault {vaultId} in a status that does not allow to remove.");
             }
-
-            var employeeId = vault.EmployeeId;
-            var deleteAccounts = vault.Employee.HardwareVaults.Count() == 1 ? true : false;
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _hardwareVaultTaskService.DeleteTasksByVaultIdAsync(vaultId);
                 await _workstationService.DeleteProximityByVaultIdAsync(vaultId);
 
-                vault.EmployeeId = null;
-
                 if (vault.Status == VaultStatus.Reserved && !vault.IsStatusApplied)
                 {
-                    vault.Status = VaultStatus.Ready;
-                    vault.MasterPassword = null;
-                    await _hardwareVaultService.ChangeVaultActivationStatusAsync(vaultId, HardwareVaultActivationStatus.Canceled);
+                    await _hardwareVaultService.SetReadyStatusAsync(vault);
                 }
                 else
                 {
-                    vault.Status = VaultStatus.Deactivated;
-                    vault.StatusReason = reason;
+                    var employeeVaultsCount = vault.Employee.HardwareVaults.Count();
 
-                    if (!isNeedBackup && deleteAccounts)
+                    if (employeeVaultsCount == 1)
                     {
-                        var employee = await GetEmployeeByIdAsync(employeeId);
-                        employee.PrimaryAccountId = null;
-                        await _employeeRepository.UpdateAsync(employee);
-                        await _accountService.DeleteAccountsByEmployeeIdAsync(employeeId);
+                        await RemovePrimaryAccountIdAsync(vault.EmployeeId);
+                        await _accountService.DeleteAccountsByEmployeeIdAsync(vault.EmployeeId);
                     }
-                }
 
-                await _hardwareVaultService.UpdateVaultAsync(vault);
+                    vault.StatusReason = reason;
+                    await _hardwareVaultService.SetDeactivatedStatusAsync(vault);
+                }
 
                 transactionScope.Complete();
             }
@@ -610,11 +594,6 @@ namespace HES.Core.Services
         #endregion
 
         #region Account
-
-        public async Task ReloadAccountAsync(string accountId)
-        {
-            await _accountService.ReloadAccountAsync(accountId);
-        }
 
         public async Task<Account> GetAccountByIdAsync(string accountId)
         {
@@ -750,16 +729,7 @@ namespace HES.Core.Services
 
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Password = _dataProtectionService.Encrypt(personalAccount.Password),
-                    OtpSecret = _dataProtectionService.Encrypt(personalAccount.OtpSecret),
-                    CreatedAt = DateTime.UtcNow,
-                    Operation = TaskOperation.Create,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = vault.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, account.Password, account.OtpSecret));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -770,8 +740,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -864,9 +833,7 @@ namespace HES.Core.Services
                 foreach (var vault in employee.HardwareVaults)
                 {
                     await _hardwareVaultTaskService.AddPrimaryAsync(vault.Id, accountId);
-
-                    vault.NeedSync = true;
-                    await _hardwareVaultService.UpdateVaultAsync(vault);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(vault, true);
                 }
 
                 transactionScope.Complete();
@@ -884,6 +851,17 @@ namespace HES.Core.Services
             }
         }
 
+        private async Task RemovePrimaryAccountIdAsync(string employeeId)
+        {
+            var employee = await _employeeRepository.GetByIdAsync(employeeId);
+
+            if (employee == null)
+                throw new Exception("Employee not found");
+
+            employee.PrimaryAccountId = null;
+
+            await _employeeRepository.UpdateOnlyPropAsync(employee, new string[] { nameof(Employee.PrimaryAccountId) });
+        }
         public async Task EditPersonalAccountAsync(Account account)
         {
             if (account == null)
@@ -908,14 +886,7 @@ namespace HES.Core.Services
             List<HardwareVaultTask> tasks = new List<HardwareVaultTask>();
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Operation = TaskOperation.Update,
-                    CreatedAt = DateTime.UtcNow,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = vault.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountUpdateTask(vault.Id, account.Id));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -925,8 +896,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -954,17 +924,9 @@ namespace HES.Core.Services
 
             // Create tasks if there are vaults
             List<HardwareVaultTask> tasks = new List<HardwareVaultTask>();
-            foreach (var device in employee.HardwareVaults)
+            foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Password = _dataProtectionService.Encrypt(accountPassword.Password),
-                    Operation = TaskOperation.Update,
-                    CreatedAt = DateTime.UtcNow,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = device.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountPwdUpdateTask(vault.Id, account.Id, _dataProtectionService.Encrypt(accountPassword.Password)));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -974,8 +936,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -1003,17 +964,9 @@ namespace HES.Core.Services
 
             // Create tasks if there are vaults
             List<HardwareVaultTask> tasks = new List<HardwareVaultTask>();
-            foreach (var device in employee.HardwareVaults)
+            foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    OtpSecret = _dataProtectionService.Encrypt(accountOtp.OtpSecret ?? string.Empty),
-                    Operation = TaskOperation.Update,
-                    CreatedAt = DateTime.UtcNow,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = device.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountOtpUpdateTask(vault.Id, account.Id, _dataProtectionService.Encrypt(accountOtp.OtpSecret ?? string.Empty)));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -1023,8 +976,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -1079,18 +1031,9 @@ namespace HES.Core.Services
             var employee = await GetEmployeeByIdAsync(employeeId);
             var tasks = new List<HardwareVaultTask>();
 
-            foreach (var device in employee.HardwareVaults)
+            foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    Password = sharedAccount.Password,
-                    OtpSecret = sharedAccount.OtpSecret,
-                    CreatedAt = DateTime.UtcNow,
-                    Operation = TaskOperation.Create,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = device.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountCreateTask(vault.Id, account.Id, sharedAccount.Password, sharedAccount.OtpSecret));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -1101,8 +1044,7 @@ namespace HES.Core.Services
                 if (tasks.Count > 0)
                 {
                     await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-                    employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                    await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                    await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
                 }
 
                 transactionScope.Complete();
@@ -1137,14 +1079,7 @@ namespace HES.Core.Services
 
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(new HardwareVaultTask
-                {
-                    CreatedAt = DateTime.UtcNow,
-                    Operation = TaskOperation.Delete,
-                    Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
-                    HardwareVaultId = vault.Id,
-                    AccountId = account.Id
-                });
+                tasks.Add(_hardwareVaultTaskService.GetAccountDeleteTask(vault.Id, account.Id));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -1154,9 +1089,7 @@ namespace HES.Core.Services
 
                 await _accountService.UpdateOnlyPropAsync(account, new string[] { nameof(Account.Deleted), nameof(Account.UpdatedAt), nameof(Account.Password), nameof(Account.OtpSecret) });
                 await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
-
-                employee.HardwareVaults.ForEach(x => x.NeedSync = true);
-                await _hardwareVaultService.UpdateRangeVaultsAsync(employee.HardwareVaults);
+                await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
 
                 transactionScope.Complete();
             }

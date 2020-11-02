@@ -21,15 +21,15 @@ namespace HES.Web.Controllers
     public class HardwareVaultsController : ControllerBase
     {
         private readonly IHardwareVaultService _hardwareVaultService;
-        private readonly IRemoteWorkstationConnectionsService _remoteWorkstationConnectionsService;
+        private readonly IRemoteDeviceConnectionsService _remoteDeviceConnectionsService;
         private readonly ILogger<HardwareVaultsController> _logger;
 
         public HardwareVaultsController(IHardwareVaultService hardwareVaultService,
-                                        IRemoteWorkstationConnectionsService remoteWorkstationConnectionsService,
+                                        IRemoteDeviceConnectionsService remoteDeviceConnectionsService,                                    
                                         ILogger<HardwareVaultsController> logger)
         {
             _hardwareVaultService = hardwareVaultService;
-            _remoteWorkstationConnectionsService = remoteWorkstationConnectionsService;
+            _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
             _logger = logger;
         }
 
@@ -97,7 +97,7 @@ namespace HES.Web.Controllers
                     RFID = vaultDto.RFID
                 };
 
-                await _hardwareVaultService.UpdateVaultAsync(vault);
+                await _hardwareVaultService.UpdateRfidAsync(vault);
             }
             catch (Exception ex)
             {
@@ -115,7 +115,7 @@ namespace HES.Web.Controllers
             try
             {
                 await _hardwareVaultService.ChangeVaultProfileAsync(hardwareVaultProfileDto.HardwareVaultId, hardwareVaultProfileDto.ProfileId);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(hardwareVaultProfileDto.HardwareVaultId);
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(hardwareVaultProfileDto.HardwareVaultId);
             }
             catch (Exception ex)
             {
@@ -160,14 +160,14 @@ namespace HES.Web.Controllers
                 var deviceAccessProfile = new HardwareVaultProfile()
                 {
                     Name = profileDto.Name,
-                    ButtonBonding = profileDto.ButtonBonding,
+                    ButtonPairing = profileDto.ButtonBonding,
                     ButtonConnection = profileDto.ButtonConnection,
-                    ButtonNewChannel = profileDto.ButtonNewChannel,
-                    PinBonding = profileDto.PinBonding,
+                    ButtonStorageAccess = profileDto.ButtonNewChannel,
+                    PinPairing = profileDto.PinBonding,
                     PinConnection = profileDto.PinConnection,
-                    PinNewChannel = profileDto.PinNewChannel,
+                    PinStorageAccess = profileDto.PinNewChannel,
                     MasterKeyConnection = profileDto.MasterKeyConnection,
-                    MasterKeyNewChannel = profileDto.MasterKeyNewChannel,
+                    MasterKeyStorageAccess = profileDto.MasterKeyNewChannel,
                     PinExpiration = profileDto.PinExpiration,
                     PinLength = profileDto.PinLength,
                     PinTryCount = profileDto.PinTryCount
@@ -199,20 +199,20 @@ namespace HES.Web.Controllers
                 {
                     Id = profileDto.Id,
                     Name = profileDto.Name,
-                    ButtonBonding = profileDto.ButtonBonding,
+                    ButtonPairing = profileDto.ButtonBonding,
                     ButtonConnection = profileDto.ButtonConnection,
-                    ButtonNewChannel = profileDto.ButtonNewChannel,
-                    PinBonding = profileDto.PinBonding,
+                    ButtonStorageAccess = profileDto.ButtonNewChannel,
+                    PinPairing = profileDto.PinBonding,
                     PinConnection = profileDto.PinConnection,
-                    PinNewChannel = profileDto.PinNewChannel,
+                    PinStorageAccess = profileDto.PinNewChannel,
                     MasterKeyConnection = profileDto.MasterKeyConnection,
-                    MasterKeyNewChannel = profileDto.MasterKeyNewChannel,
+                    MasterKeyStorageAccess = profileDto.MasterKeyNewChannel,
                     PinExpiration = profileDto.PinExpiration,
                     PinLength = profileDto.PinLength,
                     PinTryCount = profileDto.PinTryCount
                 };
                 await _hardwareVaultService.EditProfileAsync(profile);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _hardwareVaultService.GetVaultIdsByProfileTaskAsync());
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _hardwareVaultService.GetVaultIdsByProfileTaskAsync());
             }
             catch (Exception ex)
             {

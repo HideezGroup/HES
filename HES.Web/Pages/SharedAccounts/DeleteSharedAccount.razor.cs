@@ -17,7 +17,7 @@ namespace HES.Web.Pages.SharedAccounts
         public ISharedAccountService SharedAccountService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public ILogger<DeleteSharedAccount> Logger { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
@@ -58,9 +58,9 @@ namespace HES.Web.Pages.SharedAccounts
             try
             {
                 var vaults = await SharedAccountService.DeleteSharedAccountAsync(Account.Id);
-                RemoteWorkstationConnectionsService.StartUpdateRemoteDevice(vaults);
-                await ToastService.ShowToastAsync("Account deleted.", ToastType.Success);
+                RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
                 await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
+                await ToastService.ShowToastAsync("Account deleted.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

@@ -59,7 +59,7 @@ namespace HES.Web.Pages.HardwareVaults
             {
                 await ButtonSpinner.SpinAsync(async () =>
                 {
-                    await HardwareVaultService.UpdateVaultAsync(HardwareVault);
+                    await HardwareVaultService.UpdateRfidAsync(HardwareVault);
                     await ToastService.ShowToastAsync("RFID updated.", ToastType.Success);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.HardwareVaults);
                     await ModalDialogService.CloseAsync();

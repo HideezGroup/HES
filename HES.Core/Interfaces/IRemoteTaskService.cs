@@ -9,6 +9,7 @@ namespace HES.Core.Interfaces
     {
         Task ExecuteRemoteTasks(string vaultId, RemoteDevice remoteDevice, bool primaryAccountOnly);
         Task LinkVaultAsync(RemoteDevice remoteDevice, HardwareVault vault);
+        Task AccessVaultAsync(RemoteDevice remoteDevice, HardwareVault vault);
         Task SuspendVaultAsync(RemoteDevice remoteDevice, HardwareVault vault);
         Task WipeVaultAsync(RemoteDevice remoteDevice, HardwareVault vault);
     }

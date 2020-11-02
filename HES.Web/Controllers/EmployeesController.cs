@@ -26,15 +26,15 @@ namespace HES.Web.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IRemoteWorkstationConnectionsService _remoteWorkstationConnectionsService;
+        private readonly IRemoteDeviceConnectionsService _remoteDeviceConnectionsService;
         private readonly ILogger<EmployeesController> _logger;
 
-        public EmployeesController(IEmployeeService employeeService,
-                                   IRemoteWorkstationConnectionsService remoteWorkstationConnectionsService,
+        public EmployeesController(IEmployeeService employeeService,                
+                                   IRemoteDeviceConnectionsService remoteDeviceConnectionsService,
                                    ILogger<EmployeesController> logger)
         {
             _employeeService = employeeService;
-            _remoteWorkstationConnectionsService = remoteWorkstationConnectionsService;
+            _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
             _logger = logger;
         }
 
@@ -180,8 +180,8 @@ namespace HES.Web.Controllers
         {
             try
             {
-                await _employeeService.AddHardwareVaultAsync(vaultDto.EmployeeId, vaultDto.HardwareVaultId);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(vaultDto.HardwareVaultId);
+                await _employeeService.AddHardwareVaultAsync(vaultDto.EmployeeId, vaultDto.HardwareVaultId);             
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaultDto.HardwareVaultId);
             }
             catch (Exception ex)
             {
@@ -199,7 +199,7 @@ namespace HES.Web.Controllers
             try
             {
                 await _employeeService.RemoveHardwareVaultAsync(vaultDto.HardwareVaultId, vaultDto.Reason, vaultDto.IsNeedBackup);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(vaultDto.HardwareVaultId);
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaultDto.HardwareVaultId);
             }
             catch (Exception ex)
             {
@@ -256,7 +256,7 @@ namespace HES.Web.Controllers
                 };
 
                 createdAccount = await _employeeService.CreatePersonalAccountAsync(personalAccount);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -291,7 +291,7 @@ namespace HES.Web.Controllers
                 };
 
                 await _employeeService.EditPersonalAccountAsync(account);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -326,7 +326,7 @@ namespace HES.Web.Controllers
                 };
 
                 await _employeeService.EditPersonalAccountPwdAsync(account, accountPassword);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -361,7 +361,7 @@ namespace HES.Web.Controllers
                 };
 
                 await _employeeService.EditPersonalAccountOtpAsync(account, accountOtp);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -381,7 +381,7 @@ namespace HES.Web.Controllers
             try
             {
                 account = await _employeeService.DeleteAccountAsync(id);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(account.Employee.HardwareVaults.Select(s => s.Id).ToList());
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(account.Employee.HardwareVaults.Select(s => s.Id).ToList());
             }
             catch (NotFoundException)
             {
@@ -404,7 +404,7 @@ namespace HES.Web.Controllers
             try
             {
                 createdAccount = await _employeeService.AddSharedAccountAsync(sharedAccountDto.EmployeeId, sharedAccountDto.SharedAccountId);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -432,7 +432,7 @@ namespace HES.Web.Controllers
                 };
 
                 createdAccount = await _employeeService.CreateWorkstationAccountAsync(workstationAccount);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -451,7 +451,7 @@ namespace HES.Web.Controllers
             try
             {
                 createdAccount = await _employeeService.CreateWorkstationAccountAsync(accountDto);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -479,7 +479,7 @@ namespace HES.Web.Controllers
                 };
 
                 createdAccount = await _employeeService.CreateWorkstationAccountAsync(workstationAccount);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -507,7 +507,7 @@ namespace HES.Web.Controllers
                 };
 
                 createdAccount = await _employeeService.CreateWorkstationAccountAsync(workstationAccount);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(createdAccount.EmployeeId));
             }
             catch (Exception ex)
             {
@@ -525,7 +525,7 @@ namespace HES.Web.Controllers
             try
             {
                 await _employeeService.SetAsWorkstationAccountAsync(accountDto.EmployeeId, accountDto.AccountId);
-                _remoteWorkstationConnectionsService.StartUpdateRemoteDevice(await _employeeService.GetEmployeeVaultIdsAsync(accountDto.EmployeeId));
+                _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await _employeeService.GetEmployeeVaultIdsAsync(accountDto.EmployeeId));
             }
             catch (Exception ex)
             {

@@ -17,15 +17,15 @@ namespace HES.Core.Entities
         [Display(Name = "Updated")]
         public DateTime? UpdatedAt { get; set; }
         public List<HardwareVault> HardwareVaults { get; set; }
-        public bool ButtonBonding { get; set; } = true;
+        public bool ButtonPairing { get; set; } = true;
         public bool ButtonConnection { get; set; }
-        public bool ButtonNewChannel { get; set; }
-        public bool PinBonding { get; set; }
+        public bool ButtonStorageAccess { get; set; }
+        public bool PinPairing { get; set; }
         public bool PinConnection { get; set; }
-        public bool PinNewChannel { get; set; }
-        public bool MasterKeyBonding { get; set; } = true;
+        public bool PinStorageAccess { get; set; }
+        public bool MasterKeyPairing { get; set; } = true;
         public bool MasterKeyConnection { get; set; }
-        public bool MasterKeyNewChannel { get; set; }
+        public bool MasterKeyStorageAccess { get; set; }
         public int PinExpiration { get; set; }
         public int PinLength { get; set; }
         public int PinTryCount { get; set; }

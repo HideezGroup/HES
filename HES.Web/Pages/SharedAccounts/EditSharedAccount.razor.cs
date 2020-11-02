@@ -17,7 +17,7 @@ namespace HES.Web.Pages.SharedAccounts
     public partial class EditSharedAccount : OwningComponentBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
@@ -67,9 +67,9 @@ namespace HES.Web.Pages.SharedAccounts
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     var vaults = await SharedAccountService.EditSharedAccountAsync(Account);
-                    RemoteWorkstationConnectionsService.StartUpdateRemoteDevice(vaults);
-                    await ToastService.ShowToastAsync("Shared account updated.", ToastType.Success);
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
+                    await ToastService.ShowToastAsync("Shared account updated.", ToastType.Success);
                     await ModalDialogService.CloseAsync();
                 });
             }

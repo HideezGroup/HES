@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hideez.SDK.Communication;
+using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
 
 namespace HES.Core.Interfaces
@@ -20,6 +22,13 @@ namespace HES.Core.Interfaces
         Task<RemoteDevice> ConnectDevice(string deviceId, string workstationId);
         RemoteDevice FindRemoteDevice(string deviceId, string workstationId);
 
+        Task<bool> CheckIsNeedUpdateHwVaultStatusAsync(HwVaultInfoFromClientDto dto);
+        Task UpdateHardwareVaultStatusAsync(string vaultId, string workstationId);
+        void StartUpdateHardwareVaultStatus(string vaultId);
+        Task CheckPassphraseAsync(string vaultId, string workstationId);
         Task SyncHardwareVaults(string vaultId);
+        Task UpdateHardwareVaultAccountsAsync(string vaultId, string workstationId, bool onlyOsAccounts);
+        void StartUpdateHardwareVaultAccounts(IList<string> vaultIds, bool onlyOsAccounts = false);
+        void StartUpdateHardwareVaultAccounts(string vaultId, bool onlyOsAccounts = false);
     }
 }
