@@ -5,15 +5,16 @@ using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class DeleteTemplate : ComponentBase, IDisposable
+    public partial class DeleteTemplate : OwningComponentBase, IDisposable
     {
-        [Inject] public ITemplateService TemplateService { get; set; }
+        public ITemplateService TemplateService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
@@ -30,6 +31,8 @@ namespace HES.Web.Pages.Templates
         {
             try
             {
+                TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
+
                 Template = await TemplateService.GetByIdAsync(TemplateId);
 
                 if (Template == null)

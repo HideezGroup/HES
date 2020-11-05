@@ -6,6 +6,7 @@ using HES.Core.Models.Web.LicenseOrders;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -13,10 +14,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class CreateLicenseOrder : ComponentBase
+    public partial class CreateLicenseOrder : OwningComponentBase
     {
-        [Inject] ILicenseService LicenseService { get; set; }
-        [Inject] IHardwareVaultService HardwareVaultService { get; set; }
+        ILicenseService LicenseService { get; set; }
+        IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<CreateLicenseOrder> Logger { get; set; }
@@ -35,6 +36,9 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
         protected override async Task OnInitializedAsync()
         {
+            LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
+            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+
             _newLicenseOrder = new NewLicenseOrder()
             {
                 HardwareVaults = await HardwareVaultService.GetVaultsWithoutLicenseAsync()

@@ -6,19 +6,20 @@ using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class CreateAccessProfile : ComponentBase
+    public partial class CreateAccessProfile : OwningComponentBase
     {
+        public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateAccessProfile> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Inject] public IHardwareVaultService HardwareVaultService { get; set; }
         [Parameter] public string ConnectionId { get; set; }
 
         public HardwareVaultProfile AccessProfile { get; set; }
@@ -30,6 +31,8 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
         protected override async Task OnInitializedAsync()
         {
+            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+
             AccessProfile = await HardwareVaultService.ProfileQuery().AsNoTracking().FirstOrDefaultAsync(x => x.Id == "default");
             AccessProfile.Id = null;
             AccessProfile.Name = null;

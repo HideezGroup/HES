@@ -4,15 +4,16 @@ using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Administrators
 {
-    public partial class DeleteAdministrator : ComponentBase
+    public partial class DeleteAdministrator : OwningComponentBase
     {
-        [Inject] public IApplicationUserService ApplicationUserService { get; set; }
+        public IApplicationUserService ApplicationUserService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DeleteAdministrator> Logger { get; set; }
@@ -25,14 +26,17 @@ namespace HES.Web.Pages.Settings.Administrators
         {
             try
             {
+                ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
+
                 ApplicationUser = await ApplicationUserService.GetByIdAsync(ApplicationUserId);
                 if (ApplicationUser == null)
                     throw new Exception("User not found.");
             }
             catch (Exception ex)
             {
-
-                throw;
+                Logger.LogError(ex.Message, ex);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogService.CancelAsync();
             }
         }
 

@@ -20,8 +20,8 @@ namespace HES.Web.Pages.SharedAccounts
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public ITemplateService TemplateService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateSharedAccount> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
@@ -42,6 +42,7 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
                 TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 Templates = await TemplateService.GetTemplatesAsync();
                 WorkstationType = WorkstationAccountType.Local;
@@ -51,7 +52,7 @@ namespace HES.Web.Pages.SharedAccounts
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex.Message); 
+                Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
             }

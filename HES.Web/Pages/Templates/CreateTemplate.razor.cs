@@ -6,15 +6,16 @@ using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class CreateTemplate : ComponentBase
+    public partial class CreateTemplate : OwningComponentBase
     {
-        [Inject] ITemplateService TemplateService { get; set; }
+        ITemplateService TemplateService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<CreateTemplate> Logger { get; set; }
@@ -25,12 +26,17 @@ namespace HES.Web.Pages.Templates
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
 
+        protected override void OnInitialized()
+        {
+            TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
+        }
+
         private async Task CreateTemplateAsync()
         {
             try
-            {                
+            {
                 await ButtonSpinner.SpinAsync(async () =>
-                {                 
+                {
                     await TemplateService.CreateTmplateAsync(Template);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Templates);
                     await ToastService.ShowToastAsync("Template created.", ToastType.Success);
@@ -51,6 +57,6 @@ namespace HES.Web.Pages.Templates
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
             }
-        }        
+        }
     }
 }

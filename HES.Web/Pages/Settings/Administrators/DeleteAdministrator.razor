@@ -1,4 +1,6 @@
-﻿@if (ApplicationUser == null)
+﻿@inherits OwningComponentBase
+
+@if (ApplicationUser == null)
 {
     <LoadingText />
 }

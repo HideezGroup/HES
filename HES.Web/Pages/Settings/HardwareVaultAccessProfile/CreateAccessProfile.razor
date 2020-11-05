@@ -1,4 +1,6 @@
-﻿@if (AccessProfile == null)
+﻿@inherits OwningComponentBase
+
+@if (AccessProfile == null)
 {
     <LoadingText />
 }
@@ -139,7 +141,7 @@ else
             </tbody>
         </table>
         <div class="text-right">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>       
+            <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>
             <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Create" Class="btn btn-primary" />
         </div>
     </EditForm>

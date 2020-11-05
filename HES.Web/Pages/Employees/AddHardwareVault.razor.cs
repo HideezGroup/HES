@@ -20,7 +20,7 @@ namespace HES.Web.Pages.Employees
     {
         IEmployeeService EmployeeService { get; set; }
         IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] ILdapService LdapService { get; set; }
+        ILdapService LdapService { get; set; }
         [Inject] IAppSettingsService AppSettingsService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
@@ -38,6 +38,7 @@ namespace HES.Web.Pages.Employees
         {
             EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
             HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+            LdapService = ScopedServices.GetRequiredService<ILdapService>();
 
             SearchText = string.Empty;
             await LoadDataAsync();

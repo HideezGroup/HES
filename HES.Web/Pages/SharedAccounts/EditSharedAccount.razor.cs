@@ -17,7 +17,7 @@ namespace HES.Web.Pages.SharedAccounts
     public partial class EditSharedAccount : OwningComponentBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
@@ -37,6 +37,7 @@ namespace HES.Web.Pages.SharedAccounts
             try
             {
                 SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 ModalDialogService.OnCancel += OnCancelAsync;
 

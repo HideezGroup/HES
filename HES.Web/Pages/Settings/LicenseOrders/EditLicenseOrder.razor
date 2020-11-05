@@ -1,4 +1,6 @@
-﻿@if (!_initialized)
+﻿@inherits OwningComponentBase
+
+@if (!_initialized)
 {
     <LoadingText />
 }
@@ -28,7 +30,7 @@ else
                         </div>
                         <div class="form-group">
                             <FormLabel For="@(() => _newLicenseOrder.StartDate)" class="text-gray" />
-                            <InputDate @bind-Value="_newLicenseOrder.StartDate" class="form-control text-navyblue"/>
+                            <InputDate @bind-Value="_newLicenseOrder.StartDate" class="form-control text-navyblue" />
                             <ValidationMessage For="@(() => _newLicenseOrder.StartDate)" class="text-danger" />
                         </div>
                         <div class="form-group">

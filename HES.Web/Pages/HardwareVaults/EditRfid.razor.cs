@@ -16,11 +16,11 @@ namespace HES.Web.Pages.HardwareVaults
     public partial class EditRfid : OwningComponentBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] public ILogger<EditRfid> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
+        [Inject] public IToastService ToastService { get; set; }
+        [Inject] public IMemoryCache MemoryCache { get; set; }
+        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
+        [Inject] public ILogger<EditRfid> Logger { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }
         [Parameter] public string ConnectionId { get; set; }
         public HardwareVault HardwareVault { get; set; }

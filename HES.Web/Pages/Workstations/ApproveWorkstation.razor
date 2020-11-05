@@ -1,4 +1,6 @@
-﻿@if (!Initialized)
+﻿@inherits OwningComponentBase
+
+@if (!Initialized)
 {
     <LoadingText />
 }
@@ -24,7 +26,7 @@ else
             </div>
             <div class="form-group">
                 <FormLabel For="@(() => Workstation.DepartmentId)" class="text-gray" />
-                <select class="form-control text-navyblue" @bind="Workstation.DepartmentId" >
+                <select class="form-control text-navyblue" @bind="Workstation.DepartmentId">
                     @foreach (var item in Departments)
                     {
                         <option value="@item.Id">@item.Name</option>
