@@ -17,7 +17,7 @@ namespace HES.Web.Pages.HardwareVaults
     public partial class ChangeProfile : OwningComponentBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<ChangeProfile> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
@@ -36,6 +36,7 @@ namespace HES.Web.Pages.HardwareVaults
             try
             {
                 HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 HardwareVault = await HardwareVaultService.GetVaultByIdAsync(HardwareVaultId);
                 if (HardwareVault == null)

@@ -1,5 +1,7 @@
-﻿<h5 class="text-gray mb-4 ">You want to delete vault @WorkstationProximityVault.HardwareVaultId from this workstation?</h5>
+﻿@inherits OwningComponentBase
+
+<h5 class="text-gray mb-4 ">You want to delete vault @WorkstationProximityVault.HardwareVaultId from this workstation?</h5>
 <div class="text-right">
-    <button type="button" class="btn btn-secondary" @onclick="@ModalDialogService.CancelAsync" >Cancel</button>
-    <ButtonSpinner Class="btn btn-danger" Text="Delete" Callback="@DeleteVaultAsync"/>
+    <button type="button" class="btn btn-secondary" @onclick="@ModalDialogService.CancelAsync">Cancel</button>
+    <ButtonSpinner Class="btn btn-danger" Text="Delete" Callback="@DeleteVaultAsync" />
 </div>

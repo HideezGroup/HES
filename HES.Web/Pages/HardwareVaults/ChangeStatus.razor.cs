@@ -15,12 +15,12 @@ namespace HES.Web.Pages.HardwareVaults
     public partial class ChangeStatus : OwningComponentBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] public ILogger<ChangeStatus> Logger { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] IToastService ToastService { get; set; }
+        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
+        [Inject] public ILogger<ChangeStatus> Logger { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }
         [Parameter] public VaultStatus VaultStatus { get; set; }
         [Parameter] public string ConnectionId { get; set; }
@@ -37,6 +37,7 @@ namespace HES.Web.Pages.HardwareVaults
             try
             {
                 HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 HardwareVault = await HardwareVaultService.GetVaultByIdAsync(HardwareVaultId);
                 if (HardwareVault == null)

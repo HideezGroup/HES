@@ -25,10 +25,10 @@ namespace HES.Web.Pages.Employees
     {
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public ISharedAccountService SheredAccountSevice { get; set; }
+        public IOrgStructureService OrgStructureService { get; set; }
+        public ISharedAccountService SharedAccountService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public ILogger<CreateEmployee> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -66,11 +66,14 @@ namespace HES.Web.Pages.Employees
         {
             EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
             HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+            OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
+            SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
+            RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
             Companies = await OrgStructureService.GetCompaniesAsync();
             Departments = new List<Department>();
             Positions = await OrgStructureService.GetPositionsAsync();
-            SharedAccounts = await SheredAccountSevice.GetWorkstationSharedAccountsAsync();
+            SharedAccounts = await SharedAccountService.GetWorkstationSharedAccountsAsync();
             SharedAccountId = SharedAccounts.FirstOrDefault()?.Id;
 
             await LoadHardwareVaultsAsync();

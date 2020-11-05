@@ -7,6 +7,7 @@ using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -14,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class EditLicenseOrder : ComponentBase, IDisposable
+    public partial class EditLicenseOrder : OwningComponentBase, IDisposable
     {
-        [Inject] public ILicenseService LicenseService { get; set; }
-        [Inject] public IHardwareVaultService HardwareVaultService { get; set; }
+        public ILicenseService LicenseService { get; set; }
+        public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
@@ -40,6 +41,9 @@ namespace HES.Web.Pages.Settings.LicenseOrders
         {
             try
             {
+                LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
+                HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+
                 LicenseOrder = await LicenseService.GetLicenseOrderByIdAsync(LicenseOrderId);
                 if (LicenseOrder == null)
                     throw new Exception("License Order not found.");

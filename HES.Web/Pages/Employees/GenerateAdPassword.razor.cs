@@ -19,10 +19,10 @@ namespace HES.Web.Pages.Employees
     public partial class GenerateAdPassword : OwningComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
-        [Inject] public IAccountService AccountService { get; set; }
+        public IAccountService AccountService { get; set; }
+        public ILdapService LdapService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public ILdapService LdapService { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -41,6 +41,9 @@ namespace HES.Web.Pages.Employees
             try
             {
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+                AccountService = ScopedServices.GetRequiredService<IAccountService>();
+                LdapService = ScopedServices.GetRequiredService<ILdapService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 Account = await AccountService.GetAccountByIdAsync(AccountId);
                 if (Account == null)

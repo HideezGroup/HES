@@ -1,4 +1,6 @@
-﻿@if (Template == null)
+﻿@inherits OwningComponentBase
+
+@if (Template == null)
 {
     <LoadingText />
 }
@@ -8,23 +10,23 @@ else
         <DataAnnotationsValidator />
         <ValidationErrorMessage @ref="ValidationErrorMessage" />
         <div class="form-group">
-            <FormLabel For="@(() => Template.Name)" class="text-gray"/>
+            <FormLabel For="@(() => Template.Name)" class="text-gray" />
             <InputText @bind-Value="Template.Name" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => Template.Name)" class="text-danger" />
         </div>
         <div class="form-group">
-            <FormLabel For="@(() => Template.Urls)" class="text-gray"/>
+            <FormLabel For="@(() => Template.Urls)" class="text-gray" />
             <InputText @bind-Value="Template.Urls" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => Template.Urls)" class="text-danger" />
         </div>
         <div class="form-group">
-            <FormLabel For="@(() => Template.Apps)" class="text-gray"/>
+            <FormLabel For="@(() => Template.Apps)" class="text-gray" />
             <InputText @bind-Value="Template.Apps" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => Template.Apps)" class="text-danger" />
         </div>
         <div class="text-right">
             <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>
-            <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Create" Class="btn btn-primary" />           
+            <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Create" Class="btn btn-primary" />
         </div>
     </EditForm>
 }

@@ -19,9 +19,9 @@ namespace HES.Web.Pages.Employees
     public partial class EditEmployee : OwningComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
+        public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EditEmployee> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
@@ -42,6 +42,7 @@ namespace HES.Web.Pages.Employees
             try
             {
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+                OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
 
                 ModalDialogService.OnCancel += ModalDialogService_OnCancel;
 

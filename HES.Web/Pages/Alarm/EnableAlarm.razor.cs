@@ -6,18 +6,19 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Alarm
 {
-    public partial class EnableAlarm : ComponentBase
+    public partial class EnableAlarm : OwningComponentBase
     {
+        public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
         [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EnableAlarm> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
@@ -28,6 +29,8 @@ namespace HES.Web.Pages.Alarm
         {
             try
             {
+                RemoteWorkstationConnections = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
+
                 string userEmail = null;
                 try
                 {

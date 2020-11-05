@@ -6,6 +6,7 @@ using HES.Core.Models.ActiveDirectory;
 using HES.Core.Models.Web.AppSettings;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class AddEmployee : ComponentBase
+    public partial class AddEmployee : OwningComponentBase
     {
-        [Inject] public ILdapService LdapService { get; set; }
+        public ILdapService LdapService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddEmployee> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
@@ -40,6 +41,8 @@ namespace HES.Web.Pages.Employees
         {
             try
             {
+                LdapService = ScopedServices.GetRequiredService<ILdapService>();
+
                 LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
 
                 if (LdapSettings == null)

@@ -14,7 +14,7 @@ namespace HES.Web.Pages.Groups
 {
     public partial class DeleteGroup : OwningComponentBase, IDisposable
     {
-        [Inject] public IGroupService GroupService { get; set; }
+        public IGroupService GroupService { get; set; }
         [Inject] public ILogger<DeleteGroup> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }

@@ -8,6 +8,7 @@ using HES.Core.Models.Web.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,13 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class CreatePersonalAccount : ComponentBase
+    public partial class CreatePersonalAccount : OwningComponentBase
     {
-        [Inject] public IEmployeeService EmployeeService { get; set; }
-        [Inject] public ITemplateService TemplateService { get; set; }
-        [Inject] public ILdapService LdapService { get; set; }
+        public IEmployeeService EmployeeService { get; set; }
+        public ITemplateService TemplateService { get; set; }
+        public ILdapService LdapService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreatePersonalAccount> Logger { get; set; }
@@ -48,6 +49,11 @@ namespace HES.Web.Pages.Employees
         {
             try
             {
+                EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+                TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
+                LdapService = ScopedServices.GetRequiredService<ILdapService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
+
                 Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);
                 LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
                 Templates = await TemplateService.GetTemplatesAsync();
@@ -58,7 +64,7 @@ namespace HES.Web.Pages.Employees
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex.Message);           
+                Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
             }
@@ -71,7 +77,7 @@ namespace HES.Web.Pages.Employees
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await EmployeeService.CreatePersonalAccountAsync(PersonalAccount);
-                       RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(EmployeeId));
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(EmployeeId));
                     await Refresh.InvokeAsync(this);
                     await ToastService.ShowToastAsync("Account created.", ToastType.Success);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);
@@ -123,7 +129,7 @@ namespace HES.Web.Pages.Employees
                             break;
                     }
 
-                       RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(EmployeeId));
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(EmployeeId));
                     await Refresh.InvokeAsync(this);
                     await ToastService.ShowToastAsync("Account created.", ToastType.Success);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);

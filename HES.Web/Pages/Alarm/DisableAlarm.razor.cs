@@ -9,18 +9,18 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using HES.Core.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HES.Web.Pages.Alarm
 {
-    public partial class DisableAlarm : ComponentBase
+    public partial class DisableAlarm : OwningComponentBase
     {
+        public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
+        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+        [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
+        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DisableAlarm> Logger { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string ConnectionId { get; set; }
         [Parameter] public EventCallback CallBack { get; set; }
@@ -32,6 +32,8 @@ namespace HES.Web.Pages.Alarm
         {
             try
             {
+                RemoteWorkstationConnections = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
+
                 var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 ApplicationUser = await UserManager.GetUserAsync(state.User);
             }
