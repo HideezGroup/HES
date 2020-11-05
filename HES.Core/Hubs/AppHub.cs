@@ -303,7 +303,7 @@ namespace HES.Core.Hubs
 
             if (vault == null)
                 throw new HideezException(HideezErrorCode.HesDeviceNotFound);
-
+                       
             return new HwVaultInfoFromHesDto()
             {
                 OwnerName = vault.Employee?.FullName,
@@ -313,8 +313,8 @@ namespace HES.Core.Hubs
                 VaultRfid = vault.RFID,
                 NeedUpdateLicense = vault.HasNewLicense,
                 NeedStateUpdate = await _remoteDeviceConnectionsService.CheckIsNeedUpdateHwVaultStatusAsync(dto),
-                NeedUpdateOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation == TaskOperation.Primary),
-                NeedUpdateNonOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation != TaskOperation.Primary)
+                NeedUpdateOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation == TaskOperation.Primary || x.AccountId == vault.Employee.PrimaryAccountId),
+                NeedUpdateNonOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation != TaskOperation.Primary && x.AccountId != vault.Employee.PrimaryAccountId)
             };
         }
 
