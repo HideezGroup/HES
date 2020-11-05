@@ -5,15 +5,16 @@ using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class DeleteLicenseOrder : ComponentBase, IDisposable
+    public partial class DeleteLicenseOrder : OwningComponentBase, IDisposable
     {
-        [Inject] public ILicenseService LicenseService { get; set; }
+        public ILicenseService LicenseService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteLicenseOrder> Logger { get; set; }
@@ -29,6 +30,8 @@ namespace HES.Web.Pages.Settings.LicenseOrders
         {
             try
             {
+                LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
+
                 LicenseOrder = await LicenseService.GetLicenseOrderByIdAsync(LicenseOrderId);
                 if (LicenseOrder == null)
                     throw new Exception("License Order not found.");

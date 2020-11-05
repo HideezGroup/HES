@@ -1,4 +1,6 @@
-﻿@if (!Initialized)
+﻿@inherits OwningComponentBase
+
+@if (!Initialized)
 {
     <LoadingText />
 }
@@ -12,7 +14,7 @@ else
     {
         <h5 class="text-gray mb-4 text-break">You want to delete template @Template.Name?</h5>
         <div class="text-right">
-            <button type="button" class="btn btn-secondary" @onclick="async () => await ModalDialogService.CancelAsync()">Cancel</button>          
+            <button type="button" class="btn btn-secondary" @onclick="async () => await ModalDialogService.CancelAsync()">Cancel</button>
             <ButtonSpinner Text="Delete" Class="btn btn-danger" Callback="DeleteTemplateAsync" />
         </div>
     }

@@ -6,6 +6,7 @@ using HES.Core.Models.ActiveDirectory;
 using HES.Core.Models.Web.AppSettings;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class AddGroup : ComponentBase
+    public partial class AddGroup : OwningComponentBase
     {
-        [Inject] public ILdapService LdapService { get; set; }
-        [Inject] public IGroupService GroupService { get; set; }
+        public ILdapService LdapService { get; set; }
+        public IGroupService GroupService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddGroup> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
@@ -39,6 +40,9 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
+                LdapService = ScopedServices.GetRequiredService<ILdapService>();
+                GroupService = ScopedServices.GetRequiredService<IGroupService>();
+
                 LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
 
                 if (LdapSettings == null)

@@ -6,15 +6,16 @@ using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class CreateGroup : ComponentBase
+    public partial class CreateGroup : OwningComponentBase
     {
-        [Inject] public IGroupService GroupService { get; set; }
+        public IGroupService GroupService { get; set; }
         [Inject] public ILogger<CreateGroup> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
@@ -24,6 +25,11 @@ namespace HES.Web.Pages.Groups
         public Group Group = new Group();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
+
+        protected override void OnInitialized()
+        {
+            GroupService = ScopedServices.GetRequiredService<IGroupService>();
+        }
 
         private async Task CreateAsync()
         {

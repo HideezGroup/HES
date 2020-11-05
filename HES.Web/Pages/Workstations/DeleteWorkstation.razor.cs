@@ -5,16 +5,17 @@ using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class DeleteWorkstation : ComponentBase, IDisposable
+    public partial class DeleteWorkstation : OwningComponentBase, IDisposable
     {
-        [Inject] public IWorkstationService WorkstationService { get; set; }
-        [Inject] public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
+        public IWorkstationService WorkstationService { get; set; }
+        public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DeleteWorkstation> Logger { get; set; }
@@ -31,6 +32,9 @@ namespace HES.Web.Pages.Workstations
         {
             try
             {
+                WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
+                RemoteWorkstationConnectionsService = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
+
                 Workstation = await WorkstationService.GetWorkstationByIdAsync(WorkstationId);
 
                 if (Workstation == null)

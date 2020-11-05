@@ -6,6 +6,7 @@ using HES.Core.Models.Web;
 using HES.Core.Models.Web.SharedAccounts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class AddSharedAccount : ComponentBase
+    public partial class AddSharedAccount : OwningComponentBase
     {
-        [Inject] ISharedAccountService SheredAccountSevice { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] IEmployeeService EmployeeService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
-        [Inject] IModalDialogService ModalDialogService { get; set; }
-        [Inject] ILogger<AddSharedAccount> Logger { get; set; }
-        [Inject] IHubContext<RefreshHub> HubContext { get; set; }
+        public ISharedAccountService SheredAccountSevice { get; set; }
+        public IEmployeeService EmployeeService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
+        [Inject] public IToastService ToastService { get; set; }
+        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        [Inject] public ILogger<AddSharedAccount> Logger { get; set; }
+        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string EmployeeId { get; set; }
         [Parameter] public string ConnectionId { get; set; }
 
@@ -32,6 +33,10 @@ namespace HES.Web.Pages.Employees
 
         protected override async Task OnInitializedAsync()
         {
+            SheredAccountSevice = ScopedServices.GetRequiredService<ISharedAccountService>();
+            EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+            RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
+
             var count = await SheredAccountSevice.GetSharedAccountsCountAsync(new DataLoadingOptions<SharedAccountsFilter>());
             SharedAccounts = await SheredAccountSevice.GetSharedAccountsAsync(new DataLoadingOptions<SharedAccountsFilter>
             {

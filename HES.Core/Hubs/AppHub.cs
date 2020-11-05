@@ -93,13 +93,11 @@ namespace HES.Core.Hubs
         {
             // Check workstation approving
             var approved = await _workstationService.CheckIsApprovedAsync(GetWorkstationId());
-
             if (!approved)
                 throw new HideezException(HideezErrorCode.HesWorkstationNotApproved);
 
             // Check alarm enabling
             var alarmState = await _appSettingsService.GetAlarmStateAsync();
-
             if (alarmState != null && alarmState.IsAlarm)
                 throw new HideezException(HideezErrorCode.HesAlarm);
         }
@@ -124,7 +122,7 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{workstationInfo?.MachineName}] {ex.Message}");
                 return new HesResponse(ex);
             }
             catch (Exception ex)
@@ -169,12 +167,12 @@ namespace HES.Core.Hubs
             }
             catch (HideezException ex)
             {
-                _logger.LogInformation(ex.Message);
+                _logger.LogInformation($"[{workstationEventsDto?.FirstOrDefault()?.WorkstationId}] {ex.Message}");
                 return new HesResponse(ex);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError($"[{workstationEventsDto?.FirstOrDefault()?.WorkstationId}] {ex.Message}");
                 return new HesResponse(ex);
             }
         }
@@ -305,7 +303,7 @@ namespace HES.Core.Hubs
 
             if (vault == null)
                 throw new HideezException(HideezErrorCode.HesDeviceNotFound);
-
+                       
             return new HwVaultInfoFromHesDto()
             {
                 OwnerName = vault.Employee?.FullName,
@@ -315,8 +313,8 @@ namespace HES.Core.Hubs
                 VaultRfid = vault.RFID,
                 NeedUpdateLicense = vault.HasNewLicense,
                 NeedStateUpdate = await _remoteDeviceConnectionsService.CheckIsNeedUpdateHwVaultStatusAsync(dto),
-                NeedUpdateOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation == TaskOperation.Primary),
-                NeedUpdateNonOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation != TaskOperation.Primary)
+                NeedUpdateOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation == TaskOperation.Primary || x.AccountId == vault.Employee.PrimaryAccountId),
+                NeedUpdateNonOSAccounts = vault.HardwareVaultTasks.Any(x => x.Operation != TaskOperation.Primary && x.AccountId != vault.Employee.PrimaryAccountId)
             };
         }
 
@@ -327,7 +325,7 @@ namespace HES.Core.Hubs
             {
                 await ValidateConnectionAsync();
 
-                await _hardwareVaultService.UpdateVaultInfoAsync(dto);     
+                await _hardwareVaultService.UpdateVaultInfoAsync(dto);
 
                 switch (dto.ConnectionState)
                 {
@@ -387,7 +385,7 @@ namespace HES.Core.Hubs
             try
             {
                 await ValidateConnectionAsync();
-         
+
                 await _remoteDeviceConnectionsService.UpdateHardwareVaultStatusAsync(dto.VaultSerialNo, GetWorkstationId());
 
                 var info = await GetHardwareVaultInfoAsync(dto);
@@ -412,7 +410,7 @@ namespace HES.Core.Hubs
             try
             {
                 await ValidateConnectionAsync();
-        
+
                 await _remoteDeviceConnectionsService.CheckPassphraseAsync(serialNo, GetWorkstationId());
 
                 return HesResponse.Ok;
@@ -534,7 +532,7 @@ namespace HES.Core.Hubs
                         EndDate = license.EndDate,
                         LicenseOrderId = license.LicenseOrderId,
                         Data = license.Data,
-                    });                   
+                    });
                 }
 
                 return new HesResponse<IList<HwVaultLicenseDto>>(licensesDto);

@@ -18,9 +18,7 @@ namespace HES.Web.Pages.Employees
     public partial class EditPersonalAccountOtp : OwningComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
-        [Inject] public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public ILdapService LdapService { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -42,6 +40,7 @@ namespace HES.Web.Pages.Employees
             try
             {
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 ModalDialogService.OnCancel += ModalDialogService_OnCancel;
 

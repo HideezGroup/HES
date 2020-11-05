@@ -1,4 +1,6 @@
-﻿@if (!Initialized)
+﻿@inherits OwningComponentBase
+
+@if (!Initialized)
 {
     <LoadingText />
 }
@@ -15,7 +17,7 @@ else
         case ActiveDirectoryInitialization.CredentialsNotSet:
             <HES.Web.Pages.Settings.Parameters.LdapCredentials Host="@LdapSettings.Host" LoadEntities="GetUsers" CancelRequested="ModalDialogService.CloseAsync" />
             break;
-        case ActiveDirectoryInitialization.Loaded:   
+        case ActiveDirectoryInitialization.Loaded:
             <div class="row">
                 <div class="col-6">
                     <div class="has-search-right mb-2">

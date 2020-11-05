@@ -18,10 +18,10 @@ namespace HES.Web.Pages.SharedAccounts
     public partial class EditSharedAccountOtp : OwningComponentBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
+        public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public ILogger<EditSharedAccountOtp> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string ConnectionId { get; set; }
@@ -39,6 +39,7 @@ namespace HES.Web.Pages.SharedAccounts
             try
             {
                 SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 ModalDialogService.OnCancel += OnCancelAsync;
 

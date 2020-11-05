@@ -7,6 +7,7 @@ using HES.Core.Models.Web.HardwareVaults;
 using HES.Core.Models.Web.Workstations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class AddProximityVault : ComponentBase
+    public partial class AddProximityVault : OwningComponentBase
     {
-        [Inject] IWorkstationService WorkstationService { get; set; }
-        [Inject] IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
-        [Inject] IHardwareVaultService HardwareVaultService { get; set; }
+        IWorkstationService WorkstationService { get; set; }
+        IHardwareVaultService HardwareVaultService { get; set; }
+        IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<AddProximityVault> Logger { get; set; }
@@ -35,6 +36,10 @@ namespace HES.Web.Pages.Workstations
 
         protected override async Task OnInitializedAsync()
         {
+            WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
+            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+            RemoteWorkstationConnectionsService = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
+
             SearchText = string.Empty;
             await LoadDataAsync();
         }

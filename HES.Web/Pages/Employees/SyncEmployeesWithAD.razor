@@ -1,4 +1,6 @@
-﻿<h5>How does it work?</h5>
+﻿@inherits OwningComponentBase
+
+<h5>How does it work?</h5>
 <p>
     Create 2 groups in your Active Directory <span class="font-weight-bold">Hideez Key Owners</span> and <span class="font-weight-bold">Hideez Auto Password Change</span>.
 </p>
@@ -19,22 +21,7 @@
 <p>
     Synchronization with AD is done once an hour. Automatic password change is done according to the settings. To have this working, make sure you added to the HES settings the AD administrator's credentials with permissions to get users and groups from the AD and change user's passwords.
 </p>
-@*<p>
-    Create two groups <span class="font-weight-bold">Hideez Key Owners</span> and <span class="font-weight-bold">Hideez Auto Password Change</span>. If the user belongs to the second, then it should work functionally.
-</p>
-<p>
-    Synchronize with the active directory once an hour.
-</p>
-<h6>Hideez Key Owners</h6>
-<ul>
-    <li>When adding to a group, import only the user.</li>
-    <li>When deleting from a group, we delete the key and leave the user without a key on HES.</li>
-</ul>
-<h6>Hideez Auto Password Changes</h6>
-<ul>
-    <li>When adding to the group, import the domain account to HES and change the password and enable scheduled password change.</li>
-    <li>When deleting from a group, we stop automatic password change according to the schedule.</li>
-</ul>*@
+
 <div class="text-center mt-4">
     @if (!Initialized)
     {

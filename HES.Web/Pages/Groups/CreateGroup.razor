@@ -1,4 +1,6 @@
-﻿<EditForm Model="Group" OnValidSubmit="CreateAsync">
+﻿@inherits OwningComponentBase
+
+<EditForm Model="Group" OnValidSubmit="CreateAsync">
     <DataAnnotationsValidator />
     <ValidationErrorMessage @ref="ValidationErrorMessage" />
     <div class="form-group">
