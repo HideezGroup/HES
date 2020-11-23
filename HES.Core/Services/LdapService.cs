@@ -26,16 +26,19 @@ namespace HES.Core.Services
         private readonly IGroupService _groupService;
         private readonly IOrgStructureService _orgStructureService;
         private readonly IEmailSenderService _emailSenderService;
+        private readonly IAppSettingsService _appSettingsService;
 
         public LdapService(IEmployeeService employeeService,
                            IGroupService groupService,
                            IOrgStructureService orgStructureService,
-                           IEmailSenderService emailSenderService)
+                           IEmailSenderService emailSenderService,
+                           IAppSettingsService appSettingsService)
         {
             _employeeService = employeeService;
             _groupService = groupService;
             _orgStructureService = orgStructureService;
             _emailSenderService = emailSenderService;
+            _appSettingsService = appSettingsService;
         }
 
         public async Task ValidateCredentialsAsync(LdapSettings ldapSettings)
@@ -768,6 +771,20 @@ namespace HES.Core.Services
                 }
                 transactionScope.Complete();
             }
+        }
+
+        public async Task VerifyAdUserAsync(Employee employee)
+        {
+            if (employee.ActiveDirectoryGuid == null)
+                return;
+
+            var setting = await _appSettingsService.GetLdapSettingsAsync();
+            if (setting == null)
+                throw new HESException(HESCode.LdapSettingsNotSet);
+
+            var user = GetUserByGuid(setting, employee.ActiveDirectoryGuid);
+            if (user == null)
+                throw new HESException(HESCode.ActiveDirectoryUserNotFound);
         }
 
         #region Helpers

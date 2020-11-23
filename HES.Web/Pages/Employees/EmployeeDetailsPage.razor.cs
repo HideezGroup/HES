@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
 using Microsoft.AspNetCore.Components;
@@ -16,6 +17,7 @@ namespace HES.Web.Pages.Employees
         public IEmployeeService EmployeeService { get; set; }
         public IAppSettingsService AppSettingsService { get; set; }
         public IMainTableService<Account, AccountFilter> MainTableService { get; set; }
+        public ILdapService LdapService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -28,6 +30,7 @@ namespace HES.Web.Pages.Employees
         public bool Initialized { get; set; }
         public bool LoadFailed { get; set; }
         public string ErrorMessage { get; set; }
+        public bool AdUserNotFound { get; set; }
 
         private HubConnection hubConnection;
 
@@ -38,13 +41,14 @@ namespace HES.Web.Pages.Employees
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<Account, AccountFilter>>();
+                LdapService = ScopedServices.GetRequiredService<ILdapService>();
 
                 await InitializeHubAsync();
                 await LoadEmployeeAsync();
                 await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
                 await LoadLdapSettingsAsync();
                 await MainTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
-                
+
                 Initialized = true;
             }
             catch (Exception ex)
@@ -60,6 +64,10 @@ namespace HES.Web.Pages.Employees
             Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId, true);
             if (Employee == null)
                 throw new Exception("Employee not found.");
+
+            if (!await VerifyAdUserAsync())
+                Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId, asNoTracking: true);
+
             StateHasChanged();
         }
 
@@ -73,10 +81,33 @@ namespace HES.Web.Pages.Employees
             }
         }
 
+        private async Task<bool> VerifyAdUserAsync()
+        {
+            try
+            {
+                await LdapService.VerifyAdUserAsync(Employee);
+                return true;
+            }
+            catch (HESException ex) when (ex.Code == HESCode.ActiveDirectoryUserNotFound)
+            {
+                await EmployeeService.ToLocalUserAsync(Employee.Id);
+                Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId, asNoTracking: true);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Notify);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                return false;
+            }
+        }
+
         #region Dialogs
 
         private async Task OpenDialogAddHardwareVaultAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddHardwareVault));
@@ -91,6 +122,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogRemoveHardwareVaultAsync(HardwareVault hardwareVault)
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteHardwareVault));
@@ -105,6 +138,8 @@ namespace HES.Web.Pages.Employees
 
         public async Task OpenModalAddSoftwareVaultAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddSoftwareVault));
@@ -118,6 +153,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogCreatePersonalAccountAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreatePersonalAccount));
@@ -132,6 +169,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogAddSharedAccountAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddSharedAccount));
@@ -145,6 +184,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogSetAsWorkstationAccountAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SetAsWorkstationAccount));
@@ -158,6 +199,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogEditPersonalAccountAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccount));
@@ -171,6 +214,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogEditPersonalAccountPasswordAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountPwd));
@@ -184,6 +229,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogEditPersonalAccountOtpAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountOtp));
@@ -197,6 +244,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogGenerateAdPasswordAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(GenerateAdPassword));
@@ -210,6 +259,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogDeleteAccountAsync()
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteAccount));
@@ -223,6 +274,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogResendInvitationAsync(SoftwareVaultInvitation softwareVaultInvitation)
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SoftwareVaults.ResendSoftwareVaultInvitation));
@@ -236,6 +289,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogDeleteInvitationAsync(SoftwareVaultInvitation softwareVaultInvitation)
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SoftwareVaults.DeleteSoftwareVaultInvitation));
@@ -249,6 +304,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogSoftwareVaultDetailsAsync(SoftwareVault softwareVault)
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SoftwareVaultDetails));
@@ -261,6 +318,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogHardwareVaultDetailsAsync(HardwareVault hardwareVault)
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(HardwareVaultDetails));
@@ -273,6 +332,8 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenDialogShowActivationCodeAsync(HardwareVault hardwareVault)
         {
+            if (!await VerifyAdUserAsync()) return;
+
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(HardwareVaults.ShowActivationCode));

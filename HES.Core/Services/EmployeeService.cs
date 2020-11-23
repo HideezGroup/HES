@@ -489,6 +489,25 @@ namespace HES.Core.Services
             return await _employeeRepository.ExistAsync(x => x.FirstName == employee.FirstName && x.LastName == employee.LastName);
         }
 
+        public async Task ToLocalUserAsync(string employeeId)
+        {
+            if (employeeId == null)
+                throw new ArgumentNullException(nameof(employeeId));
+
+            var employee = await GetEmployeeByIdAsync(employeeId);
+
+            var vaultsIds = employee.HardwareVaults.Select(x => x.Id).ToList();
+
+            foreach (var vaultId in vaultsIds)
+            {
+                await RemoveHardwareVaultAsync(vaultId, VaultStatusReason.Withdrawal);
+            }
+
+            employee.ActiveDirectoryGuid = null;
+            employee.WhenChanged = null;
+            await _employeeRepository.UpdateAsync(employee);
+        }
+
         #endregion
 
         #region Hardware Vault

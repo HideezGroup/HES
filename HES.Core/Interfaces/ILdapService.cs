@@ -1,4 +1,5 @@
-﻿using HES.Core.Models.ActiveDirectory;
+﻿using HES.Core.Entities;
+using HES.Core.Models.ActiveDirectory;
 using HES.Core.Models.Web.AppSettings;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,6 @@ namespace HES.Core.Interfaces
         Task AddUserToHideezKeyOwnersAsync(LdapSettings ldapSettings, string activeDirectoryGuid);
         Task<List<ActiveDirectoryGroup>> GetGroupsAsync(LdapSettings ldapSettings);
         Task AddGroupsAsync(List<ActiveDirectoryGroup> groups, bool createEmployees);
+        Task VerifyAdUserAsync(Employee employee);
     }
 }
