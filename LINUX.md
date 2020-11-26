@@ -15,6 +15,11 @@ The second part describes the installation already for a specific site, there ma
 * Option 3: Clean installation of Ubuntu Server LTS 18.04
 * Option 4: Clean installation of Ubuntu Server LTS 20.04
 
+## Before you start
+* You need to know how to create and edit text files in Linux. For example, you can use vim editor. Here you can find a quick start guide on [how to use the Vim editor] (https://www.control-escape.com/linux/editing-vim.html).
+
+
+
 # 1. Preparation (Run once)
   
 ## 1.1 System Update
@@ -107,13 +112,12 @@ If the installation was successful, the output of the *dotnet* command will look
   $ sudo apt update
   $ sudo apt install mysql-server -y
 ```
-
 *Ubuntu 20.04*
 ```shell
   $ sudo apt install mysql-server -y
 ```
 
-Enable and start MySQL service (CentOS only):
+### 1.6.1 Enable and start MySQL service (CentOS only):
 
 *CentOS*
 ```shell
@@ -121,14 +125,14 @@ Enable and start MySQL service (CentOS only):
   $ sudo systemctl enable mysqld.service
 ```
 
-After installing MySQL, if everything went well, you can check the version of the program
+### 1.6.2 After installing MySQL, if everything went well, you can check the version of the program:
 
 ```shell
   $ mysql -V
 mysql  Ver 8.0.17 for Linux on x86_64 (Source Distribution)
 ```
 
-**Setting a permanent real root password and MySQL security settings**
+### 1.6.3 Setting a permanent real root password and MySQL security settings
 
 MySQL expects that your new password should consist of at least 8 characters, contain uppercase and lowercase letters, numbers and special characters (do not forget the password you set, it will come in handy later). After a successful password change, the following questions are recommended to answer "Y":
 
@@ -138,7 +142,7 @@ In CentOS 8, the root password is empty by default. In Ubuntu 18.04 the password
 ```shell
   $ sudo mysql_secure_installation
 ```
-Depending on the version of linux, the output of commands may differ slightly. The following is an example for CentOs 7
+Depending on the version of linux, the output of commands may differ slightly. The following is an example for CentOs 7:
 
 ```shell
 Enter password for user root:
@@ -204,24 +208,24 @@ To exit from mySql console, press Ctrl+D.
   $ sudo apt install nginx -y
 ```
 
-add to **http** section in /etc/nginx/nginx.conf
+### 1.7.1 Modifying nginx.conf
+Open file /etc/nginx/nginx.conf and add the following text to the **http** section of the file. 
 
 ```conf
 ...
-map $http_upgrade $connection_upgrade {
+    map $http_upgrade $connection_upgrade {
                 default Upgrade;
                 ''      close;
     }
 ...
 ```
 
-and restart nginx
+### 1.7.2 Restart nginx
 ```shell
   $ sudo systemctl restart nginx
 ```
 
-
-Check that nginx service is installed and started:
+### 1.7.3 Check that nginx service is installed and started
 ```shell
   $ sudo systemctl status nginx
 ```
@@ -239,6 +243,24 @@ Check that nginx service is installed and started:
            +-1704 nginx: master process /usr/sbin/nginx
            +-1705 nginx: worker process
  ```
+
+## 1.8 Firewall Configuration
+
+To access the server from the network, ports 22, 80, and 443 should be opened:
+*CentOS*
+```shell
+$ sudo firewall-cmd --zone=public --permanent --add-port=22/tcp
+$ sudo firewall-cmd --zone=public --permanent --add-port=80/tcp
+$ sudo firewall-cmd --zone=public --permanent --add-port=443/tcp
+$ sudo firewall-cmd --reload
+```
+*Ubuntu*
+```shell
+$ sudo ufw allow 22
+$ sudo ufw allow 80
+$ sudo ufw allow 443
+$ sudo ufw enable
+```
 
 After performing these steps, the server should already be accessible from the network and respond in the browser to the ip address or its domain name. (http://<ip_or_domain_name>)
 
@@ -273,27 +295,20 @@ You should remember database name, username and password, they will come in hand
 
 ## 2.2 Installing Hideez Enterprise Server from source
 
-here is an example for the case when our site will be in folder "/opt/HES/hideez.example.com". You usually have to choose another folder that works for you
+here is an example for the case when our site will be in folder "/opt/HES/<Name_Of_Domain>". Replace <Name_Of_Domain> with the domain name you chose.
 
 ```shell
   $ cd /opt/src/HES/HES.Web/
-  $ sudo mkdir -p /opt/HES/hideez.example.com
-  $ sudo dotnet publish -c release -v d -o "/opt/HES/hideez.example.com" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
-  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/hideez.example.com/Crypto.dll
+  $ sudo mkdir -p /opt/HES/<Name_Of_Domain>
+  $ sudo dotnet publish -c release -v d -o "/opt/HES/<Name_Of_Domain>" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
+  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/<Name_Of_Domain>/Crypto.dll
 ```
 **[Note]** Internet connection required to download NuGet packages
 
 
 ## 2.3 Hideez Enterprise Server Configuration
 
-Edit the file
-`/opt/HES/<Name_Of_Domain>/appsettings.json`
-
-The following is an example of how to open a configuration file for editing, for the case when the domain is hideez.example.com:
-
-```shell
-  $ sudo vi /opt/HES/hideez.example.com/appsettings.json
-```
+Edit the file `/opt/HES/<Name_Of_Domain>/appsettings.json`
 
 ```json
   {
@@ -311,11 +326,11 @@ The following is an example of how to open a configuration file for editing, for
 
   "ServerSettings": {
     "Name": "HES",
-    "Url": "<url_to_you_hes_site>"
+    "Url": "<url_to_your_hes_site>"
   },
   
   "DataProtection": {
-    "Password": "<protection_password>"
+    "Password": "<data_protection_password>"
   },
 
   "Logging": {
@@ -402,8 +417,7 @@ Create the file `/lib/systemd/system/HES-<Name_Of_Domain>.service`  with the fol
 You can verify that HES server is running with the command
 
 ```shell
-sudo systemctl status HES-<Name_Of_Domain>
-
+  $ sudo systemctl status HES-<Name_Of_Domain>.service
 ```
 
 The output of the command should be something like this:
@@ -434,9 +448,9 @@ To access your server from the local network as well as from the Internet, you h
 
 ** Virtual site configuration on Nginx reverse proxy **
 
-You can configure virtual sites in the **http** section of /etc/nginx/nginx.conf or by creating separate configuration files. In this example, we will add new sections to /etc/nginx/nginx.conf
-```conf
+You can configure virtual sites in the **http** section of /etc/nginx/nginx.conf or by creating separate configuration files. In this example, we will add new sections to /etc/nginx/nginx.conf:
 
+```conf
  # redirect all traffic to https
  server {
           server_name <Name_Of_Domain>;
@@ -467,12 +481,10 @@ You can configure virtual sites in the **http** section of /etc/nginx/nginx.conf
           }
 
     }
-
-
 ```
 
 *  Replace <Name_Of_Domain> with you domain name
-*  Port numbers should match the settings specified in /opt/HES/<Name_Of_Domain>/appsettings.json (defauls is 5000 for http  and 5001 for https)
+*  Port numbers should match the settings specified in /opt/HES/<Name_Of_Domain>/appsettings.json (defauls is 5000 for http and 5001 for https)
 *  note we added a map directive with the "connection_upgrade" variable declaration during the initial nginx configuration
 
 
@@ -504,25 +516,10 @@ Otherwise, you should carefully review the settings and correct the errors.
            +-13096 nginx: worker process
 ```
 
-## 2.6 Firewall Configuration
+## 2.6 Final verification
+After these steps, your server should be up and running. Go to the https://<Name_Of_Domain> in the browser and verify if the site is available. 
+Note: for a self-signed certificate, it should be a warning that your connection isn't private. Press Advanced/Proceed to ignore the warning. 
 
-To access the server from the network, ports 22, 80, and 443 should be opened:
-*CentOS*
-```shell
-$ sudo firewall-cmd --zone=public --permanent --add-port=22/tcp
-$ sudo firewall-cmd --zone=public --permanent --add-port=80/tcp
-$ sudo firewall-cmd --zone=public --permanent --add-port=443/tcp
-$ sudo firewall-cmd --reload
-```
-*Ubuntu*
-```shell
-$ sudo ufw allow 22
-$ sudo ufw allow 80
-$ sudo ufw allow 443
-$ sudo ufw enable
-```
-
-Setup is complete. The server should be accessible in a browser at the address `https://<Name_Of_Domain>`
 
 ## Updating HES
 
