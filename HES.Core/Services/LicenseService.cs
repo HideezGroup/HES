@@ -567,6 +567,7 @@ namespace HES.Core.Services
                     device.HasNewLicense = true;
                     device.LicenseEndDate = dummyLicense.EndDate;
                 }
+
                 using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     await _hardwareVaultLicenseRepository.UpdateOnlyPropAsync(dummyLicenses, new string[] { "ImportedAt", "EndDate", "Data" });

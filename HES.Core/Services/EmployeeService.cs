@@ -881,6 +881,7 @@ namespace HES.Core.Services
 
             await _employeeRepository.UpdateOnlyPropAsync(employee, new string[] { nameof(Employee.PrimaryAccountId) });
         }
+
         public async Task EditPersonalAccountAsync(Account account)
         {
             if (account == null)

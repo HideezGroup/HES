@@ -195,10 +195,12 @@ namespace HES.Core.Services
                 var objectGUID = GetObjectGuid(employee.ActiveDirectoryGuid);
                 var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, $"(&(objectCategory=user)(objectGUID={objectGUID}))", LdapSearchScope.LDAP_SCOPE_SUBTREE));
 
-                await connection.ModifyAsync(new LdapModifyEntry
+                try
                 {
-                    Dn = user.Entries.First().Dn,
-                    Attributes = new List<LdapModifyAttribute>
+                    await connection.ModifyAsync(new LdapModifyEntry
+                    {
+                        Dn = user.Entries.First().Dn,
+                        Attributes = new List<LdapModifyAttribute>
                         {
                             new LdapModifyAttribute
                             {
@@ -207,7 +209,12 @@ namespace HES.Core.Services
                                 Values = new List<string> { password }
                             }
                         }
-                });
+                    });
+                }
+                catch (LdapException ex) when (ex.ResultCode == ResultCode.UnwillingToPerform)
+                {
+                    throw new Exception("Active Directory password restrictions prevent the action.");
+                }
             }
         }
 
