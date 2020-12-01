@@ -25,7 +25,7 @@ else
                 <InputText @bind-Value="Account.Login" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => Account.Login)" class="text-danger" />
             </div>
-            @if (Account.Kind == AccountKind.WebApp)
+        @*    @if (Account.Kind == AccountKind.WebApp)*@
             {
                 <div class="form-group">
                     <FormLabel For="@(() => Account.Urls)" class="text-gray" />

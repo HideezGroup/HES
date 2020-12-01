@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface ISharedAccountService: IDisposable
+    public interface ISharedAccountService : IDisposable
     {
         IQueryable<SharedAccount> Query();
         Task UnchangedAsync(SharedAccount account);
         Task<SharedAccount> GetSharedAccountByIdAsync(string id);
         Task<List<SharedAccount>> GetSharedAccountsAsync(DataLoadingOptions<SharedAccountsFilter> dataLoadingOptions);
         Task<int> GetSharedAccountsCountAsync(DataLoadingOptions<SharedAccountsFilter> dataLoadingOptions);
-        Task<List<SharedAccount>> GetWorkstationSharedAccountsAsync();
-        Task<SharedAccount> CreateSharedAccountAsync(SharedAccount sharedAccount);
-        Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationSharedAccount workstationAccount);
-        Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationDomainSharedAccount workstationAccount);
-        Task<List<string>> EditSharedAccountAsync(SharedAccount sharedAccount);
+        Task<List<SharedAccount>> GetAllSharedAccountsAsync();
+        Task<SharedAccount> CreateSharedAccountAsync(SharedAccountModel sharedAccount);
+        //Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationSharedAccount workstationAccount);
+        //Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationDomainSharedAccount workstationAccount);
+        Task<List<string>> EditSharedAccountAsync(SharedAccountUpdateModel sharedAccount);
         Task<List<string>> EditSharedAccountPwdAsync(SharedAccount sharedAccount, AccountPassword accountPassword);
         Task<List<string>> EditSharedAccountOtpAsync(SharedAccount sharedAccount, AccountOtp accountOtp);
         Task<List<string>> DeleteSharedAccountAsync(string id);

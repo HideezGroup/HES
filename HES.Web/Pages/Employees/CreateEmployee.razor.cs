@@ -52,10 +52,14 @@ namespace HES.Web.Pages.Employees
         public Employee Employee { get; set; }
         public EditContext EmployeeContext { get; set; }
         public HardwareVault SelectedHardwareVault { get; set; }
-        public WorkstationAccount WorkstationAccount { get; set; }
-        public EditContext WorkstationAccountContext { get; set; }
-        public WorkstationDomain WorkstationDomain { get; set; }
-        public EditContext WorkstationDomainContext { get; set; }
+        public PersonalAccount PersonalAccount { get; set; }
+        public EditContext PersonalAccountContext { get; set; }
+
+        //public WorkstationAccount WorkstationAccount { get; set; }
+        //public EditContext WorkstationAccountContext { get; set; }
+        //public WorkstationDomain WorkstationDomain { get; set; }
+        //public EditContext WorkstationDomainContext { get; set; }
+
         public string SharedAccountId { get; set; }
         public bool AccountSkiped { get; set; }
         public string InputType { get; private set; } = "Password";
@@ -73,17 +77,20 @@ namespace HES.Web.Pages.Employees
             Companies = await OrgStructureService.GetCompaniesAsync();
             Departments = new List<Department>();
             Positions = await OrgStructureService.GetPositionsAsync();
-            SharedAccounts = await SharedAccountService.GetWorkstationSharedAccountsAsync();
+            SharedAccounts = await SharedAccountService.GetAllSharedAccountsAsync();
             SharedAccountId = SharedAccounts.FirstOrDefault()?.Id;
 
             await LoadHardwareVaultsAsync();
 
             Employee = new Employee() { Id = Guid.NewGuid().ToString() };
             EmployeeContext = new EditContext(Employee);
-            WorkstationAccount = new WorkstationAccount() { EmployeeId = Employee.Id };
-            WorkstationAccountContext = new EditContext(WorkstationAccount);
-            WorkstationDomain = new WorkstationDomain() { EmployeeId = Employee.Id };
-            WorkstationDomainContext = new EditContext(WorkstationDomain);
+            //WorkstationAccount = new WorkstationAccount() { EmployeeId = Employee.Id };
+            //WorkstationAccountContext = new EditContext(WorkstationAccount);
+            //WorkstationDomain = new WorkstationDomain() { EmployeeId = Employee.Id };
+            //WorkstationDomainContext = new EditContext(WorkstationDomain);
+
+            PersonalAccount = new PersonalAccount { EmployeeId = Employee.Id };
+            PersonalAccountContext = new EditContext(PersonalAccount);
 
             Initialized = true;
         }
@@ -115,20 +122,24 @@ namespace HES.Web.Pages.Employees
                 case WizardStep.WorkstationAccount:
                     if (AccountType == AccountType.Personal)
                     {
-                        if (WorkstationType == WorkstationAccountType.Domain)
-                        {
-                            var workstationDomainIsValid = WorkstationDomainContext.Validate();
-                            if (!workstationDomainIsValid)
-                                return;
-                            WorkstationAccount.Type = WorkstationType;
-                        }
-                        else
-                        {
-                            var workstationAccountIsValid = WorkstationAccountContext.Validate();
-                            if (!workstationAccountIsValid)
-                                return;
-                            WorkstationDomain.Type = WorkstationType;
-                        }
+                        var accountIsValid = PersonalAccountContext.Validate();
+                        if (!accountIsValid)
+                            return;
+                      
+                        //if (WorkstationType == WorkstationAccountType.Domain)
+                        //{
+                        //    var workstationDomainIsValid = WorkstationDomainContext.Validate();
+                        //    if (!workstationDomainIsValid)
+                        //        return;
+                        //    WorkstationAccount.Type = WorkstationType;
+                        //}
+                        //else
+                        //{
+                        //    var workstationAccountIsValid = WorkstationAccountContext.Validate();
+                        //    if (!workstationAccountIsValid)
+                        //        return;
+                        //    WorkstationDomain.Type = WorkstationType;
+                        //}
                     }
                     WizardStep = WizardStep.Overview;
                     break;
@@ -254,17 +265,18 @@ namespace HES.Web.Pages.Employees
                     {
                         if (AccountType == AccountType.Personal)
                         {
-                            switch (WorkstationType)
-                            {
-                                case WorkstationAccountType.Local:
-                                case WorkstationAccountType.AzureAD:
-                                case WorkstationAccountType.Microsoft:
-                                    await EmployeeService.CreateWorkstationAccountAsync(WorkstationAccount);
-                                    break;
-                                case WorkstationAccountType.Domain:
-                                    await EmployeeService.CreateWorkstationAccountAsync(WorkstationDomain);
-                                    break;
-                            }
+                            await EmployeeService.CreatePersonalAccountAsync(PersonalAccount);
+                            //switch (WorkstationType)
+                            //{
+                            //    case WorkstationAccountType.Local:
+                            //    case WorkstationAccountType.AzureAD:
+                            //    case WorkstationAccountType.Microsoft:
+                            //        await EmployeeService.CreateWorkstationAccountAsync(WorkstationAccount);
+                            //        break;
+                            //    case WorkstationAccountType.Domain:
+                            //        await EmployeeService.CreateWorkstationAccountAsync(WorkstationDomain);
+                            //        break;
+                            //}
                         }
                         else
                         {

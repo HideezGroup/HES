@@ -27,7 +27,7 @@ namespace HES.Web.Pages.SharedAccounts
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string ConnectionId { get; set; }
 
-        public SharedAccount SharedAccount { get; set; }
+        public SharedAccountModel SharedAccount { get; set; }
         public WorkstationSharedAccount WorkstationSharedAccount { get; set; }
         public WorkstationDomainSharedAccount WorkstationDomainSharedAccount { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
@@ -48,7 +48,7 @@ namespace HES.Web.Pages.SharedAccounts
                 WorkstationType = WorkstationAccountType.Local;
                 WorkstationSharedAccount = new WorkstationSharedAccount();
                 WorkstationDomainSharedAccount = new WorkstationDomainSharedAccount();
-                SharedAccount = new SharedAccount();
+                SharedAccount = new SharedAccountModel();
             }
             catch (Exception ex)
             {
@@ -90,41 +90,41 @@ namespace HES.Web.Pages.SharedAccounts
             }
         }
 
-        private async Task CreateWorkstationAccountAsync()
-        {
-            try
-            {
-                await ButtonSpinnerWorkstationAccount.SpinAsync(async () =>
-                {
-                    switch (WorkstationType)
-                    {
-                        case WorkstationAccountType.Local:
-                        case WorkstationAccountType.Microsoft:
-                        case WorkstationAccountType.AzureAD:
-                            WorkstationSharedAccount.Type = WorkstationType;
-                            await SharedAccountService.CreateWorkstationSharedAccountAsync(WorkstationSharedAccount);
-                            break;
-                        case WorkstationAccountType.Domain:
-                            await SharedAccountService.CreateWorkstationSharedAccountAsync(WorkstationDomainSharedAccount);
-                            break;
-                    }
+        //private async Task CreateWorkstationAccountAsync()
+        //{
+        //    try
+        //    {
+        //        await ButtonSpinnerWorkstationAccount.SpinAsync(async () =>
+        //        {
+        //            switch (WorkstationType)
+        //            {
+        //                case WorkstationAccountType.Local:
+        //                case WorkstationAccountType.Microsoft:
+        //                case WorkstationAccountType.AzureAD:
+        //                    WorkstationSharedAccount.Type = WorkstationType;
+        //                    await SharedAccountService.CreateWorkstationSharedAccountAsync(WorkstationSharedAccount);
+        //                    break;
+        //                case WorkstationAccountType.Domain:
+        //                    await SharedAccountService.CreateWorkstationSharedAccountAsync(WorkstationDomainSharedAccount);
+        //                    break;
+        //            }
 
-                    await ToastService.ShowToastAsync("Account created.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
-                    await ModalDialogService.CloseAsync();
-                });
-            }
-            catch (AlreadyExistException ex)
-            {
-                ValidationErrorMessage.DisplayError(nameof(WorkstationSharedAccount.Name), ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
-                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
-            }
-        }
+        //            await ToastService.ShowToastAsync("Account created.", ToastType.Success);
+        //            await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
+        //            await ModalDialogService.CloseAsync();
+        //        });
+        //    }
+        //    catch (AlreadyExistException ex)
+        //    {
+        //        ValidationErrorMessage.DisplayError(nameof(WorkstationSharedAccount.Name), ex.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.LogError(ex.Message);
+        //        await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+        //        await ModalDialogService.CancelAsync();
+        //    }
+        //}
 
         private void TemplateSelected(ChangeEventArgs e)
         {

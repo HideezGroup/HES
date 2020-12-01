@@ -16,16 +16,21 @@ namespace HES.Core.Entities
         [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Urls")]
         public string Urls { get; set; }
 
+        [Display(Name = "Application")]
         public string Apps { get; set; }
 
         [Required]
+        [Display(Name = "Login")]
         public string Login { get; set; }
 
-        public AccountType Type { get; set; }
+        [Display(Name = "Account Type")]
+        public AccountType AccountType { get; set; }
 
-        public AccountKind Kind { get; set; }
+        [Display(Name = "Login Type")]
+        public LoginType LoginType { get; set; }
 
         [Display(Name = "Created")]
         public DateTime CreatedAt { get; set; }
@@ -33,10 +38,10 @@ namespace HES.Core.Entities
         [Display(Name = "Updated")]
         public DateTime? UpdatedAt { get; set; }
 
-        [Display(Name = "PasswordUpdated")]
+        [Display(Name = "Password Updated")]
         public DateTime PasswordUpdatedAt { get; set; }
 
-        [Display(Name = "OtpUpdated")]
+        [Display(Name = "OTP Updated")]
         public DateTime? OtpUpdatedAt { get; set; }
 
         public string Password { get; set; }
@@ -54,15 +59,15 @@ namespace HES.Core.Entities
 
         public string EmployeeId { get; set; }
 
-        public string SharedAccountId { get; set; }
-
-        public List<WorkstationEvent> WorkstationEvents { get; set; }
-        public List<WorkstationSession> WorkstationSessions { get; set; }
-
         [ForeignKey("EmployeeId")]
         public Employee Employee { get; set; }
 
+        public string SharedAccountId { get; set; }
+
         [ForeignKey("SharedAccountId")]
         public SharedAccount SharedAccount { get; set; }
+
+        public List<WorkstationEvent> WorkstationEvents { get; set; }
+        public List<WorkstationSession> WorkstationSessions { get; set; }
     }
 }

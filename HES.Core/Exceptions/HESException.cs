@@ -11,6 +11,9 @@ namespace HES.Core.Exceptions
 
         // Settings
         LdapSettingsNotSet,
+
+        // SharedAccounts
+        SharedAccountNotFound
     }
 
     public class HESException : Exception
@@ -20,6 +23,7 @@ namespace HES.Core.Exceptions
             { HESCode.None,  "Something went wrong." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
             { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
+            { HESCode.SharedAccountNotFound,  "Shared Account not found." },
         };
 
         public HESCode Code { get; set; }

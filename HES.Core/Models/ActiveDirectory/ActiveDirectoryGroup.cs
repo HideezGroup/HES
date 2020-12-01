@@ -14,6 +14,6 @@ namespace HES.Core.Models.ActiveDirectory
     public class ActiveDirectoryGroupMembers
     {
         public Employee Employee { get; set; }
-        public WorkstationDomain DomainAccount { get; set; }
+        public PersonalAccount Account { get; set; }
     }
 }

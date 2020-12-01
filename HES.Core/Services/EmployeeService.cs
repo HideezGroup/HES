@@ -612,7 +612,7 @@ namespace HES.Core.Services
 
         #endregion
 
-        #region Account
+        #region Accounts
 
         public async Task<Account> GetAccountByIdAsync(string accountId)
         {
@@ -657,8 +657,8 @@ namespace HES.Core.Services
                 case nameof(Account.Login):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Login) : query.OrderByDescending(x => x.Login);
                     break;
-                case nameof(Account.Type):
-                    query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Type) : query.OrderByDescending(x => x.Type);
+                case nameof(Account.AccountType):
+                    query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.AccountType) : query.OrderByDescending(x => x.AccountType);
                     break;
                 case nameof(Account.CreatedAt):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.CreatedAt) : query.OrderByDescending(x => x.CreatedAt);
@@ -710,19 +710,33 @@ namespace HES.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<Account> CreatePersonalAccountAsync(PersonalAccount personalAccount, bool isWorkstationAccount = false)
+        public async Task<Account> CreatePersonalAccountAsync(PersonalAccount personalAccount)
         {
             if (personalAccount == null)
                 throw new ArgumentNullException(nameof(personalAccount));
 
             _dataProtectionService.Validate();
+                     
+            var login = string.Empty;
 
-            var exist = await _accountService.ExistAsync(x => x.EmployeeId == personalAccount.EmployeeId &&
-                                                         x.Name == personalAccount.Name &&
-                                                         x.Login == personalAccount.Login &&
-                                                         x.Deleted == false);
-            if (exist)
-                throw new AlreadyExistException("An account with the same name and login exist.");
+            switch (personalAccount.LoginType)
+            {
+                case LoginType.WebApp:
+                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $"{personalAccount.Login}");
+                    break;
+                case LoginType.Local:
+                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $".\\{personalAccount.Login}");
+                    break;
+                case LoginType.Domain:
+                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $"{personalAccount.Domain}\\{personalAccount.Login}");
+                    break;
+                case LoginType.AzureAD:
+                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $"AzureAD\\{personalAccount.Login}");
+                    break;
+                case LoginType.Microsoft:
+                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $"@\\{personalAccount.Login}");
+                    break;
+            }
 
             var account = new Account()
             {
@@ -730,9 +744,9 @@ namespace HES.Core.Services
                 Name = personalAccount.Name,
                 Urls = Validation.VerifyUrls(personalAccount.Urls),
                 Apps = personalAccount.Apps,
-                Login = personalAccount.Login,
-                Type = AccountType.Personal,
-                Kind = isWorkstationAccount ? AccountKind.Workstation : AccountKind.WebApp,
+                Login = login,
+                AccountType = AccountType.Personal,
+                LoginType = personalAccount.LoginType,
                 CreatedAt = DateTime.UtcNow,
                 PasswordUpdatedAt = DateTime.UtcNow,
                 OtpUpdatedAt = Validation.VerifyOtpSecret(personalAccount.OtpSecret) != null ? new DateTime?(DateTime.UtcNow) : null,
@@ -754,7 +768,7 @@ namespace HES.Core.Services
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _accountService.AddAsync(account);
-                await SetAsWorkstationAccountIfEmptyAsync(account.EmployeeId, account.Id);
+                await SetAsPrimaryAccountIfEmptyAsync(account.EmployeeId, account.Id);
 
                 if (tasks.Count > 0)
                 {
@@ -768,77 +782,74 @@ namespace HES.Core.Services
             return account;
         }
 
-        public async Task<Account> CreateWorkstationAccountAsync(WorkstationAccount workstationAccount)
-        {
-            if (workstationAccount == null)
-                throw new ArgumentNullException(nameof(workstationAccount));
+        //public async Task<Account> CreateWorkstationAccountAsync(WorkstationAccount workstationAccount)
+        //{
+        //    if (workstationAccount == null)
+        //        throw new ArgumentNullException(nameof(workstationAccount));
 
-            switch (workstationAccount.Type)
-            {
-                case WorkstationAccountType.Local:
-                    await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $".\\{workstationAccount.UserName}");
-                    workstationAccount.UserName = $".\\{workstationAccount.UserName}";
-                    break;
-                case WorkstationAccountType.AzureAD:
-                    await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"AzureAD\\{workstationAccount.UserName}");
-                    workstationAccount.UserName = $"AzureAD\\{workstationAccount.UserName}";
-                    break;
-                case WorkstationAccountType.Microsoft:
-                    await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"@\\{workstationAccount.UserName}");
-                    workstationAccount.UserName = $"@\\{workstationAccount.UserName}";
-                    break;
-            }
+        //    switch (workstationAccount.Type)
+        //    {
+        //        case WorkstationAccountType.Local:
+        //            await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $".\\{workstationAccount.UserName}");
+        //            workstationAccount.UserName = $".\\{workstationAccount.UserName}";
+        //            break;
+        //        case WorkstationAccountType.AzureAD:
+        //            await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"AzureAD\\{workstationAccount.UserName}");
+        //            workstationAccount.UserName = $"AzureAD\\{workstationAccount.UserName}";
+        //            break;
+        //        case WorkstationAccountType.Microsoft:
+        //            await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"@\\{workstationAccount.UserName}");
+        //            workstationAccount.UserName = $"@\\{workstationAccount.UserName}";
+        //            break;
+        //    }
 
-            var personalAccount = new PersonalAccount()
-            {
-                Name = workstationAccount.Name,
-                Login = workstationAccount.UserName,
-                Password = workstationAccount.Password,
-                EmployeeId = workstationAccount.EmployeeId
-            };
+        //    var personalAccount = new PersonalAccount()
+        //    {
+        //        Name = workstationAccount.Name,
+        //        Login = workstationAccount.UserName,
+        //        Password = workstationAccount.Password,
+        //        EmployeeId = workstationAccount.EmployeeId
+        //    };
 
-            return await CreatePersonalAccountAsync(personalAccount, isWorkstationAccount: true);
-        }
+        //    return await CreatePersonalAccountAsync(personalAccount, isWorkstationAccount: true);
+        //}
 
-        public async Task<Account> CreateWorkstationAccountAsync(WorkstationDomain workstationAccount)
-        {
-            if (workstationAccount == null)
-                throw new ArgumentNullException(nameof(workstationAccount));
+        //public async Task<Account> CreateWorkstationAccountAsync(WorkstationDomain workstationAccount)
+        //{
+        //    if (workstationAccount == null)
+        //        throw new ArgumentNullException(nameof(workstationAccount));
 
-            await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"{workstationAccount.Domain}\\{workstationAccount.UserName}");
+        //    await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"{workstationAccount.Domain}\\{workstationAccount.UserName}");
 
-            var personalAccount = new PersonalAccount()
-            {
-                Name = workstationAccount.Name,
-                Login = $"{workstationAccount.Domain}\\{workstationAccount.UserName}",
-                Password = workstationAccount.Password,
-                EmployeeId = workstationAccount.EmployeeId,
-                UpdateInActiveDirectory = workstationAccount.UpdateInActiveDirectory
-            };
+        //    var personalAccount = new PersonalAccount()
+        //    {
+        //        Name = workstationAccount.Name,
+        //        Login = $"{workstationAccount.Domain}\\{workstationAccount.UserName}",
+        //        Password = workstationAccount.Password,
+        //        EmployeeId = workstationAccount.EmployeeId,
+        //        UpdateInActiveDirectory = workstationAccount.UpdateInActiveDirectory
+        //    };
 
-            return await CreatePersonalAccountAsync(personalAccount, isWorkstationAccount: true);
-        }
+        //    return await CreatePersonalAccountAsync(personalAccount, isWorkstationAccount: true);
+        //}
 
-        private async Task ValidateAccountNameAndLoginAsync(string employeeId, string name, string login)
+        private async Task<string> ValidateAccountNameAndLoginAsync(string employeeId, string name, string login)
         {
             var exist = await _accountService.ExistAsync(x => x.EmployeeId == employeeId &&
-                                            x.Name == name && x.Login == login &&
-                                            x.Deleted == false);
+                                            x.Name == name && x.Login == login && x.Deleted == false);
             if (exist)
                 throw new AlreadyExistException("An account with the same name and login exist.");
+
+            return login;
         }
 
-        public async Task SetAsWorkstationAccountAsync(string employeeId, string accountId)
+        public async Task SetAsPrimaryAccountAsync(string employeeId, string accountId)
         {
             if (employeeId == null)
-            {
                 throw new ArgumentNullException(nameof(employeeId));
-            }
 
             if (accountId == null)
-            {
                 throw new ArgumentNullException(nameof(accountId));
-            }
 
             var employee = await GetEmployeeByIdAsync(employeeId);
             if (employee == null)
@@ -859,7 +870,7 @@ namespace HES.Core.Services
             }
         }
 
-        private async Task SetAsWorkstationAccountIfEmptyAsync(string employeeId, string accountId)
+        private async Task SetAsPrimaryAccountIfEmptyAsync(string employeeId, string accountId)
         {
             var employee = await _employeeRepository.GetByIdAsync(employeeId);
 
@@ -1036,8 +1047,8 @@ namespace HES.Core.Services
                 Urls = sharedAccount.Urls,
                 Apps = sharedAccount.Apps,
                 Login = sharedAccount.Login,
-                Type = AccountType.Shared,
-                Kind = sharedAccount.Kind,
+                AccountType = AccountType.Shared,
+                LoginType = sharedAccount.LoginType,
                 CreatedAt = DateTime.UtcNow,
                 PasswordUpdatedAt = DateTime.UtcNow,
                 OtpUpdatedAt = sharedAccount.OtpSecret != null ? new DateTime?(DateTime.UtcNow) : null,
@@ -1059,7 +1070,7 @@ namespace HES.Core.Services
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _accountService.AddAsync(account);
-                await SetAsWorkstationAccountIfEmptyAsync(account.EmployeeId, account.Id);
+                await SetAsPrimaryAccountIfEmptyAsync(account.EmployeeId, account.Id);
 
                 if (tasks.Count > 0)
                 {

@@ -20,19 +20,18 @@ else
                 <InputText @bind-Value="Account.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => Account.Name)" class="text-danger" />
             </div>
-            @if (Account.Kind != AccountKind.Workstation)
-            {
-                <div class="form-group">
-                    <FormLabel For="@(() => Account.Urls)" class="text-gray" />
-                    <InputText @bind-Value="Account.Urls" class="form-control text-navyblue" />
-                    <ValidationMessage For="@(() => Account.Urls)" class="text-danger" />
-                </div>
-                <div class="form-group">
-                    <FormLabel For="@(() => Account.Apps)" class="text-gray" />
-                    <InputText @bind-Value="Account.Apps" class="form-control text-navyblue" />
-                    <ValidationMessage For="@(() => Account.Apps)" class="text-danger" />
-                </div>
-            }
+            @*@if (Account.Kind != AccountKind.Workstation)
+                {*@
+            <div class="form-group">
+                <FormLabel For="@(() => Account.Urls)" class="text-gray" />
+                <InputText @bind-Value="Account.Urls" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => Account.Urls)" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <FormLabel For="@(() => Account.Apps)" class="text-gray" />
+                <InputText @bind-Value="Account.Apps" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => Account.Apps)" class="text-danger" />
+            </div>
             <div class="form-group">
                 <FormLabel For="@(() => Account.Login)" class="text-gray" />
                 <InputText @bind-Value="Account.Login" class="form-control text-navyblue" />

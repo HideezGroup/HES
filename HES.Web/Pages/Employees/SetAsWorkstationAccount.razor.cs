@@ -57,7 +57,7 @@ namespace HES.Web.Pages.Employees
         {
             try
             {
-                await EmployeeService.SetAsWorkstationAccountAsync(Account.Employee.Id, Account.Id);
+                await EmployeeService.SetAsPrimaryAccountAsync(Account.Employee.Id, Account.Id);
                 var employee = await EmployeeService.GetEmployeeByIdAsync(Account.Employee.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(employee.Id));
                 await ToastService.ShowToastAsync("Account setted as primary.", ToastType.Success);

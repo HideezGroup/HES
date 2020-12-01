@@ -1,4 +1,5 @@
 ﻿using HES.Core.Entities;
+using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.ActiveDirectory;
@@ -100,7 +101,7 @@ namespace HES.Core.Services
                 foreach (var entity in entries)
                 {
                     var activeDirectoryUser = new ActiveDirectoryUser()
-                    {
+                    {                     
                         Employee = new Employee()
                         {
                             Id = Guid.NewGuid().ToString(),
@@ -110,11 +111,12 @@ namespace HES.Core.Services
                             Email = TryGetAttribute(entity, "mail"),
                             PhoneNumber = TryGetAttribute(entity, "telephoneNumber")
                         },
-                        DomainAccount = new WorkstationDomain()
+                        Account = new PersonalAccount()
                         {
                             Name = "Domain Account",
+                            LoginType = LoginType.Domain,
                             Domain = GetFirstDnFromHost(ldapSettings.Host),
-                            UserName = TryGetAttribute(entity, "sAMAccountName"),
+                            Login = TryGetAttribute(entity, "sAMAccountName"),
                             Password = GeneratePassword(),
                             UpdateInActiveDirectory = true
                         }
@@ -163,8 +165,8 @@ namespace HES.Core.Services
                         try
                         {
                             // The employee may already be in the database, so we get his ID and create an account
-                            user.DomainAccount.EmployeeId = employee.Id;
-                            await _employeeService.CreateWorkstationAccountAsync(user.DomainAccount);
+                            user.Account.EmployeeId = employee.Id;
+                            await _employeeService.CreatePersonalAccountAsync(user.Account);
                         }
                         catch (AlreadyExistException)
                         {
@@ -288,11 +290,12 @@ namespace HES.Core.Services
                     {
                         var password = GeneratePassword();
 
-                        var workstationDomainAccount = new WorkstationDomain()
+                        var account = new PersonalAccount()
                         {
                             Name = "Domain Account",
+                            LoginType = LoginType.Domain,
                             Domain = GetFirstDnFromHost(ldapSettings.Host),
-                            UserName = TryGetAttribute(member, "sAMAccountName"),
+                            Login = TryGetAttribute(member, "sAMAccountName"),
                             Password = password,
                             EmployeeId = employee.Id
                         };
@@ -300,7 +303,7 @@ namespace HES.Core.Services
                         using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                         {
                             // Create domain account
-                            await _employeeService.CreateWorkstationAccountAsync(workstationDomainAccount);
+                            await _employeeService.CreatePersonalAccountAsync(account);
 
                             // Update password in active directory
                             using (var cn = new LdapConnection())
@@ -718,11 +721,12 @@ namespace HES.Core.Services
                                 Email = TryGetAttribute(member, "mail"),
                                 PhoneNumber = TryGetAttribute(member, "telephoneNumber")
                             },
-                            DomainAccount = new WorkstationDomain()
+                            Account = new PersonalAccount()
                             {
                                 Name = "Domain Account",
+                                LoginType = LoginType.Domain,
                                 Domain = GetFirstDnFromHost(ldapSettings.Host),
-                                UserName = TryGetAttribute(member, "sAMAccountName"),
+                                Login = TryGetAttribute(member, "sAMAccountName"),
                                 Password = GeneratePassword(),
                                 UpdateInActiveDirectory = true
                             }
@@ -764,8 +768,8 @@ namespace HES.Core.Services
                             try
                             {
                                 // The employee may already be in the database, so we get his ID and create an account
-                                member.DomainAccount.EmployeeId = employee.Id;
-                                await _employeeService.CreateWorkstationAccountAsync(member.DomainAccount);
+                                member.Account.EmployeeId = employee.Id;
+                                await _employeeService.CreatePersonalAccountAsync(member.Account);
                             }
                             catch (AlreadyExistException)
                             {

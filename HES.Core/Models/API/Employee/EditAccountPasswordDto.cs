@@ -7,8 +7,6 @@ namespace HES.Core.Models.API
         [Required]
         public string Id { get; set; }
         [Required]
-        public string EmployeeId { get; set; }
-        [Required]
         public string Password { get; set; }
     }
 }

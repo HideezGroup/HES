@@ -2,20 +2,23 @@
 using HES.Core.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace HES.Core.Models.API
+namespace HES.Core.Models.Web.SharedAccounts
 {
-    public class EditAccountDto
+    public class SharedAccountUpdateModel
     {
-        [Required]
         public string Id { get; set; }
 
         [Required]
+        [Display(Name = "Account Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Urls")]
         public string Urls { get; set; }
 
+        [Display(Name = "Apps")]
         public string Apps { get; set; }
 
+        [Display(Name = "Login Type")]
         public LoginType LoginType { get; set; }
 
         [Display(Name = "Login")]
