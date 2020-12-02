@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Core.Models.Web.Accounts;
 using HES.Core.Models.Web.SharedAccounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -27,13 +28,9 @@ namespace HES.Web.Pages.SharedAccounts
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string ConnectionId { get; set; }
 
-        public SharedAccountModel SharedAccount { get; set; }
-        public WorkstationSharedAccount WorkstationSharedAccount { get; set; }
-        public WorkstationDomainSharedAccount WorkstationDomainSharedAccount { get; set; }
+        public SharedAccountAddModel SharedAccount { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
-        public ButtonSpinner ButtonSpinnerWorkstationAccount { get; set; }
-        public WorkstationAccountType WorkstationType { get; set; }
         public List<Template> Templates { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -45,10 +42,7 @@ namespace HES.Web.Pages.SharedAccounts
                 RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 Templates = await TemplateService.GetTemplatesAsync();
-                WorkstationType = WorkstationAccountType.Local;
-                WorkstationSharedAccount = new WorkstationSharedAccount();
-                WorkstationDomainSharedAccount = new WorkstationDomainSharedAccount();
-                SharedAccount = new SharedAccountModel();
+                SharedAccount = new SharedAccountAddModel();
             }
             catch (Exception ex)
             {
@@ -89,42 +83,6 @@ namespace HES.Web.Pages.SharedAccounts
                 await ModalDialogService.CloseAsync();
             }
         }
-
-        //private async Task CreateWorkstationAccountAsync()
-        //{
-        //    try
-        //    {
-        //        await ButtonSpinnerWorkstationAccount.SpinAsync(async () =>
-        //        {
-        //            switch (WorkstationType)
-        //            {
-        //                case WorkstationAccountType.Local:
-        //                case WorkstationAccountType.Microsoft:
-        //                case WorkstationAccountType.AzureAD:
-        //                    WorkstationSharedAccount.Type = WorkstationType;
-        //                    await SharedAccountService.CreateWorkstationSharedAccountAsync(WorkstationSharedAccount);
-        //                    break;
-        //                case WorkstationAccountType.Domain:
-        //                    await SharedAccountService.CreateWorkstationSharedAccountAsync(WorkstationDomainSharedAccount);
-        //                    break;
-        //            }
-
-        //            await ToastService.ShowToastAsync("Account created.", ToastType.Success);
-        //            await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
-        //            await ModalDialogService.CloseAsync();
-        //        });
-        //    }
-        //    catch (AlreadyExistException ex)
-        //    {
-        //        ValidationErrorMessage.DisplayError(nameof(WorkstationSharedAccount.Name), ex.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.LogError(ex.Message);
-        //        await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-        //        await ModalDialogService.CancelAsync();
-        //    }
-        //}
 
         private void TemplateSelected(ChangeEventArgs e)
         {

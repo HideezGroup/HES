@@ -6,7 +6,7 @@ using System.Net.Mail;
 namespace HES.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class ValidateLogin : ValidationAttribute
+    public class ValidateLogin : RequiredAttribute
     {
         private string PropertyName { get; set; }
 

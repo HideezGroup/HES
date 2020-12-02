@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
+using LdapForNet;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,9 +66,6 @@ namespace HES.Web.Pages.Employees
             if (Employee == null)
                 throw new Exception("Employee not found.");
 
-            if (!await VerifyAdUserAsync())
-                Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId, asNoTracking: true);
-
             StateHasChanged();
         }
 
@@ -93,6 +91,11 @@ namespace HES.Web.Pages.Employees
                 await EmployeeService.ToLocalUserAsync(Employee.Id);
                 Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId, asNoTracking: true);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Notify);
+                return false;
+            }
+            catch (LdapException ex) when (ex.ResultCode == (LdapForNet.Native.Native.ResultCode)81)
+            {       
+                await ToastService.ShowToastAsync("The LDAP server is unavailable.", ToastType.Error);
                 return false;
             }
             catch (Exception ex)

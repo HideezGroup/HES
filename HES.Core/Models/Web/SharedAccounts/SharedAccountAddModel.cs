@@ -2,21 +2,18 @@
 using HES.Core.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace HES.Core.Models.Web.Accounts
+namespace HES.Core.Models.Web.SharedAccounts
 {
-    public class PersonalAccount
+    public class SharedAccountAddModel
     {
         [Required]
-        public string EmployeeId { get; set; }
-
-        [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "Account Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Urls (separate by semicolon)")]
+        [Display(Name = "Urls")]
         public string Urls { get; set; }
 
-        [Display(Name = "Applications (separate by semicolon)")]
+        [Display(Name = "Applications")]
         public string Apps { get; set; }
 
         [Display(Name = "Login Type")]
@@ -31,19 +28,28 @@ namespace HES.Core.Models.Web.Accounts
         public string Domain { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
-        [CompareProperty("Password", ErrorMessage = "The password and confirmation password do not match.")]
         [Display(Name = "Confirm Password")]
+        [CompareProperty("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Display(Name = "OTP Secret")]
         public string OtpSecret { get; set; }
 
-        public bool UpdateInActiveDirectory { get; set; }
+        public string GetLogin()
+        {
+            return LoginType switch
+            {
+                LoginType.WebApp => $"{Login}",
+                LoginType.Local => $".\\{Login}",
+                LoginType.Domain => $"{Domain}\\{Login}",
+                LoginType.AzureAD => $"AzureAD\\{Login}",
+                LoginType.Microsoft => $"@\\{Login}",
+                _ => Login,
+            };
+        }
     }
 }

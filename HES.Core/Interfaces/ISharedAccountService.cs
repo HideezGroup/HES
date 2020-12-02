@@ -17,10 +17,8 @@ namespace HES.Core.Interfaces
         Task<List<SharedAccount>> GetSharedAccountsAsync(DataLoadingOptions<SharedAccountsFilter> dataLoadingOptions);
         Task<int> GetSharedAccountsCountAsync(DataLoadingOptions<SharedAccountsFilter> dataLoadingOptions);
         Task<List<SharedAccount>> GetAllSharedAccountsAsync();
-        Task<SharedAccount> CreateSharedAccountAsync(SharedAccountModel sharedAccount);
-        //Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationSharedAccount workstationAccount);
-        //Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationDomainSharedAccount workstationAccount);
-        Task<List<string>> EditSharedAccountAsync(SharedAccountUpdateModel sharedAccount);
+        Task<SharedAccount> CreateSharedAccountAsync(SharedAccountAddModel sharedAccount);
+        Task<List<string>> EditSharedAccountAsync(SharedAccountEditModel sharedAccount);
         Task<List<string>> EditSharedAccountPwdAsync(SharedAccount sharedAccount, AccountPassword accountPassword);
         Task<List<string>> EditSharedAccountOtpAsync(SharedAccount sharedAccount, AccountOtp accountOtp);
         Task<List<string>> DeleteSharedAccountAsync(string id);

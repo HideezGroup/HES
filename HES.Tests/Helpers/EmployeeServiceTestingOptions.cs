@@ -17,12 +17,8 @@ namespace HES.Tests.Helpers
         public string NewAccountName { get; private set; }
         public string AccountsEmployeeId { get; private set; }
         public Employee AccountsEmployee { get; private set; }
-        public PersonalAccount PersonalAccount { get; private set; }
+        public AccountAddModel PersonalAccount { get; private set; }
         public List<Employee> TestingEmployees { get; private set; }
-        public WorkstationAccount WorkstationAccount { get; private set; }
-        public WorkstationAccount WorkstationMsAccount { get; private set; }
-        public WorkstationAccount WorkstationAzureAccount { get; private set; }
-        public WorkstationDomain WorkstationDomainAccount { get; private set; }
         public DataLoadingOptions<EmployeeFilter> DataLoadingOptions { get; private set; }
 
         public EmployeeServiceTestingOptions(int employeeCount, int crudEmployeeId, int accountsEmployeeId)
@@ -45,7 +41,7 @@ namespace HES.Tests.Helpers
                 Filter = null
             };
 
-            PersonalAccount = new PersonalAccount()
+            PersonalAccount = new AccountAddModel()
             {
                 Name = "stackoverflow",
                 Urls = "stackoverflow.com",
@@ -55,44 +51,44 @@ namespace HES.Tests.Helpers
                 EmployeeId = AccountsEmployeeId
             };
 
-            WorkstationAccount = new WorkstationAccount()
-            {
-                Name = "local",
-                UserName = "user_local",
-                Password = "qwerty",
-                ConfirmPassword = "qwerty",
-                EmployeeId = AccountsEmployeeId,
-                Type = WorkstationAccountType.Local
-            };
+            //WorkstationAccount = new WorkstationAccount()
+            //{
+            //    Name = "local",
+            //    UserName = "user_local",
+            //    Password = "qwerty",
+            //    ConfirmPassword = "qwerty",
+            //    EmployeeId = AccountsEmployeeId,
+            //    Type = WorkstationAccountType.Local
+            //};
 
-            WorkstationDomainAccount = new WorkstationDomain()
-            {
-                Name = "domain",
-                UserName = "user_domain",
-                Password = "qwerty",
-                ConfirmPassword = "qwerty",
-                EmployeeId = AccountsEmployeeId,
-            };
+            //WorkstationDomainAccount = new WorkstationDomain()
+            //{
+            //    Name = "domain",
+            //    UserName = "user_domain",
+            //    Password = "qwerty",
+            //    ConfirmPassword = "qwerty",
+            //    EmployeeId = AccountsEmployeeId,
+            //};
 
-            WorkstationMsAccount = new WorkstationAccount()
-            {
-                Name = "ms",
-                UserName = "user_ms",
-                Password = "qwerty",
-                ConfirmPassword = "qwerty",
-                EmployeeId = AccountsEmployeeId,
-                Type = WorkstationAccountType.Microsoft
-            };
+            //WorkstationMsAccount = new WorkstationAccount()
+            //{
+            //    Name = "ms",
+            //    UserName = "user_ms",
+            //    Password = "qwerty",
+            //    ConfirmPassword = "qwerty",
+            //    EmployeeId = AccountsEmployeeId,
+            //    Type = WorkstationAccountType.Microsoft
+            //};
 
-            WorkstationAzureAccount = new WorkstationAccount()
-            {
-                Name = "azure",
-                UserName = "user_azure",
-                Password = "qwerty",
-                ConfirmPassword = "qwerty",
-                EmployeeId = AccountsEmployeeId,
-                Type = WorkstationAccountType.AzureAD
-            };
+            //WorkstationAzureAccount = new WorkstationAccount()
+            //{
+            //    Name = "azure",
+            //    UserName = "user_azure",
+            //    Password = "qwerty",
+            //    ConfirmPassword = "qwerty",
+            //    EmployeeId = AccountsEmployeeId,
+            //    Type = WorkstationAccountType.AzureAD
+            //};
 
             AccountsCount = 5;
         }

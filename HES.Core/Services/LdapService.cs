@@ -111,7 +111,7 @@ namespace HES.Core.Services
                             Email = TryGetAttribute(entity, "mail"),
                             PhoneNumber = TryGetAttribute(entity, "telephoneNumber")
                         },
-                        Account = new PersonalAccount()
+                        Account = new AccountAddModel()
                         {
                             Name = "Domain Account",
                             LoginType = LoginType.Domain,
@@ -290,7 +290,7 @@ namespace HES.Core.Services
                     {
                         var password = GeneratePassword();
 
-                        var account = new PersonalAccount()
+                        var account = new AccountAddModel()
                         {
                             Name = "Domain Account",
                             LoginType = LoginType.Domain,
@@ -721,7 +721,7 @@ namespace HES.Core.Services
                                 Email = TryGetAttribute(member, "mail"),
                                 PhoneNumber = TryGetAttribute(member, "telephoneNumber")
                             },
-                            Account = new PersonalAccount()
+                            Account = new AccountAddModel()
                             {
                                 Name = "Domain Account",
                                 LoginType = LoginType.Domain,

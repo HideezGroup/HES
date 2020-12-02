@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Core.Models.Web.Accounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
@@ -27,6 +28,7 @@ namespace HES.Web.Pages.Employees
         [Parameter] public string ConnectionId { get; set; }
 
         public Account Account { get; set; }
+        public AccountEditModel PersonalAccount { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -47,6 +49,8 @@ namespace HES.Web.Pages.Employees
                 EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Account.Id, Account);
+
+                PersonalAccount = new AccountEditModel().Initialize(Account);
             }
             catch (Exception ex)
             {
@@ -62,10 +66,10 @@ namespace HES.Web.Pages.Employees
             {
                 await ButtonSpinner.SpinAsync(async () =>
                 {
-                    await EmployeeService.EditPersonalAccountAsync(Account);
-                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
+                    await EmployeeService.EditPersonalAccountAsync(PersonalAccount);
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(PersonalAccount.EmployeeId));
                     await ToastService.ShowToastAsync("Account updated.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, PersonalAccount.EmployeeId);
                     await ModalDialogService.CloseAsync();
                 });
             }

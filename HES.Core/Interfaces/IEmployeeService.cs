@@ -38,8 +38,6 @@ namespace HES.Core.Interfaces
         Task RemoveHardwareVaultAsync(string vaultId, VaultStatusReason reason, bool isNeedBackup = false);
 
         #endregion
-        //Task<Account> CreateWorkstationAccountAsync(WorkstationAccount workstationAccount);
-        //Task<Account> CreateWorkstationAccountAsync(WorkstationDomain workstationAccount);
 
         #region Accounts
 
@@ -48,8 +46,8 @@ namespace HES.Core.Interfaces
         Task<List<Account>> GetAccountsByEmployeeIdAsync(string employeeId);
         Task SetAsPrimaryAccountAsync(string employeeId, string accountId);
         Task<Account> GetAccountByIdAsync(string accountId);
-        Task<Account> CreatePersonalAccountAsync(PersonalAccount personalAccount);
-        Task EditPersonalAccountAsync(Account account);
+        Task<Account> CreatePersonalAccountAsync(AccountAddModel personalAccount);
+        Task EditPersonalAccountAsync(AccountEditModel personalAccount);
         Task EditPersonalAccountPwdAsync(Account account, AccountPassword accountPassword);
         Task EditPersonalAccountOtpAsync(Account account, AccountOtp accountOtp);
         Task<Account> AddSharedAccountAsync(string employeeId, string sharedAccountId);

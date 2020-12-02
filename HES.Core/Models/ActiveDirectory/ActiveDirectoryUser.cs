@@ -7,7 +7,7 @@ namespace HES.Core.Models.ActiveDirectory
     public class ActiveDirectoryUser
     {
         public Employee Employee { get; set; }
-        public PersonalAccount Account { get; set; }
+        public AccountAddModel Account { get; set; }
         public List<Group> Groups { get; set; }
         public bool Checked { get; set; }
     }

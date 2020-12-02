@@ -710,33 +710,12 @@ namespace HES.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<Account> CreatePersonalAccountAsync(PersonalAccount personalAccount)
+        public async Task<Account> CreatePersonalAccountAsync(AccountAddModel personalAccount)
         {
             if (personalAccount == null)
                 throw new ArgumentNullException(nameof(personalAccount));
 
             _dataProtectionService.Validate();
-                     
-            var login = string.Empty;
-
-            switch (personalAccount.LoginType)
-            {
-                case LoginType.WebApp:
-                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $"{personalAccount.Login}");
-                    break;
-                case LoginType.Local:
-                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $".\\{personalAccount.Login}");
-                    break;
-                case LoginType.Domain:
-                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $"{personalAccount.Domain}\\{personalAccount.Login}");
-                    break;
-                case LoginType.AzureAD:
-                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $"AzureAD\\{personalAccount.Login}");
-                    break;
-                case LoginType.Microsoft:
-                    login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, $"@\\{personalAccount.Login}");
-                    break;
-            }
 
             var account = new Account()
             {
@@ -744,7 +723,7 @@ namespace HES.Core.Services
                 Name = personalAccount.Name,
                 Urls = Validation.VerifyUrls(personalAccount.Urls),
                 Apps = personalAccount.Apps,
-                Login = login,
+                Login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, personalAccount.GetLogin()),
                 AccountType = AccountType.Personal,
                 LoginType = personalAccount.LoginType,
                 CreatedAt = DateTime.UtcNow,
@@ -782,63 +761,17 @@ namespace HES.Core.Services
             return account;
         }
 
-        //public async Task<Account> CreateWorkstationAccountAsync(WorkstationAccount workstationAccount)
-        //{
-        //    if (workstationAccount == null)
-        //        throw new ArgumentNullException(nameof(workstationAccount));
-
-        //    switch (workstationAccount.Type)
-        //    {
-        //        case WorkstationAccountType.Local:
-        //            await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $".\\{workstationAccount.UserName}");
-        //            workstationAccount.UserName = $".\\{workstationAccount.UserName}";
-        //            break;
-        //        case WorkstationAccountType.AzureAD:
-        //            await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"AzureAD\\{workstationAccount.UserName}");
-        //            workstationAccount.UserName = $"AzureAD\\{workstationAccount.UserName}";
-        //            break;
-        //        case WorkstationAccountType.Microsoft:
-        //            await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"@\\{workstationAccount.UserName}");
-        //            workstationAccount.UserName = $"@\\{workstationAccount.UserName}";
-        //            break;
-        //    }
-
-        //    var personalAccount = new PersonalAccount()
-        //    {
-        //        Name = workstationAccount.Name,
-        //        Login = workstationAccount.UserName,
-        //        Password = workstationAccount.Password,
-        //        EmployeeId = workstationAccount.EmployeeId
-        //    };
-
-        //    return await CreatePersonalAccountAsync(personalAccount, isWorkstationAccount: true);
-        //}
-
-        //public async Task<Account> CreateWorkstationAccountAsync(WorkstationDomain workstationAccount)
-        //{
-        //    if (workstationAccount == null)
-        //        throw new ArgumentNullException(nameof(workstationAccount));
-
-        //    await ValidateAccountNameAndLoginAsync(workstationAccount.EmployeeId, workstationAccount.Name, $"{workstationAccount.Domain}\\{workstationAccount.UserName}");
-
-        //    var personalAccount = new PersonalAccount()
-        //    {
-        //        Name = workstationAccount.Name,
-        //        Login = $"{workstationAccount.Domain}\\{workstationAccount.UserName}",
-        //        Password = workstationAccount.Password,
-        //        EmployeeId = workstationAccount.EmployeeId,
-        //        UpdateInActiveDirectory = workstationAccount.UpdateInActiveDirectory
-        //    };
-
-        //    return await CreatePersonalAccountAsync(personalAccount, isWorkstationAccount: true);
-        //}
-
-        private async Task<string> ValidateAccountNameAndLoginAsync(string employeeId, string name, string login)
+        private async Task<string> ValidateAccountNameAndLoginAsync(string employeeId, string name, string login, string accountId = null)
         {
-            var exist = await _accountService.ExistAsync(x => x.EmployeeId == employeeId &&
-                                            x.Name == name && x.Login == login && x.Deleted == false);
+            var query = _accountService.Query().Where(x => x.EmployeeId == employeeId && x.Name == name && x.Login == login && x.Deleted == false);
+
+            if (accountId != null)
+                query = query.Where(x => x.Id != accountId);
+
+            var exist = await query.AnyAsync();
+
             if (exist)
-                throw new AlreadyExistException("An account with the same name and login exist.");
+                throw new HESException(HESCode.AccountExist);
 
             return login;
         }
@@ -893,31 +826,30 @@ namespace HES.Core.Services
             await _employeeRepository.UpdateOnlyPropAsync(employee, new string[] { nameof(Employee.PrimaryAccountId) });
         }
 
-        public async Task EditPersonalAccountAsync(Account account)
+        public async Task EditPersonalAccountAsync(AccountEditModel personalAccount)
         {
-            if (account == null)
-                throw new ArgumentNullException(nameof(account));
+            if (personalAccount == null)
+                throw new ArgumentNullException(nameof(personalAccount));
 
             _dataProtectionService.Validate();
+            await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, personalAccount.GetLogin(), personalAccount.Id);
+            personalAccount.Urls = Validation.VerifyUrls(personalAccount.Urls);
 
-            var exist = await _accountService.ExistAsync(x => x.Name == account.Name &&
-                                                         x.Login == account.Login &&
-                                                         x.Deleted == false &&
-                                                         x.EmployeeId == account.EmployeeId &&
-                                                         x.Id != account.Id);
-            if (exist)
-                throw new AlreadyExistException("An account with the same name and login exist.");
+            var employee = await GetEmployeeByIdAsync(personalAccount.EmployeeId);
+            if (employee == null)
+                throw new HESException(HESCode.EmployeeNotFound);
 
-            var employee = await GetEmployeeByIdAsync(account.EmployeeId);
+            var account = await _accountService.GetAccountByIdAsync(personalAccount.Id);
+            if (account == null)
+                throw new HESException(HESCode.AccountNotFound);
 
-            account.Urls = Validation.VerifyUrls(account.Urls);
-            account.UpdatedAt = DateTime.UtcNow;
+            account = personalAccount.SetNewValue(account);
 
             // Create tasks if there are vaults
             List<HardwareVaultTask> tasks = new List<HardwareVaultTask>();
             foreach (var vault in employee.HardwareVaults)
             {
-                tasks.Add(_hardwareVaultTaskService.GetAccountUpdateTask(vault.Id, account.Id));
+                tasks.Add(_hardwareVaultTaskService.GetAccountUpdateTask(vault.Id, personalAccount.Id));
             }
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))

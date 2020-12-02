@@ -262,83 +262,6 @@ else
                         </div>
                     </div>
                 </EditForm>
-                @*<div class="row">
-                        <div class="col col-sm-6 offset-md-3">
-                            <div class="form-group">
-                                <label class="control-label text-gray">Select workstation account type</label>
-                                <select class="form-control" @bind="WorkstationType">
-                                    <option selected value="@Core.Enums.WorkstationAccountType.Local">Local</option>
-                                    <option value="@Core.Enums.WorkstationAccountType.Domain">Domain</option>
-                                    <option value="@Core.Enums.WorkstationAccountType.AzureAD">AzureAD</option>
-                                    <option value="@Core.Enums.WorkstationAccountType.Microsoft">Microsoft</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    @switch (WorkstationType)
-                    {
-                        case Core.Enums.WorkstationAccountType.Local:
-                        case Core.Enums.WorkstationAccountType.Microsoft:
-                        case Core.Enums.WorkstationAccountType.AzureAD:
-                            <EditForm EditContext="WorkstationAccountContext">
-                                <DataAnnotationsValidator />
-                                <div class="row">
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationAccount.Name)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationAccount.Name" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationAccount.Name)" class="text-danger" />
-                                    </div>
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationAccount.UserName)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationAccount.UserName" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationAccount.UserName)" class="text-danger" />
-                                    </div>
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationAccount.Password)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationAccount.Password" type="password" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationAccount.Password)" class="text-danger" />
-                                    </div>
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationAccount.ConfirmPassword)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationAccount.ConfirmPassword" type="password" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationAccount.ConfirmPassword)" class="text-danger" />
-                                    </div>
-                                </div>
-                            </EditForm>
-                            break;
-                        case Core.Enums.WorkstationAccountType.Domain:
-                            <EditForm EditContext="WorkstationDomainContext">
-                                <DataAnnotationsValidator />
-                                <div class="row">
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationDomain.Name)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationDomain.Name" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationDomain.Name)" class="text-danger" />
-                                    </div>
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationDomain.Domain)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationDomain.Domain" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationDomain.Domain)" class="text-danger" />
-                                    </div>
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationDomain.UserName)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationDomain.UserName" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationDomain.UserName)" class="text-danger" />
-                                    </div>
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationDomain.Password)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationDomain.Password" type="password" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationDomain.Password)" class="text-danger" />
-                                    </div>
-                                    <div class="form-group col col-sm-6 offset-md-3">
-                                        <FormLabel For="@(() => WorkstationDomain.ConfirmPassword)" class="text-gray" />
-                                        <InputText @bind-Value="WorkstationDomain.ConfirmPassword" type="password" class="form-control text-navyblue" />
-                                        <ValidationMessage For="@(() => WorkstationDomain.ConfirmPassword)" class="text-danger" />
-                                    </div>
-                                </div>
-                            </EditForm>
-                            break;
-                    }*@
             </div>
             @if (SharedAccounts.Count > 0)
             {
@@ -388,24 +311,12 @@ else
                 <h4 class="mx-2 text-navyblue">Account</h4>
                 @if (AccountType == AccountType.Personal)
                 {
-                    @*@if (WorkstationType == WorkstationAccountType.Domain)
-                        {*@
                     <div class="border rounded py-2 px-3">
                         <div class="font-weight-bold">Account name</div>
                         <div>@(AccountSkiped ? "" : PersonalAccount.Name)</div>
                         <div class="font-weight-bold">User name</div>
                         <div>@(AccountSkiped ? "" : PersonalAccount.Login)</div>
-                    </div>
-                    @*}
-                        else
-                        {
-                            <div class="border rounded py-2 px-3">
-                                <div class="font-weight-bold">Account name</div>
-                                <div>@(AccountSkiped ? "" : WorkstationAccount.Name)</div>
-                                <div class="font-weight-bold">User name</div>
-                                <div>@(AccountSkiped ? "" : WorkstationAccount.UserName)</div>
-                            </div>
-                        }*@
+                    </div>                   
                 }
                 else
                 {
@@ -458,7 +369,7 @@ else
         }
         @if (WizardStep != WizardStep.Profile && WizardStep != WizardStep.Activation)
         {
-            <button type="button" class="btn btn-secondary" @onclick="Back">Back</button>
+            <button type="button" class="btn btn-secondary mr-2" @onclick="Back">Back</button>
         }
         <ButtonSpinner Class="btn btn-primary" Callback="Next" Text="@(WizardStep == WizardStep.Activation ? "Done" : WizardStep == WizardStep.Overview ? "Create" : "Next")" />
     </div>

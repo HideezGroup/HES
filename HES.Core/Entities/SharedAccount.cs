@@ -43,12 +43,6 @@ namespace HES.Core.Entities
 
         public bool Deleted { get; set; }
 
-        [Required]
-        [NotMapped]
-        [Display(Name = "Confirm Password")]
-        [CompareProperty("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-
         [NotMapped]
         public TimeSpan GetPasswordUpdated => (DateTime.UtcNow).Subtract(PasswordChangedAt ?? DateTime.UtcNow);
 

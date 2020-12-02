@@ -27,7 +27,8 @@ namespace HES.Web.Pages.SharedAccounts
         [Parameter] public string ConnectionId { get; set; }
         [Parameter] public string AccountId { get; set; }
 
-        public SharedAccountUpdateModel Account { get; set; }
+        public SharedAccount SharedAccount { get; set; }
+        public SharedAccountEditModel Account { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -42,19 +43,19 @@ namespace HES.Web.Pages.SharedAccounts
 
                 ModalDialogService.OnCancel += OnCancelAsync;
 
-                var sharedAccount = await SharedAccountService.GetSharedAccountByIdAsync(AccountId);
-                if (sharedAccount == null)
+                SharedAccount = await SharedAccountService.GetSharedAccountByIdAsync(AccountId);
+                if (SharedAccount == null)
                     throw new Exception("Account not found");
 
-                Account = new SharedAccountUpdateModel
+                Account = new SharedAccountEditModel
                 {
-                    Id = sharedAccount.Id,
-                    Name = sharedAccount.Name,
-                    Urls = sharedAccount.Urls,
-                    Apps = sharedAccount.Apps,
-                    LoginType = sharedAccount.LoginType,
-                    Login = sharedAccount.Login,
-                    Domain = sharedAccount.Login
+                    Id = SharedAccount.Id,
+                    Name = SharedAccount.Name,
+                    Urls = SharedAccount.Urls,
+                    Apps = SharedAccount.Apps,
+                    LoginType = SharedAccount.LoginType,
+                    Login = SharedAccount.Login,
+                    Domain = SharedAccount.Login
                 };
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
@@ -102,7 +103,7 @@ namespace HES.Web.Pages.SharedAccounts
 
         private async Task OnCancelAsync()
         {
-            //await SharedAccountService.UnchangedAsync(Account);
+            await SharedAccountService.UnchangedAsync(SharedAccount);
         }
 
         public void Dispose()

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace HES.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class ValidateDomain : ValidationAttribute
+    public class ValidateDomain : RequiredAttribute
     {
         private string PropertyName { get; set; }
 

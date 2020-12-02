@@ -163,38 +163,17 @@ namespace HES.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<SharedAccount> CreateSharedAccountAsync(SharedAccountModel sharedAccountModel)
+        public async Task<SharedAccount> CreateSharedAccountAsync(SharedAccountAddModel sharedAccountModel)
         {
             if (sharedAccountModel == null)
                 throw new ArgumentNullException(nameof(sharedAccountModel));
 
             _dataProtectionService.Validate();
 
-            var login = string.Empty;
-
-            switch (sharedAccountModel.LoginType)
-            {
-                case LoginType.WebApp:
-                    login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $"{sharedAccountModel.Login}");
-                    break;
-                case LoginType.Local:
-                    login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $".\\{sharedAccountModel.Login}");
-                    break;
-                case LoginType.Domain:
-                    login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $"{sharedAccountModel.Domain}\\{sharedAccountModel.Login}");
-                    break;
-                case LoginType.AzureAD:
-                    login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $"AzureAD\\{sharedAccountModel.Login}");
-                    break;
-                case LoginType.Microsoft:
-                    login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $"@\\{sharedAccountModel.Login}");
-                    break;
-            }
-
             var sharedAccount = new SharedAccount()
             {
                 Name = sharedAccountModel.Name,
-                Login = login,
+                Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, sharedAccountModel.GetLogin()),
                 Urls = Validation.VerifyUrls(sharedAccountModel.Urls),
                 LoginType = sharedAccountModel.LoginType,
                 Password = _dataProtectionService.Encrypt(sharedAccountModel.Password),
@@ -211,102 +190,34 @@ namespace HES.Core.Services
             return await _sharedAccountRepository.AddAsync(sharedAccount);
         }
 
-        private async Task<string> ValidateAccountNameAndLoginAsync(string name, string login, string id = null)
+        private async Task<string> ValidateAccountNameAndLoginAsync(string name, string login, string accountId = null)
         {
             var query = _sharedAccountRepository.Query().Where(x => x.Name == name && x.Login == login && x.Deleted == false);
 
-            if (id != null)
-                query = query.Where(x => x.Id != id);
+            if (accountId != null)
+                query = query.Where(x => x.Id != accountId);
 
             var exist = await query.AnyAsync();
             if (exist)
-                throw new AlreadyExistException("An account with the same name and login exist.");
+                throw new HESException(HESCode.SharedAccountExist);
 
             return login;
         }
 
-        //public async Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationSharedAccount workstationAccount)
-        //{
-        //    if (workstationAccount == null)
-        //        throw new ArgumentNullException(nameof(workstationAccount));
-
-        //    switch (workstationAccount.Type)
-        //    {
-        //        case WorkstationAccountType.Local:
-        //            workstationAccount.UserName = $".\\{workstationAccount.UserName}";
-        //            break;
-        //        case WorkstationAccountType.AzureAD:
-        //            workstationAccount.UserName = $"AzureAD\\{workstationAccount.UserName}";
-        //            break;
-        //        case WorkstationAccountType.Microsoft:
-        //            workstationAccount.UserName = $"@\\{workstationAccount.UserName}";
-        //            break;
-        //    }
-
-        //    var sharedAccount = new SharedAccount()
-        //    {
-        //        Name = workstationAccount.Name,
-        //        Login = workstationAccount.UserName,
-        //        Password = workstationAccount.Password,
-        //        PasswordChangedAt = DateTime.UtcNow,
-        //        LoginType = AccountKind.Workstation
-        //    };
-
-        //    return await CreateSharedAccountAsync(sharedAccount);
-        //}
-
-        //public async Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationDomainSharedAccount workstationAccount)
-        //{
-        //    if (workstationAccount == null)
-        //        throw new ArgumentNullException(nameof(workstationAccount));
-
-        //    var sharedAccount = new SharedAccount()
-        //    {
-        //        Name = workstationAccount.Name,
-        //        Login = $"{workstationAccount.Domain}\\{workstationAccount.UserName}",
-        //        Password = workstationAccount.Password,
-        //        PasswordChangedAt = DateTime.UtcNow,
-        //        LoginType = AccountKind.Workstation
-
-        //    };
-
-        //    return await CreateSharedAccountAsync(sharedAccount);
-        //}
-
-        public async Task<List<string>> EditSharedAccountAsync(SharedAccountUpdateModel sharedAccountModel)
+        public async Task<List<string>> EditSharedAccountAsync(SharedAccountEditModel sharedAccountModel)
         {
             if (sharedAccountModel == null)
                 throw new ArgumentNullException(nameof(sharedAccountModel));
 
             _dataProtectionService.Validate();
+            await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, sharedAccountModel.GetLogin(), sharedAccountModel.Id);
+            sharedAccountModel.Urls = Validation.VerifyUrls(sharedAccountModel.Urls);
 
             var sharedAccount = await GetSharedAccountByIdAsync(sharedAccountModel.Id);
             if (sharedAccount == null)
                 throw new HESException(HESCode.SharedAccountNotFound);
 
-            switch (sharedAccountModel.LoginType)
-            {
-                case LoginType.WebApp:
-                    sharedAccount.Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $"{sharedAccountModel.Login}", sharedAccountModel.Id);
-                    break;
-                case LoginType.Local:
-                    sharedAccount.Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $".\\{sharedAccountModel.Login}", sharedAccountModel.Id);
-                    break;
-                case LoginType.Domain:
-                    sharedAccount.Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $"{sharedAccountModel.Domain}\\{sharedAccountModel.Login}", sharedAccountModel.Id);
-                    break;
-                case LoginType.AzureAD:
-                    sharedAccount.Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $"AzureAD\\{sharedAccountModel.Login}", sharedAccountModel.Id);
-                    break;
-                case LoginType.Microsoft:
-                    sharedAccount.Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, $"@\\{sharedAccountModel.Login}", sharedAccountModel.Id);
-                    break;
-            }
-
-            sharedAccount.LoginType = sharedAccountModel.LoginType;
-            sharedAccount.Name = sharedAccountModel.Name;
-            sharedAccount.Apps = sharedAccountModel.Apps;
-            sharedAccount.Urls = Validation.VerifyUrls(sharedAccount.Urls);
+            sharedAccount = sharedAccountModel.SetNewValue(sharedAccount);
 
             // Get all accounts where used this shared account
             var accounts = await _accountService
