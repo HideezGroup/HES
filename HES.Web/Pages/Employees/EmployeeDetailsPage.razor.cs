@@ -242,7 +242,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit account otp", body);
+            await MainTableService.ShowModalAsync("Edit account OTP", body);
         }
 
         private async Task OpenDialogGenerateAdPasswordAsync()

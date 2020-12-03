@@ -41,7 +41,7 @@ namespace HES.Web.Pages.Employees
         public List<Department> Departments { get; set; }
         public List<Position> Positions { get; set; }
         public List<SharedAccount> SharedAccounts { get; set; }
-        public ValidationErrorMessage EmployeeValidationErrorMessage { get; set; } 
+        public ValidationErrorMessage EmployeeValidationErrorMessage { get; set; }
         public AccountType AccountType { get; set; }
         public string WarningMessage { get; set; }
         public bool Initialized { get; set; }
@@ -75,7 +75,7 @@ namespace HES.Web.Pages.Employees
 
             Employee = new Employee() { Id = Guid.NewGuid().ToString() };
             EmployeeContext = new EditContext(Employee);
-            PersonalAccount = new AccountAddModel { EmployeeId = Employee.Id };
+            PersonalAccount = new AccountAddModel { EmployeeId = Employee.Id, LoginType = LoginType.Local };
             PersonalAccountContext = new EditContext(PersonalAccount);
 
             Initialized = true;
@@ -236,7 +236,7 @@ namespace HES.Web.Pages.Employees
                     {
                         if (AccountType == AccountType.Personal)
                         {
-                            await EmployeeService.CreatePersonalAccountAsync(PersonalAccount);    
+                            await EmployeeService.CreatePersonalAccountAsync(PersonalAccount);
                         }
                         else
                         {

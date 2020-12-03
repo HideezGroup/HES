@@ -4,7 +4,7 @@ namespace HES.Core.Models.Web.Accounts
 {
     public class AccountOtp
     {
-        [Display(Name = "OTP secret")]
+        [Display(Name = "OTP Secret")]
         public string OtpSecret { get; set; }
     }
 }

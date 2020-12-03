@@ -191,8 +191,7 @@ else
                             <div class="form-group">
                                 <label class="control-label text-gray">Login Type</label>
                                 <select class="form-control" @bind="PersonalAccount.LoginType">
-                                    <option selected value="@LoginType.WebApp">@EnumHelper.GetDisplayName(LoginType.WebApp)</option>
-                                    <option value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
+                                    <option selected value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
                                     <option value="@LoginType.Domain">@EnumHelper.GetDisplayName(LoginType.Domain)</option>
                                     <option value="@LoginType.AzureAD">@EnumHelper.GetDisplayName(LoginType.AzureAD)</option>
                                     <option value="@LoginType.Microsoft">@EnumHelper.GetDisplayName(LoginType.Microsoft)</option>
@@ -369,7 +368,7 @@ else
         }
         @if (WizardStep != WizardStep.Profile && WizardStep != WizardStep.Activation)
         {
-            <button type="button" class="btn btn-secondary mr-2" @onclick="Back">Back</button>
+            <button type="button" class="btn btn-secondary mr-1" @onclick="Back">Back</button>
         }
         <ButtonSpinner Class="btn btn-primary" Callback="Next" Text="@(WizardStep == WizardStep.Activation ? "Done" : WizardStep == WizardStep.Overview ? "Create" : "Next")" />
     </div>
