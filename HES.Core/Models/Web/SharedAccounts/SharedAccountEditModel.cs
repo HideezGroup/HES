@@ -53,8 +53,8 @@ namespace HES.Core.Models.Web.SharedAccounts
                     Login = account.Login.Replace(@".\", "");
                     break;
                 case LoginType.Domain:
-                    Login = Login.Split(@"\").LastOrDefault();
-                    Domain = Login.Split(@"\").FirstOrDefault();
+                    Login = account.Login.Split(@"\").LastOrDefault();
+                    Domain = account.Login.Split(@"\").FirstOrDefault();
                     break;
                 case LoginType.AzureAD:
                     Login = account.Login.Replace(@"AzureAD\", "");

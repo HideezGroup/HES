@@ -47,7 +47,7 @@ namespace HES.Core.Models.Web.Accounts
             EmployeeId = account.EmployeeId;
             Name = account.Name;
             Urls = account.Urls;
-            Apps = account.Apps;
+            Apps = account.Apps;            
             LoginType = account.LoginType;
 
             switch (LoginType)
@@ -59,8 +59,8 @@ namespace HES.Core.Models.Web.Accounts
                     Login = account.Login.Replace(@".\", "");
                     break;
                 case LoginType.Domain:
-                    Login = Login.Split(@"\").LastOrDefault();
-                    Domain = Login.Split(@"\").FirstOrDefault();
+                    Login = account.Login.Split(@"\").LastOrDefault();
+                    Domain = account.Login.Split(@"\").FirstOrDefault();
                     break;
                 case LoginType.AzureAD:
                     Login = account.Login.Replace(@"AzureAD\", "");
