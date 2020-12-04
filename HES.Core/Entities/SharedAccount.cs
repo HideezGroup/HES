@@ -15,7 +15,7 @@ namespace HES.Core.Entities
         [Display(Name = "Account Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Urls")]
+        [Display(Name = "URLs")]
         public string Urls { get; set; }
 
         [Display(Name = "Applications")]

@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
+﻿using HES.Core.Exceptions;
+using Hideez.SDK.Communication.Utils;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Hideez.SDK.Communication.Utils;
-using HES.Core.Exceptions;
 
 namespace HES.Core.Utilities
 {
@@ -18,7 +17,7 @@ namespace HES.Core.Utilities
             List<string> verifiedUrls = new List<string>();
             foreach (var url in urls.Split(";"))
             {
-                if (!UrlUtils.TryGetDomain(url, out string domain))
+                if (!UrlUtils.TryGetDomain(url.Trim(), out string domain))
                 {
                     throw new IncorrectUrlException($"Incorrect url.");
                 }
@@ -26,7 +25,7 @@ namespace HES.Core.Utilities
                 verifiedUrls.Add(domain);
             }
 
-            var result = string.Join(";", verifiedUrls.ToArray());
+            var result = string.Join("; ", verifiedUrls.ToArray());
             return result;
         }
 

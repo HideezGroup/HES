@@ -19,15 +19,15 @@ else
                 <FormLabel For="@(() => PersonalAccount.Name)" class="text-gray" />
                 <InputText @bind-Value="PersonalAccount.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => PersonalAccount.Name)" class="text-danger" />
-            </div>
+            </div>  
             <div class="form-group">
                 <FormLabel For="@(() => PersonalAccount.Urls)" class="text-gray" />
-                <InputText @bind-Value="PersonalAccount.Urls" class="form-control text-navyblue" />
+                <textarea @bind="PersonalAccount.Urls" rows="3" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => PersonalAccount.Urls)" class="text-danger" />
             </div>
             <div class="form-group">
                 <FormLabel For="@(() => PersonalAccount.Apps)" class="text-gray" />
-                <InputText @bind-Value="PersonalAccount.Apps" class="form-control text-navyblue" />
+                <textarea @bind="PersonalAccount.Apps" rows="3" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => PersonalAccount.Apps)" class="text-danger" />
             </div>
             <div class="form-group">

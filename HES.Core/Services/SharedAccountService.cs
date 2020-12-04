@@ -173,17 +173,18 @@ namespace HES.Core.Services
             var sharedAccount = new SharedAccount()
             {
                 Name = sharedAccountModel.Name,
-                Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, sharedAccountModel.GetLogin()),
                 Urls = Validation.VerifyUrls(sharedAccountModel.Urls),
+                Apps = sharedAccountModel.Apps,
+                Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, sharedAccountModel.GetLogin()),
                 LoginType = sharedAccountModel.LoginType,
                 Password = _dataProtectionService.Encrypt(sharedAccountModel.Password),
                 PasswordChangedAt = DateTime.UtcNow
             };
 
-            if (!string.IsNullOrWhiteSpace(sharedAccount.OtpSecret))
+            if (!string.IsNullOrWhiteSpace(sharedAccountModel.OtpSecret))
             {
-                Validation.VerifyOtpSecret(sharedAccount.OtpSecret);
-                sharedAccount.OtpSecret = _dataProtectionService.Encrypt(sharedAccount.OtpSecret);
+                Validation.VerifyOtpSecret(sharedAccountModel.OtpSecret);
+                sharedAccount.OtpSecret = _dataProtectionService.Encrypt(sharedAccountModel.OtpSecret);
                 sharedAccount.OtpSecretChangedAt = DateTime.UtcNow;
             }
 

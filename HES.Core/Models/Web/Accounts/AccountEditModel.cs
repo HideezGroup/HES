@@ -19,7 +19,7 @@ namespace HES.Core.Models.Web.Accounts
         [Display(Name = "Account Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Urls (separate by semicolon)")]
+        [Display(Name = "URLs (separate by semicolon)")]
         public string Urls { get; set; }
 
         [Display(Name = "Applications (separate by semicolon)")]

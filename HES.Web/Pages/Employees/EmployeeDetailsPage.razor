@@ -227,23 +227,10 @@
                                 }
                     </td>
                     <td>
-                        @if (context.Urls != null)
-                                {
-                                    foreach (var urls in context.Urls.Split(';'))
-                                    {
-                                <span style="white-space: pre-line">@urls</span>
-                                    }
-                                }
+                        @context.Urls
                     </td>
                     <td>
-                        @if (context.Apps != null)
-                                {
-                                    foreach (var apps in context.Apps.Split(';'))
-                                    {
-                                <span style="white-space: pre-line">@apps</span>
-
-                                    }
-                                }
+                        @context.Apps
                     </td>
                     <td>
                         @context.Login

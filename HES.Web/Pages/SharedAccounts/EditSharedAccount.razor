@@ -12,27 +12,27 @@ else
     }
     else
     {
-        <EditForm Model="Account" OnValidSubmit="EditAccountAsync">
+        <EditForm Model="SharedAccountEditModel" OnValidSubmit="EditAccountAsync">
             <DataAnnotationsValidator />
             <ValidationErrorMessage @ref="ValidationErrorMessage" />
             <div class="form-group">
-                <FormLabel For="@(() => Account.Name)" class="text-gray" />
-                <InputText @bind-Value="Account.Name" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => Account.Name)" class="text-danger" />
+                <FormLabel For="@(() => SharedAccountEditModel.Name)" class="text-gray" />
+                <InputText @bind-Value="SharedAccountEditModel.Name" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => SharedAccountEditModel.Name)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => Account.Urls)" class="text-gray" />
-                <InputText @bind-Value="Account.Urls" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => Account.Urls)" class="text-danger" />
+                <FormLabel For="@(() => SharedAccountEditModel.Urls)" class="text-gray" />
+                <textarea @bind="SharedAccountEditModel.Urls" rows="3" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => SharedAccountEditModel.Urls)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => Account.Apps)" class="text-gray" />
-                <InputText @bind-Value="Account.Apps" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => Account.Apps)" class="text-danger" />
+                <FormLabel For="@(() => SharedAccountEditModel.Apps)" class="text-gray" />
+                <textarea @bind="SharedAccountEditModel.Apps" rows="3" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => SharedAccountEditModel.Apps)" class="text-danger" />
             </div>
             <div class="form-group">
                 <label class="control-label text-gray">Login Type</label>
-                <select class="form-control" @bind="Account.LoginType">
+                <select class="form-control" @bind="SharedAccountEditModel.LoginType">
                     <option selected value="@LoginType.WebApp">@EnumHelper.GetDisplayName(LoginType.WebApp)</option>
                     <option value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
                     <option value="@LoginType.Domain">@EnumHelper.GetDisplayName(LoginType.Domain)</option>
@@ -40,45 +40,45 @@ else
                     <option value="@LoginType.Microsoft">@EnumHelper.GetDisplayName(LoginType.Microsoft)</option>
                 </select>
             </div>
-            @switch (Account.LoginType)
+            @switch (SharedAccountEditModel.LoginType)
             {
                 case LoginType.WebApp:
                     <div class="form-group">
-                        <FormLabel For="@(() => Account.Login)" class="text-gray" />
-                        <InputText @bind-Value="Account.Login" class="form-control text-navyblue" tabindex="4" />
-                        <ValidationMessage For="@(() => Account.Login)" class="text-danger" />
+                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <InputText @bind-Value="SharedAccountEditModel.Login" class="form-control text-navyblue" tabindex="4" />
+                        <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Local:
                     <div class="form-group">
-                        <FormLabel For="@(() => Account.Login)" class="text-gray" />
-                        <InputText @bind-Value="Account.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
-                        <ValidationMessage For="@(() => Account.Login)" class="text-danger" />
+                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
+                        <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Domain:
                     <div class="form-group">
-                        <FormLabel For="@(() => Account.Login)" class="text-gray" />
+                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
                         <div class="input-group">
-                            <input type="text" @bind="Account.Domain" placeholder="Domain" class="form-control" tabindex="4">
-                            <input type="text" @bind="Account.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
+                            <input type="text" @bind="SharedAccountEditModel.Domain" placeholder="Domain" class="form-control" tabindex="4">
+                            <input type="text" @bind="SharedAccountEditModel.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
                         </div>
-                        <ValidationMessage For="@(() => Account.Domain)" class="text-danger" />
-                        <ValidationMessage For="@(() => Account.Login)" class="text-danger" />
+                        <ValidationMessage For="@(() => SharedAccountEditModel.Domain)" class="text-danger" />
+                        <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.AzureAD:
                     <div class="form-group">
-                        <FormLabel For="@(() => Account.Login)" class="text-gray" />
-                        <InputText @bind-Value="Account.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
-                        <ValidationMessage For="@(() => Account.Login)" class="text-danger" />
+                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
+                        <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Microsoft:
                     <div class="form-group">
-                        <FormLabel For="@(() => Account.Login)" class="text-gray" />
-                        <InputText @bind-Value="Account.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
-                        <ValidationMessage For="@(() => Account.Login)" class="text-danger" />
+                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
+                        <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
             }

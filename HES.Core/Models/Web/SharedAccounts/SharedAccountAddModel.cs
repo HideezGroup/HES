@@ -10,10 +10,10 @@ namespace HES.Core.Models.Web.SharedAccounts
         [Display(Name = "Account Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Urls")]
+        [Display(Name = "URLs (separate by semicolon)")]
         public string Urls { get; set; }
 
-        [Display(Name = "Applications")]
+        [Display(Name = "Applications (separate by semicolon)")]
         public string Apps { get; set; }
 
         [Display(Name = "Login Type")]
