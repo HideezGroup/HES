@@ -96,7 +96,7 @@
                              SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
             <MainTableHeader Title="Type"
                              TitleWidth="8"
-                             SortColumn="@nameof(WorkstationEvent.Account.Type)"
+                             SortColumn="@nameof(WorkstationEvent.Account.AccountType)"
                              CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
                              CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
                              SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
@@ -137,7 +137,7 @@
                 @context.Account?.Name
             </td>
             <td>
-                @context.Account?.Type
+                @context.Account?.AccountType
             </td>
         </TableRow>
     </MainTable>

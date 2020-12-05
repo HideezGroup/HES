@@ -7,10 +7,19 @@ namespace HES.Core.Exceptions
     {
         None,
         // Employees
+        EmployeeNotFound,
         ActiveDirectoryUserNotFound,
 
         // Settings
         LdapSettingsNotSet,
+
+        // Accounts
+        AccountNotFound,
+        AccountExist,
+
+        // SharedAccounts
+        SharedAccountNotFound,
+        SharedAccountExist
     }
 
     public class HESException : Exception
@@ -18,8 +27,13 @@ namespace HES.Core.Exceptions
         private static readonly Dictionary<HESCode, string> Errors = new Dictionary<HESCode, string>()
         {
             { HESCode.None,  "Something went wrong." },
+            { HESCode.EmployeeNotFound,  "Employee not found." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
             { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
+            { HESCode.AccountNotFound,  "Account not found." },
+            { HESCode.AccountExist,  "Account with the same name and login exist." },
+            { HESCode.SharedAccountNotFound,  "Shared Account not found." },
+            { HESCode.SharedAccountExist,  "Shared Account with the same name and login exist." },
         };
 
         public HESCode Code { get; set; }

@@ -125,7 +125,7 @@ namespace HES.Core.Services
                 }
                 if (dataLoadingOptions.Filter.AccountType != null)
                 {
-                    query = query.Where(w => w.Account.Type == (AccountType)dataLoadingOptions.Filter.AccountType);
+                    query = query.Where(w => w.Account.AccountType == (AccountType)dataLoadingOptions.Filter.AccountType);
                 }
             }
 
@@ -180,8 +180,8 @@ namespace HES.Core.Services
                 case nameof(WorkstationEvent.Account):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Account.Name) : query.OrderByDescending(x => x.Account.Name);
                     break;
-                case nameof(WorkstationEvent.Account.Type):
-                    query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Account.Type) : query.OrderByDescending(x => x.Account.Type);
+                case nameof(WorkstationEvent.Account.AccountType):
+                    query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Account.AccountType) : query.OrderByDescending(x => x.Account.AccountType);
                     break;
             }
 
@@ -252,7 +252,7 @@ namespace HES.Core.Services
                 }
                 if (dataLoadingOptions.Filter.AccountType != null)
                 {
-                    query = query.Where(w => w.Account.Type == (AccountType)dataLoadingOptions.Filter.AccountType);
+                    query = query.Where(w => w.Account.AccountType == (AccountType)dataLoadingOptions.Filter.AccountType);
                 }
             }
 
@@ -397,7 +397,7 @@ namespace HES.Core.Services
                 }
                 if (dataLoadingOptions.Filter.AccountType != null)
                 {
-                    query = query.Where(w => w.Account.Type == (AccountType)dataLoadingOptions.Filter.AccountType);
+                    query = query.Where(w => w.Account.AccountType == (AccountType)dataLoadingOptions.Filter.AccountType);
                 }
                 if (dataLoadingOptions.Filter.Query != null)
                 {
@@ -452,8 +452,8 @@ namespace HES.Core.Services
                 case nameof(WorkstationSession.Account):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Account.Name) : query.OrderByDescending(x => x.Account.Name);
                     break;
-                case nameof(WorkstationSession.Account.Type):
-                    query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Account.Type) : query.OrderByDescending(x => x.Account.Type);
+                case nameof(WorkstationSession.Account.AccountType):
+                    query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Account.AccountType) : query.OrderByDescending(x => x.Account.AccountType);
                     break;
             }
 
@@ -516,7 +516,7 @@ namespace HES.Core.Services
                 }
                 if (dataLoadingOptions.Filter.AccountType != null)
                 {
-                    query = query.Where(w => w.Account.Type == (AccountType)dataLoadingOptions.Filter.AccountType);
+                    query = query.Where(w => w.Account.AccountType == (AccountType)dataLoadingOptions.Filter.AccountType);
                 }
                 if (dataLoadingOptions.Filter.Query != null)
                 {

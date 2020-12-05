@@ -4,7 +4,6 @@ using HES.Core.Exceptions;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
@@ -14,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
@@ -34,16 +32,10 @@ namespace HES.Web.Pages.Employees
         [Parameter] public string ConnectionId { get; set; }
 
         public Employee Employee { get; set; }
-        public PersonalAccount PersonalAccount { get; set; }
+        public AccountAddModel PersonalAccount { get; set; }
         public List<Template> Templates { get; set; }
-        public WorkstationAccountType WorkstationType { get; set; }
-        public WorkstationAccount WorkstationAccount { get; set; }
-        public WorkstationDomain WorkstationDomain { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ValidationErrorMessage WorkstationValidationErrorMessage { get; set; }
-        public LdapSettings LdapSettings { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
-        public ButtonSpinner ButtonSpinnerWorkstationAccount { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -55,12 +47,8 @@ namespace HES.Web.Pages.Employees
                 RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
                 Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);
-                LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
                 Templates = await TemplateService.GetTemplatesAsync();
-                WorkstationType = WorkstationAccountType.Local;
-                WorkstationAccount = new WorkstationAccount() { EmployeeId = EmployeeId };
-                WorkstationDomain = new WorkstationDomain() { EmployeeId = EmployeeId };
-                PersonalAccount = new PersonalAccount() { EmployeeId = EmployeeId };
+                PersonalAccount = new AccountAddModel() { EmployeeId = EmployeeId };
             }
             catch (Exception ex)
             {
@@ -95,50 +83,6 @@ namespace HES.Web.Pages.Employees
             catch (IncorrectOtpException ex)
             {
                 ValidationErrorMessage.DisplayError(nameof(PersonalAccount.OtpSecret), ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
-                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
-            }
-        }
-
-        private async Task CreateWorkstationAccountAsync()
-        {
-            try
-            {
-                await ButtonSpinnerWorkstationAccount.SpinAsync(async () =>
-                {
-                    switch (WorkstationType)
-                    {
-                        case WorkstationAccountType.Local:
-                        case WorkstationAccountType.Microsoft:
-                        case WorkstationAccountType.AzureAD:
-                            WorkstationAccount.Type = WorkstationType;
-                            await EmployeeService.CreateWorkstationAccountAsync(WorkstationAccount);
-                            break;
-                        case WorkstationAccountType.Domain:
-                            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                            {
-                                await EmployeeService.CreateWorkstationAccountAsync(WorkstationDomain);
-                                if (WorkstationDomain.UpdateActiveDirectoryPassword)
-                                    await LdapService.SetUserPasswordAsync(EmployeeId, WorkstationDomain.Password, LdapSettings);
-                                transactionScope.Complete();
-                            }
-                            break;
-                    }
-
-                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(EmployeeId));
-                    await Refresh.InvokeAsync(this);
-                    await ToastService.ShowToastAsync("Account created.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);
-                    await ModalDialogService.CloseAsync();
-                });
-            }
-            catch (AlreadyExistException ex)
-            {
-                WorkstationValidationErrorMessage.DisplayError(nameof(WorkstationAccount.Name), ex.Message);
             }
             catch (Exception ex)
             {

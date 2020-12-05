@@ -1,6 +1,6 @@
 ﻿@inherits OwningComponentBase
 
-@if (Account == null)
+@if (PersonalAccount == null)
 {
     <LoadingText />
 }
@@ -12,31 +12,75 @@ else
     }
     else
     {
-        <EditForm Model="Account" OnValidSubmit="EditAccountAsync">
+        <EditForm Model="PersonalAccount" OnValidSubmit="EditAccountAsync">
             <DataAnnotationsValidator />
             <ValidationErrorMessage @ref="ValidationErrorMessage" />
             <div class="form-group">
-                <FormLabel For="@(() => Account.Name)" class="text-gray" />
-                <InputText @bind-Value="Account.Name" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => Account.Name)" class="text-danger" />
+                <FormLabel For="@(() => PersonalAccount.Name)" class="text-gray" />
+                <InputText @bind-Value="PersonalAccount.Name" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => PersonalAccount.Name)" class="text-danger" />
+            </div>  
+            <div class="form-group">
+                <FormLabel For="@(() => PersonalAccount.Urls)" class="text-gray" />
+                <textarea @bind="PersonalAccount.Urls" rows="3" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => PersonalAccount.Urls)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => Account.Login)" class="text-gray" />
-                <InputText @bind-Value="Account.Login" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => Account.Login)" class="text-danger" />
+                <FormLabel For="@(() => PersonalAccount.Apps)" class="text-gray" />
+                <textarea @bind="PersonalAccount.Apps" rows="3" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => PersonalAccount.Apps)" class="text-danger" />
             </div>
-            @if (Account.Kind == AccountKind.WebApp)
+            <div class="form-group">
+                <label class="control-label text-gray">Login Type</label>
+                <select class="form-control" @bind="PersonalAccount.LoginType">
+                    <option selected value="@LoginType.WebApp">@EnumHelper.GetDisplayName(LoginType.WebApp)</option>
+                    <option value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
+                    <option value="@LoginType.Domain">@EnumHelper.GetDisplayName(LoginType.Domain)</option>
+                    <option value="@LoginType.AzureAD">@EnumHelper.GetDisplayName(LoginType.AzureAD)</option>
+                    <option value="@LoginType.Microsoft">@EnumHelper.GetDisplayName(LoginType.Microsoft)</option>
+                </select>
+            </div>
+            @switch (PersonalAccount.LoginType)
             {
-                <div class="form-group">
-                    <FormLabel For="@(() => Account.Urls)" class="text-gray" />
-                    <InputText @bind-Value="Account.Urls" class="form-control text-navyblue" />
-                    <ValidationMessage For="@(() => Account.Urls)" class="text-danger" />
-                </div>
-                <div class="form-group">
-                    <FormLabel For="@(() => Account.Apps)" class="text-gray" />
-                    <InputText @bind-Value="Account.Apps" class="form-control text-navyblue" />
-                    <ValidationMessage For="@(() => Account.Apps)" class="text-danger" />
-                </div>
+                case LoginType.WebApp:
+                    <div class="form-group">
+                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <InputText @bind-Value="PersonalAccount.Login" class="form-control text-navyblue" tabindex="4" />
+                        <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
+                    </div>
+                    break;
+                case LoginType.Local:
+                    <div class="form-group">
+                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <InputText @bind-Value="PersonalAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
+                        <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
+                    </div>
+                    break;
+                case LoginType.Domain:
+                    <div class="form-group">
+                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <div class="input-group">
+                            <input type="text" @bind="PersonalAccount.Domain" placeholder="Domain" class="form-control" tabindex="4">
+                            <input type="text" @bind="PersonalAccount.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
+                        </div>
+                        <ValidationMessage For="@(() => PersonalAccount.Domain)" class="text-danger" />
+                        <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
+                    </div>
+                    break;
+                case LoginType.AzureAD:
+                    <div class="form-group">
+                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <InputText @bind-Value="PersonalAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
+                        <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
+                    </div>
+                    break;
+                case LoginType.Microsoft:
+                    <div class="form-group">
+                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <InputText @bind-Value="PersonalAccount.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
+                        <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
+                    </div>
+                    break;
             }
             <div class="text-right">
                 <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CancelAsync())">Cancel</button>

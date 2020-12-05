@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Core.Models.Web.SharedAccounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
@@ -26,7 +27,8 @@ namespace HES.Web.Pages.SharedAccounts
         [Parameter] public string ConnectionId { get; set; }
         [Parameter] public string AccountId { get; set; }
 
-        public SharedAccount Account { get; set; }
+        public SharedAccount SharedAccount { get; set; }
+        public SharedAccountEditModel SharedAccountEditModel { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -41,15 +43,15 @@ namespace HES.Web.Pages.SharedAccounts
 
                 ModalDialogService.OnCancel += OnCancelAsync;
 
-                Account = await SharedAccountService.GetSharedAccountByIdAsync(AccountId);
-                if (Account == null)
+                SharedAccount = await SharedAccountService.GetSharedAccountByIdAsync(AccountId);
+                if (SharedAccount == null)
                     throw new Exception("Account not found");
 
-                EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
-                if (!EntityBeingEdited)
-                    MemoryCache.Set(Account.Id, Account);
+                SharedAccountEditModel = new SharedAccountEditModel().Initialize(SharedAccount);
 
-                Account.ConfirmPassword = Account.Password;
+                EntityBeingEdited = MemoryCache.TryGetValue(SharedAccount.Id, out object _);
+                if (!EntityBeingEdited)
+                    MemoryCache.Set(SharedAccount.Id, SharedAccount);
 
                 Initialized = true;
             }
@@ -67,7 +69,7 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 await ButtonSpinner.SpinAsync(async () =>
                 {
-                    var vaults = await SharedAccountService.EditSharedAccountAsync(Account);
+                    var vaults = await SharedAccountService.EditSharedAccountAsync(SharedAccountEditModel);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
                     await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
                     await ToastService.ShowToastAsync("Shared account updated.", ToastType.Success);
@@ -92,7 +94,7 @@ namespace HES.Web.Pages.SharedAccounts
 
         private async Task OnCancelAsync()
         {
-            await SharedAccountService.UnchangedAsync(Account);
+            await SharedAccountService.UnchangedAsync(SharedAccount);
         }
 
         public void Dispose()
@@ -100,7 +102,7 @@ namespace HES.Web.Pages.SharedAccounts
             ModalDialogService.OnCancel -= OnCancelAsync;
 
             if (!EntityBeingEdited)
-                MemoryCache.Remove(Account.Id);
+                MemoryCache.Remove(SharedAccountEditModel.Id);
         }
     }
 }

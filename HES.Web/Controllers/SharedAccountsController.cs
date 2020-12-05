@@ -73,12 +73,14 @@ namespace HES.Web.Controllers
             SharedAccount createdAccount;
             try
             {
-                var sharedAccount = new SharedAccount()
+                var sharedAccount = new SharedAccountAddModel()
                 {
                     Name = sharedAccountDto.Name,
                     Urls = sharedAccountDto.Urls,
                     Apps = sharedAccountDto.Apps,
+                    LoginType = sharedAccountDto.LoginType,
                     Login = sharedAccountDto.Login,
+                    Domain = sharedAccountDto.Domain,
                     Password = sharedAccountDto.Password,
                     OtpSecret = sharedAccountDto.OtpSecret
                 };
@@ -88,111 +90,6 @@ namespace HES.Web.Controllers
             catch (AlreadyExistException ex)
             {
                 return BadRequest(new { error = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(500, new { error = ex.Message });
-            }
-
-            return CreatedAtAction("GetSharedAccountById", new { id = createdAccount.Id }, createdAccount);
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<SharedAccount>> CreateSharedWorkstationLocalAccount(CreateWorkstationSharedAccountDto accountDto)
-        {
-            SharedAccount createdAccount;
-            try
-            {
-                var workstationAccount = new WorkstationSharedAccount()
-                {
-                    Name = accountDto.Name,
-                    UserName = accountDto.UserName,
-                    Password = accountDto.Password,
-                    Type = WorkstationAccountType.Local
-                };
-
-                createdAccount = await _sharedAccountService.CreateWorkstationSharedAccountAsync(workstationAccount);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(500, new { error = ex.Message });
-            }
-
-            return CreatedAtAction("GetSharedAccountById", new { id = createdAccount.Id }, createdAccount);
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<SharedAccount>> CreateSharedWorkstationDomainAccount(CreateWorkstationDomainSharedAccountDto accountDto)
-        {
-            SharedAccount createdAccount;
-            try
-            {
-                var workstationAccount = new WorkstationDomainSharedAccount()
-                {
-                    Name = accountDto.Name,
-                    UserName = accountDto.UserName,
-                    Domain = accountDto.Domain,
-                    Password = accountDto.Password,
-                    Type = WorkstationAccountType.Domain
-                };
-
-                createdAccount = await _sharedAccountService.CreateWorkstationSharedAccountAsync(workstationAccount);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(500, new { error = ex.Message });
-            }
-
-            return CreatedAtAction("GetSharedAccountById", new { id = createdAccount.Id }, createdAccount);
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<SharedAccount>> CreateSharedWorkstationMicrosoftAccount(CreateWorkstationSharedAccountDto accountDto)
-        {
-            SharedAccount createdAccount;
-            try
-            {
-                var workstationAccount = new WorkstationSharedAccount()
-                {
-                    Name = accountDto.Name,
-                    UserName = accountDto.UserName,
-                    Password = accountDto.Password,
-                    Type = WorkstationAccountType.Microsoft
-                };
-
-                createdAccount = await _sharedAccountService.CreateWorkstationSharedAccountAsync(workstationAccount);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(500, new { error = ex.Message });
-            }
-
-            return CreatedAtAction("GetSharedAccountById", new { id = createdAccount.Id }, createdAccount);
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<SharedAccount>> CreateSharedWorkstationAzureAdAccount(CreateWorkstationSharedAccountDto accountDto)
-        {
-            SharedAccount createdAccount;
-            try
-            {
-                var workstationAccount = new WorkstationSharedAccount()
-                {
-                    Name = accountDto.Name,
-                    UserName = accountDto.UserName,
-                    Password = accountDto.Password,
-                    Type = WorkstationAccountType.AzureAD
-                };
-
-                createdAccount = await _sharedAccountService.CreateWorkstationSharedAccountAsync(workstationAccount);
             }
             catch (Exception ex)
             {
@@ -215,13 +112,15 @@ namespace HES.Web.Controllers
 
             try
             {
-                var sharedAccount = new SharedAccount()
+                var sharedAccount = new SharedAccountEditModel()
                 {
                     Id = sharedAccountDto.Id,
                     Name = sharedAccountDto.Name,
                     Urls = sharedAccountDto.Urls,
                     Apps = sharedAccountDto.Apps,
-                    Login = sharedAccountDto.Login
+                    Login = sharedAccountDto.Login,
+                    LoginType = sharedAccountDto.LoginType,
+                    Domain = sharedAccountDto.Domain
                 };
 
                 var vaultIds = await _sharedAccountService.EditSharedAccountAsync(sharedAccount);

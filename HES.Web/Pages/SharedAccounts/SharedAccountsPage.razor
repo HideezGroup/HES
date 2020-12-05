@@ -22,13 +22,10 @@
                     <img class="icon-btn" src="/svg/icon-password.svg" />
                     Edit Password
                 </button>
-                @if (MainTableService.SelectedEntity.Kind != AccountKind.Workstation)
-                {
-                    <button type="button" @onclick="EditSharedAccountOTPAsync" class="btn btn-light border mx-1" title="Edit shared account OTP">
-                        <img class="icon-btn" src="/svg/icon-otp.svg" />
-                        Edit OTP
-                    </button>
-                }
+                <button type="button" @onclick="EditSharedAccountOTPAsync" class="btn btn-light border mx-1" title="Edit shared account OTP">
+                    <img class="icon-btn" src="/svg/icon-otp.svg" />
+                    Edit OTP
+                </button>
                 <button type="button" @onclick="DeleteSharedAccountAsync" class="btn btn-light border mx-1" title="Delete shared account">
                     <img class="icon-btn" src="/svg/icon-delete.svg" />
                     Delete
@@ -89,22 +86,10 @@
                 @context.Name
             </td>
             <td>
-                @if (!string.IsNullOrWhiteSpace(context.Urls))
-                    {
-                    @foreach (var url in context.Urls.Split(';'))
-                        {
-                        <span style="white-space: pre-line">@url</span>
-                        }
-                    }
+                @context.Urls
             </td>
             <td>
-                @if (!string.IsNullOrWhiteSpace(context.Apps))
-                    {
-                    @foreach (var app in context.Apps.Split(';'))
-                        {
-                        <span style="white-space: pre-line">@app</span>
-                        }
-                    }
+                @context.Apps
             </td>
             <td>
                 @context.Login
