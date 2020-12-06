@@ -2,6 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class SetAsWorkstationAccount : OwningComponentBase, IDisposable
+    public partial class SetAsWorkstationAccount : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
@@ -20,13 +21,12 @@ namespace HES.Web.Pages.Employees
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteAccount> Logger { get; set; }
-        [Inject] IHubContext<RefreshHub> HubContext { get; set; }
+        //[Inject] IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Account Account { get; set; }
         public bool EntityBeingEdited { get; set; }
-        public bool Initialized { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -43,7 +43,7 @@ namespace HES.Web.Pages.Employees
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Account.Id, Account);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -61,7 +61,8 @@ namespace HES.Web.Pages.Employees
                 var employee = await EmployeeService.GetEmployeeByIdAsync(Account.Employee.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(employee.Id));
                 await ToastService.ShowToastAsync("Account setted as primary.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

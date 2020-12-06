@@ -2,6 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class DeleteAccount : OwningComponentBase, IDisposable
+    public partial class DeleteAccount : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
@@ -22,7 +23,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public ILogger<DeleteAccount> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         public Account Account { get; set; }
         public bool EntityBeingEdited { get; set; }
 
@@ -56,7 +57,8 @@ namespace HES.Web.Pages.Employees
                 var account = await EmployeeService.DeleteAccountAsync(Account.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
                 await ToastService.ShowToastAsync("Account deleted.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

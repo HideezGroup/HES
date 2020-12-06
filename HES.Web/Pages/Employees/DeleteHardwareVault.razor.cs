@@ -2,6 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class DeleteHardwareVault : OwningComponentBase, IDisposable
+    public partial class DeleteHardwareVault : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
@@ -21,15 +22,15 @@ namespace HES.Web.Pages.Employees
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteHardwareVault> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
+        //[Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
+
         public HardwareVault HardwareVault { get; set; }
         public VaultStatusReason Reason { get; set; } = VaultStatusReason.Withdrawal;
         public bool IsNeedBackup { get; set; }
         public bool EntityBeingEdited { get; set; }
-        public bool Initialized { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -47,10 +48,11 @@ namespace HES.Web.Pages.Employees
                 if (!EntityBeingEdited)
                     MemoryCache.Set(HardwareVault.Id, HardwareVault);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
+                SetLoadFailed(ex.Message);
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
@@ -65,8 +67,10 @@ namespace HES.Web.Pages.Employees
                 await EmployeeService.RemoveHardwareVaultAsync(HardwareVault.Id, Reason, IsNeedBackup);
                 await Refresh.InvokeAsync(this);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultStatus(HardwareVault.Id);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, employeeId);
-                await HubContext.Clients.All.SendAsync(RefreshPage.HardwareVaultStateChanged, HardwareVault.Id);
+                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, employeeId);
+                await SynchronizationService.HardwareVaultStateChanged(HardwareVault.Id);
+                //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, employeeId);
+                //await HubContext.Clients.All.SendAsync(RefreshPage.HardwareVaultStateChanged, HardwareVault.Id);
                 await ToastService.ShowToastAsync("Vault removed.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }

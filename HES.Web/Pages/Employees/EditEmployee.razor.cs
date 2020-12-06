@@ -20,11 +20,12 @@ namespace HES.Web.Pages.Employees
     {
         public IEmployeeService EmployeeService { get; set; }
         public IOrgStructureService OrgStructureService { get; set; }
+        [Inject] public ISynchronizationService SynchronizationService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EditEmployee> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
+        //[Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string EmployeeId { get; set; }
         [Parameter] public string ConnectionId { get; set; }
 
@@ -96,7 +97,8 @@ namespace HES.Web.Pages.Employees
                 {
                     await EmployeeService.EditEmployeeAsync(Employee);
                     await ToastService.ShowToastAsync("Employee updated.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Employees);
+                    //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Employees);
+                    await SynchronizationService.UpdateEmployee(ConnectionId);
                     await ModalDialogService.CloseAsync();
                 });
             }

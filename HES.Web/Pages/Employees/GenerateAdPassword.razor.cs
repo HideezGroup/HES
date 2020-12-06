@@ -4,6 +4,7 @@ using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
 using HES.Core.Models.Web.AppSettings;
+using HES.Web.Components;
 using Hideez.SDK.Communication.Security;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
@@ -16,7 +17,7 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class GenerateAdPassword : OwningComponentBase, IDisposable
+    public partial class GenerateAdPassword : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IAccountService AccountService { get; set; }
@@ -27,9 +28,9 @@ namespace HES.Web.Pages.Employees
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<GenerateAdPassword> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
+        //[Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Account Account { get; set; }
         public LdapSettings LdapSettings { get; set; }
@@ -83,7 +84,8 @@ namespace HES.Web.Pages.Employees
 
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
                 await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

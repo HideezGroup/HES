@@ -4,6 +4,7 @@ using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.SharedAccounts;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class AddSharedAccount : OwningComponentBase
+    public partial class AddSharedAccount : HESComponentBase
     {
         public ISharedAccountService SheredAccountSevice { get; set; }
         public IEmployeeService EmployeeService { get; set; }
@@ -26,7 +27,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public ILogger<AddSharedAccount> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string EmployeeId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public List<SharedAccount> SharedAccounts { get; set; }
         public SharedAccount SelectedSharedAccount { get; set; }
@@ -55,7 +56,8 @@ namespace HES.Web.Pages.Employees
                 var employee = await EmployeeService.GetEmployeeByIdAsync(account.EmployeeId);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(employee.HardwareVaults.Select(x => x.Id).ToArray());
                 await ToastService.ShowToastAsync("Account added and will be recorded when the device is connected to the server.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);
+                //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);
+                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, EmployeeId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

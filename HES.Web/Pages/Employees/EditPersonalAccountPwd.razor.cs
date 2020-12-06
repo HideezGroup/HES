@@ -16,7 +16,7 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EditPersonalAccountPwd : OwningComponentBase, IDisposable
+    public partial class EditPersonalAccountPwd : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public ILdapService LdapService { get; set; }
@@ -28,7 +28,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public ILogger<EditPersonalAccountPwd> Logger { get; set; }
         [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Employee Employee { get; set; }
         public Account Account { get; set; }
@@ -37,7 +37,7 @@ namespace HES.Web.Pages.Employees
         public bool EntityBeingEdited { get; set; }
 
         private AccountPassword _accountPassword = new AccountPassword();
-        private bool _initialized;
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -60,7 +60,7 @@ namespace HES.Web.Pages.Employees
                 Employee = await EmployeeService.GetEmployeeByIdAsync(Account.EmployeeId);
                 LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
 
-                _initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -88,7 +88,8 @@ namespace HES.Web.Pages.Employees
 
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
                     await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                    //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                    await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
                     await ModalDialogService.CloseAsync();
                 });
             }

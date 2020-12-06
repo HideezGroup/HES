@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EditPersonalAccountOtp : OwningComponentBase, IDisposable
+    public partial class EditPersonalAccountOtp : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
@@ -23,9 +23,9 @@ namespace HES.Web.Pages.Employees
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EditPersonalAccountOtp> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
+        //[Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Account Account { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
@@ -69,7 +69,8 @@ namespace HES.Web.Pages.Employees
                     await EmployeeService.EditPersonalAccountOtpAsync(Account, _accountOtp);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
                     await ToastService.ShowToastAsync("Account OTP updated.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                    //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
+                    await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
                     await ModalDialogService.CloseAsync();
                 });
             }

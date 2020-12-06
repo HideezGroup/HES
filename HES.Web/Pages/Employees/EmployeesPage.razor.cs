@@ -15,6 +15,7 @@ namespace HES.Web.Pages.Employees
     {
         public IEmployeeService EmployeeService { get; set; }
         public IMainTableService<Employee, EmployeeFilter> MainTableService { get; set; }
+        [Inject] public ISynchronizationService SynchronizationService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -24,6 +25,7 @@ namespace HES.Web.Pages.Employees
         public bool Initialized { get; set; }
         public bool LoadFailed { get; set; }
         public string ErrorMessage { get; set; }
+        public string PageId { get; set; }
 
         private HubConnection hubConnection;
 
@@ -34,7 +36,9 @@ namespace HES.Web.Pages.Employees
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<Employee, EmployeeFilter>>();
 
-                await InitializeHubAsync();
+                InitializePageUpdate();
+
+                //await InitializeHubAsync();
                 await BreadcrumbsService.SetEmployees();
                 await MainTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, ModalDialogService, StateHasChanged, nameof(Employee.FullName));
 
@@ -47,6 +51,8 @@ namespace HES.Web.Pages.Employees
                 Logger.LogError(ex.Message);
             }
         }
+
+       
 
         //private async Task ImportEmployeesFromAdAsync()
         //{
@@ -96,8 +102,8 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditEmployee));
-                builder.AddAttribute(1, nameof(DeleteEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteEmployee.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(EditEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(2, nameof(EditEmployee.ConnectionId), PageId);
                 builder.CloseComponent();
             };
 
@@ -117,6 +123,25 @@ namespace HES.Web.Pages.Employees
             await MainTableService.ShowModalAsync("Delete Employee", body);
         }
 
+        private void InitializePageUpdate()
+        {
+            SynchronizationService.UpdateEmployeePage += UpdateEmployeePage;
+            PageId = Guid.NewGuid().ToString();
+        }
+
+        private async Task UpdateEmployeePage(string pageId, string userName)
+        {
+            if (PageId != pageId)
+            {
+                await InvokeAsync(async () =>
+                {
+                    await MainTableService.LoadTableDataAsync();
+                    await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                    StateHasChanged();
+                });
+            }
+        }
+
         private async Task InitializeHubAsync()
         {
             hubConnection = new HubConnectionBuilder()
@@ -134,9 +159,10 @@ namespace HES.Web.Pages.Employees
 
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
+            //if (hubConnection?.State == HubConnectionState.Connected)
+            //    hubConnection.DisposeAsync();
 
+            SynchronizationService.UpdateEmployeePage -= UpdateEmployeePage;
             MainTableService.Dispose();
         }
     }
