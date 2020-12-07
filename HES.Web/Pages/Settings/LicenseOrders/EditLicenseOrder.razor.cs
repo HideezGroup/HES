@@ -1,11 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.LicenseOrders;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,16 +13,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class EditLicenseOrder : OwningComponentBase, IDisposable
+    public partial class EditLicenseOrder : HESComponentBase, IDisposable
     {
         public ILicenseService LicenseService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public ILogger<EditLicenseOrder> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Inject] public ILogger<EditLicenseOrder> Logger { get; set; } 
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string LicenseOrderId { get; set; }
         public LicenseOrder LicenseOrder { get; set; }
 
@@ -34,8 +31,6 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
         private NewLicenseOrder _newLicenseOrder;
         private RenewLicenseOrder _renewLicenseOrder;
-        private bool _isBusy;
-        private bool _initialized;
 
         protected override async Task OnInitializedAsync()
         {
@@ -76,7 +71,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                     _renewLicenseOrder.HardwareVaults.ForEach(x => x.Checked = LicenseOrder.HardwareVaultLicenses.Any(d => d.HardwareVaultId == x.Id));
                 }
 
-                _initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -117,8 +112,8 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                     LicenseOrder.EndDate = _newLicenseOrder.EndDate.Date;
 
                     var checkedHardwareVaults = _newLicenseOrder.HardwareVaults.Where(x => x.Checked).ToList();
-                    await LicenseService.EditOrderAsync(LicenseOrder, checkedHardwareVaults);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Licenses);
+                    await LicenseService.EditOrderAsync(LicenseOrder, checkedHardwareVaults);                    
+                    await SynchronizationService.UpdateLicenses(ExceptPageId);
                     await ToastService.ShowToastAsync("Order created.", ToastType.Success);
                     await ModalDialogService.CloseAsync();
                 });
@@ -165,7 +160,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                     LicenseOrder.EndDate = _renewLicenseOrder.EndDate.Date;
 
                     await LicenseService.EditOrderAsync(LicenseOrder, checkedHardwareVaults);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Licenses);
+                    await SynchronizationService.UpdateLicenses(ExceptPageId);
                     await ToastService.ShowToastAsync("Order created.", ToastType.Success);
                     await ModalDialogService.CloseAsync();
                 });

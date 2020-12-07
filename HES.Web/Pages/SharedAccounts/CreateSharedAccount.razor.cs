@@ -1,13 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Accounts;
 using HES.Core.Models.Web.SharedAccounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class CreateSharedAccount : OwningComponentBase
+    public partial class CreateSharedAccount : HESComponentBase
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public ITemplateService TemplateService { get; set; }
@@ -25,8 +22,7 @@ namespace HES.Web.Pages.SharedAccounts
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateSharedAccount> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public SharedAccountAddModel SharedAccount { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
@@ -60,7 +56,7 @@ namespace HES.Web.Pages.SharedAccounts
                 {
                     await SharedAccountService.CreateSharedAccountAsync(SharedAccount);
                     await ToastService.ShowToastAsync("Account created.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
+                    await SynchronizationService.UpdateSharedAccounts(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

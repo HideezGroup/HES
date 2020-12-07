@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.LicenseOrders;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class LicenseOrdersPage : OwningComponentBase, IDisposable
+    public partial class LicenseOrdersPage : HESComponentBase, IDisposable
     {
         public ILicenseService LicenseService { get; set; }
         public IMainTableService<LicenseOrder, LicenseOrderFilter> MainTableService { get; set; }
@@ -20,13 +20,6 @@ namespace HES.Web.Pages.Settings.LicenseOrders
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<LicenseOrdersPage> Logger { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
-
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,18 +28,31 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<LicenseOrder, LicenseOrderFilter>>();
 
-                await InitializeHubAsync();
+                SynchronizationService.UpdateLicensesPage += UpdateLicensesPage;     
+                
                 await BreadcrumbsService.SetLicenseOrders();
                 await MainTableService.InitializeAsync(LicenseService.GetLicenseOrdersAsync, LicenseService.GetLicenseOrdersCountAsync, ModalDialogService, StateHasChanged, nameof(LicenseOrder.CreatedAt), ListSortDirection.Descending);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateLicensesPage(string exceptPageId, string userName)
+        {
+            if (PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {
+                await MainTableService.LoadTableDataAsync();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
         }
 
         private async Task CreateLicenseOrderAsync()
@@ -54,7 +60,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateLicenseOrder));
-                builder.AddAttribute(1, nameof(CreateLicenseOrder.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(CreateLicenseOrder.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -67,7 +73,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             {
                 builder.OpenComponent(0, typeof(SendLicenseOrder));
                 builder.AddAttribute(1, nameof(SendLicenseOrder.LicenseOrderId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(SendLicenseOrder.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(SendLicenseOrder.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -92,7 +98,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             {
                 builder.OpenComponent(0, typeof(EditLicenseOrder));
                 builder.AddAttribute(1, nameof(EditLicenseOrder.LicenseOrderId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditLicenseOrder.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(EditLicenseOrder.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -105,33 +111,16 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             {
                 builder.OpenComponent(0, typeof(DeleteLicenseOrder));
                 builder.AddAttribute(1, nameof(DeleteLicenseOrder.LicenseOrderId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteLicenseOrder.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(DeleteLicenseOrder.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
             await MainTableService.ShowModalAsync("Delete License Order", body);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On(RefreshPage.Licenses, async () =>
-            {
-                await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
-
+            SynchronizationService.UpdateLicensesPage -= UpdateLicensesPage;
             MainTableService.Dispose();
         }
     }

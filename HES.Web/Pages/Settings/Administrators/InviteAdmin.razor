@@ -1,4 +1,6 @@
-﻿<EditForm Model="Invitation" OnValidSubmit="InviteAdminAsync">
+﻿@inherits HESComponentBase
+
+<EditForm Model="Invitation" OnValidSubmit="InviteAdminAsync">
     <DataAnnotationsValidator />
     <ValidationErrorMessage @ref="ValidationErrorMessage" />
     <div class="form-group">

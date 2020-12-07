@@ -1,8 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,23 +12,17 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class PositionsTab : OwningComponentBase, IDisposable
+    public partial class PositionsTab : HESComponentBase, IDisposable
     {
         public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<PositionsTab> Logger { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public List<Position> Positions { get; set; }
         public string SearchText { get; set; } = string.Empty;
         public bool IsSortedAscending { get; set; } = true;
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,18 +30,32 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
 
-                await InitializeHubAsync();
+                SynchronizationService.UpdateOrgSructurePositionsPage += UpdateOrgSructurePositionsPage;
+ 
                 await BreadcrumbsService.SetOrgStructure();
                 await LoadPositionsAsync();
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateOrgSructurePositionsPage(string exceptPageId, string userName)
+        {
+            if (PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {
+                await LoadPositionsAsync();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
+
         }
 
         private string GetSortIcon()
@@ -87,7 +95,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreatePosition));
-                builder.AddAttribute(1, nameof(CreatePosition.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(CreatePosition.ExceptPageId), PageId);
                 builder.AddAttribute(2, nameof(CreatePosition.Refresh), EventCallback.Factory.Create(this, LoadPositionsAsync));
                 builder.CloseComponent();
             };
@@ -101,7 +109,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(EditPosition));
                 builder.AddAttribute(1, nameof(EditPosition.PositionId), position.Id);
-                builder.AddAttribute(2, nameof(EditPosition.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(EditPosition.ExceptPageId), PageId);
                 builder.AddAttribute(3, nameof(EditPosition.Refresh), EventCallback.Factory.Create(this, LoadPositionsAsync));
                 builder.CloseComponent();
             };
@@ -115,7 +123,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(DeletePosition));
                 builder.AddAttribute(1, nameof(DeletePosition.PositionId), position.Id);
-                builder.AddAttribute(2, nameof(DeletePosition.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(DeletePosition.ExceptPageId), PageId);
                 builder.AddAttribute(3, nameof(DeletePosition.Refresh), EventCallback.Factory.Create(this, LoadPositionsAsync));
                 builder.CloseComponent();
             };
@@ -123,25 +131,9 @@ namespace HES.Web.Pages.Settings.OrgStructure
             await ModalDialogService.ShowAsync("Delete Position", body);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On(RefreshPage.OrgSructurePositions, async () =>
-            {
-                await LoadPositionsAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
+            SynchronizationService.UpdateOrgSructurePositionsPage -= UpdateOrgSructurePositionsPage;
         }
     }
 }

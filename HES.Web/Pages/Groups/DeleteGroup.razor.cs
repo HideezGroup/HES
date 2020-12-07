@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,15 +11,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class DeleteGroup : OwningComponentBase, IDisposable
+    public partial class DeleteGroup : HESComponentBase, IDisposable
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<DeleteGroup> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string GroupId { get; set; }
 
         public Group Group { get; set; }
@@ -54,8 +52,8 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                await GroupService.DeleteGroupAsync(GroupId);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Groups);
+                await GroupService.DeleteGroupAsync(GroupId);               
+                await SynchronizationService.UpdateGroups(ExceptPageId);
                 await ToastService.ShowToastAsync("Group deleted.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }
@@ -64,7 +62,7 @@ namespace HES.Web.Pages.Groups
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
-            }         
+            }
         }
 
         public void Dispose()

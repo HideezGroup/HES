@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Group;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class GroupsPage : OwningComponentBase, IDisposable
+    public partial class GroupsPage : HESComponentBase, IDisposable
     {
         public IGroupService GroupService { get; set; }
         public IMainTableService<Group, GroupFilter> MainTableService { get; set; }
@@ -21,12 +21,6 @@ namespace HES.Web.Pages.Groups
         [Inject] public ILogger<GroupsPage> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
 
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
-
         protected override async Task OnInitializedAsync()
         {
             try
@@ -34,18 +28,31 @@ namespace HES.Web.Pages.Groups
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<Group, GroupFilter>>();
 
-                await InitializeHubAsync();
+                SynchronizationService.UpdateGroupsPage += UpdateGroupsPage;
+                    
                 await BreadcrumbsService.SetGroups();
                 await MainTableService.InitializeAsync(GroupService.GetGroupsAsync, GroupService.GetGroupsCountAsync, ModalDialogService, StateHasChanged, nameof(Group.Name));
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateGroupsPage(string exceptPageId, string userName)
+        {
+            if (PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {
+                await MainTableService.LoadTableDataAsync();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
         }
 
         private Task NavigateToGroupDetails()
@@ -59,7 +66,7 @@ namespace HES.Web.Pages.Groups
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddGroup));
-                builder.AddAttribute(1, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(1, "ExceptPageId", PageId);
                 builder.CloseComponent();
             };
 
@@ -71,7 +78,7 @@ namespace HES.Web.Pages.Groups
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateGroup));
-                builder.AddAttribute(1, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(1, "ExceptPageId", PageId);
                 builder.CloseComponent();
             };
 
@@ -84,7 +91,7 @@ namespace HES.Web.Pages.Groups
             {
                 builder.OpenComponent(0, typeof(EditGroup));
                 builder.AddAttribute(1, nameof(DeleteGroup.GroupId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(2, "ExceptPageId", PageId);
                 builder.CloseComponent();
             };
 
@@ -97,33 +104,16 @@ namespace HES.Web.Pages.Groups
             {
                 builder.OpenComponent(0, typeof(DeleteGroup));
                 builder.AddAttribute(1, nameof(DeleteGroup.GroupId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(2, "ExceptPageId", PageId);
                 builder.CloseComponent();
             };
 
             await ModalDialogService.ShowAsync("Delete group", body);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On(RefreshPage.Groups, async () =>
-            {
-                await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
-
+            SynchronizationService.UpdateGroupsPage -= UpdateGroupsPage;
             MainTableService.Dispose();
         }
     }

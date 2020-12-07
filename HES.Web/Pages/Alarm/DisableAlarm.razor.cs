@@ -1,19 +1,18 @@
-﻿using System;
+﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Entities;
 using HES.Core.Interfaces;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Identity;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using HES.Core.Hubs;
-using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Alarm
 {
-    public partial class DisableAlarm : OwningComponentBase
+    public partial class DisableAlarm : HESComponentBase
     {
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
         [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
@@ -21,8 +20,7 @@ namespace HES.Web.Pages.Alarm
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DisableAlarm> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback CallBack { get; set; }
 
         public string UserConfirmPassword { get; set; }
@@ -54,8 +52,8 @@ namespace HES.Web.Pages.Alarm
                 if (!checkPassword)
                     throw new Exception("Invalid password");
 
-                await RemoteWorkstationConnections.UnlockAllWorkstationsAsync(ApplicationUser.Email);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Alarm);
+                await RemoteWorkstationConnections.UnlockAllWorkstationsAsync(ApplicationUser.Email);            
+                await SynchronizationService.UpdateAlarm(ExceptPageId);
                 await CallBack.InvokeAsync(this);
                 await ToastService.ShowToastAsync("All workstations are unlocked.", ToastType.Success);
                 await ModalDialogService.CloseAsync();

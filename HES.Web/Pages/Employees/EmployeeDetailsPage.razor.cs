@@ -374,48 +374,8 @@ namespace HES.Web.Pages.Employees
 
         #endregion
 
-        //private async Task InitializeHubAsync()
-        //{
-        //    hubConnection = new HubConnectionBuilder()
-        //    .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-        //    .Build();
-
-        //    hubConnection.On<string>(RefreshPage.EmployeesDetails, async (employeeId) =>
-        //     {
-        //         if (employeeId != EmployeeId)
-        //             return;
-
-        //         await LoadEmployeeAsync();
-        //         await MainTableService.LoadTableDataAsync();
-        //         await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-        //     });
-
-        //    hubConnection.On<string>(RefreshPage.EmployeesDetailsVaultSynced, async (employeeId) =>
-        //    {
-        //        if (employeeId != EmployeeId)
-        //            return;
-
-        //        await LoadEmployeeAsync();
-        //        await ToastService.ShowToastAsync("Hardware vault sync completed.", ToastType.Notify);
-        //    });
-
-        //    hubConnection.On<string>(RefreshPage.EmployeesDetailsVaultState, async (employeeId) =>
-        //    {
-        //        if (employeeId != EmployeeId)
-        //            return;
-
-        //        await LoadEmployeeAsync();
-        //    });
-
-        //    await hubConnection.StartAsync();
-        //}
-
         public void Dispose()
-        {
-            //if (hubConnection?.State == HubConnectionState.Connected)
-            //    hubConnection.DisposeAsync();
-
-
+        {         
             SynchronizationService.UpdateEmployeeDetailsPage -= UpdateEmployeeDetailsPage;
             SynchronizationService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
 

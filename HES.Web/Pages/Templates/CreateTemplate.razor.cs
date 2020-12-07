@@ -1,11 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,14 +11,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class CreateTemplate : OwningComponentBase
+    public partial class CreateTemplate : HESComponentBase
     {
         ITemplateService TemplateService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<CreateTemplate> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Template Template { get; set; } = new Template();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
@@ -38,8 +35,8 @@ namespace HES.Web.Pages.Templates
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await TemplateService.CreateTmplateAsync(Template);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Templates);
                     await ToastService.ShowToastAsync("Template created.", ToastType.Success);
+                    await SynchronizationService.UpdateTemplates(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

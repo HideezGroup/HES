@@ -1,6 +1,7 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Services;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.DataProtection
 {
-    public partial class DataProtectionPage : ComponentBase, IDisposable
+    public partial class DataProtectionPage : HESComponentBase, IDisposable
     {
         [Inject] public IDataProtectionService DataProtectionService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
@@ -19,28 +20,34 @@ namespace HES.Web.Pages.Settings.DataProtection
         [Inject] public ILogger<DataProtectionPage> Logger { get; set; }
 
         public ProtectionStatus Status { get; set; }
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
+                SynchronizationService.UpdateDataProtectionPage += UpdateDataProtectionPage;
                 ProtectionStatus();
                 await BreadcrumbsService.SetDataProtection();
-                await InitializeHubAsync();
-
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateDataProtectionPage(string exceptPageId, string userName)
+        {
+            if (PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {
+                ProtectionStatus();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
         }
 
         private void ProtectionStatus()
@@ -55,7 +62,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             {
                 builder.OpenComponent(0, typeof(EnableDataProtection));
                 builder.AddAttribute(1, nameof(EnableDataProtection.Refresh), EventCallback.Factory.Create(this, ProtectionStatus));
-                builder.AddAttribute(2, nameof(EnableDataProtection.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(EnableDataProtection.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -68,7 +75,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             {
                 builder.OpenComponent(0, typeof(ChangeDataProtectionPassword));
                 builder.AddAttribute(1, nameof(ChangeDataProtectionPassword.Refresh), EventCallback.Factory.Create(this, ProtectionStatus));
-                builder.AddAttribute(2, nameof(ChangeDataProtectionPassword.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(ChangeDataProtectionPassword.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -81,32 +88,16 @@ namespace HES.Web.Pages.Settings.DataProtection
             {
                 builder.OpenComponent(0, typeof(DisableDataProtection));
                 builder.AddAttribute(1, nameof(DisableDataProtection.Refresh), EventCallback.Factory.Create(this, ProtectionStatus));
-                builder.AddAttribute(2, nameof(DisableDataProtection.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(DisableDataProtection.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
             await ModalDialogService.ShowAsync("Disable Data Protection", body, ModalDialogSize.Default);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On(RefreshPage.DataProtection, async () =>
-            {
-                ProtectionStatus();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
+            SynchronizationService.UpdateDataProtectionPage -= UpdateDataProtectionPage;
         }
     }
 }

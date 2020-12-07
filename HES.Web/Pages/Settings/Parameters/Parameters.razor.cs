@@ -1,9 +1,8 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.AppSettings;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,42 +11,46 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Parameters
 {
-    public partial class Parameters : OwningComponentBase, IDisposable
+    public partial class Parameters : HESComponentBase, IDisposable
     {
         public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<Parameters> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public LicensingSettings LicensingSettings { get; set; }
         public string DomainHost { get; set; }
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
+                SynchronizationService.UpdateParametersPage += UpdateParametersPage;
 
-                await InitializeHubAsync();
                 await BreadcrumbsService.SetParameters();
                 await LoadDataSettingsAsync();
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateParametersPage(string exceptPageId, string userName)
+        {
+            await InvokeAsync(async () =>
+            {
+                await LoadDataSettingsAsync();
+                StateHasChanged();
+
+                if (PageId != exceptPageId)
+                    await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+            });
         }
 
         private async Task LoadDataSettingsAsync()
@@ -72,7 +75,7 @@ namespace HES.Web.Pages.Settings.Parameters
             {
                 builder.OpenComponent(0, typeof(LicenseSettingsDialog));
                 builder.AddAttribute(1, nameof(LicenseSettingsDialog.LicensingSettings), LicensingSettings);
-                builder.AddAttribute(2, nameof(LicenseSettingsDialog.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(LicenseSettingsDialog.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -91,7 +94,7 @@ namespace HES.Web.Pages.Settings.Parameters
             {
                 builder.OpenComponent(0, typeof(LdapSettingsDialog));
                 builder.AddAttribute(1, nameof(LdapSettingsDialog.Host), DomainHost);
-                builder.AddAttribute(2, nameof(LdapSettingsDialog.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(LdapSettingsDialog.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -103,34 +106,16 @@ namespace HES.Web.Pages.Settings.Parameters
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteLdapCredentials));
-                builder.AddAttribute(1, nameof(DeleteLdapCredentials.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(DeleteLdapCredentials.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
             await ModalDialogService.ShowAsync("Delete", body);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On<string>(RefreshPage.Parameters, async (connectionId) =>
-            {
-                await LoadDataSettingsAsync();
-                StateHasChanged();
-                if (hubConnection.ConnectionId != connectionId)
-                    await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
+            SynchronizationService.UpdateParametersPage -= UpdateParametersPage;
         }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -21,7 +19,6 @@ namespace HES.Web.Pages.Employees
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteAccount> Logger { get; set; }
-        //[Inject] IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string AccountId { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
@@ -48,6 +45,7 @@ namespace HES.Web.Pages.Employees
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
             }
@@ -61,7 +59,6 @@ namespace HES.Web.Pages.Employees
                 var employee = await EmployeeService.GetEmployeeByIdAsync(Account.Employee.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(employee.Id));
                 await ToastService.ShowToastAsync("Account setted as primary.", ToastType.Success);
-                //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
                 await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
                 await ModalDialogService.CloseAsync();
             }

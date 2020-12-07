@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,14 +10,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Administrators
 {
-    public partial class DeleteAdministrator : OwningComponentBase
+    public partial class DeleteAdministrator : HESComponentBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DeleteAdministrator> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
@@ -46,7 +44,7 @@ namespace HES.Web.Pages.Settings.Administrators
             {
                 await ApplicationUserService.DeleteUserAsync(ApplicationUserId);
                 await ToastService.ShowToastAsync("Administrator deleted.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Administrators);
+                await SynchronizationService.UpdateAdministrators(ExceptPageId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

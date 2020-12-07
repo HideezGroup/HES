@@ -1,6 +1,5 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
@@ -8,7 +7,6 @@ using HES.Core.Models.Web.HardwareVaults;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
@@ -21,7 +19,7 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class CreateEmployee : OwningComponentBase
+    public partial class CreateEmployee : HESComponentBase
     {
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
@@ -33,8 +31,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IJSRuntime JsRuntime { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public List<HardwareVault> HardwareVaults { get; set; }
         public List<Company> Companies { get; set; }
@@ -44,7 +41,6 @@ namespace HES.Web.Pages.Employees
         public ValidationErrorMessage EmployeeValidationErrorMessage { get; set; }
         public AccountType AccountType { get; set; }
         public string WarningMessage { get; set; }
-        public bool Initialized { get; set; }
         public WizardStep WizardStep { get; set; }
         public Employee Employee { get; set; }
         public EditContext EmployeeContext { get; set; }
@@ -59,26 +55,36 @@ namespace HES.Web.Pages.Employees
 
         protected override async Task OnInitializedAsync()
         {
-            EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
-            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-            OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
-            SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
-            RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
+            try
+            {
+                EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+                HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+                OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
+                SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
-            Companies = await OrgStructureService.GetCompaniesAsync();
-            Departments = new List<Department>();
-            Positions = await OrgStructureService.GetPositionsAsync();
-            SharedAccounts = await SharedAccountService.GetAllSharedAccountsAsync();
-            SharedAccountId = SharedAccounts.FirstOrDefault()?.Id;
+                Companies = await OrgStructureService.GetCompaniesAsync();
+                Departments = new List<Department>();
+                Positions = await OrgStructureService.GetPositionsAsync();
+                SharedAccounts = await SharedAccountService.GetAllSharedAccountsAsync();
+                SharedAccountId = SharedAccounts.FirstOrDefault()?.Id;
 
-            await LoadHardwareVaultsAsync();
+                await LoadHardwareVaultsAsync();
 
-            Employee = new Employee() { Id = Guid.NewGuid().ToString() };
-            EmployeeContext = new EditContext(Employee);
-            PersonalAccount = new AccountAddModel { EmployeeId = Employee.Id, LoginType = LoginType.Local };
-            PersonalAccountContext = new EditContext(PersonalAccount);
+                Employee = new Employee() { Id = Guid.NewGuid().ToString() };
+                EmployeeContext = new EditContext(Employee);
+                PersonalAccount = new AccountAddModel { EmployeeId = Employee.Id, LoginType = LoginType.Local };
+                PersonalAccountContext = new EditContext(PersonalAccount);
 
-            Initialized = true;
+                SetInitialized();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogService.CloseAsync();
+            }
         }
 
         private async Task Next()
@@ -118,8 +124,8 @@ namespace HES.Web.Pages.Employees
                     await CreateAsync();
                     if (SelectedHardwareVault == null)
                     {
-                        await ToastService.ShowToastAsync("Employee created.", ToastType.Success);
-                        await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Employees);
+                        await ToastService.ShowToastAsync("Employee created.", ToastType.Success);         
+                        await SynchronizationService.UpdateEmployees(ExceptPageId);
                         await ModalDialogService.CloseAsync();
                         break;
                     }
@@ -129,7 +135,7 @@ namespace HES.Web.Pages.Employees
                     break;
                 case WizardStep.Activation:
                     await ToastService.ShowToastAsync("Employee created.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Employees);
+                    await SynchronizationService.UpdateEmployees(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                     break;
             }

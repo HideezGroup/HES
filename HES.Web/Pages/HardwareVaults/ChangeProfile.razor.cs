@@ -1,10 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,17 +13,16 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.HardwareVaults
 {
-    public partial class ChangeProfile : OwningComponentBase, IDisposable
+    public partial class ChangeProfile : HESComponentBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<ChangeProfile> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Inject] IToastService ToastService { get; set; }
+        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public HardwareVault HardwareVault { get; set; }
         public SelectList VaultProfiles { get; set; }
@@ -48,6 +46,8 @@ namespace HES.Web.Pages.HardwareVaults
 
                 VaultProfiles = new SelectList(await HardwareVaultService.GetProfilesAsync(), nameof(HardwareVaultProfile.Id), nameof(HardwareVaultProfile.Name));
                 SelectedVaultProfileId = VaultProfiles.First().Value;
+
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace HES.Web.Pages.HardwareVaults
                 await HardwareVaultService.ChangeVaultProfileAsync(HardwareVault.Id, SelectedVaultProfileId);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(HardwareVault.Id);
                 await ToastService.ShowToastAsync("Vault profile updated", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.HardwareVaults);
+                await SynchronizationService.UpdateHardwareVaults(ExceptPageId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

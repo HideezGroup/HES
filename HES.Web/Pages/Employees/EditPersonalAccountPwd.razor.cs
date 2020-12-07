@@ -1,12 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
 using HES.Core.Models.Web.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,7 +24,6 @@ namespace HES.Web.Pages.Employees
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EditPersonalAccountPwd> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string AccountId { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
@@ -88,7 +85,6 @@ namespace HES.Web.Pages.Employees
 
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
                     await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
-                    //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Account.EmployeeId);
                     await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
                     await ModalDialogService.CloseAsync();
                 });

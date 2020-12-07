@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,16 +11,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class SendLicenseOrder : OwningComponentBase, IDisposable
+    public partial class SendLicenseOrder : HESComponentBase, IDisposable
     {
         public ILicenseService LicenseService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<SendLicenseOrder> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string LicenseOrderId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public LicenseOrder LicenseOrder { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -53,7 +51,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             try
             {
                 await LicenseService.SendOrderAsync(LicenseOrder);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Licenses);
+                await SynchronizationService.UpdateLicenses(ExceptPageId);
                 await ToastService.ShowToastAsync("License order has been sent.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }

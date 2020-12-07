@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Employees;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,23 +11,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EmployeesPage : OwningComponentBase, IDisposable
+    public partial class EmployeesPage : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IMainTableService<Employee, EmployeeFilter> MainTableService { get; set; }
-        [Inject] public ISynchronizationService SynchronizationService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EmployeesPage> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
-
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-        public string PageId { get; set; }
-
-        private HubConnection hubConnection;
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,23 +28,20 @@ namespace HES.Web.Pages.Employees
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<Employee, EmployeeFilter>>();
 
-                InitializePageUpdate();
+                SynchronizationService.UpdateEmployeePage += UpdateEmployeePage;
 
-                //await InitializeHubAsync();
                 await BreadcrumbsService.SetEmployees();
                 await MainTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, ModalDialogService, StateHasChanged, nameof(Employee.FullName));
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
         }
 
-       
 
         //private async Task ImportEmployeesFromAdAsync()
         //{
@@ -71,7 +60,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SyncEmployeesWithAD));
-                builder.AddAttribute(1, nameof(SyncEmployeesWithAD.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(SyncEmployeesWithAD.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -91,7 +80,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateEmployee));
-                builder.AddAttribute(1, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(CreateEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
             await MainTableService.ShowModalAsync("Create Employee", body, ModalDialogSize.Large);
@@ -103,7 +92,7 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(EditEmployee));
                 builder.AddAttribute(1, nameof(EditEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditEmployee.ConnectionId), PageId);
+                builder.AddAttribute(2, nameof(EditEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -116,52 +105,28 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(DeleteEmployee));
                 builder.AddAttribute(1, nameof(DeleteEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteEmployee.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(DeleteEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
             await MainTableService.ShowModalAsync("Delete Employee", body);
         }
 
-        private void InitializePageUpdate()
+        private async Task UpdateEmployeePage(string exceptPageId, string userName)
         {
-            SynchronizationService.UpdateEmployeePage += UpdateEmployeePage;
-            PageId = Guid.NewGuid().ToString();
-        }
+            if (PageId == exceptPageId)
+                return;
 
-        private async Task UpdateEmployeePage(string pageId, string userName)
-        {
-            if (PageId != pageId)
-            {
-                await InvokeAsync(async () =>
-                {
-                    await MainTableService.LoadTableDataAsync();
-                    await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
-                    StateHasChanged();
-                });
-            }
-        }
-
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On(RefreshPage.Employees, async () =>
+            await InvokeAsync(async () =>
             {
                 await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
             });
-
-            await hubConnection.StartAsync();
         }
 
         public void Dispose()
         {
-            //if (hubConnection?.State == HubConnectionState.Connected)
-            //    hubConnection.DisposeAsync();
-
             SynchronizationService.UpdateEmployeePage -= UpdateEmployeePage;
             MainTableService.Dispose();
         }

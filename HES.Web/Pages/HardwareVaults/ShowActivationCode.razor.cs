@@ -1,6 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.HardwareVaults
 {
-    public partial class ShowActivationCode : OwningComponentBase
+    public partial class ShowActivationCode : HESComponentBase
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }

@@ -1,18 +1,16 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.AppUsers;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Administrators
 {
-    public partial class InviteAdmin : ComponentBase
+    public partial class InviteAdmin : HESComponentBase
     {
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }
@@ -20,8 +18,8 @@ namespace HES.Web.Pages.Settings.Administrators
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<InviteAdmin> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Invitation Invitation = new Invitation();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
@@ -35,8 +33,8 @@ namespace HES.Web.Pages.Settings.Administrators
                 {
                     var callBakcUrl = await ApplicationUserService.InviteAdministratorAsync(Invitation.Email, NavigationManager.BaseUri);
                     await EmailSenderService.SendUserInvitationAsync(Invitation.Email, callBakcUrl);
-                    await ToastService.ShowToastAsync("Administrator invited.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Administrators);
+                    await ToastService.ShowToastAsync("Administrator invited.", ToastType.Success);              
+                    await SynchronizationService.UpdateAdministrators(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

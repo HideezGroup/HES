@@ -1,11 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,18 +14,16 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EditEmployee : OwningComponentBase, IDisposable
+    public partial class EditEmployee : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public ISynchronizationService SynchronizationService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EditEmployee> Logger { get; set; }
-        //[Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string EmployeeId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Employee Employee { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
@@ -35,7 +31,6 @@ namespace HES.Web.Pages.Employees
         public List<Company> Companies { get; set; }
         public List<Department> Departments { get; set; }
         public List<Position> Positions { get; set; }
-        public bool Initialized { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -68,11 +63,12 @@ namespace HES.Web.Pages.Employees
 
                 Positions = await OrgStructureService.GetPositionsAsync();
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
             }
@@ -96,9 +92,8 @@ namespace HES.Web.Pages.Employees
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await EmployeeService.EditEmployeeAsync(Employee);
-                    await ToastService.ShowToastAsync("Employee updated.", ToastType.Success);
-                    //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Employees);
-                    await SynchronizationService.UpdateEmployee(ConnectionId);
+                    await ToastService.ShowToastAsync("Employee updated.", ToastType.Success);           
+                    await SynchronizationService.UpdateEmployees(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

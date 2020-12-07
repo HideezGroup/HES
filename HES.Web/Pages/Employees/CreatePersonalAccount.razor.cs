@@ -1,12 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,7 +24,6 @@ namespace HES.Web.Pages.Employees
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreatePersonalAccount> Logger { get; set; }
-        //[Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public string EmployeeId { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
@@ -49,10 +46,13 @@ namespace HES.Web.Pages.Employees
                 Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);
                 Templates = await TemplateService.GetTemplatesAsync();
                 PersonalAccount = new AccountAddModel() { EmployeeId = EmployeeId };
+
+                SetInitialized();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
             }
@@ -68,7 +68,6 @@ namespace HES.Web.Pages.Employees
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(EmployeeId));
                     await Refresh.InvokeAsync(this);
                     await ToastService.ShowToastAsync("Account created.", ToastType.Success);
-                    //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);
                     await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, EmployeeId);
                     await ModalDialogService.CloseAsync();
                 });

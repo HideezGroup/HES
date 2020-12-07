@@ -1,7 +1,7 @@
 ﻿@page "/Audit/WorkstationSessions"
 @page "/Audit/WorkstationSessions/{DashboardFilter}"
 @attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
-@inherits OwningComponentBase
+@inherits HESComponentBase
 
 @if (Initialized)
 {

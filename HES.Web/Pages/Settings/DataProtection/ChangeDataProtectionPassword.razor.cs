@@ -1,10 +1,8 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.DataProtection
 {
-    public partial class ChangeDataProtectionPassword : ComponentBase
+    public partial class ChangeDataProtectionPassword : HESComponentBase
     {
         public class CurrentPasswordModel
         {
@@ -38,9 +36,8 @@ namespace HES.Web.Pages.Settings.DataProtection
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DisableDataProtection> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
 
         public CurrentPasswordModel CurrentPassword { get; set; } = new CurrentPasswordModel();
@@ -56,6 +53,7 @@ namespace HES.Web.Pages.Settings.DataProtection
                     await DataProtectionService.ChangeProtectionPasswordAsync(CurrentPassword.OldPassword, CurrentPassword.NewPassword);
                     await Refresh.InvokeAsync(this);
                     await ToastService.ShowToastAsync("Data protection password updated.", ToastType.Success);
+                    await SynchronizationService.UpdateDataProtection(ExceptPageId);
                     Logger.LogInformation($"Data protection password updated by {authState.User.Identity.Name}");
                 });
             }
@@ -65,8 +63,7 @@ namespace HES.Web.Pages.Settings.DataProtection
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
             }
             finally
-            {
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.DataProtection);
+            {   
                 await ModalDialogService.CloseAsync();
             }
         }
