@@ -284,8 +284,7 @@ namespace HES.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<DeviceHub>("/deviceHub");
-                endpoints.MapHub<AppHub>("/appHub");
-                endpoints.MapHub<RefreshHub>("/refreshHub");
+                endpoints.MapHub<AppHub>("/appHub");           
                 endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");

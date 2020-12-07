@@ -25,7 +25,7 @@ namespace HES.Core.Hubs
         private readonly IEmployeeService _employeeService;
         private readonly ILicenseService _licenseService;
         private readonly IAppSettingsService _appSettingsService;
-        private readonly IHubContext<RefreshHub> _hubContext;
+        private readonly ISynchronizationService _synchronizationService;
         private readonly ILogger<AppHub> _logger;
 
         public AppHub(IRemoteDeviceConnectionsService remoteDeviceConnectionsService,
@@ -35,8 +35,8 @@ namespace HES.Core.Hubs
                       IHardwareVaultService hardwareVaultService,
                       IEmployeeService employeeService,
                       ILicenseService licenseService,
-                      IAppSettingsService appSettingsService,
-                      IHubContext<RefreshHub> hubContext,
+                      IAppSettingsService appSettingsService,                    
+                      ISynchronizationService synchronizationService,
                       ILogger<AppHub> logger)
         {
             _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
@@ -46,8 +46,8 @@ namespace HES.Core.Hubs
             _hardwareVaultService = hardwareVaultService;
             _employeeService = employeeService;
             _licenseService = licenseService;
-            _appSettingsService = appSettingsService;
-            _hubContext = hubContext;
+            _appSettingsService = appSettingsService;   
+            _synchronizationService = synchronizationService;
             _logger = logger;
         }
 
@@ -369,14 +369,8 @@ namespace HES.Core.Hubs
 
         private async Task InvokeVaultStateChangedAsync(string vaultId)
         {
-            // Update hardware vaults page
-            await _hubContext.Clients.All.SendAsync(RefreshPage.HardwareVaultStateChanged, vaultId);
-
-            // Update employee details page
-            var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
-
-            if (vault != null && vault?.EmployeeId != null)
-                await _hubContext.Clients.All.SendAsync(RefreshPage.EmployeesDetailsVaultState, vault.EmployeeId);
+            // Update
+            await _synchronizationService.HardwareVaultStateChanged(vaultId);
         }
 
         // Incoming request
