@@ -10,6 +10,9 @@ namespace HES.Core.Exceptions
         EmployeeNotFound,
         ActiveDirectoryUserNotFound,
 
+        // Hardware Vault
+        HardwareVaultNotFound,
+
         // Settings
         LdapSettingsNotSet,
 
@@ -29,6 +32,7 @@ namespace HES.Core.Exceptions
             { HESCode.None,  "Something went wrong." },
             { HESCode.EmployeeNotFound,  "Employee not found." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
+            { HESCode.HardwareVaultNotFound,  "Hardware Vault not found." },
             { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
             { HESCode.AccountNotFound,  "Account not found." },
             { HESCode.AccountExist,  "Account with the same name and login exist." },

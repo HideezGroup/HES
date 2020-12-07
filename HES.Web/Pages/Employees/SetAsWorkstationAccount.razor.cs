@@ -19,6 +19,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteAccount> Logger { get; set; }
+        [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public string AccountId { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
@@ -58,6 +59,7 @@ namespace HES.Web.Pages.Employees
                 await EmployeeService.SetAsPrimaryAccountAsync(Account.Employee.Id, Account.Id);
                 var employee = await EmployeeService.GetEmployeeByIdAsync(Account.Employee.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(employee.Id));
+                await Refresh.InvokeAsync(this);
                 await ToastService.ShowToastAsync("Account setted as primary.", ToastType.Success);
                 await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
                 await ModalDialogService.CloseAsync();

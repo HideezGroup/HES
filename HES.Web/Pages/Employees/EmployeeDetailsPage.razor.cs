@@ -80,7 +80,6 @@ namespace HES.Web.Pages.Employees
             await InvokeAsync(async () =>
             {
                 await LoadEmployeeAsync();
-                StateHasChanged();
             });
         }
 
@@ -172,7 +171,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddSoftwareVault));
-                builder.AddAttribute(1, "Employee", Employee);    
+                builder.AddAttribute(1, "Employee", Employee);        
                 builder.CloseComponent();
             };
 
@@ -204,6 +203,7 @@ namespace HES.Web.Pages.Employees
                 builder.OpenComponent(0, typeof(AddSharedAccount));
                 builder.AddAttribute(1, "EmployeeId", EmployeeId);  
                 builder.AddAttribute(2, nameof(AddSharedAccount.ExceptPageId), PageId);
+                builder.AddAttribute(3, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
                 builder.CloseComponent();
             };
 
@@ -219,6 +219,7 @@ namespace HES.Web.Pages.Employees
                 builder.OpenComponent(0, typeof(SetAsWorkstationAccount));
                 builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(SetAsWorkstationAccount.ExceptPageId), PageId);
+                builder.AddAttribute(3, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
                 builder.CloseComponent();
             };
 
