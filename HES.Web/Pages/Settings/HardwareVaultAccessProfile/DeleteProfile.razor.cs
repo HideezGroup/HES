@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,16 +11,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class DeleteProfile : OwningComponentBase, IDisposable
+    public partial class DeleteProfile : HESComponentBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteProfile> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string HardwareVaultProfileId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public HardwareVaultProfile AccessProfile { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -54,7 +52,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             {
                 await HardwareVaultService.DeleteProfileAsync(AccessProfile.Id);
                 await ToastService.ShowToastAsync("Hardware vault profile deleted.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.HardwareVaultProfiles);
+                await SynchronizationService.UpdateHardwareVaultProfiles(ExceptPageId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

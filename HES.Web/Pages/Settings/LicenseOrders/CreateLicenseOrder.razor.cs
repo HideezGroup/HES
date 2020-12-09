@@ -1,11 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.LicenseOrders;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,15 +12,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class CreateLicenseOrder : OwningComponentBase
+    public partial class CreateLicenseOrder : HESComponentBase
     {
         ILicenseService LicenseService { get; set; }
         IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<CreateLicenseOrder> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public ValidationErrorMessage ValidationErrorMessageNewOrder { get; set; }
         public ValidationErrorMessage ValidationErrorMessageRenewOrder { get; set; }
@@ -31,25 +28,32 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
         private NewLicenseOrder _newLicenseOrder;
         private RenewLicenseOrder _renewLicenseOrder;
-        private bool _isBusy;
-        private bool _initialized;
 
         protected override async Task OnInitializedAsync()
         {
-            LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
-            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-
-            _newLicenseOrder = new NewLicenseOrder()
+            try
             {
-                HardwareVaults = await HardwareVaultService.GetVaultsWithoutLicenseAsync()
-            };
+                LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
+                HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
 
-            _renewLicenseOrder = new RenewLicenseOrder()
+                _newLicenseOrder = new NewLicenseOrder()
+                {
+                    HardwareVaults = await HardwareVaultService.GetVaultsWithoutLicenseAsync()
+                };
+
+                _renewLicenseOrder = new RenewLicenseOrder()
+                {
+                    HardwareVaults = await HardwareVaultService.GetVaultsWithLicenseAsync()
+                };
+
+                SetInitialized();
+            }
+            catch (Exception ex)
             {
-                HardwareVaults = await HardwareVaultService.GetVaultsWithLicenseAsync()
-            };
-
-            _initialized = true;
+                Logger.LogError(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogService.CancelAsync();
+            }
         }
 
         private async Task CreateNewLicenseOrderAsync()
@@ -87,7 +91,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
                     var checkedHardwareVaults = _newLicenseOrder.HardwareVaults.Where(x => x.Checked).ToList();
                     await LicenseService.CreateOrderAsync(licenseOrder, checkedHardwareVaults);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Licenses);
+                    await SynchronizationService.UpdateLicenses(ExceptPageId);
                     await ToastService.ShowToastAsync("Order created.", ToastType.Success);
                     await ModalDialogService.CloseAsync();
                 });
@@ -137,7 +141,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                     };
 
                     await LicenseService.CreateOrderAsync(licenseOrder, checkedHardwareVaults);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Licenses);
+                    await SynchronizationService.UpdateLicenses(ExceptPageId);
                     await ToastService.ShowToastAsync("Order created.", ToastType.Success);
                     await ModalDialogService.CloseAsync();
                 });

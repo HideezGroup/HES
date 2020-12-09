@@ -1,12 +1,11 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.HardwareVaults;
 using HES.Core.Models.Web.Workstations;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class AddProximityVault : OwningComponentBase
+    public partial class AddProximityVault : HESComponentBase
     {
         IWorkstationService WorkstationService { get; set; }
         IHardwareVaultService HardwareVaultService { get; set; }
@@ -25,9 +24,8 @@ namespace HES.Web.Pages.Workstations
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<AddProximityVault> Logger { get; set; }
-        [Inject] IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string WorkstationId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public List<HardwareVault> HardwareVaults { get; set; }
         public HardwareVault SelectedHardwareVault { get; set; }
@@ -36,12 +34,24 @@ namespace HES.Web.Pages.Workstations
 
         protected override async Task OnInitializedAsync()
         {
-            WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
-            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-            RemoteWorkstationConnectionsService = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
+            try
+            {
+                WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
+                HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+                RemoteWorkstationConnectionsService = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
 
-            SearchText = string.Empty;
-            await LoadDataAsync();
+                SearchText = string.Empty;
+                await LoadDataAsync();
+
+                SetInitialized();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogService.CancelAsync();
+            }
         }
 
         public int TotalRecords { get; set; }
@@ -109,7 +119,7 @@ namespace HES.Web.Pages.Workstations
                 await WorkstationService.AddProximityVaultAsync(WorkstationId, SelectedHardwareVault.Id);
                 await RemoteWorkstationConnectionsService.UpdateProximitySettingsAsync(WorkstationId, await WorkstationService.GetProximitySettingsAsync(WorkstationId));
                 await ToastService.ShowToastAsync("Vault added", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.WorkstationsDetails, WorkstationId);
+                await SynchronizationService.UpdateWorkstationDetails(ExceptPageId, WorkstationId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

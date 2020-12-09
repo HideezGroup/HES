@@ -1,11 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.ActiveDirectory;
 using HES.Core.Models.Web.AppSettings;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class AddGroup : OwningComponentBase
+    public partial class AddGroup : HESComponentBase
     {
         public ILdapService LdapService { get; set; }
         public IGroupService GroupService { get; set; }
@@ -23,8 +22,7 @@ namespace HES.Web.Pages.Groups
         [Inject] public ILogger<AddGroup> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public List<ActiveDirectoryGroup> Groups { get; set; }
         public LdapSettings LdapSettings { get; set; }
@@ -34,7 +32,6 @@ namespace HES.Web.Pages.Groups
         public bool IsSortedAscending { get; set; } = true;
         public string CurrentSortColumn { get; set; } = nameof(Group.Name);
         public bool CreateEmployees { get; set; }
-        public bool Initialized { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -58,7 +55,7 @@ namespace HES.Web.Pages.Groups
                     await GetGroups(LdapSettings);
                 }
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -97,7 +94,7 @@ namespace HES.Web.Pages.Groups
 
                 await LdapService.AddGroupsAsync(Groups.Where(x => x.Checked).ToList(), CreateEmployees);
                 await ToastService.ShowToastAsync("Groups added.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Groups);
+                await SynchronizationService.UpdateGroups(ExceptPageId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

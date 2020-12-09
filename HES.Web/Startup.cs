@@ -112,6 +112,7 @@ namespace HES.Web
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
+            services.AddSingleton<ISynchronizationService, SynchronizationService>();
 
             services.AddHostedService<RemoveLogsHostedService>();
             services.AddHostedService<LicenseHostedService>();
@@ -283,8 +284,7 @@ namespace HES.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<DeviceHub>("/deviceHub");
-                endpoints.MapHub<AppHub>("/appHub");
-                endpoints.MapHub<RefreshHub>("/refreshHub");
+                endpoints.MapHub<AppHub>("/appHub");           
                 endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");

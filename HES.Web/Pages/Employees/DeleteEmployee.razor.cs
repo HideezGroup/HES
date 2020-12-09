@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,16 +11,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class DeleteEmployee : OwningComponentBase, IDisposable
+    public partial class DeleteEmployee : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteEmployee> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string EmployeeId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         public Employee Employee { get; set; }
 
         public bool EmployeeHasVault { get; set; }
@@ -59,7 +57,7 @@ namespace HES.Web.Pages.Employees
             try
             {
                 await EmployeeService.DeleteEmployeeAsync(Employee.Id);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Employees);
+                await SynchronizationService.UpdateEmployees(ExceptPageId);
                 await ToastService.ShowToastAsync("Employee removed.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }

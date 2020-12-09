@@ -1,26 +1,23 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class CreateDepartment : ComponentBase
+    public partial class CreateDepartment : HESComponentBase
     {
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateDepartment> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string CompanyId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
 
         public Department Department { get; set; }
@@ -41,7 +38,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                     await OrgStructureService.CreateDepartmentAsync(Department);
                     await ToastService.ShowToastAsync("Department created.", ToastType.Success);
                     await Refresh.InvokeAsync(this);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.OrgSructureCompanies);
+                    await SynchronizationService.UpdateOrgSructureCompanies(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

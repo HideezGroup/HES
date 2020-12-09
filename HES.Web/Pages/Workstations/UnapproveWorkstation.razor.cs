@@ -2,6 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class UnapproveWorkstation : OwningComponentBase, IDisposable
+    public partial class UnapproveWorkstation : HESComponentBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
@@ -20,13 +21,12 @@ namespace HES.Web.Pages.Workstations
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<UnapproveWorkstation> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string WorkstationId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Workstation Workstation { get; set; }
         public bool EntityBeingEdited { get; set; }
-        public bool Initialized { get; set; }
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -44,7 +44,7 @@ namespace HES.Web.Pages.Workstations
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Workstation.Id, Workstation);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -60,8 +60,8 @@ namespace HES.Web.Pages.Workstations
             {
                 await WorkstationService.UnapproveWorkstationAsync(Workstation.Id);
                 await RemoteWorkstationConnectionsService.UpdateWorkstationApprovedAsync(Workstation.Id, isApproved: false);
-                await ToastService.ShowToastAsync("Workstation unapproved.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Workstations);
+                await ToastService.ShowToastAsync("Workstation unapproved.", ToastType.Success);             
+                await SynchronizationService.UpdateWorkstations(ExceptPageId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

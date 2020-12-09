@@ -1,10 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,16 +11,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class EditProfile : OwningComponentBase, IDisposable
+    public partial class EditProfile : HESComponentBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditProfile> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string HardwareVaultProfileId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public HardwareVaultProfile AccessProfile { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
@@ -67,8 +64,8 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await HardwareVaultService.EditProfileAsync(AccessProfile);
-                    await ToastService.ShowToastAsync("Hardware vault profile updated.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.HardwareVaultProfiles);
+                    await ToastService.ShowToastAsync("Hardware vault profile updated.", ToastType.Success);            
+                    await SynchronizationService.UpdateHardwareVaultProfiles(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

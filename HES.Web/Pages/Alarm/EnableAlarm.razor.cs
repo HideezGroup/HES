@@ -1,11 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Alarm
 {
-    public partial class EnableAlarm : OwningComponentBase
+    public partial class EnableAlarm : HESComponentBase
     {
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
         [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
@@ -21,8 +20,7 @@ namespace HES.Web.Pages.Alarm
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EnableAlarm> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback CallBack { get; set; }
 
         private async Task EnableAlarmAsync()
@@ -42,8 +40,8 @@ namespace HES.Web.Pages.Alarm
                 {
                     await RemoteWorkstationConnections.LockAllWorkstationsAsync(userEmail);
                 }
-
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Alarm);
+                  
+                await SynchronizationService.UpdateAlarm(ExceptPageId);
                 await CallBack.InvokeAsync(this);
                 await ToastService.ShowToastAsync("All workstations are locked.", ToastType.Success);
                 await ModalDialogService.CloseAsync();

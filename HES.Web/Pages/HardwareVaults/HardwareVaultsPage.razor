@@ -1,7 +1,7 @@
 ﻿@page "/HardwareVaults"
 @page "/HardwareVaults/{DashboardFilter}"
 @attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
-@inherits OwningComponentBase
+@inherits HESComponentBase
 
 @if (Initialized)
 {

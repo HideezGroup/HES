@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using Hideez.SDK.Communication.PasswordManager;
@@ -22,7 +23,7 @@ namespace HES.Core.Services
         private readonly IDataProtectionService _dataProtectionService;
         private readonly ILdapService _ldapService;
         private readonly IAppSettingsService _appSettingsService;
-        private readonly IHubContext<RefreshHub> _hubContext;
+        private readonly ISynchronizationService _synchronizationService;
 
         public RemoteTaskService(IHardwareVaultService hardwareVaultService,
                                  IHardwareVaultTaskService hardwareVaultTaskService,
@@ -30,7 +31,7 @@ namespace HES.Core.Services
                                  IDataProtectionService dataProtectionService,
                                  ILdapService ldapService,
                                  IAppSettingsService appSettingsService,
-                                 IHubContext<RefreshHub> hubContext)
+                                 ISynchronizationService synchronizationService)
         {
             _hardwareVaultService = hardwareVaultService;
             _hardwareVaultTaskService = hardwareVaultTaskService;
@@ -38,7 +39,7 @@ namespace HES.Core.Services
             _dataProtectionService = dataProtectionService;
             _ldapService = ldapService;
             _appSettingsService = appSettingsService;
-            _hubContext = hubContext;
+            _synchronizationService = synchronizationService;
         }
 
         private async Task TaskCompleted(string taskId)
@@ -60,9 +61,6 @@ namespace HES.Core.Services
                     break;
             }
 
-            if (task.HardwareVaultId != null)
-                await _hubContext.Clients.All.SendAsync(RefreshPage.EmployeesDetailsVaultSynced, task.HardwareVault.EmployeeId);
-
             // Delete task
             await _hardwareVaultTaskService.DeleteTaskAsync(task);
         }
@@ -72,6 +70,8 @@ namespace HES.Core.Services
             _dataProtectionService.Validate();
 
             var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
+            if (vault == null)
+                throw new HESException(HESCode.HardwareVaultNotFound);
 
             // Tasks query 
             var query = _hardwareVaultTaskService
@@ -99,8 +99,9 @@ namespace HES.Core.Services
 
                 tasks = await query.ToListAsync();
             }
-    
+
             await _hardwareVaultService.UpdateNeedSyncAsync(vault, false);
+            await _synchronizationService.HardwareVaultStateChanged(vault.Id);
         }
 
         private async Task ExecuteRemoteTask(RemoteDevice remoteDevice, HardwareVaultTask task)
@@ -113,7 +114,7 @@ namespace HES.Core.Services
                         var ldapSettings = await _appSettingsService.GetLdapSettingsAsync();
                         if (ldapSettings?.Password == null)
                             throw new Exception("Active Directory Credentials Required"); // TODO use Communication.dll ex
-                        await _ldapService.SetUserPasswordAsync(task.HardwareVault.EmployeeId, task.Password, ldapSettings);         
+                        await _ldapService.SetUserPasswordAsync(task.HardwareVault.EmployeeId, task.Password, ldapSettings);
                     }
                     await AddAccountAsync(remoteDevice, task);
                     break;
@@ -209,7 +210,7 @@ namespace HES.Core.Services
         public async Task WipeVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
         {
             if (!remoteDevice.AccessLevel.IsLinkRequired)
-                await remoteDevice.Wipe(ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword)));    
+                await remoteDevice.Wipe(ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword)));
         }
 
         public void Dispose()
@@ -218,7 +219,7 @@ namespace HES.Core.Services
             _hardwareVaultTaskService.Dispose();
             _accountService.Dispose();
             _ldapService.Dispose();
-            _appSettingsService.Dispose();           
+            _appSettingsService.Dispose();
         }
     }
 }

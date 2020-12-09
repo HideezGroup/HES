@@ -1,6 +1,7 @@
 using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Hubs;
+using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,17 +18,17 @@ namespace HES.Web.Areas.Identity.Pages.Account
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IHubContext<RefreshHub> _hubContext;
+        private readonly ISynchronizationService _synchronizationService;
         private readonly ILogger<InviteModel> _logger;
 
         public InviteModel(UserManager<ApplicationUser> userManager,
                            SignInManager<ApplicationUser> signInManager,
-                           IHubContext<RefreshHub> hubContext,
+                           ISynchronizationService synchronizationService,
                            ILogger<InviteModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _hubContext = hubContext;
+            _synchronizationService = synchronizationService;
             _logger = logger;
         }
 
@@ -91,8 +92,8 @@ namespace HES.Web.Areas.Identity.Pages.Account
                 {
                     user.EmailConfirmed = true;
                     await _userManager.UpdateAsync(user);
-                    await _hubContext.Clients.All.SendAsync(RefreshPage.AdministratorsUpdated);
-                    _logger.LogInformation($"User {user} accepted the invitation.");         
+                    await _synchronizationService.UpdateAdministratorState();
+                    _logger.LogInformation($"User {user} accepted the invitation.");
                     return LocalRedirect("/");
                 }
             }

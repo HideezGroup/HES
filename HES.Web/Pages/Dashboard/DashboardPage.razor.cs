@@ -1,6 +1,7 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Dashboard;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Dashboard
 {
-    public partial class DashboardPage : OwningComponentBase, IDisposable
+    public partial class DashboardPage : HESComponentBase, IDisposable
     {
         public IDashboardService DashboardService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
@@ -22,10 +23,6 @@ namespace HES.Web.Pages.Dashboard
         public DashboardCard EmployeesCard { get; set; }
         public DashboardCard HardwareVaultsCard { get; set; }
         public DashboardCard WorkstationsCard { get; set; }
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
 
         protected override async Task OnInitializedAsync()
         {
@@ -42,13 +39,12 @@ namespace HES.Web.Pages.Dashboard
                 HardwareVaultsCard = await DashboardService.GetHardwareVaultsCardAsync();
                 WorkstationsCard = await DashboardService.GetWorkstationsCardAsync();
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
         }
 

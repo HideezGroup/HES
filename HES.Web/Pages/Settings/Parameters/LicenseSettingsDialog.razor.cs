@@ -1,25 +1,22 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Parameters
 {
-    public partial class LicenseSettingsDialog : ComponentBase
+    public partial class LicenseSettingsDialog : HESComponentBase
     {
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<LicenseSettingsDialog> Logger { get; set; }
         [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public LicensingSettings LicensingSettings { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
 
         public string InputType { get; private set; }
@@ -37,7 +34,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 {
                     await AppSettingsService.SetLicensingSettingsAsync(LicensingSettings);
                     await ToastService.ShowToastAsync("License settings updated.", ToastType.Success);
-                    await HubContext.Clients.All.SendAsync(RefreshPage.Parameters, ConnectionId);
+                    await SynchronizationService.UpdateParameters(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

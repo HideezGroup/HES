@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,21 +10,19 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class DeleteCompany : ComponentBase, IDisposable
+    public partial class DeleteCompany : HESComponentBase, IDisposable
     {
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteCompany> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string CompanyId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
 
         public Company Company { get; set; }
         public bool EntityBeingEdited { get; set; }
-        public bool Initialized { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -39,7 +36,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Company.Id, Company);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -54,8 +51,8 @@ namespace HES.Web.Pages.Settings.OrgStructure
             try
             {
                 await OrgStructureService.DeleteCompanyAsync(Company.Id);
-                await Refresh.InvokeAsync(this);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.OrgSructureCompanies);
+                await Refresh.InvokeAsync(this);     
+                await SynchronizationService.UpdateOrgSructureCompanies(ExceptPageId);
                 await ToastService.ShowToastAsync("Company removed.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }

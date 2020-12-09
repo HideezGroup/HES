@@ -1,5 +1,6 @@
 ﻿using HES.Core.Interfaces;
 using HES.Core.Models.Web.Audit;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,16 +9,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Audit.WorkstationSummaries
 {
-    public partial class ByDaysAndEmployeesTab : OwningComponentBase, IDisposable
+    public partial class ByDaysAndEmployeesTab : HESComponentBase, IDisposable
     {
         public IWorkstationAuditService WorkstationAuditService { get; set; }
         public IMainTableService<SummaryByDayAndEmployee, SummaryFilter> MainTableService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<ByDaysAndEmployeesTab> Logger { get; set; }
-
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -27,13 +24,12 @@ namespace HES.Web.Pages.Audit.WorkstationSummaries
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<SummaryByDayAndEmployee, SummaryFilter>>();
                 await MainTableService.InitializeAsync(WorkstationAuditService.GetSummaryByDayAndEmployeesAsync, WorkstationAuditService.GetSummaryByDayAndEmployeesCountAsync, ModalDialogService, StateHasChanged, nameof(SummaryByDayAndEmployee.Date), syncPropName: "Date");
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
         }
 

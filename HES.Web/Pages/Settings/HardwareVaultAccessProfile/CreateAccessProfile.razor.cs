@@ -13,14 +13,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class CreateAccessProfile : OwningComponentBase
+    public partial class CreateAccessProfile : HESComponentBase
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateAccessProfile> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public HardwareVaultProfile AccessProfile { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
@@ -49,8 +48,8 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await HardwareVaultService.CreateProfileAsync(AccessProfile);
-                    await ToastService.ShowToastAsync("Hardware vault profile created.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.HardwareVaultProfiles);
+                    await ToastService.ShowToastAsync("Hardware vault profile created.", ToastType.Success); 
+                    await SynchronizationService.UpdateHardwareVaultProfiles(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

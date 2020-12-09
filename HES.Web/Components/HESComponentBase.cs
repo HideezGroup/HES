@@ -1,0 +1,34 @@
+﻿using HES.Core.Interfaces;
+using Microsoft.AspNetCore.Components;
+using System;
+
+namespace HES.Web.Components
+{
+    public class HESComponentBase : OwningComponentBase
+    {
+        [Inject] protected ISynchronizationService SynchronizationService { get; set; }
+
+        public bool Initialized { get; private set; }
+        public string PageId { get; private set; }
+        public bool LoadFailed { get; private set; }
+        public string ErrorMessage { get; private set; }
+
+        protected void SetInitialized()
+        {
+            PageId = Guid.NewGuid().ToString();
+            Initialized = true;
+        }
+
+        protected void SetLoadFailed(string message)
+        {
+            ErrorMessage = message;
+            LoadFailed = true;
+        }
+
+        protected void SetErrorMessage(string message)
+        {
+            ErrorMessage = message;
+            StateHasChanged();
+        }
+    }
+}

@@ -1,11 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.ActiveDirectory;
 using HES.Core.Models.Web.AppSettings;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,7 +20,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public ILogger<AddEmployee> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
+        //[Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string ConnectionId { get; set; }
 
         public List<ActiveDirectoryUser> Users { get; set; }
@@ -96,7 +94,7 @@ namespace HES.Web.Pages.Employees
 
                 await LdapService.AddUsersAsync(Users.Where(x => x.Checked).ToList(), CreateAccounts, CreateGroups);
                 await ToastService.ShowToastAsync("Employee imported.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Employees);
+                //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Employees);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)
