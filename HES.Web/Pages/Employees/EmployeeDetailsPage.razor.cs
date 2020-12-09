@@ -113,7 +113,7 @@ namespace HES.Web.Pages.Employees
             }
             catch (HESException ex) when (ex.Code == HESCode.ActiveDirectoryUserNotFound)
             {
-                await EmployeeService.ToLocalUserAsync(Employee.Id);
+                await EmployeeService.RemoveFromHideezKeyOwnersAsync(Employee.Id);
                 Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId, asNoTracking: true);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Notify);
                 return false;

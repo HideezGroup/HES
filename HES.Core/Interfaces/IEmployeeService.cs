@@ -20,15 +20,13 @@ namespace HES.Core.Interfaces
         Task<Employee> GetEmployeeByIdAsync(string id, bool asNoTracking = false, bool byActiveDirectoryGuid = false);
         Task<IList<string>> GetEmployeeVaultIdsAsync(string employeeId);
         Task<Employee> ImportEmployeeAsync(Employee employee);
-        Task SyncEmployeeAsync(List<Employee> impotedEmployees);
-        Task SyncEmployeeAccessAsync(List<string> membersGuid);
         Task<Employee> CreateEmployeeAsync(Employee employee);
         Task<bool> CheckEmployeeNameExistAsync(Employee employee);
         Task EditEmployeeAsync(Employee employee);
         Task DeleteEmployeeAsync(string id);
         Task UpdateLastSeenAsync(string vaultId);
         Task UnchangedEmployeeAsync(Employee employee);
-        Task ToLocalUserAsync(string employeeId);
+        Task RemoveFromHideezKeyOwnersAsync(string employeeId);
 
         #endregion
 
