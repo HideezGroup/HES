@@ -20,7 +20,7 @@ namespace HES.Web.Pages.Alarm
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
-        [Inject] public ILogger Logger { get; set; }
+        [Inject] public ILogger<AlarmPage> Logger { get; set; }
 
         public AlarmState AlarmState { get; set; }
         public int WorkstationOnline { get; set; }

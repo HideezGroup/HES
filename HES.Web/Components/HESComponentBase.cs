@@ -1,11 +1,14 @@
 ﻿using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
+using System.Threading.Tasks;
 
 namespace HES.Web.Components
 {
     public class HESComponentBase : OwningComponentBase
     {
+        [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
         [Inject] protected ISynchronizationService SynchronizationService { get; set; }
 
         public bool Initialized { get; private set; }

@@ -3,7 +3,6 @@ using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,7 +14,6 @@ namespace HES.Web.Pages.Alarm
     public partial class DisableAlarm : HESComponentBase
     {
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
@@ -31,9 +29,9 @@ namespace HES.Web.Pages.Alarm
             try
             {
                 RemoteWorkstationConnections = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
-
-                var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                ApplicationUser = await UserManager.GetUserAsync(state.User);
+                ApplicationUser = await UserManager.GetUserAsync((await AuthenticationStateTask).User);
+                if (ApplicationUser == null)
+                    throw new Exception("Required relogin");
             }
             catch (Exception ex)
             {
@@ -52,7 +50,7 @@ namespace HES.Web.Pages.Alarm
                 if (!checkPassword)
                     throw new Exception("Invalid password");
 
-                await RemoteWorkstationConnections.UnlockAllWorkstationsAsync(ApplicationUser.Email);            
+                await RemoteWorkstationConnections.UnlockAllWorkstationsAsync(ApplicationUser.Email);
                 await SynchronizationService.UpdateAlarm(ExceptPageId);
                 await CallBack.InvokeAsync(this);
                 await ToastService.ShowToastAsync("All workstations are unlocked.", ToastType.Success);
