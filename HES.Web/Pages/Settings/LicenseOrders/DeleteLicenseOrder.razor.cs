@@ -51,7 +51,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             try
             {
                 await LicenseService.DeleteOrderAsync(LicenseOrder);
-                await SynchronizationService.UpdateHardwareVaultProfiles(ExceptPageId);
+                await SynchronizationService.UpdateLicenses(ExceptPageId);
                 await ToastService.ShowToastAsync("License order deleted.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }
