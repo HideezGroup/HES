@@ -1,10 +1,7 @@
-﻿using HES.Core.Entities;
-using HES.Core.Enums;
+﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,8 +12,6 @@ namespace HES.Web.Pages.Alarm
     public partial class EnableAlarm : HESComponentBase
     {
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EnableAlarm> Logger { get; set; }
@@ -32,15 +27,17 @@ namespace HES.Web.Pages.Alarm
                 string userEmail = null;
                 try
                 {
-                    var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                    var applicationUser = await UserManager.GetUserAsync(state.User);
-                    userEmail = applicationUser.Email;
+                    userEmail = (await AuthenticationStateTask).User.Identity.Name;             
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex.Message);
                 }
                 finally
                 {
                     await RemoteWorkstationConnections.LockAllWorkstationsAsync(userEmail);
                 }
-                  
+
                 await SynchronizationService.UpdateAlarm(ExceptPageId);
                 await CallBack.InvokeAsync(this);
                 await ToastService.ShowToastAsync("All workstations are locked.", ToastType.Success);
