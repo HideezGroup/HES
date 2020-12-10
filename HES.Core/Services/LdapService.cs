@@ -192,7 +192,8 @@ namespace HES.Core.Services
             {
                 //connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
                 //connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
-                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
+                //connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
                 connection.TrustAllCertificates();
                 connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
@@ -228,7 +229,8 @@ namespace HES.Core.Services
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
+                //connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
                 connection.TrustAllCertificates();
                 connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
@@ -376,7 +378,8 @@ namespace HES.Core.Services
         {           
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
+                //connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
                 connection.TrustAllCertificates();
                 connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
