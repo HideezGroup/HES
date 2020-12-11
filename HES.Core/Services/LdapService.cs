@@ -46,7 +46,9 @@ namespace HES.Core.Services
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 3268);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.TrustAllCertificates();
+                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 await connection.BindAsync(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
             }
         }
@@ -190,10 +192,7 @@ namespace HES.Core.Services
 
             using (var connection = new LdapConnection())
             {
-                //connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
-                //connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
-                connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
-                //connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
                 connection.TrustAllCertificates();
                 connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
@@ -229,8 +228,7 @@ namespace HES.Core.Services
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
-                //connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
                 connection.TrustAllCertificates();
                 connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
@@ -326,7 +324,7 @@ namespace HES.Core.Services
                                     }
                                 }
                             });
-                      
+
                             transactionScope.Complete();
                         }
 
@@ -334,7 +332,7 @@ namespace HES.Core.Services
                         await _emailSenderService.NotifyWhenPasswordAutoChangedAsync(employee, memberLogonName);
                     }
                     else
-                    {                       
+                    {
                         int maxPwdAge = ldapSettings.MaxPasswordAge;
                         var pwdLastSet = DateTime.FromFileTimeUtc(long.Parse(TryGetAttribute(member, "pwdLastSet")));
                         var currentPwdAge = DateTime.UtcNow.Subtract(pwdLastSet).TotalDays;
@@ -362,7 +360,7 @@ namespace HES.Core.Services
                                         }
                                     }
                                 });
-                              
+
                                 transactionScope.Complete();
                             }
 
@@ -375,11 +373,10 @@ namespace HES.Core.Services
         }
 
         public async Task SyncUsersAsync(LdapSettings ldapSettings)
-        {           
+        {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
-                //connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
                 connection.TrustAllCertificates();
                 connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
@@ -490,142 +487,6 @@ namespace HES.Core.Services
 
                 foreach (var employee in employeeRemovedFromGroup)
                     await _employeeService.RemoveFromHideezKeyOwnersAsync(employee.Id);
-
-                //List<Employee> employees = new List<Employee>();
-                //var membersGuid = new List<string>();
-
-                //foreach (var member in members)
-                //{
-                //    var activeDirectoryGuid = GetAttributeGUID(member);
-                //    var distinguishedName = TryGetAttribute(member, "distinguishedName");
-                //    var firstName = TryGetAttribute(member, "givenName");
-                //    var lastName = TryGetAttribute(member, "sn") ?? string.Empty;
-                //    var email = TryGetAttribute(member, "mail");
-                //    var phoneNumber = TryGetAttribute(member, "telephoneNumber");
-                //    DateTime.TryParseExact(TryGetAttribute(member, "whenChanged"), "yyyyMMddHHmmss.0Z", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime whenChanged);
-
-                //    membersGuid.Add(activeDirectoryGuid);
-
-                //    DirectoryEntry user;
-                //    string positionName;
-                //    string companyName;
-                //    string departmentName;
-
-                //    var employeeByGuid = await _employeeService
-                //        .EmployeeQuery()
-                //        .FirstOrDefaultAsync(x => x.ActiveDirectoryGuid == activeDirectoryGuid);
-
-                //    if (employeeByGuid != null)
-                //    {
-                //        if (whenChanged == employeeByGuid.WhenChanged)
-                //            continue;
-
-                //        employeeByGuid.FirstName = firstName;
-                //        employeeByGuid.LastName = lastName;
-                //        employeeByGuid.Email = email;
-                //        employeeByGuid.PhoneNumber = phoneNumber;
-                //        employeeByGuid.WhenChanged = whenChanged;
-
-                //        user = GetUserByGuid(ldapSettings, activeDirectoryGuid);
-
-                //        positionName = TryGetAttribute(user, "title");
-                //        if (positionName != null)
-                //        {
-                //            var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
-                //            employeeByGuid.PositionId = position.Id;
-                //        }
-                //        else
-                //        {
-                //            employeeByGuid.PositionId = null;
-                //        }
-
-                //        companyName = TryGetAttribute(user, "company");
-                //        departmentName = TryGetAttribute(user, "department");
-                //        if (companyName != null && departmentName != null)
-                //        {
-                //            var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
-                //            employeeByGuid.DepartmentId = department.Id;
-                //        }
-                //        else
-                //        {
-                //            employeeByGuid.DepartmentId = null;
-                //        }
-
-                //        await _employeeService.EditEmployeeAsync(employeeByGuid);
-                //        continue;
-                //    }
-
-                //    var employeeByName = await _employeeService
-                //        .EmployeeQuery()
-                //        .FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
-
-                //    if (employeeByName != null)
-                //    {
-                //        employeeByName.ActiveDirectoryGuid = activeDirectoryGuid;
-                //        employeeByName.Email = email;
-                //        employeeByName.PhoneNumber = phoneNumber;
-                //        employeeByName.WhenChanged = whenChanged;
-
-                //        user = GetUserByDn(ldapSettings, distinguishedName);
-
-                //        positionName = TryGetAttribute(user, "title");
-                //        if (positionName != null)
-                //        {
-                //            var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
-                //            employeeByName.PositionId = position.Id;
-                //        }
-                //        else
-                //        {
-                //            employeeByName.PositionId = null;
-                //        }
-
-                //        companyName = TryGetAttribute(user, "company");
-                //        departmentName = TryGetAttribute(user, "department");
-                //        if (companyName != null && departmentName != null)
-                //        {
-                //            var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
-                //            employeeByName.DepartmentId = department.Id;
-                //        }
-                //        else
-                //        {
-                //            employeeByName.DepartmentId = null;
-                //        }
-
-                //        await _employeeService.EditEmployeeAsync(employeeByName);
-                //        continue;
-                //    }
-
-                //    user = GetUserByDn(ldapSettings, distinguishedName);
-
-                //    var employee = new Employee()
-                //    {
-                //        FirstName = firstName,
-                //        LastName = lastName,
-                //        Email = email,
-                //        PhoneNumber = phoneNumber,
-                //        ActiveDirectoryGuid = activeDirectoryGuid,
-                //        WhenChanged = whenChanged
-                //    };
-
-                //    positionName = TryGetAttribute(user, "title");
-                //    if (positionName != null)
-                //    {
-                //        var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
-                //        employee.PositionId = position.Id;
-                //    }
-
-                //    companyName = TryGetAttribute(user, "company");
-                //    departmentName = TryGetAttribute(user, "department");
-                //    if (companyName != null && departmentName != null)
-                //    {
-                //        var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
-                //        employee.DepartmentId = department.Id;
-                //    }
-
-                //    await _employeeService.CreateEmployeeAsync(employee);
-                //}
-
-                //await _employeeService.SyncEmployeeAccessAsync(membersGuid);
             }
         }
 
@@ -654,8 +515,8 @@ namespace HES.Core.Services
                 var distinguishedName = TryGetAttribute(user.Entries.FirstOrDefault(), "distinguishedName");
 
                 var userExistInGroup = members.Any(x => x.Contains(distinguishedName));
-                if (userExistInGroup)          
-                    return;           
+                if (userExistInGroup)
+                    return;
 
                 await connection.ModifyAsync(new LdapModifyEntry
                 {
@@ -932,7 +793,9 @@ namespace HES.Core.Services
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 389);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.TrustAllCertificates();
+                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
 
                 var dn = GetDnFromHost(ldapSettings.Host);
@@ -943,19 +806,19 @@ namespace HES.Core.Services
             }
         }
 
-        private DirectoryEntry GetUserByDn(LdapSettings ldapSettings, string distinguishedName)
-        {
-            using (var connection = new LdapConnection())
-            {
-                connection.Connect(ldapSettings.Host, 389);
-                connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
+        //private DirectoryEntry GetUserByDn(LdapSettings ldapSettings, string distinguishedName)
+        //{
+        //    using (var connection = new LdapConnection())
+        //    {
+        //        connection.Connect(ldapSettings.Host, 389);
+        //        connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
 
-                var dn = GetDnFromHost(ldapSettings.Host);
-                var filter = $"(&(objectCategory=user)(distinguishedName={distinguishedName}))";
-                var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE));
-                return user.Entries.FirstOrDefault();
-            }
-        }
+        //        var dn = GetDnFromHost(ldapSettings.Host);
+        //        var filter = $"(&(objectCategory=user)(distinguishedName={distinguishedName}))";
+        //        var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE));
+        //        return user.Entries.FirstOrDefault();
+        //    }
+        //}
 
         #endregion
 
