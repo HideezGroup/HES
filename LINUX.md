@@ -19,7 +19,7 @@ The second part describes the installation already for a specific site, there ma
 * You need to know how to create and edit text files in Linux. For example, you can use vim editor. Here you can find a quick start guide on [how to use the Vim editor] (https://www.control-escape.com/linux/editing-vim.html).
 
 
-# 1. Preparation (Run once)
+# 1. Preparation
   
 ## 1.1 System Update
   
@@ -59,7 +59,7 @@ Reboot system
 SELinux status:                 disabled
 ```
 
-Remark. On production servers, usually after installation and verification, you need to re-enable SELinux and configure it accordingly.
+**Remark** On production servers, usually after installation and verification, you need to re-enable SELinux and configure it accordingly.
 
 ## 1.3 Install git
 
@@ -67,7 +67,7 @@ Remark. On production servers, usually after installation and verification, you 
 ```shell
   $ sudo yum install git -y
 ```
-*Ubuntu*
+*Ubuntu* (usually already installed)
 ```shell
   $ sudo apt install git -y
 ```
@@ -108,7 +108,7 @@ If the installation was successful, the output of the *dotnet* command will look
 
 ```shell
   $ dotnet --version
-3.1.304
+3.1.404
 ```
 
 ## 1.6 Install MySQL version 8:
@@ -197,7 +197,7 @@ After entering password, you will see MySQL console with a prompt:
   Enter password: 
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 13
-Server version: 8.0.19 MySQL Community Server - GPL
+Server version: 8.0.21 MySQL Community Server - GPL
 
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
 
@@ -209,6 +209,27 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql>
 ```
+
+### 1.6.4 Creating a MySQL user and database for Hideez Enterprise Server
+
+the following lines create a database "db", the user "user" with the password "<your_secret\>". Сhange <your secret\> to a strong password, otherwise you may get a password validator error
+ 
+```sql
+  ### CREATE DATABASE
+  mysql> CREATE DATABASE db;
+
+  ### CREATE USER ACCOUNT
+  mysql> CREATE USER 'user'@'127.0.0.1' IDENTIFIED BY '<your_secret>';
+
+  ### GRANT PERMISSIONS ON DATABASE
+  mysql> GRANT ALL ON db.* TO 'user'@'127.0.0.1';
+ 
+  ###  RELOAD PRIVILEGES
+  mysql> FLUSH PRIVILEGES;
+```
+
+You should remember database name, username and password, they will come in handy later.
+
 
 To exit from mySql console, press Ctrl+D.
 
@@ -232,19 +253,7 @@ To exit from mySql console, press Ctrl+D.
   $ sudo apt install nginx -y
 ```
 
-### 1.7.1 Modifying nginx.conf
-Open file /etc/nginx/nginx.conf and add the following text to the **http** section of the file.
-
-```conf
-...
-    map $http_upgrade $connection_upgrade {
-                default upgrade;
-                ''      close;
-    }
-...
-```
-
-### 1.7.2 Restart nginx
+### 1.7.1 Restart nginx (CentOS only)
 ```shell
   $ sudo systemctl restart nginx
 ```
@@ -291,42 +300,13 @@ After performing these steps, the server should already be accessible from the n
 
 Now the preparation is complete.
 
-# 2. Installing the HES server (can be repeated for each new virtual domain)
-
-## 2.1 Creating a MySQL user and database for Hideez Enterprise Server
-
-**Starting the MySQL Server Console**
-
-```shell
-  mysql -h localhost -u root -p
-```
-
-```sql
-  ### CREATE DATABASE
-  mysql> CREATE DATABASE <your_db>;
-
-  ### CREATE USER ACCOUNT
-  mysql> CREATE USER '<your_user>'@'127.0.0.1' IDENTIFIED BY '<your_secret>';
-
-  ### GRANT PERMISSIONS ON DATABASE
-  mysql> GRANT ALL ON <your_db>.* TO '<your_user>'@'127.0.0.1';
- 
-  ###  RELOAD PRIVILEGES
-  mysql> FLUSH PRIVILEGES;
-```
-
-You should remember database name, username and password, they will come in handy later.
-
-(Press Ctrl + D to exit the MySQL console)
+# 2. Installing the HES server
 
 ## 2.2 Installing Hideez Enterprise Server from source
 
-here is an example for the case when our site will be in folder "/opt/HES/<Name_Of_Domain\>". Replace <Name_Of_Domain\> with the domain name you chose.
-
 ```shell
   $ cd /opt/src/HES/HES.Web/
-  $ sudo dotnet publish -c release -v d -o "/opt/HES/<Name_Of_Domain>" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
-  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/<Name_Of_Domain>/Crypto.dll
+  $ sudo dotnet publish -c release -v d -o "/opt/HES" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
 ```
 **[Note]** Internet connection required to download NuGet packages
 
@@ -354,20 +334,17 @@ Several warnings may be issued during compilation. This is normal
 then you need to copy Crypto_linux.dll as follows
 
 ```shell
-  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/hideez.example.com/Crypto.dll
+  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/Crypto.dll
 ```
-
-in our example "/opt/HES/hideez.example.com" is a folder with a previously installed server. You will usually have another one
-
 
 ## 2.3 Hideez Enterprise Server Configuration
 
-Edit the file `/opt/HES/<Name_Of_Domain>/appsettings.json`
+Edit the file `/opt/HES/appsettings.json`
 
 ```json
   {
-  "ConnectionStrings": {
-    "DefaultConnection": "server=<mysql_server>;port=<mysql_port>;database=<your_db>;uid=<your_user>;pwd=<your_secret>"
+   "ConnectionStrings": {
+    "DefaultConnection": "server=127.0.0.1;port=3306;database=db;uid=user;pwd=<your_secret>"
   },
 
   "EmailSender": {
@@ -397,11 +374,9 @@ Edit the file `/opt/HES/<Name_Of_Domain>/appsettings.json`
   "AllowedHosts": "*"
 ```
 
-* **mysql_server** - MySQL server ip address (example `127.0.0.1`)
-* **mysql_port** - MySQL server port (example `3306`)
-* **your_db** - The name of your database on the MySQL server (example `hes`)
-* **your_user** - MySQL database username (example `admin`)
-* **your_secret** - Password from database user on MySQL server (example `password`)
+Replace the following settings in this file with your own:
+
+* **your_secret** - Password from database user on MySQL server
 * **email_host** - Host your email server (example `smtp.example.com`)
 * **email_port** - Port your email server (example `123`)
 * **your_email_name** - Your email name (example `user@example.com`)
@@ -428,24 +403,24 @@ on one computer, then it is necessary to specify different ports for each site i
 ```
 After saving the settings file, you can check that HES server is up and running:
 ```shell
-  $ cd /opt/HES/<Name_Of_Domain>
+  $ cd /opt/HES
   $ sudo ./HES.Web 
 ```
 If you do not see any errors within 1-2 minutes, it means that the HES server has been successfully configured and started
 Press Ctrl+C for exit
 ## 2.4 Daemonizing of Enterprise Server
-Create the file `/lib/systemd/system/HES-<Name_Of_Domain>.service`  with the following content (replace "<Name_Of_Domain\>" with you domain):
+Create the file `/lib/systemd/system/HES.service`  with the following content:
 ```conf
 [Unit]
-  Description=<Name_Of_Domain> Hideez Enterprise Service
+  Description=Hideez Enterprise Service
 
 [Service]
 
   User=root
   Group=root
 
-  WorkingDirectory=/opt/HES/<Name_Of_Domain>
-  ExecStart=/opt/HES/<Name_Of_Domain>/HES.Web 
+  WorkingDirectory=/opt/HES
+  ExecStart=/opt/HES/HES.Web 
   Restart=on-failure
   ExecReload=/bin/kill -HUP $MAINPID
   KillMode=process
@@ -457,39 +432,38 @@ Create the file `/lib/systemd/system/HES-<Name_Of_Domain>.service`  with the fol
 ```
 **enabling autostart:**
 ```shell
-  $ sudo systemctl enable HES-<Name_Of_Domain>.service
-  $ sudo systemctl restart HES-<Name_Of_Domain>.service
+  $ sudo systemctl enable HES.service
+  $ sudo systemctl restart HES.service
 ```
 You can verify that HES server is running with the command
 ```shell
-sudo systemctl status HES-<Name_Of_Domain>
+sudo systemctl status HES
 
 ```
 The output of the command should be something like this:
 ```shell
-● HES-hideez.example.com.service - hideez.example.com Hideez Enterprise Service
-   Loaded: loaded (/usr/lib/systemd/system/HES-hideez.example.com.service; enabled; vendor preset: disabled)
+● HES.service - Hideez Enterprise Service
+   Loaded: loaded (/usr/lib/systemd/system/HES.service; enabled; vendor preset: disabled)
    Active: active (running) since Wed 2020-03-25 09:05:04 UTC; 34s ago
  Main PID: 2964 (HES.Web)
-   CGroup: /system.slice/HES-hideez.example.com.service
-           └─2964 /opt/HES/hideez.example.com/HES.Web
+   CGroup: /system.slice/HES.service
+           └─2964 /opt/HES/HES.Web
 
-Mar 25 09:05:04 hesservertest systemd[1]: Started hideez.example.com Hideez Enterprise Service.
+Mar 25 09:05:04 hesservertest systemd[1]: Started Hideez Enterprise Service.
 ```
 ## 2.5 Reverse proxy configuration
 To access your server from the local network as well as from the Internet, you have to configure a reverse proxy.
 
- **Creating a Self-Signed SSL Certificate for Nginx**
+ **2.5.1 Creating a Self-Signed SSL Certificate for Nginx**
 
  
 **Note. For a "real" site, you should take care of acquiring a certificate from a certificate authority.
  For self-signed certificate, browser will alert you that site has security issues.**
 
- Replace <Name_Of_Domain> with you domain name
- (when generating a certificate, answer a few simple questions, of which Common Name (CN) will be important - here be the name of your site, in our example it is "hideez.example.com") 
+ When generating a certificate, answer a few simple questions, of which Common Name (CN) will be important - here be the name of your site, in our example it is "hideez.example.com"
 ```shell
  $ sudo mkdir /etc/nginx/certs
- $ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/<Name_Of_Domain>.key -out /etc/nginx/certs/<Name_Of_Domain>.crt
+ $ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/hes.key -out /etc/nginx/certs/hes.crt
 ```
 
 ```shell
@@ -502,31 +476,59 @@ Common Name (e.g. server FQDN or YOUR name) []:hideez.example.com
 Email Address []:.
 ```
 
+**2.5.2 Virtual site configuration on Nginx reverse proxy (modifying nginx.conf)**
 
-**Virtual site configuration on Nginx reverse proxy**
+Open file `/etc/nginx/nginx.conf` and edit it to the next text
 
-You can configure virtual sites in the **http** section of /etc/nginx/nginx.conf or by creating separate configuration files. 
+*CentOS 7*
 
-In this example, we will add new sections to `/etc/nginx/nginx.conf` :
 ```conf
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
 
- # redirect all traffic to https
- server {
-          server_name <Name_Of_Domain>;
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+
+    map $http_upgrade $connection_upgrade {
+                default Upgrade;
+                ''      close;
+        }
+
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+    include /etc/nginx/conf.d/*.conf;
+    # redirect all traffic to https
+   server {
           listen 80;
-          listen [::]:80;
           return 301 https://$host$request_uri;
-    }
-
-  server {
-          server_name <Name_Of_Domain>;
-          listen [::]:443 ssl ;
+    } 
+    
+   server {
           listen 443 ssl;
-          ssl_certificate "certs/<Name_Of_Domain>.crt";
-          ssl_certificate_key "certs/<Name_Of_Domain>.key";
-
+          ssl_certificate "certs/hes.crt";
+          ssl_certificate_key "certs/hes.key";
           location / {
-                 proxy_pass https://localhost:5001;
+                 proxy_pass http://localhost:5000;
                  proxy_http_version 1.1;
                  proxy_set_header Upgrade $http_upgrade;
                  proxy_set_header  Connection $connection_upgrade;
@@ -536,15 +538,119 @@ In this example, we will add new sections to `/etc/nginx/nginx.conf` :
                  proxy_set_header X-Forwarded-Proto $scheme;
           }
 
-    }
-
+    }    
+    
+ }
 
 ```
 
-* Replace <Name_Of_Domain\> with you domain name
-* Port numbers should match the settings specified in /opt/HES/<Name_Of_Domain>/appsettings.json (defauls is 5000 for http  and 5001 for https)
-* note we added a map directive with the "connection_upgrade" variable declaration during the initial nginx configuration
+*Ubuntu 18*
+```conf
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
 
+events {
+        worker_connections 768;
+        # multi_accept on;
+}
+
+http {
+
+        ##  
+        # HES
+        map $http_upgrade $connection_upgrade {
+                default upgrade;
+                ''      close;
+        }
+        ##
+
+        ##
+        # Basic Settings
+        ##
+
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+        types_hash_max_size 2048;
+        # server_tokens off;
+
+        # server_names_hash_bucket_size 64;
+        # server_name_in_redirect off;
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        ##
+        # SSL Settings
+        ##
+
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+        ssl_prefer_server_ciphers on;
+                ##
+        # Logging Settings
+        ##
+
+        access_log /var/log/nginx/access.log;
+        error_log /var/log/nginx/error.log;
+
+        ##
+        # Gzip Settings
+        ##
+
+        gzip on;
+
+        # gzip_vary on;
+        # gzip_proxied any;
+        # gzip_comp_level 6;
+        # gzip_buffers 16 8k;
+        # gzip_http_version 1.1;
+        # gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+        ##
+        # Virtual Host Configs
+        ##
+
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+
+
+    ##
+    # HES
+
+   server {
+          listen 80;
+          # redirect all traffic to https
+          return 301 https://$host$request_uri;
+    } 
+    
+   server {
+          listen 443 ssl;
+          ssl_certificate "certs/hes.crt";
+          ssl_certificate_key "certs/hes.key";
+          location / {
+                 proxy_pass http://localhost:5000;
+                 proxy_http_version 1.1;
+                 proxy_set_header Upgrade $http_upgrade;
+                 proxy_set_header  Connection $connection_upgrade;
+                 proxy_set_header Host $host;
+                 proxy_cache_bypass $http_upgrade;
+                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                 proxy_set_header X-Forwarded-Proto $scheme;
+          }
+
+    }    
+
+}
+
+```
+
+
+* Replace <Name_Of_Domain\> with you domain name
+* Port numbers ( proxy_pass http://localhost:5000; ) should match the settings specified in /opt/HES/appsettings.json (defauls is 5000 for http  and 5001 for https)
+  
 After saving the file, it is recommended to check nginx settings:
 ```shell
   $ sudo nginx -t
@@ -555,6 +661,13 @@ nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 Otherwise, you should carefully review the settings and correct the errors.
+
+**2.5.3 disable the nginx default page**
+*Ubuntu 18*
+  
+```shell
+  $ sudo rm /etc/nginx/sites-enabled/default
+```
 
 **Restarting Nginx and checking its status**
 
@@ -580,7 +693,6 @@ Note: for a self-signed certificate, it should be a warning that your connection
 Setup is complete. The server should be accessible in a browser at the address `https://<Name_Of_Domain>`
 
 
-
 ## Updating HES
 
 ### 1. Updating sources from GitHub repository
@@ -591,47 +703,46 @@ Setup is complete. The server should be accessible in a browser at the address `
 ```
 
 ### 2. Back up MySQL Database (optional)
-
+the following command will create a copy of the database in file db.sql in your home directory:
 ```shell
-  $ sudo mkdir /opt/backups
-  $ cd /opt/backups
-  $ sudo mysqldump -u <your_user> -p<your_secret> <your_db> | gzip -c > <your_db>.sql.gz
+  $ sudo mysqldump -uroot -p<MySqlroot_password>  db > ~/db.sql
 ```
+change <MySqlroot_password> with You real password
 
 ### 3. Back up Hideez Enterprise Server
 
 ```shell
-  $ sudo systemctl stop HES-<Name_Of_Domain>
-  $ sudo mv /opt/HES/<Name_Of_Domain> /opt/HES/<Name_Of_Domain>.old
+  $ sudo systemctl stop HES
+  $ sudo mv /opt/HES /opt/HES.old
 ```
 
 ### 4. Build a new version of Hideez Enterprise Server from sources
 
 ```shell
   $ cd /opt/src/HES/HES.Web/
-  $ sudo dotnet publish -c release -v d -o "/opt/HES/<Name_Of_Domain>" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
-  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/<Name_Of_Domain>/Crypto.dll
+  $ sudo dotnet publish -c release -v d -o "/opt/HES" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
+  $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/Crypto.dll
 ```
 
 ### 5. Restore your configuration file
 
 ```shell
-  $ sudo cp /opt/HES/<Name_Of_Domain>.old/appsettings.json /opt/HES/<Name_Of_Domain>/appsettings.json
+  $ sudo cp /opt/HES.old/appsettings.json /opt/HES/appsettings.json
 ```
 
 ### 6. Restart Hideez Enterprise Server and check its status
 
 ```shell
-  $ sudo systemctl restart HES-<Name_Of_Domain>
-  $ sudo systemctl status HES-<Name_Of_Domain>
+  $ sudo systemctl restart HES
+  $ sudo systemctl status HES
 
   
-  ● HES-hideez.example.com.service - hideez.example.com Hideez Enterprise Service
+  ● HES-hideez.example.com.service - Hideez Enterprise Service
    Loaded: loaded (/usr/lib/systemd/system/HES-hideez.example.com.service; enabled; vendor preset: disabled)
    Active: active (running) since Wed 2020-03-25 10:48:12 UTC; 16s ago
  Main PID: 4657 (HES.Web)
-   CGroup: /system.slice/HES-thideez.example.com.service
-           └─4657 /opt/HES/hideez.example.com/HES.Web
+   CGroup: /system.slice/HES.service
+           └─4657 /opt/HES/HES.Web
 
-Mar 25 10:48:12 hesservertest systemd[1]: Started hideez.example.com Hideez Enterprise Service.
+Mar 25 10:48:12 hesservertest systemd[1]: Started Hideez Enterprise Service.
 ```
