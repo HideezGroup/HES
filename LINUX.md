@@ -22,7 +22,7 @@ The second part describes the installation already for a specific site, there ma
 # 1. Preparation
   
 ## 1.1 System Update
-  
+
 *CentOS 7*
 ```shell
   $ sudo yum update -y
@@ -62,13 +62,14 @@ SELinux status:                 disabled
 ## 1.3 Firewall Configuration
 
 To access the server from the network, ports 80 and 443 should be opened:
-*CentOS*
+
+*CentOS:*
 ```shell
 $ sudo firewall-cmd --zone=public --permanent --add-port=80/tcp
 $ sudo firewall-cmd --zone=public --permanent --add-port=443/tcp
 $ sudo firewall-cmd --reload
 ```
-*Ubuntu*
+*Ubuntu:*
 ```shell
 $ sudo ufw allow 80
 $ sudo ufw allow 443
@@ -78,11 +79,11 @@ $ sudo ufw enable
 # 2. Installing Prerequisites
 ## 2.1 Install git
 
-*CentOS*
+*CentOS:*
 ```shell
   $ sudo yum install git -y
 ```
-*Ubuntu* (usually already installed)
+*Ubuntu (usually already installed):*
 ```shell
   $ sudo apt install git -y
 ```
@@ -90,23 +91,23 @@ $ sudo ufw enable
 
 ## 2.2 Add Microsoft Package Repository and install .NET Core
 
-*CentOS 7*
+*CentOS 7:*
 ```shell
   $ sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
   $ sudo yum install dotnet-sdk-3.1 -y
 ```
-*CentOS 8*
+*CentOS 8:*
 ```shell
   $ sudo dnf install dotnet-sdk-3.1 -y
 ```
-*Ubuntu 18.04*
+*Ubuntu 18.04:*
 ```shell
   $ wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
   $ sudo dpkg -i packages-microsoft-prod.deb
   $ sudo apt update
   $ sudo apt install dotnet-sdk-3.1 -y
 ```
-*Ubuntu 20.04*
+*Ubuntu 20.04:*
 ```shell
  $ wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
  $ sudo dpkg -i packages-microsoft-prod.deb
@@ -123,16 +124,16 @@ If the installation was successful, the output of the *dotnet* command will look
 
 ## 2.3 Install MySQL version 8
 
-*CentOS 7*
+*CentOS 7:*
 ```shell
   $ sudo rpm -Uvh https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
   $ sudo yum install mysql-server -y
 ```
-*CentOS 8*
+*CentOS 8:*
 ```shell
   $ sudo dnf install mysql-server -y
 ```
-*Ubuntu 18.04*
+*Ubuntu 18.04:*
 ```shell
   $ wget -c  https://dev.mysql.com/get/mysql-apt-config_0.8.16-1_all.deb
   $ sudo dpkg -i mysql-apt-config_0.8.16-1_all.deb
@@ -146,27 +147,27 @@ note:  click "ok" to confirm the server installation
 during the installation you will be prompted to enter the mysql user password. Remember this password for future use.
 
 
-*Ubuntu 20.04*
+*Ubuntu 20.04:*
 ```shell
   $ sudo apt install mysql-server -y
 ```
 
 ## 2.4 Install Nginx
 
-*CentOS 7*
+*CentOS 7:*
 ```shell
   $ sudo yum install epel-release -y
   $ sudo yum install nginx -y
   $ sudo systemctl enable nginx
 ```
 
-*CentOS 8*
+*CentOS 8:*
 ```shell
   $ sudo dnf install nginx -y
   $ sudo systemctl enable nginx
 ```
 
-*Ubuntu*
+*Ubuntu:*
 ```shell
   $ sudo apt install nginx -y
 ```
@@ -175,7 +176,7 @@ during the installation you will be prompted to enter the mysql user password. R
 # 3. Setup MySQL Server and Database
 ## 3.1 Enable and start MySQL service (CentOS only):
 
-*CentOS*
+*CentOS:*
 ```shell
   $ sudo systemctl restart mysqld.service
   $ sudo systemctl enable mysqld.service
@@ -221,7 +222,7 @@ Enter password for user root:
 
 To verify that everything is correct, you can run
 ```shell
-  $ mysql -h localhost -u root -p
+  $ sudo mysql -h localhost -u root -p
 ```
 
 After entering password, you will see MySQL console with a prompt:
@@ -263,17 +264,17 @@ The following lines create a database `db`, the user `user` with the password `<
 
 You should remember the user password, it will come in handy later.
 
-To exit from mySql console, press Ctrl+D.
+To exit from the MySql console, press Ctrl+D.
 
 
 # 4. Installing the HES server
-## 4.1 Downloading HES repository from GitHub
+## 4.1 Downloading the HES repository from the GitHub
 
 ```shell
   $ sudo git clone https://github.com/HideezGroup/HES /opt/src/HES
 ```
 
-## 4.2 Building HES from source files
+## 4.2 Building the HES from source files
 
 ```shell
   $ cd /opt/src/HES/HES.Web/
@@ -301,7 +302,7 @@ Then you need to copy Crypto_linux.dll as follows:
   $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/Crypto.dll
 ```
 
-## 4.3 Configuring HES
+## 4.3 Configuring the HES
 
 Edit the file `/opt/HES/appsettings.json`
 
@@ -339,7 +340,7 @@ Replace the following settings in this file with your own:
 * **url_to_you_hes_site** - URL of your HES site (example `https://hideez.example.com`)
 
 
-Important note. By default, .Net Core uses ports 5000 and 5001. Therefore, if only one domain 
+Important note: by default, .Net Core uses ports 5000 and 5001. Therefore, if only one domain 
 is running on the server, port numbers can be skipped. But if it is supposed to run a few sites
 on one computer, then it is necessary to specify different ports for each site in json file. For example, for a site to listen to ports 6000 and 6001, after "AllowedHosts": "*" add the following (via comma) :
 ```json
@@ -364,7 +365,7 @@ After saving the settings file, you can check that the HES is up and running:
 If you do not see any errors within 1-2 minutes, it means that the HES has been successfully configured and started.
 Press Ctrl+C for exit.
 
-## 4.4 Daemonizing of Enterprise Server
+## 4.4 Daemonizing of the Enterprise Server
 Copy file `HES.service` to the `/lib/systemd/system/`:
 ```shell
   $ sudo cp /opt/src/HES/HES.Deploy/HES.service /lib/systemd/system/HES.service
@@ -375,10 +376,12 @@ Enabling autostart:
   $ sudo systemctl enable HES.service
   $ sudo systemctl restart HES.service
 ```
+
 You can verify that HES server is running with the command:
 ```shell
   $ sudo systemctl status HES
 ```
+
 The output of the command should be something like this:
 ```shell
 ● HES.service - Hideez Enterprise Service
@@ -477,7 +480,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 Otherwise, you should carefully review the settings and correct the errors.
 
 ## 4.4 Disable the Nginx default page
-*Ubuntu 18:*
+*Ubuntu:*
   
 ```shell
   $ sudo rm /etc/nginx/sites-enabled/default
