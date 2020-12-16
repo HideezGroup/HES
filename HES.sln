@@ -11,6 +11,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HES.Core", "HES.Core\HES.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HES.Tests", "HES.Tests\HES.Tests.csproj", "{102C72CA-D9A2-406D-9010-5DA5777161D4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}"
+	ProjectSection(SolutionItems) = preProject
+		API.md = API.md
+		LINUX.md = LINUX.md
+		LINUX_AD.md = LINUX_AD.md
+		README.md = README.md
+		WINDOWS.md = WINDOWS.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CentOS", "CentOS", "{598F27E3-20C9-4663-BC1B-D340AEC5F518}"
+	ProjectSection(SolutionItems) = preProject
+		HES.Deploy\CentOS\nginx.conf = HES.Deploy\CentOS\nginx.conf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +86,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{598F27E3-20C9-4663-BC1B-D340AEC5F518} = {B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5FE825DE-062A-4A89-B7A2-4BBD86E6D43A}
