@@ -173,7 +173,7 @@ during the installation you will be prompted to enter the mysql user password. R
 ```
 
 
-# 3. Setup MySQL Server and Database
+# 3. Configuring MySQL Server and Database
 ## 3.1 Enable and start MySQL service (CentOS only):
 
 *CentOS:*
@@ -246,14 +246,14 @@ mysql>
 
 ## 3.4 Creating a MySQL user and database for Hideez Enterprise Server
 
-The following lines create a database `db`, the user `user` with the password `<db_password>`. Сhange `<db_password>` to a strong password, otherwise you may get a password validator error.
+The following lines create a database `db`, the user `user` with the password `<user_password>`. Сhange `<db_password>` to a strong password, otherwise you may get a password validator error.
  
 ```sql
   ### CREATE DATABASE
   mysql> CREATE DATABASE db;
 
   ### CREATE USER ACCOUNT
-  mysql> CREATE USER 'user'@'127.0.0.1' IDENTIFIED BY '<db_password>';
+  mysql> CREATE USER 'user'@'127.0.0.1' IDENTIFIED BY '<user_password>';
 
   ### GRANT PERMISSIONS ON DATABASE
   mysql> GRANT ALL ON db.* TO 'user'@'127.0.0.1';
@@ -394,7 +394,7 @@ The output of the command should be something like this:
 Mar 25 09:05:04 hesservertest systemd[1]: Started Hideez Enterprise Service.
 ```
 
-# 4. Reverse Proxy Server Configuration
+# 4. Configuring Reverse Proxy Server
 To access your server from the local network as well as from the Internet, you have to configure a reverse proxy. We will use the Nginx server for this.
 
 ## 4.1 Creating a Self-Signed SSL Certificate for Nginx
@@ -443,7 +443,7 @@ Email Address []:.
 
 After performing these steps, the server should already be accessible from the network and respond in the browser to the ip address or its domain name. (http://<ip_or_domain_name\>)
 
-## 4.3 Configuring Nginx reverse proxy
+## 4.3 Updating Nginx config
 
 We prepared some Nginx configurations for different versions of Linux and placed them in the HES GitHub repository. You may just copy the corresponding file or you can review and edit it for your needs.
 
@@ -511,7 +511,7 @@ If you plan to integrate your HES with AD you need to add AD Server's name and I
 *Note: the same name should be used on the HES properties page.*
 
 
-If you use self-signed certificates you need to disable certificate verification. For this edit the file '/etc/ldap/ldap.conf' and add the following line:
+If you use self-signed certificates you need to disable certificate verification. For this edit the file `/etc/ldap/ldap.conf` and add the following line:
 ```conf
 TLS_REQCERT never
 ```
@@ -524,28 +524,33 @@ After these steps, your server should be up and running. Go to the https://<Name
 
 # Updating HES
 
-## 1. Updating sources from GitHub repository
+## 1. Stopping HES Service
+
+```shell
+  $ sudo systemctl stop HES
+```
+
+## 2. Updating sources from GitHub repository
 
 ```shell
   $ cd /opt/src/HES
   $ sudo git pull
 ```
 
-## 2. Back up MySQL Database (optional)
-the following command will create a copy of the database in file db.sql in your home directory:
+## 3. Back up the MySQL Database
+The following command will create a copy of the database in file db.sql in your home directory:
 ```shell
-  $ sudo mysqldump -uroot -p<MySqlRoot_password>  db > ~/db.sql
+  $ sudo mysqldump -uroot -p<MySQL_root_password>  db > ~/db.sql
 ```
-change <MySqlrRoot_password> with your real password
+change <MySQL_root_password> with your real password
 
-## 3. Back up Hideez Enterprise Server
+## 4. Back up the HES binaries and the configuration file
 
 ```shell
-  $ sudo systemctl stop HES
   $ sudo mv /opt/HES /opt/HES.old
 ```
 
-## 4. Build a new version of Hideez Enterprise Server from sources
+## 5. Build a new version of the HES from the sources
 
 ```shell
   $ cd /opt/src/HES/HES.Web/
@@ -553,13 +558,13 @@ change <MySqlrRoot_password> with your real password
   $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/Crypto.dll
 ```
 
-## 5. Restore your configuration file
+## 6. Restore the configuration file
 
 ```shell
   $ sudo cp /opt/HES.old/appsettings.json /opt/HES/appsettings.json
 ```
 
-## 6. Restart Hideez Enterprise Server and check its status
+## 7. Restart the HES and check its status
 
 ```shell
   $ sudo systemctl restart HES
