@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HES.Core", "HES.Core\HES.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HES.Tests", "HES.Tests\HES.Tests.csproj", "{102C72CA-D9A2-406D-9010-5DA5777161D4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy Files", "Deploy Files", "{B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}"
 	ProjectSection(SolutionItems) = preProject
 		API.md = API.md
 		LINUX.md = LINUX.md
@@ -20,9 +20,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		WINDOWS.md = WINDOWS.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CentOS", "CentOS", "{598F27E3-20C9-4663-BC1B-D340AEC5F518}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ubuntu18", "Ubuntu18", "{994C805B-C46E-4BAD-B055-C3B147D1B3BB}"
 	ProjectSection(SolutionItems) = preProject
-		HES.Deploy\CentOS\nginx.conf = HES.Deploy\CentOS\nginx.conf
+		HES.Deploy\Ubuntu18\nginx.conf = HES.Deploy\Ubuntu18\nginx.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CentOS7", "CentOS7", "{0270FB64-AC77-4D09-B27E-965111C4CE35}"
+	ProjectSection(SolutionItems) = preProject
+		HES.Deploy\CentOS7\nginx.conf = HES.Deploy\CentOS7\nginx.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CentOS8", "CentOS8", "{2FD7A30C-A7F7-4270-AFFD-8F6A2DE1F762}"
+	ProjectSection(SolutionItems) = preProject
+		HES.Deploy\CentOS8\nginx.conf = HES.Deploy\CentOS8\nginx.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ubuntu20", "Ubuntu20", "{123B4EB1-6587-4AD5-A1D4-25EE6F8AA7F4}"
+	ProjectSection(SolutionItems) = preProject
+		HES.Deploy\Ubuntu20\nginx.conf = HES.Deploy\Ubuntu20\nginx.conf
 	EndProjectSection
 EndProject
 Global
@@ -88,7 +103,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{598F27E3-20C9-4663-BC1B-D340AEC5F518} = {B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}
+		{994C805B-C46E-4BAD-B055-C3B147D1B3BB} = {B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}
+		{0270FB64-AC77-4D09-B27E-965111C4CE35} = {B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}
+		{2FD7A30C-A7F7-4270-AFFD-8F6A2DE1F762} = {B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}
+		{123B4EB1-6587-4AD5-A1D4-25EE6F8AA7F4} = {B7381ABA-00FA-4EDF-8EDA-5C923F47F1CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5FE825DE-062A-4A89-B7A2-4BBD86E6D43A}
