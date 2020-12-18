@@ -1,7 +1,7 @@
 ﻿@page "/Audit/WorkstationSessions"
 @page "/Audit/WorkstationSessions/{DashboardFilter}"
 @attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
-@inherits OwningComponentBase
+@inherits HESComponentBase
 
 @if (Initialized)
 {
@@ -90,7 +90,7 @@
                              SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
             <MainTableHeader Title="Type"
                              TitleWidth="8"
-                             SortColumn="@nameof(WorkstationSession.Account.Type)"
+                             SortColumn="@nameof(WorkstationSession.Account.AccountType)"
                              CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
                              CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
                              SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
@@ -135,7 +135,7 @@
                 @context.Account?.Name
             </td>
             <td>
-                @context.Account?.Type
+                @context.Account?.AccountType
             </td>
         </TableRow>
     </MainTable>

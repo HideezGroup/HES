@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,20 +11,18 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class DeleteTemplate : OwningComponentBase, IDisposable
+    public partial class DeleteTemplate : HESComponentBase, IDisposable
     {
         public ITemplateService TemplateService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteTemplate> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string TemplateId { get; set; }
 
         public Template Template { get; set; }
         public bool EntityBeingEdited { get; set; }
-        public bool Initialized { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -42,7 +39,7 @@ namespace HES.Web.Pages.Templates
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Template.Id, Template);
 
-                Initialized = true;
+                SetInitialized(); 
             }
             catch (Exception ex)
             {
@@ -58,7 +55,7 @@ namespace HES.Web.Pages.Templates
             {
                 await TemplateService.DeleteTemplateAsync(Template.Id);
                 await ToastService.ShowToastAsync("Template deleted.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Templates);
+                await SynchronizationService.UpdateTemplates(ExceptPageId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

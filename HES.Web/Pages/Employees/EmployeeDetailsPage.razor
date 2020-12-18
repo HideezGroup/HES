@@ -1,6 +1,6 @@
 ﻿@page "/Employees/Details/{EmployeeId}"
 @attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
-@inherits OwningComponentBase
+@inherits HESComponentBase
 
 @if (Initialized)
 {
@@ -116,7 +116,7 @@
                                 Set as primary
                             </button>
                         }
-                        @if (MainTableService.SelectedEntity.Type == AccountType.Personal)
+                        @if (MainTableService.SelectedEntity.AccountType == AccountType.Personal)
                         {
                             <button type="button" @onclick="OpenDialogEditPersonalAccountAsync" class="btn btn-light border mx-2" title="Edit personal account">
                                 <img class="icon-btn" src="/svg/icon-edit.svg" />
@@ -126,13 +126,10 @@
                                 <img class="icon-btn" src="/svg/icon-password.svg" />
                                 Edit password
                             </button>
-                            @if (MainTableService.SelectedEntity.Kind != AccountKind.Workstation)
-                            {
-                                <button type="button" @onclick="OpenDialogEditPersonalAccountOtpAsync" class="btn btn-light border mx-2" title="Edit personal account OTP">
-                                    <img class="icon-btn" src="/svg/icon-otp.svg" />
-                                    Edit OTP
-                                </button>
-                            }
+                            <button type="button" @onclick="OpenDialogEditPersonalAccountOtpAsync" class="btn btn-light border mx-2" title="Edit personal account OTP">
+                                <img class="icon-btn" src="/svg/icon-otp.svg" />
+                                Edit OTP
+                            </button>
                             @if (Employee.ActiveDirectoryGuid != null && MainTableService.SelectedEntity.Login.Split(@"\")[0].Contains(LdapHost ?? string.Empty, StringComparison.OrdinalIgnoreCase))
                             {
                                 <button type="button" @onclick="OpenDialogGenerateAdPasswordAsync" class="btn btn-light border mx-2" title="Generate Active Directory Password">
@@ -160,7 +157,7 @@
                                      CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
                                      SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
                                      SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Urls"
+                    <MainTableHeader Title="URLs"
                                      TitleWidth="7.1"
                                      SortColumn="@nameof(Account.Urls)"
                                      CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
@@ -183,7 +180,7 @@
                                      SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
                     <MainTableHeader Title="Type"
                                      TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.Type)"
+                                     SortColumn="@nameof(Account.AccountType)"
                                      CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
                                      CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
                                      SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
@@ -209,7 +206,7 @@
                                      CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
                                      SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
                                      SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Otp Updated"
+                    <MainTableHeader Title="OTP Updated"
                                      TitleWidth="7.1"
                                      CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
                                      CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
@@ -230,29 +227,16 @@
                                 }
                     </td>
                     <td>
-                        @if (context.Urls != null)
-                                {
-                                    foreach (var urls in context.Urls.Split(';'))
-                                    {
-                                <span style="white-space: pre-line">@urls</span>
-                                    }
-                                }
+                        @context.Urls
                     </td>
                     <td>
-                        @if (context.Apps != null)
-                                {
-                                    foreach (var apps in context.Apps.Split(';'))
-                                    {
-                                <span style="white-space: pre-line">@apps</span>
-
-                                    }
-                                }
+                        @context.Apps
                     </td>
                     <td>
                         @context.Login
                     </td>
                     <td>
-                        @context.Type
+                        @context.AccountType
                     </td>
                     <td>
                         @if (context.CreatedAt != null)

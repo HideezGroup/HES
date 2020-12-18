@@ -1,6 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Audit;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,17 +11,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Audit.WorkstationEvents
 {
-    public partial class WorkstationEventsPage : OwningComponentBase, IDisposable
+    public partial class WorkstationEventsPage : HESComponentBase, IDisposable
     {
         public IWorkstationAuditService WorkstationAuditService { get; set; }
         public IMainTableService<WorkstationEvent, WorkstationEventFilter> MainTableService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public ILogger<WorkstationEventsPage> Logger { get; set; }
-
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -32,13 +29,12 @@ namespace HES.Web.Pages.Audit.WorkstationEvents
                 await BreadcrumbsService.SetAuditWorkstationEvents();
                 await MainTableService.InitializeAsync(WorkstationAuditService.GetWorkstationEventsAsync, WorkstationAuditService.GetWorkstationEventsCountAsync, ModalDialogService, StateHasChanged, nameof(WorkstationEvent.Date), ListSortDirection.Descending);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
         }
 

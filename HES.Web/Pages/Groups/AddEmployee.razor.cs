@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,15 +12,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class AddEmployee : OwningComponentBase
+    public partial class AddEmployee : HESComponentBase
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<AddEmployee> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
         [Parameter] public string GroupId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Dictionary<Employee, bool> Employees { get; set; }
 
@@ -59,7 +57,7 @@ namespace HES.Web.Pages.Groups
 
                 await GroupService.AddEmployeesToGroupAsync(employeeIds, GroupId);
                 await ToastService.ShowToastAsync("Employee added.", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.GroupDetails);
+                await SynchronizationService.UpdateGroupDetails(ExceptPageId, GroupId);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

@@ -1,11 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,16 +12,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class EditGroup : OwningComponentBase, IDisposable
+    public partial class EditGroup : HESComponentBase, IDisposable
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<EditGroup> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
         [Parameter] public string GroupId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Group Group { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
@@ -46,6 +43,8 @@ namespace HES.Web.Pages.Groups
                 EntityBeingEdited = MemoryCache.TryGetValue(Group.Id, out object _);
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Group.Id, Group);
+
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -62,8 +61,8 @@ namespace HES.Web.Pages.Groups
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await GroupService.EditGroupAsync(Group);
-                    await ToastService.ShowToastAsync("Group updated.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Groups);
+                    await ToastService.ShowToastAsync("Group updated.", ToastType.Success);          
+                    await SynchronizationService.UpdateGroups(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

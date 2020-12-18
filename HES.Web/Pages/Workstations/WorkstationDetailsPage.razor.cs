@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Workstations;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class WorkstationDetailsPage : OwningComponentBase, IDisposable
+    public partial class WorkstationDetailsPage : HESComponentBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IMainTableService<WorkstationProximityVault, WorkstationDetailsFilter> MainTableService { get; set; }
@@ -19,15 +19,9 @@ namespace HES.Web.Pages.Workstations
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<WorkstationDetailsPage> Logger { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Parameter] public string WorkstationId { get; set; }
 
-        public Workstation Workstation { get; set; }
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
+        public Workstation Workstation { get; set; }   
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,19 +29,30 @@ namespace HES.Web.Pages.Workstations
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<WorkstationProximityVault, WorkstationDetailsFilter>>();
-
-                await InitializeHubAsync();
+                SynchronizationService.UpdateWorkstationDetailsPage += UpdateWorkstationDetailsPage;
                 await LoadWorkstationAsync();
                 await BreadcrumbsService.SetWorkstationDetails(Workstation.Name);
                 await MainTableService.InitializeAsync(WorkstationService.GetProximityVaultsAsync, WorkstationService.GetProximityVaultsCountAsync, ModalDialogService, StateHasChanged, nameof(WorkstationProximityVault.HardwareVaultId), entityId: WorkstationId);
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateWorkstationDetailsPage(string exceptPageId, string workstationId, string userName)
+        {
+            if (Workstation.Id != workstationId || PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {     
+                await MainTableService.LoadTableDataAsync();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
         }
 
         private async Task LoadWorkstationAsync()
@@ -63,7 +68,7 @@ namespace HES.Web.Pages.Workstations
             {
                 builder.OpenComponent(0, typeof(AddProximityVault));
                 builder.AddAttribute(1, "WorkstationId", WorkstationId);
-                builder.AddAttribute(2, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(2, "ExceptPageId", PageId);
                 builder.CloseComponent();
             };
 
@@ -77,36 +82,16 @@ namespace HES.Web.Pages.Workstations
                 builder.OpenComponent(0, typeof(DeleteProximityVault));
                 builder.AddAttribute(1, "WorkstationProximityVault", MainTableService.SelectedEntity);
                 builder.AddAttribute(2, "WorkstationId", WorkstationId);
-                builder.AddAttribute(3, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(3, "ExceptPageId", PageId);
                 builder.CloseComponent();
             };
 
             await ModalDialogService.ShowAsync("Delete Proximity Vault", body);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On<string>(RefreshPage.WorkstationsDetails, async (entityId) =>
-            {
-                if (entityId != WorkstationId)
-                    return;
-
-                await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
-
+            SynchronizationService.UpdateWorkstationDetailsPage -= UpdateWorkstationDetailsPage;
             MainTableService.Dispose();
         }
     }

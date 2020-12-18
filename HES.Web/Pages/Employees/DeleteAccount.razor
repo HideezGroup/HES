@@ -1,4 +1,4 @@
-﻿@inherits OwningComponentBase
+﻿@inherits HESComponentBase
 
 @if (Account == null)
 {
@@ -12,7 +12,7 @@ else
     }
     else
     {
-        <h5 class="text-gray mb-4 text-break">You want to delete @Account.Type.ToString().ToLower() account @Account.Name?</h5>
+        <h5 class="text-gray mb-4 text-break">You want to delete @Account.AccountType.ToString().ToLower() account @Account.Name?</h5>
         <div class="text-right">
             <button type="button" class="btn btn-secondary mr-1" @onclick="ModalDialogService.CancelAsync">Cancel</button>
             <ButtonSpinner Text="Delete" Class="btn btn-danger" Callback="DeleteAccoountAsync" />

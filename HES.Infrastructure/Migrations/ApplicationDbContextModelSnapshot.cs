@@ -23,6 +23,9 @@ namespace HES.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
+                    b.Property<int>("AccountType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Apps")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -35,12 +38,12 @@ namespace HES.Infrastructure.Migrations
                     b.Property<string>("EmployeeId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
-                    b.Property<int>("Kind")
-                        .HasColumnType("int");
-
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("LoginType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -67,9 +70,6 @@ namespace HES.Infrastructure.Migrations
 
                     b.Property<uint>("Timestamp")
                         .HasColumnType("int unsigned");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
 
                     b.Property<bool>("UpdateInActiveDirectory")
                         .HasColumnType("tinyint(1)");
@@ -618,12 +618,12 @@ namespace HES.Infrastructure.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("Kind")
-                        .HasColumnType("int");
-
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("LoginType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

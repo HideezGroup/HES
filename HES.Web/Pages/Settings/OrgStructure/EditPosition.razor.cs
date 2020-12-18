@@ -1,11 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,23 +11,21 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class EditPosition : ComponentBase, IDisposable
+    public partial class EditPosition : HESComponentBase, IDisposable
     {
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditPosition> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string PositionId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
 
         public Position Position { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
         public bool EntityBeingEdited { get; set; }
-        public bool Initialized { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -45,7 +41,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Position.Id, Position);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -64,7 +60,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                     await OrgStructureService.EditPositionAsync(Position);
                     await ToastService.ShowToastAsync("Position updated.", ToastType.Success);
                     await Refresh.InvokeAsync(this);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.OrgSructurePositions);
+                    await SynchronizationService.UpdateOrgSructurePositions(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

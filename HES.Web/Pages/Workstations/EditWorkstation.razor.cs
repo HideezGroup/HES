@@ -1,10 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class EditWorkstation : OwningComponentBase, IDisposable
+    public partial class EditWorkstation : HESComponentBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IOrgStructureService OrgStructureService { get; set; }
@@ -24,14 +22,12 @@ namespace HES.Web.Pages.Workstations
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<ApproveWorkstation> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string WorkstationId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public Workstation Workstation { get; set; }
         public List<Company> Companies { get; set; }
         public List<Department> Departments { get; set; }
-        public bool Initialized { get; set; }
         public bool EntityBeingEdited { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
 
@@ -65,7 +61,7 @@ namespace HES.Web.Pages.Workstations
                     Departments = await OrgStructureService.GetDepartmentsByCompanyIdAsync(Workstation.Department.CompanyId);
                 }
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -84,7 +80,7 @@ namespace HES.Web.Pages.Workstations
                     await WorkstationService.ApproveWorkstationAsync(Workstation);
                     await RemoteWorkstationConnectionsService.UpdateRfidStateAsync(Workstation.Id, Workstation.RFID);
                     await ToastService.ShowToastAsync("Workstation updated.", ToastType.Success);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Workstations);
+                    await SynchronizationService.UpdateWorkstations(ExceptPageId);
                     await ModalDialogService.CloseAsync();
                 });
             }

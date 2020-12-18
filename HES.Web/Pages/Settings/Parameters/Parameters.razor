@@ -1,6 +1,6 @@
 ﻿@page "/Settings/Parameters"
 @attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
-@inherits OwningComponentBase
+@inherits HESComponentBase
 
 @if (Initialized)
 {
@@ -41,7 +41,7 @@
             }
         </div>
         <div class="mt-4">
-            <button type="button" class="btn btn-primary" @onclick="OpenDialogLdapSettingsAsync">Set Domain Settings</button>
+            <button type="button" class="btn btn-primary mr-1" @onclick="OpenDialogLdapSettingsAsync">Set Domain Settings</button>
             @if (DomainHost != null)
             {
                 <button type="button" class="btn btn-danger" @onclick="OpenDialogDeleteLdapCredentialsAsync">Delete Credentials</button>

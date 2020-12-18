@@ -154,109 +154,71 @@ namespace HES.Core.Services
             return await query.CountAsync();
         }
 
-        public async Task<List<SharedAccount>> GetWorkstationSharedAccountsAsync()
+        public async Task<List<SharedAccount>> GetAllSharedAccountsAsync()
         {
             return await _sharedAccountRepository
                 .Query()
-                .Where(d => d.Deleted == false && d.Kind == AccountKind.Workstation)
+                .Where(d => d.Deleted == false)
+                .OrderBy(x => x.Name)
                 .ToListAsync();
         }
 
-        public async Task<SharedAccount> CreateSharedAccountAsync(SharedAccount sharedAccount)
+        public async Task<SharedAccount> CreateSharedAccountAsync(SharedAccountAddModel sharedAccountModel)
         {
-            if (sharedAccount == null)
-                throw new ArgumentNullException(nameof(sharedAccount));
+            if (sharedAccountModel == null)
+                throw new ArgumentNullException(nameof(sharedAccountModel));
 
             _dataProtectionService.Validate();
 
-            var accountExist = await _sharedAccountRepository
-                .Query()
-                .Where(x => x.Name == sharedAccount.Name && x.Login == sharedAccount.Login && x.Deleted == false)
-                .AsNoTracking()
-                .AnyAsync();
-
-            if (accountExist)
-                throw new AlreadyExistException("Name and login is already in use.");
-
-            sharedAccount.Urls = Validation.VerifyUrls(sharedAccount.Urls);
-            sharedAccount.Password = _dataProtectionService.Encrypt(sharedAccount.Password);
-            sharedAccount.PasswordChangedAt = DateTime.UtcNow;
-
-            if (!string.IsNullOrWhiteSpace(sharedAccount.OtpSecret))
+            var sharedAccount = new SharedAccount()
             {
-                Validation.VerifyOtpSecret(sharedAccount.OtpSecret);
-                sharedAccount.OtpSecret = _dataProtectionService.Encrypt(sharedAccount.OtpSecret);
+                Name = sharedAccountModel.Name,
+                Urls = Validation.VerifyUrls(sharedAccountModel.Urls),
+                Apps = sharedAccountModel.Apps,
+                Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, sharedAccountModel.GetLogin()),
+                LoginType = sharedAccountModel.LoginType,
+                Password = _dataProtectionService.Encrypt(sharedAccountModel.Password),
+                PasswordChangedAt = DateTime.UtcNow
+            };
+
+            if (!string.IsNullOrWhiteSpace(sharedAccountModel.OtpSecret))
+            {
+                Validation.VerifyOtpSecret(sharedAccountModel.OtpSecret);
+                sharedAccount.OtpSecret = _dataProtectionService.Encrypt(sharedAccountModel.OtpSecret);
                 sharedAccount.OtpSecretChangedAt = DateTime.UtcNow;
             }
 
             return await _sharedAccountRepository.AddAsync(sharedAccount);
         }
 
-        public async Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationSharedAccount workstationAccount)
+        private async Task<string> ValidateAccountNameAndLoginAsync(string name, string login, string accountId = null)
         {
-            if (workstationAccount == null)
-                throw new ArgumentNullException(nameof(workstationAccount));
+            var query = _sharedAccountRepository.Query().Where(x => x.Name == name && x.Login == login && x.Deleted == false);
 
-            switch (workstationAccount.Type)
-            {
-                case WorkstationAccountType.Local:
-                    workstationAccount.UserName = $".\\{workstationAccount.UserName}";
-                    break;
-                case WorkstationAccountType.AzureAD:
-                    workstationAccount.UserName = $"AzureAD\\{workstationAccount.UserName}";
-                    break;
-                case WorkstationAccountType.Microsoft:
-                    workstationAccount.UserName = $"@\\{workstationAccount.UserName}";
-                    break;
-            }
+            if (accountId != null)
+                query = query.Where(x => x.Id != accountId);
 
-            var sharedAccount = new SharedAccount()
-            {
-                Name = workstationAccount.Name,
-                Login = workstationAccount.UserName,
-                Password = workstationAccount.Password,
-                PasswordChangedAt = DateTime.UtcNow,
-                Kind = AccountKind.Workstation
-            };
+            var exist = await query.AnyAsync();
+            if (exist)
+                throw new HESException(HESCode.SharedAccountExist);
 
-            return await CreateSharedAccountAsync(sharedAccount);
+            return login;
         }
 
-        public async Task<SharedAccount> CreateWorkstationSharedAccountAsync(WorkstationDomainSharedAccount workstationAccount)
+        public async Task<List<string>> EditSharedAccountAsync(SharedAccountEditModel sharedAccountModel)
         {
-            if (workstationAccount == null)
-                throw new ArgumentNullException(nameof(workstationAccount));
-
-            var sharedAccount = new SharedAccount()
-            {
-                Name = workstationAccount.Name,
-                Login = $"{workstationAccount.Domain}\\{workstationAccount.UserName}",
-                Password = workstationAccount.Password,
-                PasswordChangedAt = DateTime.UtcNow,
-                Kind = AccountKind.Workstation
-
-            };
-
-            return await CreateSharedAccountAsync(sharedAccount);
-        }
-
-        public async Task<List<string>> EditSharedAccountAsync(SharedAccount sharedAccount)
-        {
-            if (sharedAccount == null)
-                throw new ArgumentNullException(nameof(sharedAccount));
+            if (sharedAccountModel == null)
+                throw new ArgumentNullException(nameof(sharedAccountModel));
 
             _dataProtectionService.Validate();
+            await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, sharedAccountModel.GetLogin(), sharedAccountModel.Id);
+            sharedAccountModel.Urls = Validation.VerifyUrls(sharedAccountModel.Urls);
 
-            var accountExist = await _sharedAccountRepository
-                .Query()
-                .Where(x => x.Name == sharedAccount.Name && x.Login == sharedAccount.Login && x.Deleted == false && x.Id != sharedAccount.Id)
-                .AsNoTracking()
-                .AnyAsync();
+            var sharedAccount = await GetSharedAccountByIdAsync(sharedAccountModel.Id);
+            if (sharedAccount == null)
+                throw new HESException(HESCode.SharedAccountNotFound);
 
-            if (accountExist)
-                throw new AlreadyExistException("Name and login is already in use.");
-
-            sharedAccount.Urls = Validation.VerifyUrls(sharedAccount.Urls);
+            sharedAccount = sharedAccountModel.SetNewValue(sharedAccount);
 
             // Get all accounts where used this shared account
             var accounts = await _accountService
@@ -297,6 +259,7 @@ namespace HES.Core.Services
         {
             if (sharedAccount == null)
                 throw new ArgumentNullException(nameof(sharedAccount));
+
             if (accountPassword == null)
                 throw new ArgumentNullException(nameof(accountPassword));
 

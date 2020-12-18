@@ -136,6 +136,9 @@ namespace HES.Core.Services
 
         public async Task<Department> TryAddAndGetDepartmentWithCompanyAsync(string companyName, string departmentName)
         {
+            if (string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(departmentName))
+                return null;
+
             var department = await _departmentRepository
                 .Query()
                 .Include(x => x.Company)
@@ -220,6 +223,9 @@ namespace HES.Core.Services
 
         public async Task<Position> TryAddAndGetPositionAsync(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+
             var position = await _positionRepository.Query().FirstOrDefaultAsync(x => x.Name == name);
 
             if (position != null)

@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,14 +10,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class RemoveEmployee : OwningComponentBase
+    public partial class RemoveEmployee : HESComponentBase
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<RemoveEmployee> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string GroupId { get; set; }
         [Parameter] public string EmployeeId { get; set; }
 
@@ -34,6 +32,8 @@ namespace HES.Web.Pages.Groups
 
                 if (GroupMembership == null)
                     throw new Exception("Group membership not found");
+
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -47,8 +47,8 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                await GroupService.RemoveEmployeeFromGroupAsync(GroupMembership.Id);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.GroupDetails);
+                await GroupService.RemoveEmployeeFromGroupAsync(GroupMembership.Id);         
+                await SynchronizationService.UpdateGroupDetails(ExceptPageId, GroupId);
                 await ToastService.ShowToastAsync("Employee removed.", ToastType.Success);
             }
             catch (Exception ex)

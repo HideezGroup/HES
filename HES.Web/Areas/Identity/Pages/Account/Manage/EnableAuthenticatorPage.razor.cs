@@ -86,9 +86,7 @@ namespace HES.Web.Areas.Identity.Pages.Account.Manage
 
                 if (!verifyTwoFactorTokenInfo.IsTwoFactorTokenValid)
                 {
-                    await ToastService.ShowToastAsync("Verification code is invalid.", ToastType.Error);
-                    await LoadSharedKeyAndQrCodeUriAsync();
-                    await GenerateQrCodeAsync();
+                    await ToastService.ShowToastAsync("Verification code is invalid.", ToastType.Error);             
                     return;
                 }
 

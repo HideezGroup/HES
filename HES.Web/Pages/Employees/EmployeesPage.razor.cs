@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Employees;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EmployeesPage : OwningComponentBase, IDisposable
+    public partial class EmployeesPage : HESComponentBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IMainTableService<Employee, EmployeeFilter> MainTableService { get; set; }
@@ -21,12 +21,6 @@ namespace HES.Web.Pages.Employees
         [Inject] public ILogger<EmployeesPage> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
 
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
-
         protected override async Task OnInitializedAsync()
         {
             try
@@ -34,19 +28,20 @@ namespace HES.Web.Pages.Employees
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<Employee, EmployeeFilter>>();
 
-                await InitializeHubAsync();
+                SynchronizationService.UpdateEmployeePage += UpdateEmployeePage;
+
                 await BreadcrumbsService.SetEmployees();
                 await MainTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, ModalDialogService, StateHasChanged, nameof(Employee.FullName));
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
         }
+
 
         //private async Task ImportEmployeesFromAdAsync()
         //{
@@ -65,7 +60,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SyncEmployeesWithAD));
-                builder.AddAttribute(1, nameof(SyncEmployeesWithAD.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(SyncEmployeesWithAD.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -85,7 +80,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateEmployee));
-                builder.AddAttribute(1, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(CreateEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
             await MainTableService.ShowModalAsync("Create Employee", body, ModalDialogSize.Large);
@@ -96,8 +91,8 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditEmployee));
-                builder.AddAttribute(1, nameof(DeleteEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteEmployee.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(EditEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(2, nameof(EditEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -110,33 +105,29 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(DeleteEmployee));
                 builder.AddAttribute(1, nameof(DeleteEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteEmployee.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(DeleteEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
             await MainTableService.ShowModalAsync("Delete Employee", body);
         }
 
-        private async Task InitializeHubAsync()
+        private async Task UpdateEmployeePage(string exceptPageId, string userName)
         {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
+            if (PageId == exceptPageId)
+                return;
 
-            hubConnection.On(RefreshPage.Employees, async () =>
+            await InvokeAsync(async () =>
             {
                 await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
             });
-
-            await hubConnection.StartAsync();
         }
 
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
-
+            SynchronizationService.UpdateEmployeePage -= UpdateEmployeePage;
             MainTableService.Dispose();
         }
     }

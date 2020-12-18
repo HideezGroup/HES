@@ -1,11 +1,10 @@
 ﻿@page "/Alarm"
 @attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
-@inherits OwningComponentBase
+@inherits HESComponentBase
 
 @if (AlarmState == null)
 {
     <LoadingPage />
-
 }
 else
 {

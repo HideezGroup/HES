@@ -10,37 +10,48 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IEmployeeService: IDisposable    
+    public interface IEmployeeService : IDisposable
     {
+        #region Employee
+
         IQueryable<Employee> EmployeeQuery();
         Task<List<Employee>> GetEmployeesAsync(DataLoadingOptions<EmployeeFilter> dataLoadingOptions);
         Task<int> GetEmployeesCountAsync(DataLoadingOptions<EmployeeFilter> dataLoadingOptions);
         Task<Employee> GetEmployeeByIdAsync(string id, bool asNoTracking = false, bool byActiveDirectoryGuid = false);
         Task<IList<string>> GetEmployeeVaultIdsAsync(string employeeId);
         Task<Employee> ImportEmployeeAsync(Employee employee);
-        Task SyncEmployeeAsync(List<Employee> impotedEmployees);
-        Task SyncEmployeeAccessAsync(List<string> membersGuid);
         Task<Employee> CreateEmployeeAsync(Employee employee);
         Task<bool> CheckEmployeeNameExistAsync(Employee employee);
         Task EditEmployeeAsync(Employee employee);
         Task DeleteEmployeeAsync(string id);
         Task UpdateLastSeenAsync(string vaultId);
         Task UnchangedEmployeeAsync(Employee employee);
+        Task RemoveFromHideezKeyOwnersAsync(string employeeId);
+
+        #endregion
+
+        #region Hardware Vault
+
         Task AddHardwareVaultAsync(string employeeId, string vaultId);
         Task RemoveHardwareVaultAsync(string vaultId, VaultStatusReason reason, bool isNeedBackup = false);
-        Task<Account> CreatePersonalAccountAsync(PersonalAccount personalAccount, bool isWorkstationAccount = false);
-        Task<Account> CreateWorkstationAccountAsync(WorkstationAccount workstationAccount);
-        Task<Account> CreateWorkstationAccountAsync(WorkstationDomain workstationAccount);
+
+        #endregion
+
+        #region Accounts
+
         Task<List<Account>> GetAccountsAsync(DataLoadingOptions<AccountFilter> dataLoadingOptions);
         Task<int> GetAccountsCountAsync(DataLoadingOptions<AccountFilter> dataLoadingOptions);
         Task<List<Account>> GetAccountsByEmployeeIdAsync(string employeeId);
-        Task SetAsWorkstationAccountAsync(string employeeId, string accountId);
+        Task SetAsPrimaryAccountAsync(string employeeId, string accountId);
         Task<Account> GetAccountByIdAsync(string accountId);
-        Task EditPersonalAccountAsync(Account account);
+        Task<Account> CreatePersonalAccountAsync(AccountAddModel personalAccount);
+        Task EditPersonalAccountAsync(AccountEditModel personalAccount);
         Task EditPersonalAccountPwdAsync(Account account, AccountPassword accountPassword);
         Task EditPersonalAccountOtpAsync(Account account, AccountOtp accountOtp);
         Task<Account> AddSharedAccountAsync(string employeeId, string sharedAccountId);
         Task UnchangedPersonalAccountAsync(Account account);
         Task<Account> DeleteAccountAsync(string accountId);
+
+        #endregion
     }
 }

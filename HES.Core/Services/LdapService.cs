@@ -1,4 +1,5 @@
 ﻿using HES.Core.Entities;
+using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.ActiveDirectory;
@@ -26,23 +27,28 @@ namespace HES.Core.Services
         private readonly IGroupService _groupService;
         private readonly IOrgStructureService _orgStructureService;
         private readonly IEmailSenderService _emailSenderService;
+        private readonly IAppSettingsService _appSettingsService;
 
         public LdapService(IEmployeeService employeeService,
                            IGroupService groupService,
                            IOrgStructureService orgStructureService,
-                           IEmailSenderService emailSenderService)
+                           IEmailSenderService emailSenderService,
+                           IAppSettingsService appSettingsService)
         {
             _employeeService = employeeService;
             _groupService = groupService;
             _orgStructureService = orgStructureService;
             _emailSenderService = emailSenderService;
+            _appSettingsService = appSettingsService;
         }
 
         public async Task ValidateCredentialsAsync(LdapSettings ldapSettings)
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 3268);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.TrustAllCertificates();
+                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 await connection.BindAsync(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
             }
         }
@@ -107,11 +113,12 @@ namespace HES.Core.Services
                             Email = TryGetAttribute(entity, "mail"),
                             PhoneNumber = TryGetAttribute(entity, "telephoneNumber")
                         },
-                        DomainAccount = new WorkstationDomain()
+                        Account = new AccountAddModel()
                         {
                             Name = "Domain Account",
+                            LoginType = LoginType.Domain,
                             Domain = GetFirstDnFromHost(ldapSettings.Host),
-                            UserName = TryGetAttribute(entity, "sAMAccountName"),
+                            Login = TryGetAttribute(entity, "sAMAccountName"),
                             Password = GeneratePassword(),
                             UpdateInActiveDirectory = true
                         }
@@ -160,8 +167,8 @@ namespace HES.Core.Services
                         try
                         {
                             // The employee may already be in the database, so we get his ID and create an account
-                            user.DomainAccount.EmployeeId = employee.Id;
-                            await _employeeService.CreateWorkstationAccountAsync(user.DomainAccount);
+                            user.Account.EmployeeId = employee.Id;
+                            await _employeeService.CreatePersonalAccountAsync(user.Account);
                         }
                         catch (AlreadyExistException)
                         {
@@ -185,17 +192,21 @@ namespace HES.Core.Services
 
             using (var connection = new LdapConnection())
             {
-                connection.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.TrustAllCertificates();
+                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
 
                 var dn = GetDnFromHost(ldapSettings.Host);
                 var objectGUID = GetObjectGuid(employee.ActiveDirectoryGuid);
                 var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, $"(&(objectCategory=user)(objectGUID={objectGUID}))", LdapSearchScope.LDAP_SCOPE_SUBTREE));
 
-                await connection.ModifyAsync(new LdapModifyEntry
+                try
                 {
-                    Dn = user.Entries.First().Dn,
-                    Attributes = new List<LdapModifyAttribute>
+                    await connection.ModifyAsync(new LdapModifyEntry
+                    {
+                        Dn = user.Entries.First().Dn,
+                        Attributes = new List<LdapModifyAttribute>
                         {
                             new LdapModifyAttribute
                             {
@@ -204,7 +215,12 @@ namespace HES.Core.Services
                                 Values = new List<string> { password }
                             }
                         }
-                });
+                    });
+                }
+                catch (LdapException ex) when (ex.ResultCode == ResultCode.UnwillingToPerform)
+                {
+                    throw new Exception("Active Directory password restrictions prevent the action.");
+                }
             }
         }
 
@@ -212,21 +228,22 @@ namespace HES.Core.Services
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 3268);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.TrustAllCertificates();
+                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
 
                 var dn = GetDnFromHost(ldapSettings.Host);
-                var filter = $"(&(objectCategory=group)(name={_pwdChangeGroupName}))";
-                var searchRequest = new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE);
+                var groupFilter = $"(&(objectCategory=group)(name={_pwdChangeGroupName}))";
+                var groupSearchRequest = new SearchRequest(dn, groupFilter, LdapSearchScope.LDAP_SCOPE_SUBTREE);
+                var groupResponse = (SearchResponse)connection.SendRequest(groupSearchRequest);
 
-                var groupResponse = (SearchResponse)connection.SendRequest(searchRequest);
-
+                // If the group was not created, exit the method
                 if (groupResponse.Entries.Count == 0)
                     return;
 
                 var groupDn = groupResponse.Entries.FirstOrDefault().Dn;
 
-                List<Employee> employees = new List<Employee>();
                 var membersFilter = $"(&(objectCategory=user)(memberOf={groupDn})(givenName=*))";
                 var membersPageResultRequestControl = new PageResultRequestControl(500) { IsCritical = true };
                 var membersSearchRequest = new SearchRequest(dn, membersFilter, LdapSearchScope.LDAP_SCOPE_SUBTREE)
@@ -270,19 +287,20 @@ namespace HES.Core.Services
                     if (employee == null)
                         continue;
 
-                    // Check if an domain account exists
                     var memberLogonName = $"{GetFirstDnFromHost(ldapSettings.Host)}\\{TryGetAttribute(member, "sAMAccountName")}";
 
+                    // Check a domain account exist
                     var domainAccount = employee.Accounts.FirstOrDefault(x => x.Login == memberLogonName);
                     if (domainAccount == null)
                     {
                         var password = GeneratePassword();
 
-                        var workstationDomainAccount = new WorkstationDomain()
+                        var account = new AccountAddModel()
                         {
                             Name = "Domain Account",
+                            LoginType = LoginType.Domain,
                             Domain = GetFirstDnFromHost(ldapSettings.Host),
-                            UserName = TryGetAttribute(member, "sAMAccountName"),
+                            Login = TryGetAttribute(member, "sAMAccountName"),
                             Password = password,
                             EmployeeId = employee.Id
                         };
@@ -290,14 +308,46 @@ namespace HES.Core.Services
                         using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                         {
                             // Create domain account
-                            await _employeeService.CreateWorkstationAccountAsync(workstationDomainAccount);
+                            await _employeeService.CreatePersonalAccountAsync(account);
 
-                            // Update password in active directory
-                            using (var cn = new LdapConnection())
+                            // Update password in active directory                   
+                            await connection.ModifyAsync(new LdapModifyEntry
                             {
-                                cn.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
-                                cn.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
-                                await cn.ModifyAsync(new LdapModifyEntry
+                                Dn = member.Dn,
+                                Attributes = new List<LdapModifyAttribute>
+                                {
+                                    new LdapModifyAttribute
+                                    {
+                                        LdapModOperation = LdapModOperation.LDAP_MOD_REPLACE,
+                                        Type = "userPassword",
+                                        Values = new List<string> { password }
+                                    }
+                                }
+                            });
+
+                            transactionScope.Complete();
+                        }
+
+                        // Send notification when pasword changed
+                        await _emailSenderService.NotifyWhenPasswordAutoChangedAsync(employee, memberLogonName);
+                    }
+                    else
+                    {
+                        int maxPwdAge = ldapSettings.MaxPasswordAge;
+                        var pwdLastSet = DateTime.FromFileTimeUtc(long.Parse(TryGetAttribute(member, "pwdLastSet")));
+                        var currentPwdAge = DateTime.UtcNow.Subtract(pwdLastSet).TotalDays;
+
+                        if (currentPwdAge >= maxPwdAge)
+                        {
+                            var password = GeneratePassword();
+
+                            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                            {
+                                // Update domain account
+                                await _employeeService.EditPersonalAccountPwdAsync(domainAccount, new AccountPassword() { Password = password });
+
+                                // Update password in active directory                             
+                                await connection.ModifyAsync(new LdapModifyEntry
                                 {
                                     Dn = member.Dn,
                                     Attributes = new List<LdapModifyAttribute>
@@ -310,54 +360,11 @@ namespace HES.Core.Services
                                         }
                                     }
                                 });
-                            }
-
-                            transactionScope.Complete();
-                        }
-
-                        // Send notification when pasword changed
-                        await _emailSenderService.NotifyWhenPasswordAutoChangedAsync(employee, memberLogonName);
-                    }
-                    else
-                    {
-                        var user = GetUserByGuid(ldapSettings, memberGuid);
-                        int maxPwdAge = ldapSettings.MaxPasswordAge;
-                        var pwdLastSet = DateTime.FromFileTimeUtc(long.Parse(TryGetAttribute(user, "pwdLastSet")));
-                        var currentPwdAge = DateTime.UtcNow.Subtract(pwdLastSet).TotalDays;
-
-                        if (currentPwdAge >= maxPwdAge)
-                        {
-                            var password = GeneratePassword();
-
-                            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                            {
-                                // Create domain account
-                                await _employeeService.EditPersonalAccountPwdAsync(domainAccount, new AccountPassword() { Password = password });
-
-                                // Update password in active directory
-                                using (var cn = new LdapConnection())
-                                {
-                                    cn.Connect(new Uri($"ldaps://{ldapSettings.Host}:636"));
-                                    cn.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
-                                    await cn.ModifyAsync(new LdapModifyEntry
-                                    {
-                                        Dn = member.Dn,
-                                        Attributes = new List<LdapModifyAttribute>
-                                        {
-                                            new LdapModifyAttribute
-                                            {
-                                                LdapModOperation = LdapModOperation.LDAP_MOD_REPLACE,
-                                                Type = "userPassword",
-                                                Values = new List<string> { password }
-                                            }
-                                        }
-                                    });
-                                }
 
                                 transactionScope.Complete();
                             }
 
-                            // Send notification when pasword changed
+                            // Send notification when password changed
                             await _emailSenderService.NotifyWhenPasswordAutoChangedAsync(employee, memberLogonName);
                         }
                     }
@@ -369,21 +376,23 @@ namespace HES.Core.Services
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 3268);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.TrustAllCertificates();
+                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
 
                 var dn = GetDnFromHost(ldapSettings.Host);
-                var filter = $"(&(objectCategory=group)(name={_syncGroupName}))";
-                var searchRequest = new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE);
 
-                var response = (SearchResponse)connection.SendRequest(searchRequest);
+                var groupFilter = $"(&(objectCategory=group)(name={_syncGroupName}))";
+                var groupSearchRequest = new SearchRequest(dn, groupFilter, LdapSearchScope.LDAP_SCOPE_SUBTREE);
+                var groupResponse = (SearchResponse)connection.SendRequest(groupSearchRequest);
 
-                if (response.Entries.Count == 0)
+                // If the group was not created, exit the method
+                if (groupResponse.Entries.Count == 0)
                     return;
 
-                var groupDn = response.Entries.FirstOrDefault().Dn;
+                var groupDn = groupResponse.Entries.FirstOrDefault().Dn;
 
-                List<Employee> employees = new List<Employee>();
                 var membersFilter = $"(&(objectCategory=user)(memberOf={groupDn})(givenName=*))";
                 var membersPageResultRequestControl = new PageResultRequestControl(500) { IsCritical = true };
                 var membersSearchRequest = new SearchRequest(dn, membersFilter, LdapSearchScope.LDAP_SCOPE_SUBTREE)
@@ -417,8 +426,7 @@ namespace HES.Core.Services
                         break;
                 }
 
-                var membersGuid = new List<string>();
-
+                // Add new users or sync properties 
                 foreach (var member in members)
                 {
                     var activeDirectoryGuid = GetAttributeGUID(member);
@@ -427,130 +435,58 @@ namespace HES.Core.Services
                     var lastName = TryGetAttribute(member, "sn") ?? string.Empty;
                     var email = TryGetAttribute(member, "mail");
                     var phoneNumber = TryGetAttribute(member, "telephoneNumber");
-                    DateTime.TryParseExact(TryGetAttribute(member, "whenChanged"), "yyyyMMddHHmmss.0Z", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime whenChanged);
+                    var companyName = TryGetAttribute(member, "company");
+                    var departmentName = TryGetAttribute(member, "department");
+                    var positionName = TryGetAttribute(member, "title");
+                    var whenChanged = TryGetDateTimeAttribute(member, "whenChanged");
 
-                    membersGuid.Add(activeDirectoryGuid);
+                    var employee = await _employeeService.EmployeeQuery().FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
+                    var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
+                    var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
 
-                    DirectoryEntry user;
-                    string positionName;
-                    string companyName;
-                    string departmentName;
-
-                    var employeeByGuid = await _employeeService
-                        .EmployeeQuery()
-                        .FirstOrDefaultAsync(x => x.ActiveDirectoryGuid == activeDirectoryGuid);
-
-                    if (employeeByGuid != null)
+                    if (employee != null)
                     {
-                        if (whenChanged == employeeByGuid.WhenChanged)
+                        if (whenChanged != null && whenChanged == employee.WhenChanged)
                             continue;
 
-                        employeeByGuid.FirstName = firstName;
-                        employeeByGuid.LastName = lastName;
-                        employeeByGuid.Email = email;
-                        employeeByGuid.PhoneNumber = phoneNumber;
-                        employeeByGuid.WhenChanged = whenChanged;
+                        employee.ActiveDirectoryGuid = activeDirectoryGuid;
+                        employee.FirstName = firstName;
+                        employee.LastName = lastName;
+                        employee.Email = email;
+                        employee.PhoneNumber = phoneNumber;
+                        employee.WhenChanged = whenChanged;
+                        employee.DepartmentId = department?.Id;
+                        employee.PositionId = position?.Id;
 
-                        user = GetUserByGuid(ldapSettings, activeDirectoryGuid);
-
-                        positionName = TryGetAttribute(user, "title");
-                        if (positionName != null)
-                        {
-                            var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
-                            employeeByGuid.PositionId = position.Id;
-                        }
-                        else
-                        {
-                            employeeByGuid.PositionId = null;
-                        }
-
-                        companyName = TryGetAttribute(user, "company");
-                        departmentName = TryGetAttribute(user, "department");
-                        if (companyName != null && departmentName != null)
-                        {
-                            var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
-                            employeeByGuid.DepartmentId = department.Id;
-                        }
-                        else
-                        {
-                            employeeByGuid.DepartmentId = null;
-                        }
-
-                        await _employeeService.EditEmployeeAsync(employeeByGuid);
-                        continue;
+                        await _employeeService.EditEmployeeAsync(employee);
                     }
-
-                    var employeeByName = await _employeeService
-                        .EmployeeQuery()
-                        .FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
-
-                    if (employeeByName != null)
+                    else
                     {
-                        employeeByName.ActiveDirectoryGuid = activeDirectoryGuid;
-                        employeeByName.Email = email;
-                        employeeByName.PhoneNumber = phoneNumber;
-                        employeeByName.WhenChanged = whenChanged;
-
-                        user = GetUserByDn(ldapSettings, distinguishedName);
-
-                        positionName = TryGetAttribute(user, "title");
-                        if (positionName != null)
+                        employee = new Employee
                         {
-                            var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
-                            employeeByName.PositionId = position.Id;
-                        }
-                        else
-                        {
-                            employeeByName.PositionId = null;
-                        }
+                            ActiveDirectoryGuid = activeDirectoryGuid,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Email = email,
+                            PhoneNumber = phoneNumber,
+                            WhenChanged = whenChanged,
+                            DepartmentId = department?.Id,
+                            PositionId = position?.Id,
+                        };
 
-                        companyName = TryGetAttribute(user, "company");
-                        departmentName = TryGetAttribute(user, "department");
-                        if (companyName != null && departmentName != null)
-                        {
-                            var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
-                            employeeByName.DepartmentId = department.Id;
-                        }
-                        else
-                        {
-                            employeeByName.DepartmentId = null;
-                        }
-
-                        await _employeeService.EditEmployeeAsync(employeeByName);
-                        continue;
+                        await _employeeService.CreateEmployeeAsync(employee);
                     }
-
-                    user = GetUserByDn(ldapSettings, distinguishedName);
-
-                    var employee = new Employee()
-                    {
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Email = email,
-                        PhoneNumber = phoneNumber,
-                        ActiveDirectoryGuid = activeDirectoryGuid,
-                        WhenChanged = whenChanged
-                    };
-
-                    positionName = TryGetAttribute(user, "title");
-                    if (positionName != null)
-                    {
-                        var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
-                        employee.PositionId = position.Id;
-                    }
-
-                    companyName = TryGetAttribute(user, "company");
-                    departmentName = TryGetAttribute(user, "department");
-                    if (companyName != null && departmentName != null)
-                    {
-                        var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
-                        employee.DepartmentId = department.Id;
-                    }
-
-                    await _employeeService.CreateEmployeeAsync(employee);
                 }
 
-                await _employeeService.SyncEmployeeAccessAsync(membersGuid);
+                // Sync users 
+                var membersAdGuids = members.Select(x => GetAttributeGUID(x)).ToList();
+                var employeesWithAdGuids = await _employeeService.EmployeeQuery().Where(x => x.ActiveDirectoryGuid != null).ToListAsync();
+
+                // Employees whose access to hardware was taken away in the active dirictory
+                var employeeRemovedFromGroup = employeesWithAdGuids.Where(x => !membersAdGuids.Contains(x.ActiveDirectoryGuid)).ToList();
+
+                foreach (var employee in employeeRemovedFromGroup)
+                    await _employeeService.RemoveFromHideezKeyOwnersAsync(employee.Id);
             }
         }
 
@@ -558,7 +494,9 @@ namespace HES.Core.Services
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 389);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.TrustAllCertificates();
+                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
 
                 var dn = GetDnFromHost(ldapSettings.Host);
@@ -576,11 +514,9 @@ namespace HES.Core.Services
                 var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, $"(&(objectCategory=user)(objectGUID={GetObjectGuid(activeDirectoryGuid)}))", LdapSearchScope.LDAP_SCOPE_SUBTREE));
                 var distinguishedName = TryGetAttribute(user.Entries.FirstOrDefault(), "distinguishedName");
 
-                var exist = members.Any(x => x.Contains(distinguishedName));
-                if (exist)
-                {
+                var userExistInGroup = members.Any(x => x.Contains(distinguishedName));
+                if (userExistInGroup)
                     return;
-                }
 
                 await connection.ModifyAsync(new LdapModifyEntry
                 {
@@ -708,11 +644,12 @@ namespace HES.Core.Services
                                 Email = TryGetAttribute(member, "mail"),
                                 PhoneNumber = TryGetAttribute(member, "telephoneNumber")
                             },
-                            DomainAccount = new WorkstationDomain()
+                            Account = new AccountAddModel()
                             {
                                 Name = "Domain Account",
+                                LoginType = LoginType.Domain,
                                 Domain = GetFirstDnFromHost(ldapSettings.Host),
-                                UserName = TryGetAttribute(member, "sAMAccountName"),
+                                Login = TryGetAttribute(member, "sAMAccountName"),
                                 Password = GeneratePassword(),
                                 UpdateInActiveDirectory = true
                             }
@@ -754,8 +691,8 @@ namespace HES.Core.Services
                             try
                             {
                                 // The employee may already be in the database, so we get his ID and create an account
-                                member.DomainAccount.EmployeeId = employee.Id;
-                                await _employeeService.CreateWorkstationAccountAsync(member.DomainAccount);
+                                member.Account.EmployeeId = employee.Id;
+                                await _employeeService.CreatePersonalAccountAsync(member.Account);
                             }
                             catch (AlreadyExistException)
                             {
@@ -768,6 +705,20 @@ namespace HES.Core.Services
                 }
                 transactionScope.Complete();
             }
+        }
+
+        public async Task VerifyAdUserAsync(Employee employee)
+        {
+            if (employee.ActiveDirectoryGuid == null)
+                return;
+
+            var setting = await _appSettingsService.GetLdapSettingsAsync();
+            if (setting == null)
+                throw new HESException(HESCode.LdapSettingsNotSet);
+
+            var user = GetUserByGuid(setting, employee.ActiveDirectoryGuid);
+            if (user == null)
+                throw new HESException(HESCode.ActiveDirectoryUserNotFound);
         }
 
         #region Helpers
@@ -792,6 +743,16 @@ namespace HES.Core.Services
         {
             DirectoryAttribute directoryAttribute;
             return entry.Attributes.TryGetValue(attr, out directoryAttribute) == true ? directoryAttribute.GetValues<string>().ToArray() : null;
+        }
+
+        private DateTime? TryGetDateTimeAttribute(DirectoryEntry entry, string attr)
+        {
+            var succeeded = DateTime.TryParseExact(TryGetAttribute(entry, attr), "yyyyMMddHHmmss.0Z", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
+
+            if (succeeded)
+                return date;
+            else
+                return null;
         }
 
         private string GetDnFromHost(string hostname)
@@ -832,7 +793,9 @@ namespace HES.Core.Services
         {
             using (var connection = new LdapConnection())
             {
-                connection.Connect(ldapSettings.Host, 389);
+                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+                connection.TrustAllCertificates();
+                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
                 connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
 
                 var dn = GetDnFromHost(ldapSettings.Host);
@@ -843,19 +806,19 @@ namespace HES.Core.Services
             }
         }
 
-        private DirectoryEntry GetUserByDn(LdapSettings ldapSettings, string distinguishedName)
-        {
-            using (var connection = new LdapConnection())
-            {
-                connection.Connect(ldapSettings.Host, 389);
-                connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
+        //private DirectoryEntry GetUserByDn(LdapSettings ldapSettings, string distinguishedName)
+        //{
+        //    using (var connection = new LdapConnection())
+        //    {
+        //        connection.Connect(ldapSettings.Host, 389);
+        //        connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
 
-                var dn = GetDnFromHost(ldapSettings.Host);
-                var filter = $"(&(objectCategory=user)(distinguishedName={distinguishedName}))";
-                var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE));
-                return user.Entries.FirstOrDefault();
-            }
-        }
+        //        var dn = GetDnFromHost(ldapSettings.Host);
+        //        var filter = $"(&(objectCategory=user)(distinguishedName={distinguishedName}))";
+        //        var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE));
+        //        return user.Entries.FirstOrDefault();
+        //    }
+        //}
 
         #endregion
 

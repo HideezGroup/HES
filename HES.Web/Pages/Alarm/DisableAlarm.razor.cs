@@ -1,28 +1,24 @@
-﻿using System;
+﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Entities;
 using HES.Core.Interfaces;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Identity;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using HES.Core.Hubs;
-using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Alarm
 {
-    public partial class DisableAlarm : OwningComponentBase
+    public partial class DisableAlarm : HESComponentBase
     {
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DisableAlarm> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback CallBack { get; set; }
 
         public string UserConfirmPassword { get; set; }
@@ -33,9 +29,9 @@ namespace HES.Web.Pages.Alarm
             try
             {
                 RemoteWorkstationConnections = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
-
-                var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                ApplicationUser = await UserManager.GetUserAsync(state.User);
+                ApplicationUser = await UserManager.GetUserAsync((await AuthenticationStateTask).User);
+                if (ApplicationUser == null)
+                    throw new Exception("Required relogin");
             }
             catch (Exception ex)
             {
@@ -55,7 +51,7 @@ namespace HES.Web.Pages.Alarm
                     throw new Exception("Invalid password");
 
                 await RemoteWorkstationConnections.UnlockAllWorkstationsAsync(ApplicationUser.Email);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Alarm);
+                await SynchronizationService.UpdateAlarm(ExceptPageId);
                 await CallBack.InvokeAsync(this);
                 await ToastService.ShowToastAsync("All workstations are unlocked.", ToastType.Success);
                 await ModalDialogService.CloseAsync();

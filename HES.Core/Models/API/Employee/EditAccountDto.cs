@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HES.Core.Attributes;
+using HES.Core.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace HES.Core.Models.API
 {
@@ -6,13 +8,22 @@ namespace HES.Core.Models.API
     {
         [Required]
         public string Id { get; set; }
-        [Required]
-        public string EmployeeId { get; set; }
+
         [Required]
         public string Name { get; set; }
+
         public string Urls { get; set; }
+
         public string Apps { get; set; }
-        [Required]
+
+        public LoginType LoginType { get; set; }
+
+        [Display(Name = "Login")]
+        [ValidateLogin(nameof(LoginType))]
         public string Login { get; set; }
+
+        [Display(Name = "Domain")]
+        [ValidateDomain(nameof(LoginType), ErrorMessage = "The Domain field is required.")]
+        public string Domain { get; set; }
     }
 }

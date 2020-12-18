@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Groups;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class GroupDetails : OwningComponentBase, IDisposable
+    public partial class GroupDetails : HESComponentBase, IDisposable
     {
         public IGroupService GroupService { get; set; }
         public IMainTableService<GroupMembership, GroupMembershipFilter> MainTableService { get; set; }
@@ -23,11 +23,6 @@ namespace HES.Web.Pages.Groups
         [Parameter] public string GroupId { get; set; }
 
         public Group Group { get; set; }
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,19 +31,32 @@ namespace HES.Web.Pages.Groups
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<GroupMembership, GroupMembershipFilter>>();
 
-                await InitializeHubAsync();
+                SynchronizationService.UpdateGroupDetailsPage += UpdateGroupDetailsPage;
+  
                 await LoadGroupAsync();
                 await BreadcrumbsService.SetGroupDetails(Group.Name);
                 await MainTableService.InitializeAsync(GroupService.GetGruopMembersAsync, GroupService.GetGruopMembersCountAsync, ModalDialogService, StateHasChanged, nameof(GroupMembership.Employee.FullName), entityId: GroupId);
-                
-                Initialized = true;
+
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateGroupDetailsPage(string exceptPageId, string groupId, string userName)
+        {
+            if (Group.Id != groupId || PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {      
+                await MainTableService.LoadTableDataAsync();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
         }
 
         private async Task LoadGroupAsync()
@@ -64,7 +72,7 @@ namespace HES.Web.Pages.Groups
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddEmployee));
-                builder.AddAttribute(1, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(1, "ExceptPageId", PageId);
                 builder.AddAttribute(2, "GroupId", GroupId);
                 builder.CloseComponent();
             };
@@ -77,7 +85,7 @@ namespace HES.Web.Pages.Groups
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(RemoveEmployee));
-                builder.AddAttribute(1, "ConnectionId", hubConnection?.ConnectionId);
+                builder.AddAttribute(1, "ExceptPageId", PageId);
                 builder.AddAttribute(2, "GroupId", GroupId);
                 builder.AddAttribute(3, "EmployeeId", MainTableService.SelectedEntity.EmployeeId);
                 builder.CloseComponent();
@@ -86,26 +94,9 @@ namespace HES.Web.Pages.Groups
             await ModalDialogService.ShowAsync("Delete Employee", body);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On(RefreshPage.GroupDetails, async () =>
-            {
-                await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
-
+            SynchronizationService.UpdateGroupDetailsPage -= UpdateGroupDetailsPage;
             MainTableService.Dispose();
         }
     }

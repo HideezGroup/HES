@@ -1,6 +1,6 @@
-﻿@inherits OwningComponentBase
+﻿@inherits HESComponentBase
 
-@if (!_initialized)
+@if (!Initialized)
 {
     <LoadingText />
 }
@@ -27,7 +27,7 @@ else
                 <InputText @bind-Value="_accountPassword.ConfirmPassword" type="password" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => _accountPassword.ConfirmPassword)" class="text-danger" />
             </div>
-            @if (Employee.ActiveDirectoryGuid != null && LdapSettings != null && Account.Kind == AccountKind.Workstation && Account.Login.Contains(LdapSettings?.Host.Split(".")[0], StringComparison.OrdinalIgnoreCase))
+            @if (Employee.ActiveDirectoryGuid != null && LdapSettings != null && Account.Login.Contains(LdapSettings?.Host.Split(".")[0], StringComparison.OrdinalIgnoreCase))
             {
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">

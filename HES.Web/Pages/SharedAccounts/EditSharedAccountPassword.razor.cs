@@ -1,11 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class EditSharedAccountPassword : OwningComponentBase, IDisposable
+    public partial class EditSharedAccountPassword : HESComponentBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
@@ -22,14 +20,12 @@ namespace HES.Web.Pages.SharedAccounts
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditSharedAccountPassword> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string AccountId { get; set; }
 
         public SharedAccount Account { get; set; }
         public AccountPassword AccountPassword { get; set; } = new AccountPassword();
         public bool EntityBeingEdited { get; set; }
-        public bool Initialized { get; set; }
         public ButtonSpinner ButtonSpinner { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -49,7 +45,7 @@ namespace HES.Web.Pages.SharedAccounts
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Account.Id, Account);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -72,7 +68,7 @@ namespace HES.Web.Pages.SharedAccounts
                 {
                     var vaults = await SharedAccountService.EditSharedAccountPwdAsync(Account, AccountPassword);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
-                    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.SharedAccounts);
+                    await SynchronizationService.UpdateSharedAccounts(ExceptPageId);
                     await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
                     await ModalDialogService.CloseAsync();
                 });

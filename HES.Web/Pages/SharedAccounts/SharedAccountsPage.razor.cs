@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.SharedAccounts;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class SharedAccountsPage : OwningComponentBase, IDisposable
+    public partial class SharedAccountsPage : HESComponentBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public IMainTableService<SharedAccount, SharedAccountsFilter> MainTableService { get; set; }
@@ -20,13 +20,6 @@ namespace HES.Web.Pages.SharedAccounts
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<SharedAccountsPage> Logger { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
-
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
 
         protected override async Task OnInitializedAsync()
         {
@@ -35,18 +28,32 @@ namespace HES.Web.Pages.SharedAccounts
                 SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<SharedAccount, SharedAccountsFilter>>();
 
-                await InitializeHubAsync();
+                SynchronizationService.UpdateSharedAccountsPage += UpdateSharedAccountsPage;
+
                 await BreadcrumbsService.SetSharedAccounts();
                 await MainTableService.InitializeAsync(SharedAccountService.GetSharedAccountsAsync, SharedAccountService.GetSharedAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(SharedAccount.Name), ListSortDirection.Ascending);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateSharedAccountsPage(string exceptPageId, string userName)
+        {
+            if (PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {
+                await MainTableService.LoadTableDataAsync();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
+
         }
 
         private async Task CreateSharedAccountAsync()
@@ -54,7 +61,7 @@ namespace HES.Web.Pages.SharedAccounts
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateSharedAccount));
-                builder.AddAttribute(1, nameof(CreateSharedAccount.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(1, nameof(CreateSharedAccount.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -67,7 +74,7 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 builder.OpenComponent(0, typeof(DeleteSharedAccount));
                 builder.AddAttribute(1, nameof(DeleteSharedAccount.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteSharedAccount.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(DeleteSharedAccount.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -80,7 +87,7 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 builder.OpenComponent(0, typeof(EditSharedAccountOtp));
                 builder.AddAttribute(1, nameof(EditSharedAccountOtp.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditSharedAccountOtp.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(EditSharedAccountOtp.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -93,7 +100,7 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 builder.OpenComponent(0, typeof(EditSharedAccount));
                 builder.AddAttribute(1, nameof(EditSharedAccount.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditSharedAccount.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(EditSharedAccount.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -106,33 +113,16 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 builder.OpenComponent(0, typeof(EditSharedAccountPassword));
                 builder.AddAttribute(1, nameof(EditSharedAccountPassword.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditSharedAccountPassword.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(EditSharedAccountPassword.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
             await MainTableService.ShowModalAsync("Edit Shared Account Password", body, ModalDialogSize.Default);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On(RefreshPage.SharedAccounts, async () =>
-            {
-                await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
-
+            SynchronizationService.UpdateSharedAccountsPage -= UpdateSharedAccountsPage;
             MainTableService.Dispose();
         }
     }

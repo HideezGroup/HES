@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,15 +11,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class DeleteLicenseOrder : OwningComponentBase, IDisposable
+    public partial class DeleteLicenseOrder : HESComponentBase, IDisposable
     {
         public ILicenseService LicenseService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteLicenseOrder> Logger { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string LicenseOrderId { get; set; }
 
         public LicenseOrder LicenseOrder { get; set; }
@@ -53,7 +51,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             try
             {
                 await LicenseService.DeleteOrderAsync(LicenseOrder);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.Licenses);
+                await SynchronizationService.UpdateLicenses(ExceptPageId);
                 await ToastService.ShowToastAsync("License order deleted.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }

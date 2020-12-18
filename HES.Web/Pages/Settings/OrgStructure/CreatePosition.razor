@@ -1,4 +1,6 @@
-﻿<EditForm Model="Position" OnValidSubmit="CreateAsync">
+﻿@inherits HESComponentBase
+
+<EditForm Model="Position" OnValidSubmit="CreateAsync">
     <DataAnnotationsValidator />
     <ValidationErrorMessage @ref="ValidationErrorMessage" />
     <div class="form-group">

@@ -4,39 +4,60 @@ using HES.Core.Models.Web;
 using HES.Core.Models.Web.AppSettings;
 using HES.Core.Models.Web.Workstations;
 using HES.Core.Services;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Alarm
 {
-    public partial class AlarmPage : OwningComponentBase, IDisposable
+    public partial class AlarmPage : HESComponentBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] public ILogger<AlarmPage> Logger { get; set; }
 
         public AlarmState AlarmState { get; set; }
         public int WorkstationOnline { get; set; }
         public int WorkstationCount { get; set; }
 
-        private HubConnection _hubConnection;
-
         protected override async Task OnInitializedAsync()
         {
-            WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
-            AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
+            try
+            {
+                WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
+                AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
 
-            await BreadcrumbsService.SetAlarm();
-            await GetAlarmStateAsync();
-            await InitializeHubAsync();
-            WorkstationOnline = RemoteWorkstationConnectionsService.WorkstationsOnlineCount();
-            WorkstationCount = await WorkstationService.GetWorkstationsCountAsync(new DataLoadingOptions<WorkstationFilter>());
+                SynchronizationService.UpdateAlarmPage += UpdateAlarmPage;
+
+                await BreadcrumbsService.SetAlarm();
+                await GetAlarmStateAsync();
+                WorkstationOnline = RemoteWorkstationConnectionsService.WorkstationsOnlineCount();
+                WorkstationCount = await WorkstationService.GetWorkstationsCountAsync(new DataLoadingOptions<WorkstationFilter>());
+                SetInitialized();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
+        }
+
+        private async Task UpdateAlarmPage(string exceptPageId, string userName)
+        {
+            if (PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {
+                await GetAlarmStateAsync();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
         }
 
         private async Task GetAlarmStateAsync()
@@ -50,7 +71,7 @@ namespace HES.Web.Pages.Alarm
             {
                 builder.OpenComponent(0, typeof(EnableAlarm));
                 builder.AddAttribute(1, nameof(EnableAlarm.CallBack), EventCallback.Factory.Create(this, GetAlarmStateAsync));
-                builder.AddAttribute(2, nameof(EnableAlarm.ConnectionId), _hubConnection.ConnectionId);
+                builder.AddAttribute(2, nameof(EnableAlarm.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
@@ -63,33 +84,16 @@ namespace HES.Web.Pages.Alarm
             {
                 builder.OpenComponent(0, typeof(DisableAlarm));
                 builder.AddAttribute(1, nameof(DisableAlarm.CallBack), EventCallback.Factory.Create(this, GetAlarmStateAsync));
-                builder.AddAttribute(2, nameof(DisableAlarm.ConnectionId), _hubConnection.ConnectionId);
+                builder.AddAttribute(2, nameof(DisableAlarm.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
             await ModalDialogService.ShowAsync("Turn off alarm", body);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            _hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            _hubConnection.On(RefreshPage.Alarm, async () =>
-            {
-                await GetAlarmStateAsync();
-                StateHasChanged();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await _hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (_hubConnection?.State == HubConnectionState.Connected)
-                _hubConnection.DisposeAsync();
+            SynchronizationService.UpdateAlarmPage -= UpdateAlarmPage;
         }
     }
 }

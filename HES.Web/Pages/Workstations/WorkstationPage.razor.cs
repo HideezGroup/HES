@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Workstations;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class WorkstationPage : OwningComponentBase, IDisposable
+    public partial class WorkstationPage : HESComponentBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IMainTableService<Workstation, WorkstationFilter> MainTableService { get; set; }
@@ -22,18 +22,13 @@ namespace HES.Web.Pages.Workstations
         [Inject] public ILogger<WorkstationPage> Logger { get; set; }
         [Parameter] public string DashboardFilter { get; set; }
 
-        public bool Initialized { get; set; }
-        public bool LoadFailed { get; set; }
-        public string ErrorMessage { get; set; }
-
-        private HubConnection hubConnection;
-
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
                 MainTableService = ScopedServices.GetRequiredService<IMainTableService<Workstation, WorkstationFilter>>();
+                SynchronizationService.UpdateWorkstationsPage += UpdateWorkstationsPage;
 
                 switch (DashboardFilter)
                 {
@@ -47,16 +42,27 @@ namespace HES.Web.Pages.Workstations
 
                 await BreadcrumbsService.SetWorkstations();
                 await MainTableService.InitializeAsync(WorkstationService.GetWorkstationsAsync, WorkstationService.GetWorkstationsCountAsync, ModalDialogService, StateHasChanged, nameof(Workstation.Name));
-                await InitializeHubAsync();
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
-                LoadFailed = true;
-                ErrorMessage = ex.Message;
                 Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
             }
+        }
+
+        private async Task UpdateWorkstationsPage(string exceptPageId, string userName)
+        {
+            if (PageId == exceptPageId)
+                return;
+
+            await InvokeAsync(async () =>
+            {
+                await MainTableService.LoadTableDataAsync();
+                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
+                StateHasChanged();
+            });
         }
 
         private async Task ApproveWorkstationAsync()
@@ -65,7 +71,7 @@ namespace HES.Web.Pages.Workstations
             {
                 builder.OpenComponent(0, typeof(ApproveWorkstation));
                 builder.AddAttribute(1, nameof(ApproveWorkstation.WorkstationId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(ApproveWorkstation.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(ApproveWorkstation.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
             await MainTableService.ShowModalAsync("Approve Workstation", body);
@@ -77,7 +83,7 @@ namespace HES.Web.Pages.Workstations
             {
                 builder.OpenComponent(0, typeof(UnapproveWorkstation));
                 builder.AddAttribute(1, nameof(UnapproveWorkstation.WorkstationId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(UnapproveWorkstation.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(UnapproveWorkstation.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
             await MainTableService.ShowModalAsync("Unapprove Workstation", body);
@@ -89,7 +95,7 @@ namespace HES.Web.Pages.Workstations
             {
                 builder.OpenComponent(0, typeof(DeleteWorkstation));
                 builder.AddAttribute(1, nameof(DeleteWorkstation.WorkstationId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteWorkstation.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(DeleteWorkstation.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
             await MainTableService.ShowModalAsync("Delete Workstation", body);
@@ -109,32 +115,15 @@ namespace HES.Web.Pages.Workstations
             {
                 builder.OpenComponent(0, typeof(EditWorkstation));
                 builder.AddAttribute(1, nameof(EditWorkstation.WorkstationId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditWorkstation.ConnectionId), hubConnection?.ConnectionId);
+                builder.AddAttribute(2, nameof(EditWorkstation.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
             await MainTableService.ShowModalAsync("Edit Workstation", body);
         }
 
-        private async Task InitializeHubAsync()
-        {
-            hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/refreshHub"))
-            .Build();
-
-            hubConnection.On(RefreshPage.Workstations, async () =>
-            {
-                await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Page updated by another admin.", ToastType.Notify);
-            });
-
-            await hubConnection.StartAsync();
-        }
-
         public void Dispose()
         {
-            if (hubConnection?.State == HubConnectionState.Connected)
-                hubConnection.DisposeAsync();
-
+            SynchronizationService.UpdateWorkstationsPage -= UpdateWorkstationsPage;
             MainTableService.Dispose();
         }
     }

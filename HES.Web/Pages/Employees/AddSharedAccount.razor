@@ -1,4 +1,4 @@
-﻿@inherits OwningComponentBase
+﻿@inherits HESComponentBase
 
 @if (SharedAccounts == null)
 {
@@ -28,10 +28,10 @@ else
             </div>
             <div class="col">
                 <div><b>Name</b>: @SelectedSharedAccount.Name</div>
-                <div><b>Login</b>: @SelectedSharedAccount.Login</div>
                 <div><b>Urls</b>: @SelectedSharedAccount.Urls</div>
                 <div><b>Apps</b>: @SelectedSharedAccount.Apps</div>
-                <div><b>Kind</b>: @SelectedSharedAccount.Kind</div>
+                <div><b>Login Type</b>: @EnumHelper.GetDisplayName(SelectedSharedAccount.LoginType)</div>
+                <div><b>Login</b>: @SelectedSharedAccount.Login</div>
             </div>
         </div>
         <div class="text-right">

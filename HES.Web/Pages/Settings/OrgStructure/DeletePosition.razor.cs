@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,21 +11,19 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class DeletePosition : ComponentBase, IDisposable
+    public partial class DeletePosition : HESComponentBase, IDisposable
     {
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeletePosition> Logger { get; set; }
-        [Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public string PositionId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
 
         public Position Position { get; set; }
         public bool EntityBeingEdited { get; set; }
-        public bool Initialized { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,7 +37,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Position.Id, Position);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
@@ -55,8 +52,8 @@ namespace HES.Web.Pages.Settings.OrgStructure
             try
             {
                 await OrgStructureService.DeletePositionAsync(Position.Id);
-                await Refresh.InvokeAsync(this);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.OrgSructurePositions);
+                await Refresh.InvokeAsync(this); 
+                await SynchronizationService.UpdateOrgSructurePositions(ExceptPageId);
                 await ToastService.ShowToastAsync("Position removed.", ToastType.Success);
                 await ModalDialogService.CloseAsync();
             }

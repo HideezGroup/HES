@@ -1,11 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.HardwareVaults;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,7 +15,7 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class AddHardwareVault : OwningComponentBase
+    public partial class AddHardwareVault : HESComponentBase
     {
         IEmployeeService EmployeeService { get; set; }
         IHardwareVaultService HardwareVaultService { get; set; }
@@ -25,10 +24,9 @@ namespace HES.Web.Pages.Employees
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<AddHardwareVault> Logger { get; set; }
-        [Inject] IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public string EmployeeId { get; set; }
-        [Parameter] public string ConnectionId { get; set; }
+        [Parameter] public string ExceptPageId { get; set; }
 
         public List<HardwareVault> HardwareVaults { get; set; }
         public HardwareVault SelectedHardwareVault { get; set; }
@@ -36,12 +34,24 @@ namespace HES.Web.Pages.Employees
 
         protected override async Task OnInitializedAsync()
         {
-            EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
-            HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-            LdapService = ScopedServices.GetRequiredService<ILdapService>();
+            try
+            {
+                EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+                HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
+                LdapService = ScopedServices.GetRequiredService<ILdapService>();
 
-            SearchText = string.Empty;
-            await LoadDataAsync();
+                SearchText = string.Empty;
+                await LoadDataAsync();
+
+                SetInitialized();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogService.CancelAsync();
+            }
         }
 
         public int TotalRecords { get; set; }
@@ -113,8 +123,8 @@ namespace HES.Web.Pages.Employees
 
                 await Refresh.InvokeAsync(this);
                 await ToastService.ShowToastAsync("Vault added", ToastType.Success);
-                await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, EmployeeId);
-                await HubContext.Clients.All.SendAsync(RefreshPage.HardwareVaultStateChanged, SelectedHardwareVault.Id);
+                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, EmployeeId);
+                await SynchronizationService.HardwareVaultStateChanged(SelectedHardwareVault.Id);
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)
@@ -123,11 +133,6 @@ namespace HES.Web.Pages.Employees
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
             }
-        }
-
-        private async Task CloseAsync()
-        {
-            await ModalDialogService.CloseAsync();
         }
     }
 }
