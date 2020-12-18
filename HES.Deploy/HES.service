@@ -1,0 +1,18 @@
+[Unit]
+  Description=Hideez Enterprise Server
+
+[Service]
+
+  User=root
+  Group=root
+
+  WorkingDirectory=/opt/HES
+  ExecStart=/opt/HES/HES.Web 
+  Restart=on-failure
+  ExecReload=/bin/kill -HUP $MAINPID
+  KillMode=process
+  # SyslogIdentifier=HES-server
+  # PrivateTmp=true
+
+[Install]
+  WantedBy=multi-user.target

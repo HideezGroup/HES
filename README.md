@@ -37,7 +37,6 @@ Almost everything you can do with the HES web interface you can do via the HES R
 
 - invite more admins and delete default login 'admin@hideez.com'
 - setup the HES following the [user documentation](https://support.hideez.com/hideez-enterprise-server)
-- if you use Linux and need the AD integration, [join your Linux server to the AD](LINUX_AD.md) 
 
 ## Related projects
 
