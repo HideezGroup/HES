@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HES.Core.Entities;
-using Hideez.SDK.Communication.BLE;
-using Hideez.SDK.Communication.Remote;
+using Hideez.SDK.Communication.Device;
 
 namespace HES.Core.Interfaces
 {

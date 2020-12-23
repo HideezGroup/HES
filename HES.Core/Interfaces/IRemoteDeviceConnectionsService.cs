@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HES.Core.RemoteDeviceConnection;
 using Hideez.SDK.Communication;
-using Hideez.SDK.Communication.BLE;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
 

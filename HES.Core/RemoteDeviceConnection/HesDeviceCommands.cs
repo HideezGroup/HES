@@ -1,6 +1,6 @@
 ﻿using HES.Core.RemoteDeviceConnection.Tasks;
 using Hideez.SDK.Communication;
-using Hideez.SDK.Communication.BLE;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.Interfaces;
 using System.Threading.Tasks;
 

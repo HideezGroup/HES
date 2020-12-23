@@ -3,7 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.RemoteDeviceConnection;
 using Hideez.SDK.Communication;
-using Hideez.SDK.Communication.BLE;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.PasswordManager;
 using Hideez.SDK.Communication.Remote;

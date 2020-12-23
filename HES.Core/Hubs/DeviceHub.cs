@@ -1,7 +1,7 @@
 ﻿using HES.Core.Interfaces;
 using HES.Core.RemoteDeviceConnection;
 using Hideez.SDK.Communication;
-using Hideez.SDK.Communication.BLE;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.Client;
 using Hideez.SDK.Communication.HES.DTO;
 using Microsoft.AspNetCore.SignalR;

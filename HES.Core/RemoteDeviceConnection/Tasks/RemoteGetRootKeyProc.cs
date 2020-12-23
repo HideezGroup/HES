@@ -1,7 +1,7 @@
 ﻿using Hideez.SDK.Communication.Utils;
-using Hideez.SDK.Communication.BLE;
 using System;
 using System.Threading.Tasks;
+using Hideez.SDK.Communication.Device;
 
 namespace HES.Core.RemoteDeviceConnection.Tasks
 {

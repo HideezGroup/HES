@@ -1,6 +1,6 @@
 ﻿using HES.Core.RemoteDeviceConnection;
 using Hideez.SDK.Communication;
-using Hideez.SDK.Communication.BLE;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.Remote;
 using Hideez.SDK.Communication.Utils;
 using System;
@@ -171,6 +171,8 @@ namespace HES.Core.Services
             {
                 descr.Device?.Shutdown();
             }
+
+            _connectionContainers.TryRemove(workstationId, out DeviceConnectionContainer deviceConnection);
         }
 
         internal Device GetRemoteDevice(string workstationId)

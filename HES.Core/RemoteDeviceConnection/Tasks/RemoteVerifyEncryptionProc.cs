@@ -1,4 +1,4 @@
-﻿using Hideez.SDK.Communication.BLE;
+﻿using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.Utils;
 using System;
 using System.Threading.Tasks;
