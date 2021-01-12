@@ -366,9 +366,6 @@ on one computer, then it is necessary to specify different ports for each site i
 
 ```
 
-If you do not see any errors within 1-2 minutes, it means that the HES has been successfully configured and started.
-Press Ctrl+C for exit.
-
 ## 4.4 Daemonizing of the Enterprise Server
 Copy file `HES.service` to the `/lib/systemd/system/`:
 ```shell
