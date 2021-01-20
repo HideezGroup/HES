@@ -533,57 +533,39 @@ namespace HES.Core.Services
 
         public async Task SyncUsersAsync(LdapSettings ldapSettings)
         {
-            using (var connection = new LdapConnection())
+            var ldapConnectionOptions = new Novell.Directory.Ldap.LdapConnectionOptions()
+                .ConfigureRemoteCertificateValidationCallback((sender, certificate, chain, errors) => true);
+
+            using (var connection = new Novell.Directory.Ldap.LdapConnection(ldapConnectionOptions) { SecureSocketLayer = true })
             {
-                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
-                connection.TrustAllCertificates();
-                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
-                connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
+                connection.Connect(ldapSettings.Host, Novell.Directory.Ldap.LdapConnection.DefaultSslPort);
+                var credentials = CreateLdapCredential(ldapSettings);
+                connection.Bind(Novell.Directory.Ldap.LdapConnection.LdapV3, credentials.UserName, credentials.Password);
+
 
                 var dn = GetDnFromHost(ldapSettings.Host);
-
                 var groupFilter = $"(&(objectCategory=group)(name={_syncGroupName}))";
-                var groupSearchRequest = new SearchRequest(dn, groupFilter, LdapSearchScope.LDAP_SCOPE_SUBTREE);
-                var groupResponse = (SearchResponse)connection.SendRequest(groupSearchRequest);
+                var groupResponse = connection.Search(dn, Novell.Directory.Ldap.LdapConnection.ScopeSub, groupFilter, null, false);
 
-                // If the group was not created, exit the method
-                if (groupResponse.Entries.Count == 0)
+                var groups = GetEntries(groupResponse);
+
+                if (groups.Count == 0)
                     return;
 
-                var groupDn = groupResponse.Entries.FirstOrDefault().Dn;
-
+                var groupDn = groups.FirstOrDefault().Dn;
                 var membersFilter = $"(&(objectCategory=user)(memberOf={groupDn})(givenName=*))";
-                var membersPageResultRequestControl = new PageResultRequestControl(500) { IsCritical = true };
-                var membersSearchRequest = new SearchRequest(dn, membersFilter, LdapSearchScope.LDAP_SCOPE_SUBTREE)
-                {
-                    AttributesOnly = false,
-                    TimeLimit = TimeSpan.Zero,
-                    Controls = { membersPageResultRequestControl }
-                };
 
-                var members = new List<DirectoryEntry>();
-
-                while (true)
-                {
-                    var membersResponse = (SearchResponse)connection.SendRequest(membersSearchRequest);
-
-                    foreach (var control in membersResponse.Controls)
-                    {
-                        if (control is PageResultResponseControl)
-                        {
-                            // Update the cookie for next set
-                            membersPageResultRequestControl.Cookie = ((PageResultResponseControl)control).Cookie;
-                            break;
-                        }
-                    }
-
-                    // Add them to our collection
-                    members.AddRange(membersResponse.Entries);
-
-                    // Our exit condition is when our cookie is empty
-                    if (membersPageResultRequestControl.Cookie.Length == 0)
-                        break;
-                }
+                var searchOptions = new Novell.Directory.Ldap.SearchOptions(
+                dn,
+                Novell.Directory.Ldap.LdapConnection.ScopeSub,
+                membersFilter,
+                null);
+                var ldapSortControl = new Novell.Directory.Ldap.Controls.LdapSortControl(new Novell.Directory.Ldap.Controls.LdapSortKey("cn"), true);
+                var members = connection.SearchUsingVlv(
+                        ldapSortControl,
+                        searchOptions,
+                        1000
+                    );
 
                 // Add new users or sync properties 
                 foreach (var member in members)
@@ -647,6 +629,123 @@ namespace HES.Core.Services
                 foreach (var employee in employeeRemovedFromGroup)
                     await _employeeService.RemoveFromHideezKeyOwnersAsync(employee.Id);
             }
+
+            #region LdapforNet
+            //using (var connection = new LdapConnection())
+            //{
+            //    connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+            //    connection.TrustAllCertificates();
+            //    connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
+            //    connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
+
+            //    var dn = GetDnFromHost(ldapSettings.Host);
+
+            //    var groupFilter = $"(&(objectCategory=group)(name={_syncGroupName}))";
+            //    var groupSearchRequest = new SearchRequest(dn, groupFilter, LdapSearchScope.LDAP_SCOPE_SUBTREE);
+            //    var groupResponse = (SearchResponse)connection.SendRequest(groupSearchRequest);
+
+            //    // If the group was not created, exit the method
+            //    if (groupResponse.Entries.Count == 0)
+            //        return;
+
+            //    var groupDn = groupResponse.Entries.FirstOrDefault().Dn;
+
+            //    var membersFilter = $"(&(objectCategory=user)(memberOf={groupDn})(givenName=*))";
+            //    var membersPageResultRequestControl = new PageResultRequestControl(500) { IsCritical = true };
+            //    var membersSearchRequest = new SearchRequest(dn, membersFilter, LdapSearchScope.LDAP_SCOPE_SUBTREE)
+            //    {
+            //        AttributesOnly = false,
+            //        TimeLimit = TimeSpan.Zero,
+            //        Controls = { membersPageResultRequestControl }
+            //    };
+
+            //    var members = new List<DirectoryEntry>();
+
+            //    while (true)
+            //    {
+            //        var membersResponse = (SearchResponse)connection.SendRequest(membersSearchRequest);
+
+            //        foreach (var control in membersResponse.Controls)
+            //        {
+            //            if (control is PageResultResponseControl)
+            //            {
+            //                // Update the cookie for next set
+            //                membersPageResultRequestControl.Cookie = ((PageResultResponseControl)control).Cookie;
+            //                break;
+            //            }
+            //        }
+
+            //        // Add them to our collection
+            //        members.AddRange(membersResponse.Entries);
+
+            //        // Our exit condition is when our cookie is empty
+            //        if (membersPageResultRequestControl.Cookie.Length == 0)
+            //            break;
+            //    }
+
+            //    // Add new users or sync properties 
+            //    foreach (var member in members)
+            //    {
+            //        var activeDirectoryGuid = GetAttributeGUID(member);
+            //        var distinguishedName = TryGetAttribute(member, "distinguishedName");
+            //        var firstName = TryGetAttribute(member, "givenName");
+            //        var lastName = TryGetAttribute(member, "sn") ?? string.Empty;
+            //        var email = TryGetAttribute(member, "mail");
+            //        var phoneNumber = TryGetAttribute(member, "telephoneNumber");
+            //        var companyName = TryGetAttribute(member, "company");
+            //        var departmentName = TryGetAttribute(member, "department");
+            //        var positionName = TryGetAttribute(member, "title");
+            //        var whenChanged = TryGetDateTimeAttribute(member, "whenChanged");
+
+            //        var employee = await _employeeService.EmployeeQuery().FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
+            //        var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
+            //        var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
+
+            //        if (employee != null)
+            //        {
+            //            if (whenChanged != null && whenChanged == employee.WhenChanged)
+            //                continue;
+
+            //            employee.ActiveDirectoryGuid = activeDirectoryGuid;
+            //            employee.FirstName = firstName;
+            //            employee.LastName = lastName;
+            //            employee.Email = email;
+            //            employee.PhoneNumber = phoneNumber;
+            //            employee.WhenChanged = whenChanged;
+            //            employee.DepartmentId = department?.Id;
+            //            employee.PositionId = position?.Id;
+
+            //            await _employeeService.EditEmployeeAsync(employee);
+            //        }
+            //        else
+            //        {
+            //            employee = new Employee
+            //            {
+            //                ActiveDirectoryGuid = activeDirectoryGuid,
+            //                FirstName = firstName,
+            //                LastName = lastName,
+            //                Email = email,
+            //                PhoneNumber = phoneNumber,
+            //                WhenChanged = whenChanged,
+            //                DepartmentId = department?.Id,
+            //                PositionId = position?.Id,
+            //            };
+
+            //            await _employeeService.CreateEmployeeAsync(employee);
+            //        }
+            //    }
+
+            //    // Sync users 
+            //    var membersAdGuids = members.Select(x => GetAttributeGUID(x)).ToList();
+            //    var employeesWithAdGuids = await _employeeService.EmployeeQuery().Where(x => x.ActiveDirectoryGuid != null).ToListAsync();
+
+            //    // Employees whose access to hardware was taken away in the active dirictory
+            //    var employeeRemovedFromGroup = employeesWithAdGuids.Where(x => !membersAdGuids.Contains(x.ActiveDirectoryGuid)).ToList();
+
+            //    foreach (var employee in employeeRemovedFromGroup)
+            //        await _employeeService.RemoveFromHideezKeyOwnersAsync(employee.Id);
+            //}
+            #endregion
         }
 
         public async Task AddUserToHideezKeyOwnersAsync(LdapSettings ldapSettings, string activeDirectoryGuid)
@@ -905,7 +1004,14 @@ namespace HES.Core.Services
 
         private string TryGetAttribute(Novell.Directory.Ldap.LdapEntry entry, string attr)
         {
-            return entry.GetAttribute(attr).StringValue;
+            try
+            {
+                return entry.GetAttribute(attr).StringValue;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
 
         private string[] TryGetAttributeArray(DirectoryEntry entry, string attr)
@@ -915,6 +1021,16 @@ namespace HES.Core.Services
         }
 
         private DateTime? TryGetDateTimeAttribute(DirectoryEntry entry, string attr)
+        {
+            var succeeded = DateTime.TryParseExact(TryGetAttribute(entry, attr), "yyyyMMddHHmmss.0Z", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
+
+            if (succeeded)
+                return date;
+            else
+                return null;
+        }
+
+        private DateTime? TryGetDateTimeAttribute(Novell.Directory.Ldap.LdapEntry entry, string attr)
         {
             var succeeded = DateTime.TryParseExact(TryGetAttribute(entry, attr), "yyyyMMddHHmmss.0Z", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
 
