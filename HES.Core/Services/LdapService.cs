@@ -54,139 +54,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task<List<ActiveDirectoryUser>> GetUsersAsync(LdapSettings ldapSettings)
-        {
-            var users = new List<ActiveDirectoryUser>();
-
-            using (var connection = new LdapConnection())
-            {
-                connection.Connect(ldapSettings.Host, 3268);
-                await connection.BindAsync(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
-
-                var dn = GetDnFromHost(ldapSettings.Host);
-
-                var filter = "(&(objectCategory=user)(givenName=*))";
-                var pageResultRequestControl = new PageResultRequestControl(500) { IsCritical = true };
-                var searchRequest = new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE)
-                {
-                    AttributesOnly = false,
-                    TimeLimit = TimeSpan.Zero,
-                    Controls = { pageResultRequestControl }
-                };
-
-                var entries = new List<DirectoryEntry>();
-
-                while (true)
-                {
-                    var response = (SearchResponse)connection.SendRequest(searchRequest);
-
-                    foreach (var control in response.Controls)
-                    {
-                        if (control is PageResultResponseControl)
-                        {
-                            // Update the cookie for next set
-                            pageResultRequestControl.Cookie = ((PageResultResponseControl)control).Cookie;
-                            break;
-                        }
-                    }
-
-                    // Add them to our collection
-                    foreach (var entry in response.Entries)
-                    {
-                        entries.Add(entry);
-                    }
-
-                    // Our exit condition is when our cookie is empty
-                    if (pageResultRequestControl.Cookie.Length == 0)
-                        break;
-                }
-
-                foreach (var entity in entries)
-                {
-                    var activeDirectoryUser = new ActiveDirectoryUser()
-                    {
-                        Employee = new Employee()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            ActiveDirectoryGuid = GetAttributeGUID(entity),
-                            FirstName = TryGetAttribute(entity, "givenName"),
-                            LastName = TryGetAttribute(entity, "sn"),
-                            Email = TryGetAttribute(entity, "mail"),
-                            PhoneNumber = TryGetAttribute(entity, "telephoneNumber")
-                        },
-                        Account = new AccountAddModel()
-                        {
-                            Name = "Domain Account",
-                            LoginType = LoginType.Domain,
-                            Domain = GetFirstDnFromHost(ldapSettings.Host),
-                            Login = TryGetAttribute(entity, "sAMAccountName"),
-                            Password = GeneratePassword(),
-                            UpdateInActiveDirectory = true
-                        }
-                    };
-
-                    List<Group> groups = new List<Group>();
-
-                    var groupNames = TryGetAttributeArray(entity, "memberOf");
-                    if (groupNames != null)
-                    {
-                        foreach (var groupName in groupNames)
-                        {
-                            var name = GetNameFromDn(groupName);
-                            var filterGroup = $"(&(objectCategory=group)(name={name}))";
-                            var groupResponse = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filterGroup, LdapSearchScope.LDAP_SCOPE_SUBTREE));
-
-                            groups.Add(new Group()
-                            {
-                                Id = GetAttributeGUID(groupResponse.Entries.First()),
-                                Name = TryGetAttribute(groupResponse.Entries.First(), "name"),
-                                Description = TryGetAttribute(groupResponse.Entries.First(), "description"),
-                                Email = TryGetAttribute(groupResponse.Entries.First(), "mail")
-                            });
-                        }
-                    }
-
-                    activeDirectoryUser.Groups = groups.Count > 0 ? groups : null;
-
-                    users.Add(activeDirectoryUser);
-                }
-            }
-
-            return users.OrderBy(x => x.Employee.FullName).ToList();
-        }
-
-        public async Task AddUsersAsync(List<ActiveDirectoryUser> users, bool createAccounts, bool createGroups)
-        {
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                foreach (var user in users)
-                {
-                    var employee = await _employeeService.ImportEmployeeAsync(user.Employee);
-
-                    if (createAccounts)
-                    {
-                        try
-                        {
-                            // The employee may already be in the database, so we get his ID and create an account
-                            user.Account.EmployeeId = employee.Id;
-                            await _employeeService.CreatePersonalAccountAsync(user.Account);
-                        }
-                        catch (AlreadyExistException)
-                        {
-                            // Ignore if a domain account exists
-                        }
-                    }
-
-                    if (createGroups && user.Groups != null)
-                    {
-                        await _groupService.CreateGroupRangeAsync(user.Groups);
-                        await _groupService.AddEmployeeToGroupsAsync(employee.Id, user.Groups.Select(s => s.Id).ToList());
-                    }
-                }
-                transactionScope.Complete();
-            }
-        }
-
+        // Via Novell
         public async Task SetUserPasswordAsync(string employeeId, string password, LdapSettings ldapSettings)
         {
             var employee = await _employeeService.GetEmployeeByIdAsync(employeeId);
@@ -254,6 +122,7 @@ namespace HES.Core.Services
             #endregion
         }
 
+        // Via Novell
         private List<Novell.Directory.Ldap.LdapEntry> GetEntries(Novell.Directory.Ldap.ILdapSearchResults searchResult)
         {
             List<Novell.Directory.Ldap.LdapEntry> entries = new List<Novell.Directory.Ldap.LdapEntry>();
@@ -273,6 +142,7 @@ namespace HES.Core.Services
             return entries;
         }
 
+        // Via Novell
         public async Task ChangePasswordWhenExpiredAsync(LdapSettings ldapSettings)
         {
             var ldapConnectionOptions = new Novell.Directory.Ldap.LdapConnectionOptions()
@@ -531,6 +401,7 @@ namespace HES.Core.Services
             #endregion
         }
 
+        // Via Novell
         public async Task SyncUsersAsync(LdapSettings ldapSettings)
         {
             var ldapConnectionOptions = new Novell.Directory.Ldap.LdapConnectionOptions()
@@ -748,47 +619,265 @@ namespace HES.Core.Services
             #endregion
         }
 
-        public async Task AddUserToHideezKeyOwnersAsync(LdapSettings ldapSettings, string activeDirectoryGuid)
+        // Via Novell
+        public Task AddUserToHideezKeyOwnersAsync(LdapSettings ldapSettings, string activeDirectoryGuid)
         {
-            using (var connection = new LdapConnection())
+            var ldapConnectionOptions = new Novell.Directory.Ldap.LdapConnectionOptions()
+               .ConfigureRemoteCertificateValidationCallback((sender, certificate, chain, errors) => true);
+
+            using (var connection = new Novell.Directory.Ldap.LdapConnection(ldapConnectionOptions) { SecureSocketLayer = true })
             {
-                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
-                connection.TrustAllCertificates();
-                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
-                connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
+                connection.Connect(ldapSettings.Host, Novell.Directory.Ldap.LdapConnection.DefaultSslPort);
+
+                var credentials = CreateLdapCredential(ldapSettings);
+                connection.Bind(Novell.Directory.Ldap.LdapConnection.LdapV3, credentials.UserName, credentials.Password);
+
 
                 var dn = GetDnFromHost(ldapSettings.Host);
                 var filter = $"(&(objectCategory=group)(name={_syncGroupName}))";
-                var searchRequest = new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE);
+                var response = connection.Search(dn, Novell.Directory.Ldap.LdapConnection.ScopeSub, filter, null, false);
 
-                var response = (SearchResponse)connection.SendRequest(searchRequest);
+                var groups = GetEntries(response);
 
-                if (response.Entries.Count == 0)
-                    return;
+                if (groups.Count == 0)
+                    return Task.CompletedTask;
 
-                var group = response.Entries.FirstOrDefault();
+                var group = groups.FirstOrDefault();
                 var members = TryGetAttributeArray(group, "member");
 
-                var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, $"(&(objectCategory=user)(objectGUID={GetObjectGuid(activeDirectoryGuid)}))", LdapSearchScope.LDAP_SCOPE_SUBTREE));
-                var distinguishedName = TryGetAttribute(user.Entries.FirstOrDefault(), "distinguishedName");
+                var userFilter = $"(&(objectCategory=user)(objectGUID={GetObjectGuid(activeDirectoryGuid)}))";
+                var userResponse = connection.Search(dn, Novell.Directory.Ldap.LdapConnection.ScopeSub, userFilter, null, false);
+                var user = GetEntries(userResponse).FirstOrDefault();
+                var distinguishedName = TryGetAttribute(user, "distinguishedName");
 
                 var userExistInGroup = members.Any(x => x.Contains(distinguishedName));
                 if (userExistInGroup)
-                    return;
+                    return Task.CompletedTask;
 
-                await connection.ModifyAsync(new LdapModifyEntry
+                connection.Modify(user.Dn, new Novell.Directory.Ldap.LdapModification(Novell.Directory.Ldap.LdapModification.Add, new Novell.Directory.Ldap.LdapAttribute("member", distinguishedName)));
+            }
+
+            return Task.CompletedTask;
+
+            //using (var connection = new LdapConnection())
+            //{
+            //    connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+            //    connection.TrustAllCertificates();
+            //    connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
+            //    connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
+
+            //    var dn = GetDnFromHost(ldapSettings.Host);
+            //    var filter = $"(&(objectCategory=group)(name={_syncGroupName}))";
+            //    var searchRequest = new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE);
+
+            //    var response = (SearchResponse)connection.SendRequest(searchRequest);
+
+            //    if (response.Entries.Count == 0)
+            //        return;
+
+            //    var group = response.Entries.FirstOrDefault();
+            //    var members = TryGetAttributeArray(group, "member");
+
+            //    var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, $"(&(objectCategory=user)(objectGUID={GetObjectGuid(activeDirectoryGuid)}))", LdapSearchScope.LDAP_SCOPE_SUBTREE));
+            //    var distinguishedName = TryGetAttribute(user.Entries.FirstOrDefault(), "distinguishedName");
+
+            //    var userExistInGroup = members.Any(x => x.Contains(distinguishedName));
+            //    if (userExistInGroup)
+            //        return;
+
+            //    await connection.ModifyAsync(new LdapModifyEntry
+            //    {
+            //        Dn = group.Dn,
+            //        Attributes = new List<LdapModifyAttribute>
+            //        {
+            //            new LdapModifyAttribute
+            //            {
+            //                LdapModOperation = LdapModOperation.LDAP_MOD_ADD,
+            //                Type = "member",
+            //                Values = new List<string> { distinguishedName }
+            //            },
+            //        }
+            //    });
+            //}
+        }
+
+        public async Task VerifyAdUserAsync(Employee employee)
+        {
+            if (employee.ActiveDirectoryGuid == null)
+                return;
+
+            var ldapSettings = await _appSettingsService.GetLdapSettingsAsync();
+            if (ldapSettings == null)
+                throw new HESException(HESCode.LdapSettingsNotSet);
+
+            //using (var connection = new LdapConnection())
+            //{
+            //    connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
+            //    connection.TrustAllCertificates();
+            //    connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
+            //    connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
+
+            //    var dn = GetDnFromHost(ldapSettings.Host);
+            //    var objectGUID = GetObjectGuid(employee.ActiveDirectoryGuid);
+            //    var filter = $"(&(objectCategory=user)(objectGUID={objectGUID}))";
+            //    var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE));
+
+            //    if (user.Entries.FirstOrDefault() == null)
+            //        throw new HESException(HESCode.ActiveDirectoryUserNotFound);
+            //}
+
+            var ldapConnectionOptions = new Novell.Directory.Ldap.LdapConnectionOptions()
+                    .ConfigureRemoteCertificateValidationCallback((sender, certificate, chain, errors) => true);
+
+            using (var connection = new Novell.Directory.Ldap.LdapConnection(ldapConnectionOptions) { SecureSocketLayer = true })
+            {
+                connection.Connect(ldapSettings.Host, Novell.Directory.Ldap.LdapConnection.DefaultSslPort);
+                var credentials = CreateLdapCredential(ldapSettings);
+                connection.Bind(Novell.Directory.Ldap.LdapConnection.LdapV3, credentials.UserName, credentials.Password);
+
+                var dn = GetDnFromHost(ldapSettings.Host);
+                var objectGUID = GetObjectGuid(employee.ActiveDirectoryGuid);
+                var filter = $"(&(objectCategory=user)(objectGUID={objectGUID}))";
+                var response = connection.Search(dn, Novell.Directory.Ldap.LdapConnection.ScopeSub, filter, null, false);
+                var users = GetEntries(response);
+
+                if (users.Count == 0)
+                    throw new HESException(HESCode.ActiveDirectoryUserNotFound);
+            }
+        }
+
+        #region Legacy
+
+        public async Task<List<ActiveDirectoryUser>> GetUsersAsync(LdapSettings ldapSettings)
+        {
+            var users = new List<ActiveDirectoryUser>();
+
+            using (var connection = new LdapConnection())
+            {
+                connection.Connect(ldapSettings.Host, 3268);
+                await connection.BindAsync(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
+
+                var dn = GetDnFromHost(ldapSettings.Host);
+
+                var filter = "(&(objectCategory=user)(givenName=*))";
+                var pageResultRequestControl = new PageResultRequestControl(500) { IsCritical = true };
+                var searchRequest = new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE)
                 {
-                    Dn = group.Dn,
-                    Attributes = new List<LdapModifyAttribute>
+                    AttributesOnly = false,
+                    TimeLimit = TimeSpan.Zero,
+                    Controls = { pageResultRequestControl }
+                };
+
+                var entries = new List<DirectoryEntry>();
+
+                while (true)
+                {
+                    var response = (SearchResponse)connection.SendRequest(searchRequest);
+
+                    foreach (var control in response.Controls)
                     {
-                        new LdapModifyAttribute
+                        if (control is PageResultResponseControl)
                         {
-                            LdapModOperation = LdapModOperation.LDAP_MOD_ADD,
-                            Type = "member",
-                            Values = new List<string> { distinguishedName }
-                        },
+                            // Update the cookie for next set
+                            pageResultRequestControl.Cookie = ((PageResultResponseControl)control).Cookie;
+                            break;
+                        }
                     }
-                });
+
+                    // Add them to our collection
+                    foreach (var entry in response.Entries)
+                    {
+                        entries.Add(entry);
+                    }
+
+                    // Our exit condition is when our cookie is empty
+                    if (pageResultRequestControl.Cookie.Length == 0)
+                        break;
+                }
+
+                foreach (var entity in entries)
+                {
+                    var activeDirectoryUser = new ActiveDirectoryUser()
+                    {
+                        Employee = new Employee()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            ActiveDirectoryGuid = GetAttributeGUID(entity),
+                            FirstName = TryGetAttribute(entity, "givenName"),
+                            LastName = TryGetAttribute(entity, "sn"),
+                            Email = TryGetAttribute(entity, "mail"),
+                            PhoneNumber = TryGetAttribute(entity, "telephoneNumber")
+                        },
+                        Account = new AccountAddModel()
+                        {
+                            Name = "Domain Account",
+                            LoginType = LoginType.Domain,
+                            Domain = GetFirstDnFromHost(ldapSettings.Host),
+                            Login = TryGetAttribute(entity, "sAMAccountName"),
+                            Password = GeneratePassword(),
+                            UpdateInActiveDirectory = true
+                        }
+                    };
+
+                    List<Group> groups = new List<Group>();
+
+                    var groupNames = TryGetAttributeArray(entity, "memberOf");
+                    if (groupNames != null)
+                    {
+                        foreach (var groupName in groupNames)
+                        {
+                            var name = GetNameFromDn(groupName);
+                            var filterGroup = $"(&(objectCategory=group)(name={name}))";
+                            var groupResponse = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filterGroup, LdapSearchScope.LDAP_SCOPE_SUBTREE));
+
+                            groups.Add(new Group()
+                            {
+                                Id = GetAttributeGUID(groupResponse.Entries.First()),
+                                Name = TryGetAttribute(groupResponse.Entries.First(), "name"),
+                                Description = TryGetAttribute(groupResponse.Entries.First(), "description"),
+                                Email = TryGetAttribute(groupResponse.Entries.First(), "mail")
+                            });
+                        }
+                    }
+
+                    activeDirectoryUser.Groups = groups.Count > 0 ? groups : null;
+
+                    users.Add(activeDirectoryUser);
+                }
+            }
+
+            return users.OrderBy(x => x.Employee.FullName).ToList();
+        }
+
+        public async Task AddUsersAsync(List<ActiveDirectoryUser> users, bool createAccounts, bool createGroups)
+        {
+            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                foreach (var user in users)
+                {
+                    var employee = await _employeeService.ImportEmployeeAsync(user.Employee);
+
+                    if (createAccounts)
+                    {
+                        try
+                        {
+                            // The employee may already be in the database, so we get his ID and create an account
+                            user.Account.EmployeeId = employee.Id;
+                            await _employeeService.CreatePersonalAccountAsync(user.Account);
+                        }
+                        catch (AlreadyExistException)
+                        {
+                            // Ignore if a domain account exists
+                        }
+                    }
+
+                    if (createGroups && user.Groups != null)
+                    {
+                        await _groupService.CreateGroupRangeAsync(user.Groups);
+                        await _groupService.AddEmployeeToGroupsAsync(employee.Id, user.Groups.Select(s => s.Id).ToList());
+                    }
+                }
+                transactionScope.Complete();
             }
         }
 
@@ -965,19 +1054,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task VerifyAdUserAsync(Employee employee)
-        {
-            if (employee.ActiveDirectoryGuid == null)
-                return;
-
-            var setting = await _appSettingsService.GetLdapSettingsAsync();
-            if (setting == null)
-                throw new HESException(HESCode.LdapSettingsNotSet);
-
-            var user = GetUserByGuid(setting, employee.ActiveDirectoryGuid);
-            if (user == null)
-                throw new HESException(HESCode.ActiveDirectoryUserNotFound);
-        }
+        #endregion
 
         #region Helpers
 
@@ -1018,6 +1095,18 @@ namespace HES.Core.Services
         {
             DirectoryAttribute directoryAttribute;
             return entry.Attributes.TryGetValue(attr, out directoryAttribute) == true ? directoryAttribute.GetValues<string>().ToArray() : null;
+        }
+
+        private string[] TryGetAttributeArray(Novell.Directory.Ldap.LdapEntry entry, string attr)
+        {
+            try
+            {
+                return entry.GetAttribute(attr).StringValueArray;
+            }
+            catch (Exception)
+            {
+                return new string[0];
+            }
         }
 
         private DateTime? TryGetDateTimeAttribute(DirectoryEntry entry, string attr)
@@ -1073,37 +1162,6 @@ namespace HES.Core.Services
         {
             return PasswordGenerator.Generate();
         }
-
-        private DirectoryEntry GetUserByGuid(LdapSettings ldapSettings, string guid)
-        {
-            using (var connection = new LdapConnection())
-            {
-                connection.Connect(ldapSettings.Host, 636, LdapSchema.LDAPS);
-                connection.TrustAllCertificates();
-                connection.SetOption(LdapOption.LDAP_OPT_REFERRALS, 0);
-                connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
-
-                var dn = GetDnFromHost(ldapSettings.Host);
-                var objectGUID = GetObjectGuid(guid);
-                var filter = $"(&(objectCategory=user)(objectGUID={objectGUID}))";
-                var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE));
-                return user.Entries.FirstOrDefault();
-            }
-        }
-
-        //private DirectoryEntry GetUserByDn(LdapSettings ldapSettings, string distinguishedName)
-        //{
-        //    using (var connection = new LdapConnection())
-        //    {
-        //        connection.Connect(ldapSettings.Host, 389);
-        //        connection.Bind(LdapAuthType.Simple, CreateLdapCredential(ldapSettings));
-
-        //        var dn = GetDnFromHost(ldapSettings.Host);
-        //        var filter = $"(&(objectCategory=user)(distinguishedName={distinguishedName}))";
-        //        var user = (SearchResponse)connection.SendRequest(new SearchRequest(dn, filter, LdapSearchScope.LDAP_SCOPE_SUBTREE));
-        //        return user.Entries.FirstOrDefault();
-        //    }
-        //}
 
         #endregion
 
