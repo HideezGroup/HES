@@ -215,8 +215,9 @@ namespace HES.Core.Services
                             // Create domain account
                             await _employeeService.CreatePersonalAccountAsync(account);
 
-                            // Update password in active directory                   
-                            connection.Modify(member.Dn, new Novell.Directory.Ldap.LdapModification(Novell.Directory.Ldap.LdapModification.Replace, new Novell.Directory.Ldap.LdapAttribute("userPassword", password)));
+                            // Update password in active directory          
+                            byte[] encodedBytes = System.Text.Encoding.Unicode.GetBytes($"\"{password}\"");
+                            connection.Modify(member.Dn, new Novell.Directory.Ldap.LdapModification(Novell.Directory.Ldap.LdapModification.Replace, new Novell.Directory.Ldap.LdapAttribute("unicodePwd", encodedBytes)));
 
                             transactionScope.Complete();
                         }
