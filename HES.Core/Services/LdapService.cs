@@ -77,8 +77,9 @@ namespace HES.Core.Services
                 var user = GetEntries(userResponse).FirstOrDefault();
 
                 try
-                {
-                    connection.Modify(user.Dn, new Novell.Directory.Ldap.LdapModification(Novell.Directory.Ldap.LdapModification.Replace, new Novell.Directory.Ldap.LdapAttribute("userPassword", password)));
+                {      
+                    byte[] encodedBytes = System.Text.Encoding.Unicode.GetBytes($"\"{password}\"");
+                    connection.Modify(user.Dn, new Novell.Directory.Ldap.LdapModification(Novell.Directory.Ldap.LdapModification.Replace, new Novell.Directory.Ldap.LdapAttribute("unicodePwd", encodedBytes)));
                 }
                 catch (Novell.Directory.Ldap.LdapException ex) when (ex.ResultCode == (int)ResultCode.UnwillingToPerform)
                 {
