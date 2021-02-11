@@ -2,22 +2,30 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.AppUsers;
+using HES.Web.Areas.Identity.Pages.Account.Manage.SecurityKeys;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HES.Web.Areas.Identity.Pages.Account.Manage
 {
-    public partial class ProfilePage : ComponentBase
+    public partial class ProfilePage : OwningComponentBase
     {
         [Inject] public HttpClient HttpClient { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
+        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<ProfilePage> Logger { get; set; }
+        public IFido2Service FidoService { get; set; }
+
+        public List<FidoStoredCredential> StoredCredentials { get; set; }
+
 
         public ApplicationUser ApplicationUser { get; set; }
         public ProfileInfo ProfileInfo { get; set; }
@@ -37,6 +45,7 @@ namespace HES.Web.Areas.Identity.Pages.Account.Manage
                 if (!response.IsSuccessStatusCode)
                     throw new Exception(await response.Content.ReadAsStringAsync());
 
+                FidoService = ScopedServices.GetRequiredService<IFido2Service>();
                 ApplicationUser = JsonConvert.DeserializeObject<ApplicationUser>(await response.Content.ReadAsStringAsync());
 
                 ProfileInfo = new ProfileInfo
@@ -47,6 +56,8 @@ namespace HES.Web.Areas.Identity.Pages.Account.Manage
 
                 ProfilePassword = new ProfilePassword();
 
+                await LoadStoredCredentialsAsync();
+
                 Initialized = true;
             }
             catch (Exception ex)
@@ -55,6 +66,50 @@ namespace HES.Web.Areas.Identity.Pages.Account.Manage
                 ErrorMessage = ex.Message;
                 LoadFailed = true;
             }
+        }
+
+        private async Task ModalDialogService_OnClose()
+        {
+            await LoadStoredCredentialsAsync();
+            ModalDialogService.OnClose -= ModalDialogService_OnClose;
+        }
+
+        private async Task LoadStoredCredentialsAsync()
+        {
+            StoredCredentials = await FidoService.GetCredentialsByUserEmail(ProfileInfo.Email);
+            StateHasChanged();
+        }
+
+        private async Task AddSecurityKeyAsync()
+        {
+            ModalDialogService.OnClose += ModalDialogService_OnClose;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(AddSecurityKey));
+                builder.CloseComponent();
+            };
+
+            await ModalDialogService.ShowAsync("Add Security Key", body);
+        }
+
+        private async Task EditSecurityKeyAsync(string credentialId)
+        {
+            
+        }
+
+        private async Task RemoveSecurityKeyAsync(string credentialId)
+        {
+            ModalDialogService.OnClose += ModalDialogService_OnClose;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(DeleteSecurityKey));
+                builder.AddAttribute(1, nameof(DeleteSecurityKey.SecurityKeyId), credentialId);
+                builder.CloseComponent();
+            };
+
+            await ModalDialogService.ShowAsync("Remove Security Key", body);
         }
 
         private async Task SaveProfileAsync()
