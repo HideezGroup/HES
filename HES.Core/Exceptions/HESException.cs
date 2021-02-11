@@ -22,7 +22,11 @@ namespace HES.Core.Exceptions
 
         // SharedAccounts
         SharedAccountNotFound,
-        SharedAccountExist
+        SharedAccountExist,
+
+        //Fido2
+        SecurityKeyNotFound,
+        UserNotFound
     }
 
     public class HESException : Exception
@@ -38,6 +42,8 @@ namespace HES.Core.Exceptions
             { HESCode.AccountExist,  "Account with the same name and login exist." },
             { HESCode.SharedAccountNotFound,  "Shared Account not found." },
             { HESCode.SharedAccountExist,  "Shared Account with the same name and login exist." },
+            { HESCode.SecurityKeyNotFound,  "Security key not found." },
+            { HESCode.UserNotFound,  "User not found." },
         };
 
         public HESCode Code { get; set; }

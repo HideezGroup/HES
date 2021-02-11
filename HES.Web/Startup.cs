@@ -1,3 +1,4 @@
+using Fido2NetLib;
 using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.HostedServices;
@@ -107,6 +108,7 @@ namespace HES.Web
             services.AddScoped<ILdapService, LdapService>();
             services.AddScoped<ISoftwareVaultService, SoftwareVaultService>();
             services.AddScoped<IBreadcrumbsService, BreadcrumbsService>();
+            services.AddScoped<IFido2Service, Fido2Service>();
 
             services.AddScoped<HttpClient>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -151,6 +153,8 @@ namespace HES.Web
                 options.Password.RequiredUniqueChars = 0;
                 options.Password.RequireNonAlphanumeric = false;
             });
+            services.Configure<Fido2Configuration>(Configuration.GetSection("Fido2"));
+
 
             // Database
             services.AddDbContext<ApplicationDbContext>(options =>

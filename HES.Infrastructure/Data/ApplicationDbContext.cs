@@ -75,6 +75,7 @@ namespace HES.Infrastructure
         public DbSet<DataProtection> DataProtection { get; set; }
         public DbSet<AppSettings> AppSettings { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<FidoStoredCredential> FidoStoredCredential { get; set; }
         public DbSet<GroupMembership> GroupMemberships { get; set; }
         public DbSet<SummaryByDayAndEmployee> SummaryByDayAndEmployee { get; set; }
         public DbSet<SummaryByEmployees> SummaryByEmployees { get; set; }
