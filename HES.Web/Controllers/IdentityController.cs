@@ -17,6 +17,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using System.Transactions;
+using Microsoft.EntityFrameworkCore;
 
 namespace HES.Web.Controllers
 {
@@ -30,16 +32,19 @@ namespace HES.Web.Controllers
         private readonly IEmailSenderService _emailSenderService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAsyncRepository<FidoStoredCredential> _fidoCredentialRepository;
 
         public IdentityController(UrlEncoder urlEncoder,
                                   ILogger<IdentityController> logger,
                                   IEmailSenderService emailSenderService,
+                                  IAsyncRepository<FidoStoredCredential> fidoCredentialRepository,
                                   UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager)
         {
             _logger = logger;
             _urlEncoder = urlEncoder;
             _userManager = userManager;
+            _fidoCredentialRepository = fidoCredentialRepository;
             _signInManager = signInManager;
             _emailSenderService = emailSenderService;
         }
@@ -76,10 +81,24 @@ namespace HES.Web.Controllers
 
                 if (profileInfo.Email != user.Email)
                 {
-                    var setEmailResult = await _userManager.SetEmailAsync(user, profileInfo.Email);
+                    using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    {
+                        var credentials = await _fidoCredentialRepository.Query().Where(x => x.Username == user.Email).ToListAsync();
+                        foreach (var item in credentials)
+                        {
+                            item.UserId = Encoding.UTF8.GetBytes(profileInfo.Email);
+                            item.UserHandle = Encoding.UTF8.GetBytes(profileInfo.Email);
+                            item.Username = profileInfo.Email;
+                        }
+                        await _fidoCredentialRepository.UpdatRangeAsync(credentials);
 
-                    if (!setEmailResult.Succeeded)
-                        throw new InvalidOperationException($"Unexpected error occurred setting email for user '{user.Id}'.");
+                        var setEmailResult = await _userManager.SetEmailAsync(user, profileInfo.Email);
+
+                        if (!setEmailResult.Succeeded)
+                            throw new InvalidOperationException($"Unexpected error occurred setting email for user '{user.Id}'.");
+
+                        transactionScope.Complete();
+                    }
                 }
 
                 if (profileInfo.PhoneNumber != user.PhoneNumber)

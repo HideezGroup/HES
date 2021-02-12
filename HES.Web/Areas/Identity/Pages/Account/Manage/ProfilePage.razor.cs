@@ -95,7 +95,16 @@ namespace HES.Web.Areas.Identity.Pages.Account.Manage
 
         private async Task EditSecurityKeyAsync(string credentialId)
         {
-            
+            ModalDialogService.OnClose += ModalDialogService_OnClose;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(EditSecurityKey));
+                builder.AddAttribute(1, nameof(EditSecurityKey.SecurityKeyId), credentialId);
+                builder.CloseComponent();
+            };
+
+            await ModalDialogService.ShowAsync("Change security key name", body);
         }
 
         private async Task RemoveSecurityKeyAsync(string credentialId)
