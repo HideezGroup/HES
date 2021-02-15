@@ -109,6 +109,7 @@ namespace HES.Web
             services.AddScoped<ISoftwareVaultService, SoftwareVaultService>();
             services.AddScoped<IBreadcrumbsService, BreadcrumbsService>();
             services.AddScoped<IFido2Service, Fido2Service>();
+            services.AddScoped<IIdentityApiClient, IdentityApiClient>();
 
             services.AddScoped<HttpClient>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

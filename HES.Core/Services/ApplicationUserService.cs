@@ -1,7 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.API;
 using HES.Core.Models.Web;
+using HES.Core.Models.Web.Identity;
 using HES.Core.Models.Web.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,17 +21,25 @@ namespace HES.Core.Services
     {
         private readonly IAsyncRepository<ApplicationUser> _applicationUserRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public ApplicationUserService(IAsyncRepository<ApplicationUser> applicationUserRepository,
-                                      UserManager<ApplicationUser> userManager)
+                                      UserManager<ApplicationUser> userManager,
+                                      SignInManager<ApplicationUser> signInManager)
         {
             _applicationUserRepository = applicationUserRepository;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        public async Task<ApplicationUser> GetByIdAsync(string userId)
+        public async Task<ApplicationUser> GetUserByIdAsync(string userId)
         {
-            return await _applicationUserRepository.GetByIdAsync(userId);
+            return await _userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+        {
+            return await _userManager.FindByEmailAsync(email);
         }
 
         public async Task<List<ApplicationUser>> GetAdministratorsAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
@@ -136,16 +146,53 @@ namespace HES.Core.Services
             var user = await _userManager.FindByIdAsync(id);
 
             if (user == null)
-                throw new Exception("User not found");
+                throw new HESException(HESCode.UserNotFound);
 
             await _userManager.DeleteAsync(user);
 
             return user;
         }
 
-        public async Task<IList<ApplicationUser>> GetAdministratorsAsync()
+        public async Task<IList<ApplicationUser>> GetAllAdministratorsAsync()
         {
             return await _userManager.GetUsersInRoleAsync("Administrator");
+        }
+
+
+        // Only API call
+        public async Task<AuthorizationResponse> LoginWithPasswordAsync(PasswordSignInModel parameters)
+        {
+            try
+            {
+                var user = await GetUserByEmailAsync(parameters.Email);
+
+                var result = await _signInManager.PasswordSignInAsync(parameters.Email, parameters.Password, parameters.RememberMe, lockoutOnFailure: true);
+
+                if (result.Succeeded)
+                {
+                    return AuthorizationResponse.Success(user);
+                }
+
+                if (result.RequiresTwoFactor)
+                {
+                    return AuthorizationResponse.TwoFactorRequired(user);
+                }
+
+                if (result.IsLockedOut)
+                {
+                    return AuthorizationResponse.LockedOut(user);
+                }
+
+                return AuthorizationResponse.Error(HESCode.InvalidLoginAttempt);
+            }
+            catch (HESException ex)
+            {
+                return AuthorizationResponse.Error(ex.Code);
+            }
+            catch (Exception ex)
+            {
+                return AuthorizationResponse.Error(ex.Message);
+            }
         }
 
         public void Dispose()

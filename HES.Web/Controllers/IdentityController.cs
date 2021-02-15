@@ -19,6 +19,8 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System.Transactions;
 using Microsoft.EntityFrameworkCore;
+using HES.Core.Models.API;
+using HES.Core.Models.Web.Identity;
 
 namespace HES.Web.Controllers
 {
@@ -27,6 +29,8 @@ namespace HES.Web.Controllers
     [Route("api/[controller]/[action]")]
     public class IdentityController : ControllerBase
     {
+        private readonly IApplicationUserService _applicationUserService;
+        private readonly IFido2Service _fido2Service;
         private readonly UrlEncoder _urlEncoder;
         private readonly ILogger<IdentityController> _logger;
         private readonly IEmailSenderService _emailSenderService;
@@ -34,7 +38,9 @@ namespace HES.Web.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAsyncRepository<FidoStoredCredential> _fidoCredentialRepository;
 
-        public IdentityController(UrlEncoder urlEncoder,
+        public IdentityController(IApplicationUserService applicationUserService,
+                                  IFido2Service fido2Service,
+                                  UrlEncoder urlEncoder,
                                   ILogger<IdentityController> logger,
                                   IEmailSenderService emailSenderService,
                                   IAsyncRepository<FidoStoredCredential> fidoCredentialRepository,
@@ -42,6 +48,8 @@ namespace HES.Web.Controllers
                                   SignInManager<ApplicationUser> signInManager)
         {
             _logger = logger;
+            _applicationUserService = applicationUserService;
+            _fido2Service = fido2Service;
             _urlEncoder = urlEncoder;
             _userManager = userManager;
             _fidoCredentialRepository = fidoCredentialRepository;
@@ -375,7 +383,7 @@ namespace HES.Web.Controllers
 
                 var personalData = new Dictionary<string, string>();
                 var personalDataProps = typeof(ApplicationUser).GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
-                
+
                 foreach (var prop in personalDataProps)
                     personalData.Add(prop.Name, prop.GetValue(user)?.ToString() ?? "null");
 
@@ -461,6 +469,24 @@ namespace HES.Web.Controllers
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
+
+        #region Authorization
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<AuthorizationResponse> LoginWithPassword(PasswordSignInModel parameters)
+        {
+            return await _applicationUserService.LoginWithPasswordAsync(parameters);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<AuthorizationResponse> LoginWithFido2(SecurityKeySignInModel parameters)
+        {
+            return await _fido2Service.SignInAsync(parameters);
+        }
+
+        #endregion
 
         [HttpPost]
         [AllowAnonymous]

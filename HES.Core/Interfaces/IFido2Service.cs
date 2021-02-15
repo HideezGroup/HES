@@ -1,6 +1,7 @@
 ﻿using Fido2NetLib;
 using HES.Core.Entities;
 using HES.Core.Models.API;
+using HES.Core.Models.Web.Identity;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace HES.Core.Interfaces
         Task<FidoStoredCredential> AddSecurityKeyAsync(string userEmail, IJSRuntime jsRuntime);
         Task RemoveSecurityKeyAsync(string credentialId);
         Task<AuthenticatorAssertionRawResponse> MakeAssertionRawResponse(string userName, IJSRuntime jsRuntime);
-        Task<AuthorizationResponse> SignIn(AuthenticatorAssertionRawResponse clientResponse);
+        Task<AuthorizationResponse> SignInAsync(SecurityKeySignInModel parameters);
         Task<List<FidoStoredCredential>> GetCredentialsByUserEmail(string userEmail);
         Task RemoveCredentialsByUsername(string username);
         Task<FidoStoredCredential> GetCredentialById(byte[] id);

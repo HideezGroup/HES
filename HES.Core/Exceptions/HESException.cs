@@ -6,6 +6,13 @@ namespace HES.Core.Exceptions
     public enum HESCode
     {
         None,
+
+        // User
+        UserNotFound,
+        InvalidLoginAttempt,
+        RequiresTwoFactor,
+        AccountLockout,
+
         // Employees
         EmployeeNotFound,
         ActiveDirectoryUserNotFound,
@@ -24,9 +31,9 @@ namespace HES.Core.Exceptions
         SharedAccountNotFound,
         SharedAccountExist,
 
-        //Fido2
+        // Fido2
         SecurityKeyNotFound,
-        UserNotFound
+        AuthenticatorNotFIDO2
     }
 
     public class HESException : Exception
@@ -34,6 +41,10 @@ namespace HES.Core.Exceptions
         private static readonly Dictionary<HESCode, string> Errors = new Dictionary<HESCode, string>()
         {
             { HESCode.None,  "Something went wrong." },
+            { HESCode.UserNotFound,  "User not found." },
+            { HESCode.InvalidLoginAttempt, "Invalid login attempt." },
+            { HESCode.AccountLockout,"Account lockout" },
+            { HESCode.RequiresTwoFactor, "Requires two factor." },
             { HESCode.EmployeeNotFound,  "Employee not found." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
             { HESCode.HardwareVaultNotFound,  "Hardware Vault not found." },
@@ -43,7 +54,7 @@ namespace HES.Core.Exceptions
             { HESCode.SharedAccountNotFound,  "Shared Account not found." },
             { HESCode.SharedAccountExist,  "Shared Account with the same name and login exist." },
             { HESCode.SecurityKeyNotFound,  "Security key not found." },
-            { HESCode.UserNotFound,  "User not found." },
+            { HESCode.AuthenticatorNotFIDO2,  "Authenticator not FIDO2." },
         };
 
         public HESCode Code { get; set; }

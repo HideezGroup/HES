@@ -4,6 +4,7 @@ using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
+using HES.Core.Models.Web.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -205,8 +206,10 @@ namespace HES.Core.Services
         }
 
         // Only API call
-        public async Task<AuthorizationResponse> SignIn(AuthenticatorAssertionRawResponse assertionRawResponse)
+        public async Task<AuthorizationResponse> SignInAsync(SecurityKeySignInModel parameters)
         {
+            var assertionRawResponse = parameters.AuthenticatorAssertionRawResponse;
+
             // Get the assertion options we sent the client     
             var jsonOptions = _memoryCache.Get<string>(Convert.ToBase64String(assertionRawResponse.Id));
             var options = AssertionOptions.FromJson(jsonOptions);
@@ -242,14 +245,12 @@ namespace HES.Core.Services
                 if (user == null)
                     throw new HESException(HESCode.UserNotFound);
 
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                await _signInManager.SignInAsync(user, parameters.RememberMe);
 
-                // Return success and passwordless
-                return AuthorizationResponse.SuccessAndPasswordless;
+                return AuthorizationResponse.Success(user);
             }
 
-            // Return success and ask for password
-            return AuthorizationResponse.Success;
+            return AuthorizationResponse.Error(HESCode.AuthenticatorNotFIDO2);
         }
 
         #endregion
