@@ -50,8 +50,11 @@
                         <div class="form-group">
                             <a href="@Routes.ForgotPassword" class="mds-link">Forgot your password?</a>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <Button Text="Sign in with a security key" OnClick="SignInWithSecurityKeyAsync" type="button" class="btn btn-link px-0" />
+                        <div class="d-flex @(HasSecurityKey ? "justify-content-between":"justify-content-end") align-items-center mt-3">
+                            @if (HasSecurityKey)
+                            {
+                                <Button Text="Sign in with a security key" OnClick="SignInWithSecurityKeyAsync" type="button" class="btn btn-link px-0" />
+                            }
                             <Button @ref="ButtonSpinner" Text="Login" type="submit" class="btn btn-primary" />
                         </div>
                     </EditForm>

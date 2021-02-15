@@ -55,7 +55,7 @@ namespace HES.Core.Models.API
             return new AuthorizationResponse { Failed = true, Code = HESCode.None, Message = message };
         }
 
-        public void ThrowIfError()
+        public void ThrowIfFailed()
         {
             if (Failed)
             {

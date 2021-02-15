@@ -35,6 +35,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
         public UserEmailModel UserEmailModel { get; set; } = new UserEmailModel();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public Button ButtonSpinner { get; set; }
+        public bool HasSecurityKey { get; set; }
         public string ReturnUrl { get; set; }
 
         protected override void OnInitialized()
@@ -82,6 +83,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                     }
 
                     PasswordSignInModel.Email = UserEmailModel.Email;
+                    HasSecurityKey = (await Fido2Service.GetCredentialsByUserEmail(UserEmailModel.Email)).Count > 0;
                     AuthenticationStep = AuthenticationStep.EnterPassword;
                 });
             }
@@ -105,7 +107,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                 SecurityKeySignInModel.RememberMe = PasswordSignInModel.RememberMe;
                 SecurityKeySignInModel.AuthenticatorAssertionRawResponse = await Fido2Service.MakeAssertionRawResponse(UserEmailModel.Email, JSRuntime);
                 var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
-                response.ThrowIfError();
+                response.ThrowIfFailed();
 
                 NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard);
             }
@@ -123,7 +125,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     var response = await IdentityApiClient.LoginWithPasswordAsync(PasswordSignInModel);
-                    response.ThrowIfError();
+                    response.ThrowIfFailed();
 
                     if (response.Succeeded)
                     {
