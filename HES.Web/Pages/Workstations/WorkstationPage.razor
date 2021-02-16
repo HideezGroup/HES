@@ -142,7 +142,7 @@
             <td>
                 @if (context.IsOnline)
                     {
-                    <span class="badge badge-success" title="Workstation is online">
+                    <span class="badge bg-success" title="Workstation is online">
                         Online
                     </span>
                     }
@@ -154,21 +154,21 @@
             <td>
                 @if (context.RFID)
                     {
-                    <span class="badge badge-success">Yes</span>
+                    <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                    <span class="badge badge-secondary">No</span>
+                    <span class="badge bg-secondary">No</span>
                     }
             </td>
             <td>
                 @if (context.Approved)
                     {
-                    <span class="badge badge-success">Yes</span>
+                    <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                    <span class="badge badge-danger">No</span>
+                    <span class="badge bg-danger">No</span>
                     }
             </td>
         </TableRow>

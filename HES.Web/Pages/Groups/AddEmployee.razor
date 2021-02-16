@@ -9,7 +9,7 @@ else
     if (Employees.Count == 0)
     {
         <h5>All employees have already been added.</h5>
-        <div class="form-group text-right mb-0">
+        <div class="form-group text-end mb-0">
             <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
         </div>
     }
@@ -60,7 +60,7 @@ else
                 No employee selected
             </div>
         }
-        <div class="form-group text-right mb-0">
+        <div class="form-group text-end mb-0">
             <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
             <ButtonSpinner Text="Add" Class="btn btn-primary" Callback="AddAsync" />
         </div>

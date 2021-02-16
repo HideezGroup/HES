@@ -1,5 +1,5 @@
 ﻿@page "/"
-@namespace HES.Pages
+@namespace HES.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
@@ -12,14 +12,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HES</title>
     <base href="~/" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <!-- Main CSS-->
-    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link href="~/lib/bootstrap/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/main.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
     <app>
-        <component type="typeof(HES.Web.App)" render-mode="Server" />
+        <component type="typeof(App)" render-mode="Server" />
     </app>
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
@@ -51,16 +49,13 @@
     <script>
         Blazor.start({
             configureSignalR: function (builder) {
-                builder.configureLogging("trace");
+                builder.configureLogging("debug");
             }
         });
     </script>
-    <!-- JQuery -->
     <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    <!-- QRcode -->
+    <script src="~/lib/bootstrap/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/lib/qrcode/qrcode.min.js" asp-append-version="true"></script>
-    <!-- Main JS -->
     <script src="~/js/fido2.js" asp-append-version="true"></script>
     <script src="~/js/main.js" asp-append-version="true"></script>
 </body>

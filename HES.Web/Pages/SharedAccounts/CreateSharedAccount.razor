@@ -10,8 +10,8 @@ else
         <DataAnnotationsValidator />
         <ValidationErrorMessage @ref="ValidationErrorMessage" />
         <div class="form-group d-flex flex-row align-items-center">
-            <h6 class="text-navyblue mx-0 mr-2 text-nowrap">Enter data manually or select from the template:</h6>
-            <select class="form-control" @onchange="TemplateSelected">
+            <h6 class="text-navyblue mx-0 me-2 text-nowrap">Enter data manually or select from the template:</h6>
+            <select class="form-select" @onchange="TemplateSelected">
                 <option selected></option>
                 @foreach (var item in Templates)
                 {
@@ -41,7 +41,7 @@ else
             <div class="col">
                 <div class="form-group">
                     <label class="control-label text-gray">Login Type</label>
-                    <select class="form-control" @bind="SharedAccount.LoginType">
+                    <select class="form-select" @bind="SharedAccount.LoginType">
                         <option selected value="@LoginType.WebApp">@EnumHelper.GetDisplayName(LoginType.WebApp)</option>
                         <option value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
                         <option value="@LoginType.Domain">@EnumHelper.GetDisplayName(LoginType.Domain)</option>
@@ -112,7 +112,7 @@ else
                 </div>
             </div>
         </div>
-        <div class="text-right">
+        <div class="text-end">
             <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CancelAsync())">Cancel</button>
             <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Create" Class="btn btn-primary" />
         </div>

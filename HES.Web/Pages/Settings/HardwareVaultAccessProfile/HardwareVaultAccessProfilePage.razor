@@ -9,7 +9,7 @@
             <ProfileFilter FilterChanged="MainTableService.FilterChangedAsync" />
         </FilterForm>
         <ActionButtons>
-            <button type="button" @onclick="CreateProfileAsync" class="btn btn-primary mr-1" title="Create profile">
+            <button type="button" @onclick="CreateProfileAsync" class="btn btn-primary me-1" title="Create profile">
                 Create Profile
             </button>
             @if (MainTableService.SelectedEntity != null)
@@ -18,13 +18,13 @@
                     <img class="icon-btn" src="/svg/icon-edit.svg" />
                     Edit
                 </button>
-                <button type="button" @onclick="DetailsProfileAsync" class="btn btn-light border ml-1" title="Details profile">
+                <button type="button" @onclick="DetailsProfileAsync" class="btn btn-light border ms-1" title="Details profile">
                     <img class="icon-btn" src="/svg/icon-details.svg" />
                     Details
                 </button>
                 @if (MainTableService.SelectedEntity.Id != "default")
                 {
-                    <button type="button" @onclick="DeleteProfileAsync" class="btn btn-light border ml-1" title="Delete profile">
+                    <button type="button" @onclick="DeleteProfileAsync" class="btn btn-light border ms-1" title="Delete profile">
                         <img class="icon-btn" src="/svg/icon-delete.svg" />
                         Delete
                     </button>

@@ -5,10 +5,6 @@
     }
 });
 
-function collapseHide(elementId) {
-    $('#' + elementId).collapse('hide');
-}
-
 function ToggleSidebar() {
     ToggleSidebarClass();
 

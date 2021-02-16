@@ -2,21 +2,21 @@
 
 <h5>How does it work?</h5>
 <p>
-    Create 2 groups in your Active Directory <span class="font-weight-bold">Hideez Key Owners</span> and <span class="font-weight-bold">Hideez Auto Password Change</span>.
+    Create 2 groups in your Active Directory <span class="fw-bold">Hideez Key Owners</span> and <span class="fw-bold">Hideez Auto Password Change</span>.
 </p>
 <p>
-    Users added to the <span class="font-weight-bold">Hideez Key Owners</span> group in the AD will be automatically imported to the HES during synchronization.
+    Users added to the <span class="fw-bold">Hideez Key Owners</span> group in the AD will be automatically imported to the HES during synchronization.
 </p>
 <p>
-    If the user is a member of both the <span class="font-weight-bold">Hideez Key Owners</span> and <span class="font-weight-bold">Hideez Auto Password Change</span> groups, then the domain account will be imported during synchronization, and a new password will be generated.
+    If the user is a member of both the <span class="fw-bold">Hideez Key Owners</span> and <span class="fw-bold">Hideez Auto Password Change</span> groups, then the domain account will be imported during synchronization, and a new password will be generated.
 </p>
 <p>
     When the new password is written into the Hideez Key simultaneously, it will be changed in the AD. From this time, the user has to use his Hideez Key to login. Further scheduled password changes will follow the same algorithm.
 </p>
 <p>
-    If the user is removed from the <span class="font-weight-bold">Hideez Auto Password Change</span> group, the automatic password change logic stops working.
+    If the user is removed from the <span class="fw-bold">Hideez Auto Password Change</span> group, the automatic password change logic stops working.
     <br />
-    If the user is removed from the <span class="font-weight-bold">Hideez Key Owners</span> group, he remains in the HES employees list, but the key is deleted from him.
+    If the user is removed from the <span class="fw-bold">Hideez Key Owners</span> group, he remains in the HES employees list, but the key is deleted from him.
 </p>
 <p>
     Synchronization with AD is done once an hour. Automatic password change is done according to the settings. To have this working, make sure you added to the HES settings the AD administrator's credentials with permissions to get users and groups from the AD and change user's passwords.

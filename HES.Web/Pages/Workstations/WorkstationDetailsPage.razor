@@ -8,7 +8,7 @@
         <div class="col">
             <h1 class="text-navyblue text-break m-0">@Workstation.Name</h1>
         </div>
-        <div class="col-auto pl-1">
+        <div class="col-auto ps-1">
             <ButtonSpinner Class="btn btn-primary" Text="Add Hardware Vault" Callback="OpenDialogAddHardwareVaultAsync" />
         </div>
     </div>
@@ -17,7 +17,7 @@
         {
             <TableAction>
                 <ActionButtons>
-                    <h4 class="text-navyblue mr-2">Proximity Vaults</h4>
+                    <h4 class="text-navyblue me-2">Proximity Vaults</h4>
                     @if (MainTableService.SelectedEntity != null)
                     {
                         <button type="button" @onclick="OpenDialogDeleteHardwareVaultAsync" class="btn btn-light border mx-2" title="Delete hardware vault">

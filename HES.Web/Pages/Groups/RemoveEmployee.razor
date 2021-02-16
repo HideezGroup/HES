@@ -7,7 +7,7 @@
 else
 {
     <h5 class="mb-4">You want to remove employee @GroupMembership.Employee.FullName?</h5>
-    <div class="form-group text-right mb-0">
+    <div class="form-group text-end mb-0">
         <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
         <ButtonSpinner Text="Remove" Class="btn btn-danger" Callback="DeleteAsync" />
     </div>

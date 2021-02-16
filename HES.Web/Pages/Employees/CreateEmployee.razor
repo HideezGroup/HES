@@ -102,7 +102,7 @@ else
             <div class="row">
                 <div class="form-group col">
                     <label class="text-gray">Company</label>
-                    <select class="form-control" @onchange="CompanyChangedAsync">
+                    <select class="form-select" @onchange="CompanyChangedAsync">
                         <option selected></option>
                         @foreach (var item in Companies)
                         {
@@ -112,7 +112,7 @@ else
                 </div>
                 <div class="form-group col">
                     <FormLabel For="@(() => Employee.DepartmentId)" class="text-gray" />
-                    <select @bind="Employee.DepartmentId" class="form-control">
+                    <select @bind="Employee.DepartmentId" class="form-select">
                         @foreach (var item in Departments)
                         {
                             <option value="@item.Id">@item.Name</option>
@@ -123,7 +123,7 @@ else
             <div class="row">
                 <div class="form-group col">
                     <FormLabel For="@(() => Employee.PositionId)" class="text-gray" />
-                    <select @bind="Employee.PositionId" class="form-control">
+                    <select @bind="Employee.PositionId" class="form-select">
                         <option selected></option>
                         @foreach (var item in Positions)
                         {
@@ -158,10 +158,10 @@ else
         {
             <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab-accounts" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active ws-account-nav" id="pills-personal-tab" data-toggle="pill" href="#pills-personal" role="tab" @onclick="@(()=> AccountTypeChanged(AccountType.Personal))">Personal account</a>
+                    <a class="nav-link active ws-account-nav" id="pills-personal-tab" data-bs-toggle="pill" href="#pills-personal" role="tab" @onclick="@(()=> AccountTypeChanged(AccountType.Personal))">Personal account</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link ws-account-nav" id="pills-shared-tab" data-toggle="pill" href="#pills-shared" role="tab" @onclick="@(()=> AccountTypeChanged(AccountType.Shared))">Shared account</a>
+                    <a class="nav-link ws-account-nav" id="pills-shared-tab" data-bs-toggle="pill" href="#pills-shared" role="tab" @onclick="@(()=> AccountTypeChanged(AccountType.Shared))">Shared account</a>
                 </li>
             </ul>
         }
@@ -190,7 +190,7 @@ else
                         <div class="col">
                             <div class="form-group">
                                 <label class="control-label text-gray">Login Type</label>
-                                <select class="form-control" @bind="PersonalAccount.LoginType">
+                                <select class="form-select" @bind="PersonalAccount.LoginType">
                                     <option selected value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
                                     <option value="@LoginType.Domain">@EnumHelper.GetDisplayName(LoginType.Domain)</option>
                                     <option value="@LoginType.AzureAD">@EnumHelper.GetDisplayName(LoginType.AzureAD)</option>
@@ -268,7 +268,7 @@ else
                     <div class="row">
                         <div class="col col-sm-6 offset-md-3">
                             <label class="control-label text-gray">Shared Accounts</label>
-                            <select @bind="SharedAccountId" class="form-control">
+                            <select @bind="SharedAccountId" class="form-select">
                                 @foreach (var item in SharedAccounts)
                                 {
                                     <option value="@item.Id">@item.Name</option>
@@ -287,13 +287,13 @@ else
             <div class="col">
                 <h4 class="mx-2 text-navyblue">Employee</h4>
                 <div class="border rounded py-2 px-3">
-                    <div class="font-weight-bold">Full Name</div>
+                    <div class="fw-bold">Full Name</div>
                     <div class="text-break overflow-hidden text-truncate" style="max-width:200px;">@Employee.FullName</div>
-                    <div class="font-weight-bold">Company</div>
+                    <div class="fw-bold">Company</div>
                     <div>@(string.IsNullOrEmpty(Employee.DepartmentId) ? "" : Departments.FirstOrDefault(x=>x.Id == Employee.DepartmentId).Company.Name)</div>
-                    <div class="font-weight-bold">Department</div>
+                    <div class="fw-bold">Department</div>
                     <div>@(string.IsNullOrEmpty(Employee.DepartmentId) ? "" : Departments.FirstOrDefault(x=>x.Id == Employee.DepartmentId).Name)</div>
-                    <div class="font-weight-bold">Position</div>
+                    <div class="fw-bold">Position</div>
                     <div>@(string.IsNullOrEmpty(Employee.PositionId) ? "" : Positions.FirstOrDefault(x=>x.Id == Employee.PositionId).Name)</div>
                 </div>
             </div>
@@ -301,7 +301,7 @@ else
             <div class="col">
                 <h4 class="mx-2 text-navyblue">Hardware Vault</h4>
                 <div class="border rounded py-2 px-3">
-                    <div class="font-weight-bold">Serial number</div>
+                    <div class="fw-bold">Serial number</div>
                     <div>@SelectedHardwareVault?.Id</div>
                 </div>
             </div>
@@ -311,18 +311,18 @@ else
                 @if (AccountType == AccountType.Personal)
                 {
                     <div class="border rounded py-2 px-3">
-                        <div class="font-weight-bold">Account name</div>
+                        <div class="fw-bold">Account name</div>
                         <div>@(AccountSkiped ? "" : PersonalAccount.Name)</div>
-                        <div class="font-weight-bold">User name</div>
+                        <div class="fw-bold">User name</div>
                         <div>@(AccountSkiped ? "" : PersonalAccount.Login)</div>
                     </div>                   
                 }
                 else
                 {
                     <div class="border rounded py-2 px-3">
-                        <div class="font-weight-bold">Account name</div>
+                        <div class="fw-bold">Account name</div>
                         <div>@(SharedAccountId == null ? "" : SharedAccounts.FirstOrDefault(x=>x.Id == SharedAccountId).Name)</div>
-                        <div class="font-weight-bold">User name</div>
+                        <div class="fw-bold">User name</div>
                         <div>@(SharedAccountId == null ? "" : SharedAccounts.FirstOrDefault(x => x.Id == SharedAccountId).Login)</div>
                     </div>
                 }
@@ -334,9 +334,9 @@ else
         <div class="row justify-content-center">
             <div class="col col-sm-6">
                 <div class="form-group">
-                    <label class="control-label font-weight-bold">Employee - @Employee.FullName</label>
+                    <label class="control-label fw-bold">Employee - @Employee.FullName</label>
                     <br />
-                    <label class="control-label font-weight-bold">Vault - @SelectedHardwareVault?.Id</label>
+                    <label class="control-label fw-bold">Vault - @SelectedHardwareVault?.Id</label>
                 </div>
                 <label class="control-label text-gray">You can send the code to the email</label>
                 <div class="input-group form-group">
@@ -357,18 +357,18 @@ else
         </div>
     </div>
     <!-- Navigation Buttons -->
-    <div class="text-right">
+    <div class="text-end">
         @if (WizardStep == WizardStep.HardwareVault)
         {
-            <button type="button" class="btn btn-outline-secondary mr-3" @onclick="SkipVault">Skip</button>
+            <button type="button" class="btn btn-outline-secondary me-3" @onclick="SkipVault">Skip</button>
         }
         @if (WizardStep == WizardStep.WorkstationAccount)
         {
-            <button type="button" class="btn btn-outline-secondary mr-3" @onclick="SkipAccount">Skip</button>
+            <button type="button" class="btn btn-outline-secondary me-3" @onclick="SkipAccount">Skip</button>
         }
         @if (WizardStep != WizardStep.Profile && WizardStep != WizardStep.Activation)
         {
-            <button type="button" class="btn btn-secondary mr-1" @onclick="Back">Back</button>
+            <button type="button" class="btn btn-secondary me-1" @onclick="Back">Back</button>
         }
         <ButtonSpinner Class="btn btn-primary" Callback="Next" Text="@(WizardStep == WizardStep.Activation ? "Done" : WizardStep == WizardStep.Overview ? "Create" : "Next")" />
     </div>

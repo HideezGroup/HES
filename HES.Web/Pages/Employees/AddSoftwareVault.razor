@@ -7,14 +7,14 @@ else
     if (ServerSettings == null)
     {
         <Alert Message="To send an invitation, a server name and address is required, please add it in the parameters page." />
-        <div class="text-right mt-3">
+        <div class="text-end mt-3">
             <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
         </div>
     }
     else if (Employee.Email == null)
     {
         <Alert Message="The employee does not have an email, for the invitation you must add an email to the employee." />
-        <div class="text-right mt-3">
+        <div class="text-end mt-3">
             <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
         </div>
     }
@@ -22,7 +22,7 @@ else
     {
         <label class="control-label">Choose a date until which the invitation will be valid</label>
         <input type="date" class="form-control" @bind="ValidTo" />
-        <div class="form-group text-right mt-3 mb-0">
+        <div class="form-group text-end mt-3 mb-0">
             <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
             <ButtonSpinner Text="Send" Class="btn btn-primary" Callback="SendAsync" />
         </div>
