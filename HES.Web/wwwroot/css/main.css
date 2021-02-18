@@ -147,7 +147,6 @@ div.connection-rejected {
 
 /* #endregion */
 
-
 .loading-page {
     position: fixed;
     top: 0;
@@ -406,6 +405,7 @@ input[type=number] {
 }
 
 /* #region Override colors */
+
 .dropdown-item:hover, .dropdown-item:focus {
     color: #16181b;
     text-decoration: none;
@@ -423,9 +423,11 @@ input[type=number] {
 .custom-link {
     color: #0E3059;
 }
-/*#endregion */
+
+/* #endregion */
 
 /* #region Main */
+
 html {
     font-size: 14px;
 }
@@ -767,7 +769,8 @@ a.navbar-brand {
         display: none;
     }
 }
-/*#endregion */
+
+/* #endregion */
 
 /*#region Horizontal Pills*/
 .custom-horizontal-pills {
