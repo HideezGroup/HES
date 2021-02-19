@@ -16,12 +16,12 @@
             </div>
             <div>
                 <EditForm Model="Input" OnValidSubmit="DeletePersonalDataAsync">
-                    <DataAnnotationsValidator />                   
-                        <div class="form-group max-w-350">
-                            <label class="text-gray">Password</label>
-                            <input type="password" @bind="Input.Password" class="form-control" />
-                            <ValidationMessage For="@(() => Input.Password)" class="text-danger" />
-                        </div>                     
+                    <DataAnnotationsValidator />
+                    <div class="form-group max-w-350">
+                        <label class="text-gray">Password</label>
+                        <input type="password" @bind="Input.Password" class="form-control" />
+                        <ValidationMessage For="@(() => Input.Password)" class="text-danger" />
+                    </div>
                     <button class="btn btn-danger" type="submit">Delete data and close my account</button>
                 </EditForm>
             </div>
@@ -34,5 +34,5 @@ else if (LoadFailed)
 }
 else
 {
-    <LoadingPage />
+    <Loader />
 }
