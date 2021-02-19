@@ -27,10 +27,6 @@ function ToggleSidebarClass() {
     $('.icon-hideez').toggleClass('toggled');
 }
 
-function showSpinner(elementId) {
-    $('#' + elementId).toggleClass('d-none');
-}
-
 function toggleModalDialog(dialogId) {
     $('#' + dialogId).modal('toggle');
 }
@@ -50,15 +46,6 @@ function downloadLog(filename, content) {
     document.body.removeChild(link);
 }
 
-function generateQr(text) {
-    new QRCode(document.getElementById("qrCode"),
-        {
-            text: text,
-            width: 150,
-            height: 150
-        });
-}
-
 function downloadPersonalData(content) {
     var link = document.createElement('a');
     link.download = "PersonalData.json";
@@ -66,6 +53,15 @@ function downloadPersonalData(content) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+function generateQr(text) {
+    new QRCode(document.getElementById("qrCode"),
+        {
+            text: text,
+            width: 150,
+            height: 150
+        });
 }
 
 function setCookie(cookie) {

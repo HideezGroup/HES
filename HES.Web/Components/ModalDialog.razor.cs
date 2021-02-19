@@ -1,6 +1,7 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace HES.Web.Components
     {
         [Inject] IModalDialogService ModalDialogService { get; set; }
         [Inject] IJSRuntime JSRuntime { get; set; }
+        [Inject] ILogger<ModalDialog> Logger { get; set; }
         public string ModalTitle { get; set; }
         public string ModalSize { get; set; }
         public RenderFragment ModalBody { get; set; }
@@ -24,22 +26,36 @@ namespace HES.Web.Components
 
         public async Task ShowAsync(string title, RenderFragment body, ModalDialogSize size)
         {
-            SetModalSize(size);
-            ModalTitle = title;
-            ModalBody = body;
+            try
+            {
+                SetModalSize(size);
+                ModalTitle = title;
+                ModalBody = body;
 
-            await JSRuntime.InvokeVoidAsync("toggleModalDialog", "genericModalDialog");
-            await InvokeAsync(StateHasChanged);
+                await JSRuntime.InvokeVoidAsync("toggleModalDialog", "genericModalDialog");
+                await InvokeAsync(StateHasChanged);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
         }
 
         public async Task CloseAsync()
         {
-            SetModalSize(ModalDialogSize.Default);
-            ModalTitle = string.Empty;
-            ModalBody = null;
+            try
+            {
+                SetModalSize(ModalDialogSize.Default);
+                ModalTitle = string.Empty;
+                ModalBody = null;
 
-            await JSRuntime.InvokeVoidAsync("toggleModalDialog", "genericModalDialog");
-            await InvokeAsync(StateHasChanged);
+                await JSRuntime.InvokeVoidAsync("toggleModalDialog", "genericModalDialog");
+                await InvokeAsync(StateHasChanged);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
         }
 
         public async Task CancelAsync()
