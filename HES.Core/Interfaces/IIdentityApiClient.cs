@@ -8,5 +8,7 @@ namespace HES.Core.Interfaces
     {
         Task<AuthorizationResponse> LoginWithPasswordAsync(PasswordSignInModel parameters);
         Task<AuthorizationResponse> LoginWithFido2Async(SecurityKeySignInModel parameters);
+        Task<AuthorizationResponse> LogoutAsync();
+        Task RefreshSignInAsync();
     }
 }

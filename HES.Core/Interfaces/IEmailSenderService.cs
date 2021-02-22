@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IEmailSenderService : IDisposable
+    public interface IEmailSenderService
     {
-        Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status);
-        Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults);
-        Task SendActivateDataProtectionAsync();
+        Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status, IList<ApplicationUser> administrators);
+        Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults, IList<ApplicationUser> administrators);
+        Task SendActivateDataProtectionAsync(IList<ApplicationUser> administrators);
         Task SendUserInvitationAsync(string email, string callbackUrl);
         Task SendUserResetPasswordAsync(string email, string callbackUrl);
-        Task SendUserConfirmEmailAsync(string email, string callbackUrl);
+        Task SendUserConfirmEmailAsync(string userId, string email, string code);
         Task SendSoftwareVaultInvitationAsync(Employee employee, SoftwareVaultActivation activation, DateTime validTo);
         Task SendHardwareVaultActivationCodeAsync(Employee employee, string code);
         Task NotifyWhenPasswordAutoChangedAsync(Employee employee, string accountName);

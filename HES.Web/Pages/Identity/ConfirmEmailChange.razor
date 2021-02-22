@@ -1,0 +1,33 @@
+﻿@page "/confirm-email-change"
+@layout BlankLayout
+@inherits HESComponentBase
+
+@if (Initialized)
+{
+    if (Success)
+    {
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="mb-4">Thank you for email confirmation</h3>
+                    <p class="mb-4 text-muted">You confirmed change email for your HES account.</p>
+                    <div class="text-center">
+                        <a href="@Routes.Login" class="btn btn-outline-primary">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <Error Title="@ErrorTitle" Description="@ErrorDescription"/>
+    }
+}
+else if (LoadFailed)
+{
+    <LoadingFailed ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <Loader AbsoluteCenter="true" />
+}

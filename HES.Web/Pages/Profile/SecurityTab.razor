@@ -1,0 +1,61 @@
+﻿@inherits HESComponentBase
+
+@if (Initialized)
+{
+    <p class="text-muted text-center">Your account security settings.</p>
+    <h5 class="card-title">Change Password</h5>
+    <div class="card mb-5">
+        <div class="card-body">
+            <EditForm Model="ChangePasswordModel" OnValidSubmit="ChangePasswordAsync">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <Label For="@(() => ChangePasswordModel.OldPassword)" class="form-label" />
+                    <input type="password" @bind="ChangePasswordModel.OldPassword" class="form-control" />
+                    <ValidationMessage For="@(() => ChangePasswordModel.OldPassword)" class="text-danger" />
+                </div>
+                <div class="form-group">
+                    <Label For="@(() => ChangePasswordModel.NewPassword)" class="form-label" />
+                    <input type="password" @bind="ChangePasswordModel.NewPassword" class="form-control" />
+                    <ValidationMessage For="@(() => ChangePasswordModel.NewPassword)" class="text-danger" />
+                </div>
+                <div class="form-group">
+                    <Label For="@(() => ChangePasswordModel.ConfirmPassword)" class="form-label" />
+                    <input type="password" @bind="ChangePasswordModel.ConfirmPassword" class="form-control" />
+                    <ValidationMessage For="@(() => ChangePasswordModel.ConfirmPassword)" class="text-danger" />
+                </div>
+                <div class="text-center py-3">
+                    <Button @ref="ButtonChangePassword" Text="Save" type="submit" class="btn btn-primary w-25" />
+                </div>
+            </EditForm>
+        </div>
+    </div>
+    <h5 class="card-title">Security Keys</h5>
+    <div class="card mb-5">
+        <div class="card-body">
+            @foreach (var credential in StoredCredentials)
+            {
+                <div class="border rounded p-3 d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <span class="d-block fw-bold">@credential.SecurityKeyName</span>
+                        <small class="text-muted">Registration Date: @credential.RegDate.ToLocalTime().ToShortDateString()</small>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary" @onclick="@(async () =>  await EditSecurityKeyAsync(credential.Id))">Edit</button>
+                        <button type="button" class="btn btn-outline-secondary ms-1" @onclick="@(async () =>  await RemoveSecurityKeyAsync(credential.Id))">Delete</button>
+                    </div>
+                </div>
+            }
+            <div class="text-center py-3">
+                <button @onclick="AddSecurityKeyAsync" class="btn btn-primary w-25">Add Security Key</button>
+            </div>
+        </div>
+    </div>
+}
+else if (LoadFailed)
+{
+    <LoadingFailed ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <Loader />
+}

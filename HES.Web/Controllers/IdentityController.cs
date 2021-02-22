@@ -127,30 +127,30 @@ namespace HES.Web.Controllers
             }
         }
 
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SendVerificationEmail()
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
+        //[HttpPost]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> SendVerificationEmail()
+        //{
+        //    try
+        //    {
+        //        var user = await _userManager.GetUserAsync(User);
+        //        if (user == null)
+        //            throw new Exception("User is null");
 
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                var callbackUrl = $"{HttpContext.Request.PathBase}Identity/Account/ConfirmEmail?userId={user.Id}&code={WebUtility.UrlEncode(code)}";
+        //        var callbackUrl = $"{HttpContext.Request.PathBase}Identity/Account/ConfirmEmail?userId={user.Id}&code={WebUtility.UrlEncode(code)}";
 
-                await _emailSenderService.SendUserConfirmEmailAsync(user.Email, HtmlEncoder.Default.Encode(callbackUrl));
+        //        await _emailSenderService.SendUserConfirmEmailAsync(user.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -413,6 +413,23 @@ namespace HES.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RefreshSignIn()
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                await _signInManager.RefreshSignInAsync(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeletePersonalData(RequiredPassword requiredPassword)
         {
             try
@@ -484,6 +501,20 @@ namespace HES.Web.Controllers
         public async Task<AuthorizationResponse> LoginWithFido2(SecurityKeySignInModel parameters)
         {
             return await _fido2Service.SignInAsync(parameters);
+        }
+
+        [HttpPost]
+        public async Task<AuthorizationResponse> Logout()
+        {
+            try
+            {
+                await _signInManager.SignOutAsync();
+                return AuthorizationResponse.Success(null);
+            }
+            catch (Exception ex)
+            {
+                return AuthorizationResponse.Error(ex.Message);
+            }
         }
 
         #endregion

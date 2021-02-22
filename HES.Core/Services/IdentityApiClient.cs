@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
@@ -60,6 +62,39 @@ namespace HES.Core.Services
             return authorizationResponse;
         }
 
+        public async Task<AuthorizationResponse> LogoutAsync()
+        {
+            List<string> cookies = null;
+            if (_httpClient.DefaultRequestHeaders.TryGetValues("Cookie", out IEnumerable<string> cookieEntries))
+                cookies = cookieEntries.ToList();
+
+            var httpResponse = await _httpClient.PostAsync("api/Identity/Logout", new StringContent(string.Empty));
+            var authorizationResponse = JsonConvert.DeserializeObject<AuthorizationResponse>(await httpResponse.Content.ReadAsStringAsync());
+
+            if (httpResponse.IsSuccessStatusCode && cookies != null && cookies.Any())
+            {
+                _httpClient.DefaultRequestHeaders.Remove("Cookie");
+
+                foreach (var cookie in cookies[0].Split(';'))
+                {
+                    var cookieParts = cookie.Split('=');
+                    if (cookieParts[0] == ".AspNetCore.Identity.Application")
+                        await _jsRuntime.InvokeVoidAsync("removeCookie", cookieParts[0]);
+                }
+            }
+
+            if (authorizationResponse.Succeeded)
+                await SetAuthenticatedAsync(authorizationResponse.User);
+
+            return authorizationResponse;
+        }
+
+        public async Task RefreshSignInAsync()
+        {
+            var httpResponse = await _httpClient.PostAsync("api/Identity/RefreshSignIn", new StringContent(string.Empty));
+            await TrySetCookieAsync(httpResponse);
+        }
+
         private async Task TrySetCookieAsync(HttpResponseMessage response)
         {
             if (response.Headers.TryGetValues("Set-Cookie", out var cookieEntries))
@@ -73,12 +108,22 @@ namespace HES.Core.Services
 
         private async Task SetAuthenticatedAsync(ApplicationUser user)
         {
-            var principal = await _signInManager.CreateUserPrincipalAsync(user);
-            var identity = new ClaimsIdentity(principal.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            principal = new ClaimsPrincipal(identity);
-            _signInManager.Context.User = principal;
-            var provider = (IHostEnvironmentAuthenticationStateProvider)_authenticationStateProvider;
-            provider.SetAuthenticationState(Task.FromResult(new AuthenticationState(principal)));
+            if (user == null)
+            {
+                var principal = new ClaimsPrincipal(new ClaimsIdentity());
+                _signInManager.Context.User = principal;
+                var provider = (IHostEnvironmentAuthenticationStateProvider)_authenticationStateProvider;
+                provider.SetAuthenticationState(Task.FromResult(new AuthenticationState(principal)));
+            }
+            else
+            {
+                var principal = await _signInManager.CreateUserPrincipalAsync(user);
+                var identity = new ClaimsIdentity(principal.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                principal = new ClaimsPrincipal(identity);
+                _signInManager.Context.User = principal;
+                var provider = (IHostEnvironmentAuthenticationStateProvider)_authenticationStateProvider;
+                provider.SetAuthenticationState(Task.FromResult(new AuthenticationState(principal)));
+            }
         }
     }
 }
