@@ -1,0 +1,54 @@
+﻿@inherits HESComponentBase
+
+@if (Initialized)
+{
+    @if (RecoveryCodes == null)
+    {
+        <div class="alert alert-warning" role="alert">
+            <p>
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                <strong>Put these codes in a safe place.</strong>
+            </p>
+            <p>
+                If you lose your device and don't have the recovery codes you will lose access to your account.
+            </p>
+            <p>
+                Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key
+                used in an authenticator app you should reset your authenticator keys.
+            </p>
+        </div>
+        <div class="text-end">
+            <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Close</button>
+            <button class="btn btn-danger" type="button" @onclick="GenerateRecoveryCodesAsync">Generate Recovery Codes</button>
+        </div>
+    }
+    else
+    {
+        <div>
+            <div class="alert alert-warning" role="alert">
+                <p>
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    <strong>Put these codes in a safe place.</strong>
+                </p>
+                <p>
+                    If you lose your device and don't have the recovery codes you will lose access to your account.
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @for (var row = 0; row < RecoveryCodes.Length; row += 2)
+                    {
+                        <code class="recovery-code">@RecoveryCodes[row]</code><text> </text><code class="recovery-code">@RecoveryCodes[row + 1]</code><br />
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Close</button>    
+        </div>
+    }
+}
+else
+{
+    <Loader />
+}

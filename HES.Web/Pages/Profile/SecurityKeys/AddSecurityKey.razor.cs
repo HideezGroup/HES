@@ -1,18 +1,18 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile.SecurityKeys
 {
-    public partial class AddSecurityKey : OwningComponentBase
+    public partial class AddSecurityKey : HESComponentBase
     {
         public enum SecurityKeyAddingStep
         {
@@ -22,6 +22,7 @@ namespace HES.Web.Pages.Profile.SecurityKeys
             Error
         }
 
+        [Inject] public IApplicationUserService ApplicationUserService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<AddSecurityKey> Logger { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
@@ -34,25 +35,23 @@ namespace HES.Web.Pages.Profile.SecurityKeys
         public ApplicationUser CurrentUser { get; set; }
         public FidoStoredCredential FidoStoredCredential { get; set; }
         public string SecurityKeyName { get; set; } = string.Empty;
-        public bool Initialized { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 FidoService = ScopedServices.GetRequiredService<IFido2Service>();
-                var response = await HttpClient.GetAsync("api/Identity/GetUser");
 
-                if (!response.IsSuccessStatusCode)
-                    throw new Exception(await response.Content.ReadAsStringAsync());
+                CurrentUser = await ApplicationUserService.GetUserByEmailAsync(await GetCurrentUserEmail());
 
-                CurrentUser = JsonConvert.DeserializeObject<ApplicationUser>(await response.Content.ReadAsStringAsync());
                 ChangeState(SecurityKeyAddingStep.Start);
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogService.CancelAsync();
             }
         }

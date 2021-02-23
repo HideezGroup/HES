@@ -50,6 +50,55 @@
             </div>
         </div>
     </div>
+    <h5 class="card-title">Two-factor authentication (2FA)</h5>
+    <div class="card mb-5">
+        <div class="card-body">
+            <h5 class="mb-4">Authenticator app</h5>
+            @if (!TwoFactorInfo.HasAuthenticator)
+            {
+                <button @onclick="EnableAuthenticatorAsync" class="btn btn-primary">Add authenticator app</button>
+            }
+            else
+            {
+                <button @onclick="EnableAuthenticatorAsync" class="btn btn-primary">Setup authenticator app</button>
+                <button @onclick="ResetAuthenticatorAsync" class="btn btn-outline-danger">Reset authenticator app</button>
+            }
+            @if (TwoFactorInfo.Is2faEnabled)
+            {
+                <hr />
+                <h5 class="mb-4">Manage 2FA</h5> if (TwoFactorInfo.RecoveryCodesLeft == 0)
+                {
+                    <div class="alert alert-danger">
+                        <strong>You have no recovery codes left.</strong>
+                        <p>You must generate a new set of recovery codes before you can log in with a recovery code.</p>
+                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">Generate Recovery Codes</button>
+                    </div>
+                }
+                else if (TwoFactorInfo.RecoveryCodesLeft == 1)
+                {
+                    <div class="alert alert-danger">
+                        <strong>You have 1 recovery code left.</strong>
+                        <p>You can generate a new set of recovery codes.</p>
+                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">Generate Recovery Codes</button>
+                    </div>
+                }
+                else if (TwoFactorInfo.RecoveryCodesLeft <= 3)
+                {
+                    <div class="alert alert-warning">
+                        <strong>You have @TwoFactorInfo.RecoveryCodesLeft recovery codes left.</strong>
+                        <p>You should generate a new set of recovery codes.</p>
+                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">Generate Recovery Codes</button>
+                    </div>
+                }
+                if (TwoFactorInfo.IsMachineRemembered)
+                {
+                    <button type="button" class="btn btn-primary" @onclick="ForgetBrowserAsync">Forget this browser</button>
+                }
+                <button @onclick="Disable2FaAsync" class="btn btn-danger">Disable 2FA</button>
+                <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-danger">Reset recovery codes</button>
+            }
+        </div>
+    </div>
 }
 else if (LoadFailed)
 {

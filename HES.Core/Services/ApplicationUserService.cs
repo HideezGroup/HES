@@ -4,16 +4,19 @@ using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.Web;
+using HES.Core.Models.Web.AppUsers;
 using HES.Core.Models.Web.Identity;
 using HES.Core.Models.Web.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -260,6 +263,24 @@ namespace HES.Core.Services
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, parameters.OldPassword, parameters.NewPassword);
             if (!changePasswordResult.Succeeded)
                 throw new Exception(HESException.GetIdentityResultErrors(changePasswordResult.Errors));
+        }
+
+        public async Task<TwoFactorInfo> GetTwoFactorInfoAsync(HttpClient httpClient)
+        {
+            var response = await httpClient.GetAsync("api/Identity/GetTwoFactorInfo");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception(await response.Content.ReadAsStringAsync());
+
+            return JsonConvert.DeserializeObject<TwoFactorInfo>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task ForgetBrowserAsync(HttpClient httpClient)
+        {
+            var response = await httpClient.PostAsync("api/Identity/ForgetTwoFactorClient", new StringContent(string.Empty));
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception(await response.Content.ReadAsStringAsync());
         }
 
         #endregion
