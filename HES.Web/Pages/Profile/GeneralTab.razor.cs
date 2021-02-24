@@ -4,11 +4,18 @@ using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Identity;
 using HES.Web.Components;
+using HES.Web.Pages.Profile.PersonalData;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile
@@ -16,9 +23,10 @@ namespace HES.Web.Pages.Profile
     public partial class GeneralTab : HESComponentBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
+        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<ProfilePage> Logger { get; set; }
 
         public ApplicationUser User { get; set; }
@@ -89,6 +97,48 @@ namespace HES.Web.Pages.Profile
             catch (HESException ex)
             {
                 ValidationErrorMessage.DisplayError(nameof(ChangeEmailModel.NewEmail), ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+            }
+        }
+
+        private async Task DownloadPersonalDataAsync()
+        {
+            try
+            {
+                var personalData = new Dictionary<string, string>();
+                var personalDataProps = typeof(ApplicationUser).GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
+
+                foreach (var p in personalDataProps)
+                {
+                    personalData.Add(p.Name, p.GetValue(User)?.ToString() ?? "null");
+                }
+
+                await JSRuntime.InvokeVoidAsync("downloadPersonalData", JsonConvert.SerializeObject(personalData));
+                await ToastService.ShowToastAsync("Download started.", ToastType.Success);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+            }
+        }
+
+        private async Task DeletePersonalDataAsync()
+        {
+            try
+            {
+                RenderFragment body = (builder) =>
+                {
+                    builder.OpenComponent(0, typeof(DeletePersonalData));
+                    builder.AddAttribute(1, nameof(DeletePersonalData.ApplicationUser), User);
+                    builder.CloseComponent();
+                };
+
+                await ModalDialogService.ShowAsync("Delete Personal Data", body);
             }
             catch (Exception ex)
             {

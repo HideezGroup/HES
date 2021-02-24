@@ -1,0 +1,28 @@
+﻿@inherits HESComponentBase
+
+@if (Initialized)
+{
+    <div class="alert alert-warning" role="alert">
+        <p class="my-0">
+            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+        </p>
+    </div>
+    <div>
+        <EditForm Model="PasswordModel" OnValidSubmit="DeletePersonalDataAsync">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <Label For="@(() => PasswordModel.Password)" class="text-gray form-label" />
+                <InputText type="password" @bind-Value="PasswordModel.Password" class="form-control" />
+                <ValidationMessage For="@(() => PasswordModel.Password)" class="text-danger" />
+            </div>
+            <div class="text-end">
+                <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
+                <Button class="btn btn-danger" type="submit" @ref="ButtonSpinner" Text="Delete data and close my account" />
+            </div>
+        </EditForm>
+    </div>
+}
+else
+{
+    <Loader />
+}
