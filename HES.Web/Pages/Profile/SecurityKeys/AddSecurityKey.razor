@@ -1,0 +1,45 @@
+﻿@inherits HESComponentBase
+
+@if (Initialized)
+{
+    if (AddingStep == SecurityKeyAddingStep.Start || AddingStep == SecurityKeyAddingStep.Configuration)
+    {
+        <p>When you choose Next, you woll be promoted to plug your security key. Then, touch the button or the sensor on your security key to finish up your device. For more detailed instructions, visit your key manufacturer’s website.</p>
+    }
+    if (AddingStep == SecurityKeyAddingStep.Done)
+    {
+        <div class="form-group">
+            <label class="form-label">Security Key Name</label>
+            <input type="text" class="form-control" @bind-value="SecurityKeyName" @bind-value:event="oninput" />
+        </div>
+        <div class="text-end">
+            <button type="button" @onclick="SaveSecurityKeyAsync" class="btn btn-primary">Done</button>
+        </div>
+    }
+    if (AddingStep == SecurityKeyAddingStep.Error)
+    {
+        <div class="alert alert-warning" role="alert">
+            <h6 class="alert-heading">Something went wrong. Try again.</h6>
+            <p class="mb-0">We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</p>
+        </div>
+        <div class="text-end">
+            <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
+            <button type="button" @onclick="ConfigureSecurityKeyAsync" class="btn btn-primary">Try Again</button>
+        </div>
+    }
+    if (AddingStep == SecurityKeyAddingStep.Start)
+    {
+        <div class="text-end">
+            <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
+            <button type="button" @onclick="ConfigureSecurityKeyAsync" class="btn btn-primary">Next</button>
+        </div>
+    }
+    if (AddingStep == SecurityKeyAddingStep.Configuration)
+    {
+        <Loader DisableShadow="true" />
+    }
+}
+else
+{
+    <LoadingText />
+}

@@ -98,8 +98,9 @@ namespace HES.Core.Services
                 if (_protectionEnabled && !_protectionActivated)
                 {
                     using var scope = Services.CreateScope();
-                    var scopedEmailSenderService = scope.ServiceProvider.GetRequiredService<IEmailSenderService>();
-                    await scopedEmailSenderService.SendActivateDataProtectionAsync();
+                    var scopedApplicationUserService = scope.ServiceProvider.GetRequiredService<IApplicationUserService>();
+                    await scopedApplicationUserService.SendActivateDataProtectionAsync();
+                    scopedApplicationUserService.Dispose();
                 }
             }
         }

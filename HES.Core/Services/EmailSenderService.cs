@@ -4,6 +4,7 @@ using HES.Core.Interfaces;
 using HES.Core.Models.Web.AppSettings;
 using HES.Core.Models.Web.SoftwareVault;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using QRCoder;
@@ -16,26 +17,28 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class EmailSenderService : IEmailSenderService, IDisposable
+    public class EmailSenderService : IEmailSenderService
     {
-        private readonly IApplicationUserService _applicationUserService;
         private readonly IHostingEnvironment _env;
         private readonly IConfiguration _config;
         private readonly ILogger<EmailSenderService> _logger;
+        private readonly string _baseAddress;
 
-        public EmailSenderService(IApplicationUserService applicationUserService,
-                                  IHostingEnvironment env,
+        public EmailSenderService(IHostingEnvironment env,
                                   IConfiguration config,
+                                  IHttpContextAccessor httpContextAccessor,
                                   ILogger<EmailSenderService> logger)
         {
-            _applicationUserService = applicationUserService;
             _env = env;
             _config = config;
             _logger = logger;
+            _baseAddress = $"{httpContextAccessor?.HttpContext?.Request?.Scheme}://{httpContextAccessor?.HttpContext?.Request?.Host}{httpContextAccessor?.HttpContext?.Request?.PathBase}";
+
         }
 
         private async Task SendAsync(MailMessage mailMessage, EmailSettings settings)
@@ -56,12 +59,10 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status)
+        public async Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status, IList<ApplicationUser> administrators)
         {
             EmailSettings emailSettings = await GetEmailSettingsAsync();
             ServerSettings serverSettings = await GetServerSettingsAsync();
-
-            var administrators = await _applicationUserService.GetAllAdministratorsAsync();
 
             var htmlMessage = GetTemplate("mail-license-order-status");
 
@@ -80,12 +81,10 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults)
+        public async Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults, IList<ApplicationUser> administrators)
         {
             EmailSettings emailSettings = await GetEmailSettingsAsync();
             ServerSettings serverSettings = await GetServerSettingsAsync();
-
-            var administrators = await _applicationUserService.GetAllAdministratorsAsync();
 
             var htmlMessage = GetTemplate("mail-vault-license-status");
 
@@ -130,12 +129,10 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task SendActivateDataProtectionAsync()
+        public async Task SendActivateDataProtectionAsync(IList<ApplicationUser> administrators)
         {
             EmailSettings emailSettings = await GetEmailSettingsAsync();
             ServerSettings serverSettings = await GetServerSettingsAsync();
-
-            var administrators = await _applicationUserService.GetAllAdministratorsAsync();
 
             var htmlMessage = GetTemplate("mail-activate-data-protection");
             htmlMessage = htmlMessage.Replace("{{callbackUrl}}", $"{serverSettings.Url}");
@@ -189,10 +186,12 @@ namespace HES.Core.Services
             await SendAsync(mailMessage, emailSettings);
         }
 
-        public async Task SendUserConfirmEmailAsync(string email, string callbackUrl)
+        public async Task SendUserConfirmEmailAsync(string userId, string email, string code)
         {
             var emailSettings = await GetEmailSettingsAsync();
             var serverSettings = await GetServerSettingsAsync();
+
+            var callbackUrl = HtmlEncoder.Default.Encode($"{_baseAddress}/confirm-email-change?userId={userId}&code={code}&email={email}");
 
             var htmlMessage = GetTemplate("mail-user-confirm-email");
             htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
@@ -348,11 +347,6 @@ namespace HES.Core.Services
             using MemoryStream stream = new MemoryStream();
             img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
             return stream.ToArray();
-        }
-
-        public void Dispose()
-        {
-            _applicationUserService.Dispose();
         }
     }
 }

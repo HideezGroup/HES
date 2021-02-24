@@ -1170,8 +1170,7 @@ namespace HES.Core.Services
         public void Dispose()
         {
             _employeeService.Dispose();
-            _groupService.Dispose();
-            _emailSenderService.Dispose();
+            _groupService.Dispose();   
         }
     }
 }

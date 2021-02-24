@@ -7,6 +7,7 @@
         public const string LoginWith2Fa = "/Identity/Account/LoginWith2fa";
         public const string Lockout = "/Identity/Account/Lockout";
         public const string ForgotPassword = "/Identity/Account/ForgotPassword";
+        public const string Profile = "/profile";
 
         public const string Dashboard = "/";
     }

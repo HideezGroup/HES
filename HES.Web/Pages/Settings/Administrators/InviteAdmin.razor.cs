@@ -15,7 +15,6 @@ namespace HES.Web.Pages.Settings.Administrators
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }
         [Inject] public IApplicationUserService ApplicationUserService { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<InviteAdmin> Logger { get; set; }
 

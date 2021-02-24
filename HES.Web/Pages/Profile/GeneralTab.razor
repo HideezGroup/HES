@@ -1,0 +1,57 @@
+﻿@inherits HESComponentBase
+
+@if (Initialized)
+{
+<p class="text-muted text-center">Basic information of your account.</p>
+    <h5 class="text-navyblue">Profile</h5>
+    <div class="card mb-5">
+        <div class="card-body">
+            <EditForm Model="UserProfileModel" OnValidSubmit="UpdateProfileInfoAsync">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <Label For="@(() => UserProfileModel.FullName)" class="form-label" />
+                    <InputText @bind-Value="UserProfileModel.FullName" class="form-control" />
+                    <ValidationMessage For="@(() => UserProfileModel.FullName)" class="text-danger" />
+                </div>
+                <div class="form-group">
+                    <Label For="@(() => UserProfileModel.PhoneNumber)" class="form-label" />
+                    <InputText @bind-Value="UserProfileModel.PhoneNumber" class="form-control" />
+                    <ValidationMessage For="@(() => UserProfileModel.PhoneNumber)" class="text-danger" />
+                </div>
+                <div class="text-center py-3">
+                    <Button @ref="ButtonUpdateProfile" Text="Save" type="submit" class="btn btn-primary w-25" />
+                </div>
+            </EditForm>
+        </div>
+    </div>
+    <h5 class="text-navyblue">Change email</h5>
+    <div class="card mb-5">
+        <div class="card-body">
+            <EditForm Model="ChangeEmailModel" OnValidSubmit="ChangeEmailAsync">
+                <DataAnnotationsValidator />
+                <ValidationErrorMessage @ref="ValidationErrorMessage" />
+                <div class="form-group">
+                    <Label For="@(() => ChangeEmailModel.CurrentEmail)" class="form-label" />
+                    <input type="email" value="@ChangeEmailModel.CurrentEmail" disabled class="form-control" />
+                    <ValidationMessage For="@(() => ChangeEmailModel.CurrentEmail)" class="text-danger" />
+                </div>
+                <div class="form-group">
+                    <Label For="@(() => ChangeEmailModel.NewEmail)" class="form-label" />
+                    <InputText @bind-Value="@ChangeEmailModel.NewEmail" class="form-control" />
+                    <ValidationMessage For="@(() => ChangeEmailModel.NewEmail)" class="text-danger" />
+                </div>
+                <div class="text-center py-3">
+                    <Button @ref="ButtonChangeEmail" Text="Change" type="submit" class="btn btn-primary w-25" />
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+else if (LoadFailed)
+{
+    <LoadingFailed ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <Loader />
+}

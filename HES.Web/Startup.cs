@@ -166,7 +166,7 @@ namespace HES.Web
 
             // Database
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
 
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -228,6 +228,7 @@ namespace HES.Web
             services.AddControllers();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Localization Options
             services.Configure<RequestLocalizationOptions>(options =>
@@ -268,7 +269,7 @@ namespace HES.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {

@@ -19,7 +19,6 @@ namespace HES.Web.Pages.HardwareVaults
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<HardwareVaultsPage> Logger { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Parameter] public string DashboardFilter { get; set; }
 
         protected override async Task OnInitializedAsync()

@@ -25,7 +25,7 @@ namespace HES.Core.Services
         private readonly IAsyncRepository<HardwareVaultLicense> _hardwareVaultLicenseRepository;
         private readonly IAsyncRepository<HardwareVault> _hardwareVaultRepository;
         private readonly IAppSettingsService _appSettingsService;
-        private readonly IEmailSenderService _emailSenderService;
+        private readonly IApplicationUserService _applicationUserService;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<LicenseService> _logger;
 
@@ -33,7 +33,7 @@ namespace HES.Core.Services
                                    IAsyncRepository<HardwareVaultLicense> hardwareVaultLicenseRepository,
                                    IAsyncRepository<HardwareVault> hardwareVaultRepository,
                                    IAppSettingsService appSettingsService,
-                                   IEmailSenderService emailSenderService,
+                                   IApplicationUserService applicationUserService,
                                    IHttpClientFactory httpClientFactory,
                                    ILogger<LicenseService> logger)
         {
@@ -41,7 +41,7 @@ namespace HES.Core.Services
             _hardwareVaultLicenseRepository = hardwareVaultLicenseRepository;
             _hardwareVaultRepository = hardwareVaultRepository;
             _appSettingsService = appSettingsService;
-            _emailSenderService = emailSenderService;
+            _applicationUserService = applicationUserService;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
@@ -365,7 +365,7 @@ namespace HES.Core.Services
                 order.OrderStatus = status;
 
                 await _licenseOrderRepository.UpdateOnlyPropAsync(order, new string[] { "OrderStatus" });
-                await _emailSenderService.SendLicenseChangedAsync(order.CreatedAt, status);
+                await _applicationUserService.SendLicenseChangedAsync(order.CreatedAt, status);
             }
         }
 
@@ -491,7 +491,7 @@ namespace HES.Core.Services
             if (hardwareVaultsChangedStatus.Count > 0)
             {
                 await _hardwareVaultRepository.UpdateOnlyPropAsync(hardwareVaults, new string[] { nameof(HardwareVault.LicenseStatus) });
-                await _emailSenderService.SendHardwareVaultLicenseStatus(hardwareVaultsChangedStatus);
+                await _applicationUserService.SendHardwareVaultLicenseStatus(hardwareVaultsChangedStatus);
             }
         }
 
@@ -584,7 +584,6 @@ namespace HES.Core.Services
             _hardwareVaultLicenseRepository.Dispose();
             _hardwareVaultRepository.Dispose();
             _appSettingsService.Dispose();
-            _emailSenderService.Dispose();
         }
     }
 }

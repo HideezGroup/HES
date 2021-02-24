@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HES.Core.Exceptions
 {
@@ -12,6 +14,7 @@ namespace HES.Core.Exceptions
         InvalidLoginAttempt,
         RequiresTwoFactor,
         AccountLockout,
+        IncorrectCurrentPassword,
 
         // Employees
         EmployeeNotFound,
@@ -44,6 +47,8 @@ namespace HES.Core.Exceptions
             { HESCode.UserNotFound,  "User not found." },
             { HESCode.InvalidLoginAttempt, "Invalid login attempt." },
             { HESCode.AccountLockout,"Account lockout" },
+            { HESCode.IncorrectCurrentPassword,"Incorrect current password." },
+
             { HESCode.RequiresTwoFactor, "Requires two factor." },
             { HESCode.EmployeeNotFound,  "Employee not found." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
@@ -67,6 +72,11 @@ namespace HES.Core.Exceptions
         public static string GetMessage(HESCode code)
         {
             return Errors[code];
+        }
+
+        public static string GetIdentityResultErrors(IEnumerable<IdentityError> errors)
+        {
+            return string.Join(". ", errors.Select(x => x.Description).ToArray());
         }
     }
 }

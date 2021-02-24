@@ -16,9 +16,7 @@
     <link href="~/css/main.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
-    <app>
-        <component type="typeof(App)" render-mode="Server" />
-    </app>
+    <component type="typeof(App)" render-mode="Server" />
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.
@@ -31,14 +29,14 @@
     </div>
     <div id="components-reconnect-modal">
         <div class="reconnecting flex-column justify-content-center align-items-center h-100">
-            <h5 class="mb-3">Reconnection to the server.</h5>
-            <div class="spinner-grow text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+            <div>
+                <h5 class="mb-3">Reconnection to the server.</h5>
+                <component type="typeof(HES.Web.Components.Loader)" render-mode="Static" />
+            </div>     
         </div>
         <div class="failed-to-connect flex-column justify-content-center align-items-center h-100">
             <h5 class="mb-3">Could not connect to the server.</h5>
-            <input type="button" class="btn btn-primary" value="Reconnect" onclick="window.Blazor.reconnect()" />
+            <input type="button" class="btn btn-primary" value="Reload" onclick="location.reload()" />
         </div>
         <div class="connection-rejected flex-column justify-content-center align-items-center h-100">
             <h5 class="mb-3">Could not reconnect to the server. <br /> Reload the page to restore functionality.</h5>

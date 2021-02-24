@@ -1,7 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.API;
 using HES.Core.Models.API.Identity;
+using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.Web.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -17,10 +19,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using System.Transactions;
-using Microsoft.EntityFrameworkCore;
-using HES.Core.Models.API;
-using HES.Core.Models.Web.Identity;
 
 namespace HES.Web.Controllers
 {
@@ -75,106 +73,8 @@ namespace HES.Web.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateProfileInfo(ProfileInfo profileInfo)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                if (profileInfo.Email != user.Email)
-                {
-                    using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                    {
-                        var credentials = await _fidoCredentialRepository.Query().Where(x => x.Username == user.Email).ToListAsync();
-                        foreach (var item in credentials)
-                        {
-                            item.UserId = Encoding.UTF8.GetBytes(profileInfo.Email);
-                            item.UserHandle = Encoding.UTF8.GetBytes(profileInfo.Email);
-                            item.Username = profileInfo.Email;
-                        }
-                        await _fidoCredentialRepository.UpdatRangeAsync(credentials);
-
-                        var setEmailResult = await _userManager.SetEmailAsync(user, profileInfo.Email);
-
-                        if (!setEmailResult.Succeeded)
-                            throw new InvalidOperationException($"Unexpected error occurred setting email for user '{user.Id}'.");
-
-                        transactionScope.Complete();
-                    }
-                }
-
-                if (profileInfo.PhoneNumber != user.PhoneNumber)
-                {
-                    var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, profileInfo.PhoneNumber);
-
-                    if (!setPhoneResult.Succeeded)
-                        throw new InvalidOperationException($"Unexpected error occurred setting phone number for user '{user.Id}'.");
-                }
-
-                await _signInManager.RefreshSignInAsync(user);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SendVerificationEmail()
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                var callbackUrl = $"{HttpContext.Request.PathBase}Identity/Account/ConfirmEmail?userId={user.Id}&code={WebUtility.UrlEncode(code)}";
-
-                await _emailSenderService.SendUserConfirmEmailAsync(user.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateProfilePassword(ProfilePassword profilePassword)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                var changePasswordResult = await _userManager.ChangePasswordAsync(user, profilePassword.OldPassword, profilePassword.NewPassword);
-                if (!changePasswordResult.Succeeded)
-                    throw new Exception(string.Join(";", changePasswordResult.Errors));
-
-                await _signInManager.RefreshSignInAsync(user);
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+              
+        #region 2FA
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -254,6 +154,32 @@ namespace HES.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ResetAuthenticatorKey()
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                    throw new Exception("User is null");
+
+                await _userManager.SetTwoFactorEnabledAsync(user, false);
+                await _userManager.ResetAuthenticatorKeyAsync(user);
+
+                _logger.LogInformation($"User '{user.Id}' has reset their authentication app key.");
+
+                await _signInManager.RefreshSignInAsync(user);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<VerifyTwoFactorInfo>> VerifyTwoFactor(VerificationCode verificationCode)
         {
             try
@@ -270,9 +196,7 @@ namespace HES.Web.Controllers
                 if (!isTokenValid)
                     return Ok(verifyTwoFactorInfo);
 
-                await _userManager.SetTwoFactorEnabledAsync(user, true);
-
-                _logger.LogInformation($"User '{user.Id}' has enabled 2FA with an authenticator app.");
+                await _userManager.SetTwoFactorEnabledAsync(user, true);      
 
                 if (await _userManager.CountRecoveryCodesAsync(user) == 0)
                 {
@@ -293,7 +217,7 @@ namespace HES.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ResetAuthenticatorKey()
+        public async Task<IActionResult> DisableTwoFactor()
         {
             try
             {
@@ -301,12 +225,9 @@ namespace HES.Web.Controllers
                 if (user == null)
                     throw new Exception("User is null");
 
-                await _userManager.SetTwoFactorEnabledAsync(user, false);
-                await _userManager.ResetAuthenticatorKeyAsync(user);
-
-                _logger.LogInformation($"User '{user.Id}' has reset their authentication app key.");
-
-                await _signInManager.RefreshSignInAsync(user);
+                var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
+                if (!disable2faResult.Succeeded)
+                    throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user '{user.Id}'.");
 
                 return Ok();
             }
@@ -343,30 +264,35 @@ namespace HES.Web.Controllers
             }
         }
 
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DisableTwoFactor()
+        private string FormatKey(string unformattedKey)
         {
-            try
+            var result = new StringBuilder();
+            int currentPosition = 0;
+            while (currentPosition + 4 < unformattedKey.Length)
             {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
-                if (!disable2faResult.Succeeded)
-                    throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user '{user.Id}'.");
-
-                _logger.LogInformation($"User '{user.Id}' has disabled 2fa.");
-
-                return Ok();
+                result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");
+                currentPosition += 4;
             }
-            catch (Exception ex)
+            if (currentPosition < unformattedKey.Length)
             {
-                return BadRequest(ex.Message);
+                result.Append(unformattedKey.Substring(currentPosition));
             }
+
+            return result.ToString().ToLowerInvariant();
         }
+
+        private string GenerateQrCodeUri(string email, string unformattedKey)
+        {
+            const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+
+            return string.Format(
+                AuthenticatorUriFormat,
+                _urlEncoder.Encode("HES.Web"),
+                _urlEncoder.Encode(email),
+                unformattedKey);
+        }
+
+        #endregion
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -442,34 +368,6 @@ namespace HES.Web.Controllers
             }
         }
 
-        private string FormatKey(string unformattedKey)
-        {
-            var result = new StringBuilder();
-            int currentPosition = 0;
-            while (currentPosition + 4 < unformattedKey.Length)
-            {
-                result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");
-                currentPosition += 4;
-            }
-            if (currentPosition < unformattedKey.Length)
-            {
-                result.Append(unformattedKey.Substring(currentPosition));
-            }
-
-            return result.ToString().ToLowerInvariant();
-        }
-
-        private string GenerateQrCodeUri(string email, string unformattedKey)
-        {
-            const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
-
-            return string.Format(
-                AuthenticatorUriFormat,
-                _urlEncoder.Encode("HES.Web"),
-                _urlEncoder.Encode(email),
-                unformattedKey);
-        }
-
         #region Authorization
 
         [HttpPost]
@@ -484,6 +382,37 @@ namespace HES.Web.Controllers
         public async Task<AuthorizationResponse> LoginWithFido2(SecurityKeySignInModel parameters)
         {
             return await _fido2Service.SignInAsync(parameters);
+        }
+
+        [HttpPost]
+        public async Task<AuthorizationResponse> Logout()
+        {
+            try
+            {
+                await _signInManager.SignOutAsync();
+                return AuthorizationResponse.Success(null);
+            }
+            catch (Exception ex)
+            {
+                return AuthorizationResponse.Error(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RefreshSignIn()
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                await _signInManager.RefreshSignInAsync(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         #endregion
