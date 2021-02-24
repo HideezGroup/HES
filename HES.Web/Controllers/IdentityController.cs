@@ -62,7 +62,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -83,7 +83,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -126,7 +126,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -158,7 +158,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -184,7 +184,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -221,7 +221,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -244,7 +244,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -301,7 +301,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -343,7 +343,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -405,7 +405,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 await _signInManager.RefreshSignInAsync(user);
                 return Ok();
             }
