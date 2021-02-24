@@ -10,6 +10,7 @@ namespace HES.Web.Components
     {
         [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
         [Inject] protected ISynchronizationService SynchronizationService { get; set; }
+        [Inject] protected NavigationManager NavigationManager { get; set; }
 
         public bool Initialized { get; private set; }
         public string PageId { get; private set; }
@@ -31,6 +32,12 @@ namespace HES.Web.Components
         protected void SetErrorMessage(string message)
         {
             ErrorMessage = message;
+            StateHasChanged();
+        }
+
+        protected void ClearErrorMessage()
+        {
+            ErrorMessage = string.Empty;
             StateHasChanged();
         }
     }

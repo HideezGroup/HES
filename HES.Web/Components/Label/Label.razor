@@ -1,0 +1,9 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+@typeparam TValue
+
+<label @attributes="AdditionalAttributes">
+    @DisplayName@Suffix
+    <span style="color: red;">@(IsRequired ? " *" : string.Empty)</span>
+</label>

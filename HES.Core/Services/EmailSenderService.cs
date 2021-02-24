@@ -61,7 +61,7 @@ namespace HES.Core.Services
             EmailSettings emailSettings = await GetEmailSettingsAsync();
             ServerSettings serverSettings = await GetServerSettingsAsync();
 
-            var administrators = await _applicationUserService.GetAdministratorsAsync();
+            var administrators = await _applicationUserService.GetAllAdministratorsAsync();
 
             var htmlMessage = GetTemplate("mail-license-order-status");
 
@@ -85,7 +85,7 @@ namespace HES.Core.Services
             EmailSettings emailSettings = await GetEmailSettingsAsync();
             ServerSettings serverSettings = await GetServerSettingsAsync();
 
-            var administrators = await _applicationUserService.GetAdministratorsAsync();
+            var administrators = await _applicationUserService.GetAllAdministratorsAsync();
 
             var htmlMessage = GetTemplate("mail-vault-license-status");
 
@@ -135,7 +135,7 @@ namespace HES.Core.Services
             EmailSettings emailSettings = await GetEmailSettingsAsync();
             ServerSettings serverSettings = await GetServerSettingsAsync();
 
-            var administrators = await _applicationUserService.GetAdministratorsAsync();
+            var administrators = await _applicationUserService.GetAllAdministratorsAsync();
 
             var htmlMessage = GetTemplate("mail-activate-data-protection");
             htmlMessage = htmlMessage.Replace("{{callbackUrl}}", $"{serverSettings.Url}");

@@ -10,7 +10,6 @@
 
     protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo($"Identity/Account/Login?returnUrl=" +
-            $"/{Uri.EscapeDataString(NavigationManager.ToBaseRelativePath(NavigationManager.Uri))}", true);
+        NavigationManager.NavigateTo($"{Routes.Login}?returnUrl=/{Uri.EscapeDataString(NavigationManager.ToBaseRelativePath(NavigationManager.Uri))}", true);
     }
 }

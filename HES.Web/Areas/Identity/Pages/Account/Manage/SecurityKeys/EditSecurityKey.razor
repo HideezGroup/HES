@@ -1,0 +1,17 @@
+﻿@inherits OwningComponentBase
+
+@if (Initialized)
+{
+    <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" @bind-value="SecurityKeyName" @bind-value:event="oninput" />
+    </div>
+    <div class="text-right">
+        <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
+        <button type="button" @onclick="UpdateSecurityKeyAsync" class="btn btn-danger">Save</button>
+    </div>
+}
+else
+{
+    <LoadingTab />
+}

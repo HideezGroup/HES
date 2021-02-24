@@ -26,7 +26,7 @@ namespace HES.Web.Pages.Settings.Administrators
             {
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
 
-                ApplicationUser = await ApplicationUserService.GetByIdAsync(ApplicationUserId);
+                ApplicationUser = await ApplicationUserService.GetUserByIdAsync(ApplicationUserId);
                 if (ApplicationUser == null)
                     throw new Exception("User not found.");
             }

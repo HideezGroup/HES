@@ -1,0 +1,17 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+@if (!string.IsNullOrWhiteSpace(Message))
+{
+    <div class="position-fixed d-flex justify-content-center align-items-center px-4 w-100" style="z-index:1500;">
+        <div class="alert alert-danger alert-dismissible fade show shadow w-75 m-2" role="alert">
+            <strong>Error!</strong> @Message
+            <button type="button" class="btn-close" @onclick="@(async () => { await Close.InvokeAsync(this); } )"></button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string Message { get; set; }
+    [Parameter] public EventCallback Close { get; set; }
+}
