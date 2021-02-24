@@ -15,7 +15,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile
@@ -48,7 +47,7 @@ namespace HES.Web.Pages.Profile
                 UserProfileModel = new UserProfileModel
                 {
                     UserId = User.Id,
-                    FullName = User.FirstName,
+                    FullName = User.FullName,
                     PhoneNumber = User.PhoneNumber
                 };
 

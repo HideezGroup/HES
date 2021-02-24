@@ -183,9 +183,9 @@ namespace HES.Core.Services
             if (user == null)
                 throw new HESException(HESCode.UserNotFound);
 
-            if (parameters.FullName != user.FirstName)
+            if (parameters.FullName != user.FullName)
             {
-                user.FirstName = parameters.FullName;
+                user.FullName = parameters.FullName;
                 var userResult = await _userManager.UpdateAsync(user);
 
                 if (!userResult.Succeeded)

@@ -536,8 +536,7 @@ namespace HES.Web.Controllers
 
             return Ok(new UserDto()
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FirstName = user.FullName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber
             });
