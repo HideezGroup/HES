@@ -8,18 +8,18 @@
         <div class="col">
             <h1 class="text-navyblue text-break m-0">@Employee?.FullName</h1>
         </div>
-        @*<div class="col-auto pl-1 pr-1">
+        @*<div class="col-auto ps-1 pe-1">
                 <ButtonSpinner Class="btn-primary" Text="Add Software Vault" Callback="OpenModalAddSoftwareVaultAsync" />
             </div>*@
-        <div class="col-auto pl-1 pr-1">
+        <div class="col-auto ps-1 pe-1">
             <button type="button" @onclick="OpenDialogAddHardwareVaultAsync" class="btn btn-primary" title="@(Employee.HardwareVaults.Count > 0 ? "Cannot add more than one hardware vault." : "")" disabled="@(Employee.HardwareVaults.Count > 0)">
                 Add Hardware Vault
             </button>
         </div>
-        <div class="col-auto pl-1 pr-1">
+        <div class="col-auto ps-1 pe-1">
             <ButtonSpinner Class="btn btn-primary" Text="Create Personal Account" Callback="OpenDialogCreatePersonalAccountAsync" />
         </div>
-        <div class="col-auto pl-1">
+        <div class="col-auto ps-1">
             <ButtonSpinner Class="btn btn-primary" Text="Add Shared Account" Callback="OpenDialogAddSharedAccountAsync" />
         </div>
     </div>
@@ -32,15 +32,15 @@
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
-                            <img class="mr-1" src="/svg/icon-mail-sent.svg" />
+                            <img class="me-1" src="/svg/icon-mail-sent.svg" />
                             Software Vault Invite sent @invitation.CreatedAt.ToShortDateString() - @invitation.Status
                         </div>
                         <div>
-                            <button type="button" class="btn btn-light border my-1 mr-2" title="Resend invitation" @onclick="@(() => OpenDialogResendInvitationAsync(invitation))">
+                            <button type="button" class="btn btn-light border my-1 me-2" title="Resend invitation" @onclick="@(() => OpenDialogResendInvitationAsync(invitation))">
                                 <img class="icon-btn" src="/svg/icon-email.svg" />
                                 Resend
                             </button>
-                            <button type="button" class="btn btn-light border my-1 mr-2" title="Delete invitation" @onclick="@(() => OpenDialogDeleteInvitationAsync(invitation))">
+                            <button type="button" class="btn btn-light border my-1 me-2" title="Delete invitation" @onclick="@(() => OpenDialogDeleteInvitationAsync(invitation))">
                                 <img class="icon-btn" src="/svg/icon-delete.svg" />
                                 Delete
                             </button>
@@ -52,10 +52,10 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
                             <img src="/svg/icon-software-vault.svg" />
-                            <span class="font-weight-bold">@softwareVault.Model</span> - @(softwareVault.LicenseEndDate != null ? $"License till {softwareVault.LicenseEndDate.Value.ToShortDateString()}" : "License status None") - @softwareVault.Status
+                            <span class="fw-bold">@softwareVault.Model</span> - @(softwareVault.LicenseEndDate != null ? $"License till {softwareVault.LicenseEndDate.Value.ToShortDateString()}" : "License status None") - @softwareVault.Status
                         </div>
                         <div>
-                            <button type="button" class="btn btn-light border my-1 mr-2" title="Software Vault Details" @onclick="@(() => OpenDialogSoftwareVaultDetailsAsync(softwareVault))">
+                            <button type="button" class="btn btn-light border my-1 me-2" title="Software Vault Details" @onclick="@(() => OpenDialogSoftwareVaultDetailsAsync(softwareVault))">
                                 <img class="icon-btn" src="/svg/icon-details.svg" />
                                 Details
                             </button>
@@ -66,17 +66,17 @@
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
-                            <img class="mr-1" src="/svg/icon-hardware-vault.svg" />
-                            <span class="font-weight-bold mr-1">@hardwareVault.Id</span>
-                            <span class="mr-1">- @(hardwareVault.Status)</span>
-                            <span class="mr-2">- @(hardwareVault.LicenseEndDate != null ? $"License till {hardwareVault.LicenseEndDate.Value.ToShortDateString()}" : "License status None")</span>
+                            <img class="me-1" src="/svg/icon-hardware-vault.svg" />
+                            <span class="fw-bold me-1">@hardwareVault.Id</span>
+                            <span class="me-1">- @(hardwareVault.Status)</span>
+                            <span class="me-2">- @(hardwareVault.LicenseEndDate != null ? $"License till {hardwareVault.LicenseEndDate.Value.ToShortDateString()}" : "License status None")</span>
                             @if (hardwareVault.NeedSync)
                             {
-                                <span class="badge badge-primary mr-2">Need Sync</span>
+                                <span class="badge bg-primary me-2">Need Sync</span>
                             }
                             @if (hardwareVault.IsOnline)
                             {
-                                <span class="badge badge-success mr-2">Online</span>
+                                <span class="badge bg-success me-2">Online</span>
                             }
                         </div>
                         <div>
@@ -106,7 +106,7 @@
         {
             <TableAction>
                 <ActionButtons>
-                    <h4 class="text-navyblue mr-2">Accounts</h4>
+                    <h4 class="text-navyblue me-2">Accounts</h4>
                     @if (MainTableService.SelectedEntity != null)
                     {
                         @if (MainTableService.SelectedEntity.Employee.PrimaryAccountId != MainTableService.SelectedEntity.Id)
@@ -217,7 +217,7 @@
                     <td style="vertical-align:middle">
                         @if (context.Employee.PrimaryAccountId == context.Id)
                                 {
-                            <span class="badge @(MainTableService.SelectedEntity?.Id == context.Id ? "badge-light":"badge-success") custom-badge" title="Primary account">
+                            <span class="badge @(MainTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-success") custom-badge" title="Primary account">
                                 @context.Name
                             </span>
                                 }

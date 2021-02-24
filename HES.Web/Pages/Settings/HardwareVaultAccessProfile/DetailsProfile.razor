@@ -31,31 +31,31 @@ else
                 <td class="text-center">
                     @if (AccessProfile.ButtonPairing)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.ButtonConnection)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.ButtonStorageAccess)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
             </tr>
@@ -66,31 +66,31 @@ else
                 <td class="text-center">
                     @if (AccessProfile.PinPairing)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.PinConnection)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.PinStorageAccess)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
             </tr>
@@ -101,31 +101,31 @@ else
                 <td class="text-center">
                     @if (AccessProfile.MasterKeyPairing)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.MasterKeyConnection)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.MasterKeyStorageAccess)
                     {
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                        <span class="badge badge-secondary">No</span>
+                        <span class="badge bg-secondary">No</span>
                     }
                 </td>
             </tr>
@@ -136,19 +136,19 @@ else
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 PIN expiration
-                <span class="badge badge-primary">@AccessProfile.PinExpirationString</span>
+                <span class="badge bg-primary">@AccessProfile.PinExpirationString</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 PIN length
-                <span class="badge badge-primary">@AccessProfile.PinLength</span>
+                <span class="badge bg-primary">@AccessProfile.PinLength</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 PIN incorrect entry
-                <span class="badge badge-primary">@AccessProfile.PinTryCount</span>
+                <span class="badge bg-primary">@AccessProfile.PinTryCount</span>
             </li>
         </ul>
     </div>
-    <div class="text-right">
+    <div class="text-end">
         <button type="button" class="btn btn-secondary" @onclick="async () => await ModalDialogService.CancelAsync()">Close</button>
     </div>
 }

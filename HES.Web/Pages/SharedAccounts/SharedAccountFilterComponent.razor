@@ -22,7 +22,7 @@ else
                 <label class="text-gray">Login</label>
                 <InputText class="form-control" @bind-Value="Filter.Login" />
             </div>
-            <div class="col align-self-end text-right form-group">
+            <div class="col align-self-end text-end form-group">
                 <ButtonSpinner Text="Clear" Class="btn btn-secondary" Callback="ClearAsync"/>
                 <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Filter" Class="btn btn-primary" />
             </div>

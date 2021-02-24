@@ -21,7 +21,7 @@
                             <InputText @bind-Value="UserEmailModel.Email" class="form-control" placeholder="Email" id="email" />
                             <ValidationMessage For="@(() => UserEmailModel.Email)" class="text-danger" />
                         </div>
-                        <div class="text-right">
+                        <div class="text-end">
                             <Button @ref="ButtonSpinner" Text="Next" type="submit" class="btn btn-primary" />
                         </div>
                     </EditForm>
@@ -69,7 +69,7 @@
                 case AuthenticationStep.SecurityKeyError:
                     <h3 class="text-navyblue my-3">Sign in with a security key</h3>
                     <span>We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</span>
-                    <div class="text-right mt-3">
+                    <div class="text-end mt-3">
                         <Button Text="Back" OnClick="BackToEmailValidation" class="btn btn-outline-secondary" />
                         <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-primary" />
                     </div>

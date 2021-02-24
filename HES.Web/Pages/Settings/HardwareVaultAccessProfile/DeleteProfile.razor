@@ -13,7 +13,7 @@ else
     else
     {
         <h5 class="text-gray mb-4 text-break">You want to delete hardware vault access profile @AccessProfile.Name?</h5>
-        <div class="text-right">
+        <div class="text-end">
             <button type="button" class="btn btn-secondary" @onclick="async () => await ModalDialogService.CancelAsync()">Cancel</button>
             <ButtonSpinner Text="Delete" Class="btn btn-danger" Callback="DeleteProfileAsync" />
         </div>

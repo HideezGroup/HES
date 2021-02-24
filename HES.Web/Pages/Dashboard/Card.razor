@@ -16,14 +16,14 @@
                         {
                             <a href="@item.Page" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <span class="text-navyblue">@item.Message</span>
-                                <span class="badge badge-danger badge-pill">@item.Count</span>
+                                <span class="badge bg-danger rounded-pill">@item.Count</span>
                             </a>
                         }
                         else
                         {
                             <a @onclick="item.Action" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <span class="text-navyblue">@item.Message</span>
-                                <span class="badge badge-danger badge-pill">@item.Count</span>
+                                <span class="badge bg-danger rounded-pill">@item.Count</span>
                             </a>
                         }
                     }
@@ -31,8 +31,8 @@
             </div>
         </div>
         <div class="dashboard-card-body">
-            <div class="dashboard-card-wrapper border-right">
-                <div class="dashboard-card-info__text font-weight-bold">@DashboardCard.LeftValue</div>
+            <div class="dashboard-card-wrapper border-end">
+                <div class="dashboard-card-info__text fw-bold">@DashboardCard.LeftValue</div>
                 @if (DashboardCard.LeftAction == null)
                 {
                     <div class="dashboard-card-info__title"><a class="btn btn-outline-secondary" style="min-width:100px" href="@DashboardCard.LeftLink">@DashboardCard.LeftText</a></div>
@@ -61,8 +61,8 @@
             <img class="dashboard-card-logo__img" src="@DashboardCard.CardLogo" />
         </div>
         <div class="dashboard-card-body">
-            <div class="dashboard-card-wrapper border-right">
-                <div class="dashboard-card-info__text font-weight-bold">@DashboardCard.LeftValue</div>
+            <div class="dashboard-card-wrapper border-end">
+                <div class="dashboard-card-info__text fw-bold">@DashboardCard.LeftValue</div>
                 @if (DashboardCard.LeftAction == null)
                 {
                     <div class="dashboard-card-info__title"><a class="btn btn-outline-secondary" style="min-width:100px" href="@DashboardCard.LeftLink">@DashboardCard.LeftText</a></div>
