@@ -5,10 +5,6 @@
     }
 });
 
-function collapseHide(elementId) {
-    $('#' + elementId).collapse('hide');
-}
-
 function ToggleSidebar() {
     ToggleSidebarClass();
 
@@ -31,10 +27,6 @@ function ToggleSidebarClass() {
     $('.icon-hideez').toggleClass('toggled');
 }
 
-function showSpinner(elementId) {
-    $('#' + elementId).toggleClass('d-none');
-}
-
 function toggleModalDialog(dialogId) {
     $('#' + dialogId).modal('toggle');
 }
@@ -54,15 +46,6 @@ function downloadLog(filename, content) {
     document.body.removeChild(link);
 }
 
-function generateQr(text) {
-    new QRCode(document.getElementById("qrCode"),
-        {
-            text: text,
-            width: 150,
-            height: 150
-        });
-}
-
 function downloadPersonalData(content) {
     var link = document.createElement('a');
     link.download = "PersonalData.json";
@@ -72,10 +55,23 @@ function downloadPersonalData(content) {
     document.body.removeChild(link);
 }
 
+function generateQr(text) {
+    new QRCode(document.getElementById("qrCode"),
+        {
+            text: text,
+            width: 150,
+            height: 150
+        });
+}
+
 function setCookie(cookie) {
     document.cookie = cookie;
 }
 
 function removeCookie(cookieName) {
     document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function setFocus(elementId) {
+    document.getElementById(elementId).focus();
 }

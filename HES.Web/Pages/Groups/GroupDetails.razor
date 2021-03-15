@@ -7,19 +7,19 @@
         <h1 class="text-navyblue text-break m-0 px-3">@Group.Name</h1>
     </div>
     <div class="d-flex flex-column details-card mb-3">
-        <div class="pl-3"><span class="font-weight-bold">Email: </span>@Group.Email</div>
-        <div class="pl-3"><span class="font-weight-bold">Description: </span>@Group.Description</div>
-        <div class="pl-3">
-            <span class="font-weight-bold">Auto AD password change: </span>
+        <div class="ps-3"><span class="fw-bold">Email: </span>@Group.Email</div>
+        <div class="ps-3"><span class="fw-bold">Description: </span>@Group.Description</div>
+        <div class="ps-3">
+            <span class="fw-bold">Auto AD password change: </span>
             @if (Group.ChangePasswordWhenExpired)
             {
-                <span class="badge badge-success custom-badge">
+                <span class="badge bg-success custom-badge">
                     Enabled
                 </span>
             }
             else
             {
-                <span class="badge badge-secondary custom-badge">
+                <span class="badge bg-secondary custom-badge">
                     Disabled
                 </span>
             }
@@ -27,12 +27,12 @@
     </div>
     <TableAction>
         <ActionButtons>
-            <button type="button" class="btn btn-primary my-1 mr-2 text-nowrap" @onclick="OpenModalAddEmployeesAsync">
+            <button type="button" class="btn btn-primary my-1 me-2 text-nowrap" @onclick="OpenModalAddEmployeesAsync">
                 Add Employee
             </button>
             @if (MainTableService.SelectedEntity != null)
             {
-                <button type="button" class="btn btn-light border my-1 mr-2" title="Delete Group" @onclick="OpenModalDeleteEmployeeAsync">
+                <button type="button" class="btn btn-light border my-1 me-2" title="Delete Group" @onclick="OpenModalDeleteEmployeeAsync">
                     <img class="icon-btn" src="/svg/icon-delete.svg" />
                     Delete
                 </button>
@@ -81,5 +81,5 @@ else if (LoadFailed)
 }
 else
 {
-    <LoadingPage />
+    <Loader />
 }

@@ -1,0 +1,23 @@
+﻿@inherits HESComponentBase
+
+@if (Initialized)
+{
+    <div class="alert alert-warning" role="alert">
+        <p>
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            <strong>This action only disables 2FA.</strong>
+        </p>
+        <p>
+            Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key
+            used in an authenticator app you should reset your authenticator keys.
+        </p>
+    </div>
+    <div class="text-end">
+        <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-danger" type="button" @onclick="DisableTwoFactorAsync">Disable</button>
+    </div>
+}
+else
+{
+    <Loader />
+}

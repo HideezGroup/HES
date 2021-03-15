@@ -1,3 +1,4 @@
+using Fido2NetLib;
 using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.HostedServices;
@@ -107,6 +108,8 @@ namespace HES.Web
             services.AddScoped<ILdapService, LdapService>();
             services.AddScoped<ISoftwareVaultService, SoftwareVaultService>();
             services.AddScoped<IBreadcrumbsService, BreadcrumbsService>();
+            services.AddScoped<IFido2Service, Fido2Service>();
+            services.AddScoped<IIdentityApiClient, IdentityApiClient>();
 
             services.AddScoped<HttpClient>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -129,11 +132,12 @@ namespace HES.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromDays(14);
-                options.LoginPath = "/Account/Login";
+                options.LoginPath = "/login";
                 options.LogoutPath = "/Account/Logout";
                 options.Cookie = new CookieBuilder
                 {
@@ -144,21 +148,29 @@ namespace HES.Web
             // Dismiss strong password
             services.Configure<IdentityOptions>(options =>
             {
+                // Password settings
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 3;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredUniqueChars = 0;
                 options.Password.RequireNonAlphanumeric = false;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
             });
+
+            services.Configure<Fido2Configuration>(Configuration.GetSection("Fido2"));
 
             // Database
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
 
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddDefaultUI()
+                //.AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -216,6 +228,7 @@ namespace HES.Web
             services.AddControllers();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Localization Options
             services.Configure<RequestLocalizationOptions>(options =>
@@ -256,7 +269,7 @@ namespace HES.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {

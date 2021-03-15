@@ -9,10 +9,10 @@
             <EmployeeFilterComponent FilterChanged="MainTableService.FilterChangedAsync" />
         </FilterForm>
         <ActionButtons>
-            @*<button type="button" @onclick="ImportEmployeesFromAdAsync" class="btn btn-primary mr-1" title="Import employee from AD">
+            @*<button type="button" @onclick="ImportEmployeesFromAdAsync" class="btn btn-primary me-1" title="Import employee from AD">
                     Import from AD
                 </button>*@
-            <button type="button" @onclick="SyncEmployeesWithAdAsync" class="btn btn-primary mr-1" title="Sync with AD">
+            <button type="button" @onclick="SyncEmployeesWithAdAsync" class="btn btn-primary me-1" title="Sync with AD">
                 Sync with AD
             </button>
             <button type="button" @onclick="CreateEmployeeAsync" class="btn btn-primary mx-1" title="Create employee">
@@ -105,7 +105,7 @@
                 @context.FullName
                 @if (context.ActiveDirectoryGuid != null)
                 {
-                    <span class="badge @(MainTableService.SelectedEntity?.Id == context.Id ? "badge-light":"badge-primary") ml-1" title="Imported from Active Directory">
+                    <span class="badge @(MainTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-primary") ms-1" title="Imported from Active Directory">
                         AD
                     </span>
                 }
@@ -149,5 +149,5 @@ else if (LoadFailed)
 }
 else
 {
-    <LoadingPage />
+    <Loader/>
 }

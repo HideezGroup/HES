@@ -6,14 +6,14 @@
 {
     <TableAction>
         <ActionButtons>
-            <button type="button" @onclick="InviteAdminAsync" class="btn btn-primary mr-1" title="Invite admin">
+            <button type="button" @onclick="InviteAdminAsync" class="btn btn-primary me-1" title="Invite admin">
                 Invite admin
             </button>
             @if (MainTableService.SelectedEntity != null)
             {
                 if (!MainTableService.SelectedEntity.EmailConfirmed)
                 {
-                    <ButtonSpinner Text="Resend invite" Class="btn btn-light border ml-1" Callback="ResendInviteAsync">
+                    <ButtonSpinner Text="Resend invite" Class="btn btn-light border ms-1" Callback="ResendInviteAsync">
                         <Image>
                             <img class="icon-btn" src="/svg/icon-send.svg" />
                         </Image>
@@ -21,7 +21,7 @@
                 }
                 if (MainTableService.Entities.Count != 1 && AuthenticationState.User.Identity.Name != MainTableService.SelectedEntity.Email)
                 {
-                    <button type="button" @onclick="DeleteAdminAsync" class="btn btn-light border ml-1" title="Delete admin">
+                    <button type="button" @onclick="DeleteAdminAsync" class="btn btn-light border ms-1" title="Delete admin">
                         <img class="icon-btn" src="/svg/icon-delete.svg" />
                         Delete
                     </button>
@@ -73,21 +73,21 @@
             <td>
                 @if (context.EmailConfirmed)
                     {
-                    <span class="badge badge-success">Yes</span>
+                    <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                    <span class="badge badge-danger">No</span>
+                    <span class="badge bg-danger">No</span>
                     }
             </td>
             <td>
                 @if (context.TwoFactorEnabled)
                     {
-                    <span class="badge badge-success">Yes</span>
+                    <span class="badge bg-success">Yes</span>
                     }
                     else
                     {
-                    <span class="badge badge-secondary">No</span>
+                    <span class="badge bg-secondary">No</span>
                     }
             </td>
         </TableRow>
@@ -105,5 +105,5 @@ else if (LoadFailed)
 }
 else
 {
-    <LoadingPage />
+    <Loader />
 }

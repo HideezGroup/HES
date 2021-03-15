@@ -10,7 +10,7 @@
             <VaultFilter FilterChanged="MainTableService.FilterChangedAsync" />
         </FilterForm>
         <ActionButtons>
-            <ButtonSpinner Class="btn btn-primary mr-1" Text="Import Vaults" Callback="ImportVaultsAsync" />
+            <ButtonSpinner Class="btn btn-primary me-1" Text="Import Vaults" Callback="ImportVaultsAsync" />
             @if (MainTableService.SelectedEntity != null)
             {
                 <button type="button" @onclick="EditRfidAsync" class="btn btn-light border mx-1" title="Edit RFID">
@@ -193,7 +193,7 @@
             <td>
                 @if (context.IsOnline)
                     {
-                    <span class="badge badge-success">Connected</span>
+                    <span class="badge bg-success">Connected</span>
                     }
                     else
                     {
@@ -242,5 +242,5 @@ else if (LoadFailed)
 }
 else
 {
-    <LoadingPage />
+    <Loader />
 }

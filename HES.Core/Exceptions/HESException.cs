@@ -1,11 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HES.Core.Exceptions
 {
     public enum HESCode
     {
         None,
+
+        // User
+        UserNotFound,
+        InvalidLoginAttempt,
+        RequiresTwoFactor,
+        AccountLockout,
+        IncorrectCurrentPassword,
+
         // Employees
         EmployeeNotFound,
         ActiveDirectoryUserNotFound,
@@ -22,7 +32,11 @@ namespace HES.Core.Exceptions
 
         // SharedAccounts
         SharedAccountNotFound,
-        SharedAccountExist
+        SharedAccountExist,
+
+        // Fido2
+        SecurityKeyNotFound,
+        AuthenticatorNotFIDO2
     }
 
     public class HESException : Exception
@@ -30,6 +44,12 @@ namespace HES.Core.Exceptions
         private static readonly Dictionary<HESCode, string> Errors = new Dictionary<HESCode, string>()
         {
             { HESCode.None,  "Something went wrong." },
+            { HESCode.UserNotFound,  "User not found." },
+            { HESCode.InvalidLoginAttempt, "Invalid login attempt." },
+            { HESCode.AccountLockout,"Account lockout" },
+            { HESCode.IncorrectCurrentPassword,"Incorrect current password." },
+
+            { HESCode.RequiresTwoFactor, "Requires two factor." },
             { HESCode.EmployeeNotFound,  "Employee not found." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
             { HESCode.HardwareVaultNotFound,  "Hardware Vault not found." },
@@ -38,6 +58,8 @@ namespace HES.Core.Exceptions
             { HESCode.AccountExist,  "Account with the same name and login exist." },
             { HESCode.SharedAccountNotFound,  "Shared Account not found." },
             { HESCode.SharedAccountExist,  "Shared Account with the same name and login exist." },
+            { HESCode.SecurityKeyNotFound,  "Security key not found." },
+            { HESCode.AuthenticatorNotFIDO2,  "Authenticator not FIDO2." },
         };
 
         public HESCode Code { get; set; }
@@ -50,6 +72,11 @@ namespace HES.Core.Exceptions
         public static string GetMessage(HESCode code)
         {
             return Errors[code];
+        }
+
+        public static string GetIdentityResultErrors(IEnumerable<IdentityError> errors)
+        {
+            return string.Join(". ", errors.Select(x => x.Description).ToArray());
         }
     }
 }

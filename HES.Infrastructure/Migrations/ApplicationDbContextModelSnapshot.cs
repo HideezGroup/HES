@@ -14,8 +14,8 @@ namespace HES.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.3");
 
             modelBuilder.Entity("HES.Core.Entities.Account", b =>
                 {
@@ -116,16 +116,13 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("FullName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("LockoutEnabled")
@@ -135,12 +132,12 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -158,17 +155,17 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -273,6 +270,47 @@ namespace HES.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.FidoStoredCredential", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<Guid>("AaGuid")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CredType")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("DescriptorJson")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<byte[]>("PublicKey")
+                        .HasColumnType("longblob");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("SecurityKeyName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<uint>("SignatureCounter")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<byte[]>("UserHandle")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("UserId")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FidoStoredCredential");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.Group", b =>
@@ -924,6 +962,120 @@ namespace HES.Infrastructure.Migrations
                     b.ToTable("WorkstationSessions");
                 });
 
+            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByDayAndEmployee", b =>
+                {
+                    b.Property<TimeSpan>("AvgSessionsDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Employee")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("SessionsCount")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TotalSessionsDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<int>("WorkstationsCount")
+                        .HasColumnType("int");
+                });
+
+            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByDepartments", b =>
+                {
+                    b.Property<TimeSpan>("AvgSessionsDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<TimeSpan>("AvgTotalDuartionByEmployee")
+                        .HasColumnType("time(6)");
+
+                    b.Property<decimal>("AvgTotalSessionsCountByEmployee")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("EmployeesCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalSessionsCount")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TotalSessionsDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<int>("WorkstationsCount")
+                        .HasColumnType("int");
+                });
+
+            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByEmployees", b =>
+                {
+                    b.Property<decimal>("AvgSessionsCountPerDay")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<TimeSpan>("AvgSessionsDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<TimeSpan>("AvgWorkingHoursPerDay")
+                        .HasColumnType("time(6)");
+
+                    b.Property<string>("Company")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Employee")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("TotalSessionsCount")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TotalSessionsDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<int>("WorkingDaysCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkstationsCount")
+                        .HasColumnType("int");
+                });
+
+            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByWorkstations", b =>
+                {
+                    b.Property<TimeSpan>("AvgSessionsDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<TimeSpan>("AvgTotalDuartionByEmployee")
+                        .HasColumnType("time(6)");
+
+                    b.Property<decimal>("AvgTotalSessionsCountByEmployee")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("EmployeesCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalSessionsCount")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TotalSessionsDuration")
+                        .HasColumnType("time(6)");
+
+                    b.Property<string>("Workstation")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -934,18 +1086,18 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -1062,6 +1214,10 @@ namespace HES.Infrastructure.Migrations
                     b.HasOne("HES.Core.Entities.SharedAccount", "SharedAccount")
                         .WithMany()
                         .HasForeignKey("SharedAccountId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("SharedAccount");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.Department", b =>
@@ -1071,6 +1227,8 @@ namespace HES.Infrastructure.Migrations
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.Employee", b =>
@@ -1084,6 +1242,10 @@ namespace HES.Infrastructure.Migrations
                         .WithMany("Employees")
                         .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.GroupMembership", b =>
@@ -1097,6 +1259,10 @@ namespace HES.Infrastructure.Migrations
                         .WithMany("GroupMemberships")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.HardwareVault", b =>
@@ -1110,6 +1276,10 @@ namespace HES.Infrastructure.Migrations
                         .HasForeignKey("HardwareVaultProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("HardwareVaultProfile");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.HardwareVaultLicense", b =>
@@ -1125,6 +1295,10 @@ namespace HES.Infrastructure.Migrations
                         .HasForeignKey("LicenseOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("HardwareVault");
+
+                    b.Navigation("LicenseOrder");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.HardwareVaultTask", b =>
@@ -1136,6 +1310,10 @@ namespace HES.Infrastructure.Migrations
                     b.HasOne("HES.Core.Entities.HardwareVault", "HardwareVault")
                         .WithMany("HardwareVaultTasks")
                         .HasForeignKey("HardwareVaultId");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("HardwareVault");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.SoftwareVault", b =>
@@ -1145,6 +1323,8 @@ namespace HES.Infrastructure.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.SoftwareVaultInvitation", b =>
@@ -1158,6 +1338,10 @@ namespace HES.Infrastructure.Migrations
                     b.HasOne("HES.Core.Entities.SoftwareVault", "SoftwareVault")
                         .WithMany()
                         .HasForeignKey("SoftwareVaultId");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("SoftwareVault");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.Workstation", b =>
@@ -1166,6 +1350,8 @@ namespace HES.Infrastructure.Migrations
                         .WithMany("Workstations")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.WorkstationEvent", b =>
@@ -1193,6 +1379,16 @@ namespace HES.Infrastructure.Migrations
                         .WithMany("WorkstationEvents")
                         .HasForeignKey("WorkstationId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("HardwareVault");
+
+                    b.Navigation("Workstation");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.WorkstationProximityVault", b =>
@@ -1205,6 +1401,10 @@ namespace HES.Infrastructure.Migrations
                         .WithMany("WorkstationProximityVaults")
                         .HasForeignKey("WorkstationId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("HardwareVault");
+
+                    b.Navigation("Workstation");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.WorkstationSession", b =>
@@ -1232,6 +1432,16 @@ namespace HES.Infrastructure.Migrations
                         .WithMany("WorkstationSessions")
                         .HasForeignKey("WorkstationId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("HardwareVault");
+
+                    b.Navigation("Workstation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1283,6 +1493,80 @@ namespace HES.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.Account", b =>
+                {
+                    b.Navigation("WorkstationEvents");
+
+                    b.Navigation("WorkstationSessions");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.Company", b =>
+                {
+                    b.Navigation("Departments");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.Department", b =>
+                {
+                    b.Navigation("Employees");
+
+                    b.Navigation("WorkstationEvents");
+
+                    b.Navigation("Workstations");
+
+                    b.Navigation("WorkstationSessions");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.Employee", b =>
+                {
+                    b.Navigation("Accounts");
+
+                    b.Navigation("GroupMemberships");
+
+                    b.Navigation("HardwareVaults");
+
+                    b.Navigation("SoftwareVaultInvitations");
+
+                    b.Navigation("SoftwareVaults");
+
+                    b.Navigation("WorkstationEvents");
+
+                    b.Navigation("WorkstationSessions");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.Group", b =>
+                {
+                    b.Navigation("GroupMemberships");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.HardwareVault", b =>
+                {
+                    b.Navigation("HardwareVaultTasks");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.HardwareVaultProfile", b =>
+                {
+                    b.Navigation("HardwareVaults");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.LicenseOrder", b =>
+                {
+                    b.Navigation("HardwareVaultLicenses");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.Position", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("HES.Core.Entities.Workstation", b =>
+                {
+                    b.Navigation("WorkstationEvents");
+
+                    b.Navigation("WorkstationProximityVaults");
+
+                    b.Navigation("WorkstationSessions");
                 });
 #pragma warning restore 612, 618
         }

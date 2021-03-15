@@ -1,10 +1,5 @@
 # Deployment on CentOS or Ubuntu Server
 
-## Important Notice
-Server installation consists of two parts:
-The first part describes the general requirements.
-The second part describes the installation already for a specific site, there may be several virtual sites, so this step can be repeated several times
-
 ## System Requirements
 
 * Can be installed on a bare metal or virtual server
@@ -59,18 +54,20 @@ SELinux status:                 disabled
 
 **Note:** on production servers, usually after installation and verification, you need to re-enable SELinux and configure it accordingly.
 
-## 1.3 Firewall Configuration
+## 1.3 Firewall Configuration (optional)
 
-To access the server from the network, ports 80 and 443 should be opened:
+To access the server from the network, ports 80 and 443 and port 22 (default port for connection via ssh) should be opened:
 
 *CentOS:*
 ```shell
+$ sudo firewall-cmd --zone=public --permanent --add-port=22/tcp
 $ sudo firewall-cmd --zone=public --permanent --add-port=80/tcp
 $ sudo firewall-cmd --zone=public --permanent --add-port=443/tcp
 $ sudo firewall-cmd --reload
 ```
 *Ubuntu:*
 ```shell
+$ sudo ufw allow 22
 $ sudo ufw allow 80
 $ sudo ufw allow 443
 $ sudo ufw enable
@@ -187,15 +184,21 @@ during the installation you will be prompted to enter the mysql user password. R
 Run the following command to check that the server is running and has the correct version:
 ```shell
   $ mysql -V
-mysql  Ver 8.0.21 for Linux on x86_64 (Source distribution)
+mysql  Ver 8.0.22 for Linux on x86_64 (MySQL Community Server - GPL)
 ```
 
 ## 3.3 Setting a permanent root password and MySQL security settings
 
 MySQL expects that your new password should consist of at least 8 characters, contain uppercase and lowercase letters, numbers and special characters (do not forget the password you set, it will come in handy later). After a successful password change, the following questions are recommended to answer "Y":
 
-[Note] In CentOS 7, the default root password can be found using `sudo grep "A temporary password" /var/log/mysqld.log`. 
-In CentOS 8, the root password is empty by default. In Ubuntu 18.04 the password was entered during installation of MySQL. In ubuntu 20.04 the password is empty after installation
+[Note]:
+- In CentOS 7, the default root password can be found using `sudo grep "A temporary password" /var/log/mysqld.log` 
+
+- In CentOS 8, the root password is empty by default
+
+- In Ubuntu 18.04 the password was entered during installation of MySQL
+
+- In ubuntu 20.04 the password is empty after installation
 
 ```shell
   $ sudo mysql_secure_installation
@@ -230,8 +233,8 @@ After entering password, you will see MySQL console with a prompt:
 ```shell
   Enter password: 
 Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 13
-Server version: 8.0.21 MySQL Community Server - GPL
+Your MySQL connection id is 10
+Server version: 8.0.22 MySQL Community Server - GPL
 
 Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
 
@@ -241,12 +244,12 @@ owners.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-mysql>
+mysql> 
 ```
 
 ## 3.4 Creating a MySQL user and database for Hideez Enterprise Server
 
-The following lines create a database `db`, the user `user` with the password `<user_password>`. Сhange `<db_password>` to a strong password, otherwise you may get a password validator error.
+The following lines create a database `db`, the user `user` with the password `<user_password>`. Сhange `<user_password>` to a strong password, otherwise you may get a password validator error.
  
 ```sql
   ### CREATE DATABASE
@@ -304,12 +307,17 @@ Then you need to copy Crypto_linux.dll as follows:
 
 ## 4.3 Configuring the HES
 
-Edit the file `/opt/HES/appsettings.json`
+Copy appsettings.json to appsettings.Production.json
+```shell
+  $ sudo cp /opt/HES/appsettings.json /opt/HES/appsettings.Production.json
+```
+
+Edit the file `/opt/HES/appsettings.Production.json`
 
 ```json
   {
    "ConnectionStrings": {
-    "DefaultConnection": "server=127.0.0.1;port=3306;database=db;uid=user;pwd=<db_password>"
+    "DefaultConnection": "server=127.0.0.1;port=3306;database=db;uid=user;pwd=<user_password>"
   },
 
   "EmailSender": {
@@ -330,7 +338,7 @@ Edit the file `/opt/HES/appsettings.json`
 
 Replace the following settings in this file with your own:
 
-* **db_password** - Password for the user on MySQL server
+* **user_password** - Password for the user on MySQL server
 
 * **smtp_host** - Host name of your SMTP server (example `smtp.example.com`)
 * **smtp_port** - Port number of your SMTP server (example `123`)
@@ -357,13 +365,6 @@ on one computer, then it is necessary to specify different ports for each site i
   }
 
 ```
-After saving the settings file, you can check that the HES is up and running:
-```shell
-  $ cd /opt/HES
-  $ sudo ./HES.Web 
-```
-If you do not see any errors within 1-2 minutes, it means that the HES has been successfully configured and started.
-Press Ctrl+C for exit.
 
 ## 4.4 Daemonizing of the Enterprise Server
 Copy file `HES.service` to the `/lib/systemd/system/`:
@@ -479,8 +480,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 Otherwise, you should carefully review the settings and correct the errors.
 
-## 4.4 Disable the Nginx default page
-*Ubuntu:*
+## 4.4 Disable the Nginx default page (Ubuntu only)
   
 ```shell
   $ sudo rm /etc/nginx/sites-enabled/default
@@ -511,9 +511,24 @@ If you plan to integrate your HES with AD you need to add AD Server's name and I
 *Note: the same name should be used on the HES properties page.*
 
 
-If you use self-signed certificates you need to disable certificate verification. For this edit the file `/etc/ldap/ldap.conf` and add the following line:
+If you use self-signed certificates you need to disable certificate verification. For this edit the file 
+
+*Ubuntu:*
+`/etc/ldap/ldap.conf` 
+
+*CentOS:*
+`/etc/openldap/ldap.conf` 
+
+ and add the following line:
 ```conf
 TLS_REQCERT never
+```
+
+you will also need an openldaps library
+
+*CentOS 8:*
+```conf
+sudo dnf -y install openldap-clients
 ```
 
 # 6. Final Verification
@@ -561,7 +576,7 @@ change <MySQL_root_password> with your real password
 ## 6. Restore the configuration file
 
 ```shell
-  $ sudo cp /opt/HES.old/appsettings.json /opt/HES/appsettings.json
+  $ sudo cp /opt/HES.old/appsettings.Production.json /opt/HES/appsettings.Production.json
 ```
 
 ## 7. Restart the HES and check its status
@@ -579,4 +594,21 @@ change <MySQL_root_password> with your real password
            └─4657 /opt/HES/HES.Web
 
 Mar 25 10:48:12 hesservertest systemd[1]: Started Hideez Enterprise Service.
+```
+
+## If something goes wrong, you can restore the HES server using the following commands
+
+```shell
+$ sudo systemctl stop HES
+$ sudo mv /opt/HES.old /opt/HES
+$ sudo mysqldump -uroot -p<MySQL_root_password> db < ~/db.sql
+$ sudo systemctl start HES
+```
+change <MySQL_root_password> with your real password
+
+## After checking that the update was successful and everything works fine, you can delete copies of the database and server:
+
+```shell
+$ sudo rm -rf /opt/HES.old
+$ sudo rm ~/db.sql
 ```

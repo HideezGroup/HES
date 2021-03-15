@@ -72,14 +72,10 @@ namespace HES.Core.Services
             if (asNoTracking)
                 query = query.AsNoTracking();
 
-            if (!byActiveDirectoryGuid)
-            {
-                return await query.FirstOrDefaultAsync(e => e.Id == id);
-            }
-            else
-            {
+            if (byActiveDirectoryGuid)
                 return await query.FirstOrDefaultAsync(e => e.ActiveDirectoryGuid == id);
-            }
+
+            return await query.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public Task UnchangedEmployeeAsync(Employee employee)

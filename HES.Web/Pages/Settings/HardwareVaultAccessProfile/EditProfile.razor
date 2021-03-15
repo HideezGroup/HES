@@ -115,7 +115,7 @@ else
                         <td>
                             PIN expiration
                         </td>
-                        <td class="text-center pl-1 pr-1" title="After PIN code is expired, the device storage will be locked until the user enters the PIN again.">
+                        <td class="text-center ps-1 pe-1" title="After PIN code is expired, the device storage will be locked until the user enters the PIN again.">
                             <input type="range" class="custom-range" min="1" max="107" step="1" value="@InitPinExpirationValue" @oninput="OnInputPinExpiration">
                         </td>
                         <td class="text-center pin-settings-value">
@@ -126,7 +126,7 @@ else
                         <td>
                             PIN length
                         </td>
-                        <td class="text-center pl-1 pr-1">
+                        <td class="text-center ps-1 pe-1">
                             <input type="range" class="custom-range" min="4" max="8" step="1" value="@InitPinLengthValue" @oninput="OnInputPinLength">
                         </td>
                         <td class="text-center pin-settings-value">
@@ -137,7 +137,7 @@ else
                         <td>
                             PIN incorrect entry
                         </td>
-                        <td class="text-center pl-1 pr-1" title="Maximum number of incorrect PIN code entering. After the number of entries is exceeded, the device is locked.">
+                        <td class="text-center ps-1 pe-1" title="Maximum number of incorrect PIN code entering. After the number of entries is exceeded, the device is locked.">
                             <input type="range" class="custom-range" min="3" max="10" step="1" value="@InitPinTryCountValue" @oninput="OnInputPinTryCount">
                         </td>
                         <td class="text-center pin-settings-value">
@@ -146,7 +146,7 @@ else
                     </tr>
                 </tbody>
             </table>
-            <div class="text-right">
+            <div class="text-end">
                 <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CancelAsync())">Cancel</button>
                 <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />
             </div>

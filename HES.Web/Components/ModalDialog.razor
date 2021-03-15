@@ -1,11 +1,9 @@
-﻿<div class="modal" id="genericModalDialog" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalDialogTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered @ModalSize" role="document">
+﻿<div class="modal" id="genericModalDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered @ModalSize">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-navyblue">@ModalTitle</h5>
-                <button type="button" class="close" @onclick="@(async () => await  ModalDialogService.CancelAsync())" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="@(async () => await  ModalDialogService.CancelAsync())"></button>
             </div>
             <div class="modal-body">
                 @ModalBody

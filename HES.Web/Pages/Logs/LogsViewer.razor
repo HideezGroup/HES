@@ -1,5 +1,5 @@
 ﻿@page "/Logs"
-@layout EmptyLayout
+@layout BlankLayout
 @attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
 
 <style>
@@ -154,10 +154,10 @@
             <div class="content-header">
                 <nav class="navbar navbar-light bg-light border-bottom shadow-sm">
                     <div class="d-flex align-items-center">
-                        <button id="download_btn" class="btn btn-secondary mr-2" title="Download file" @onclick="DownloadFile">
+                        <button id="download_btn" class="btn btn-secondary me-2" title="Download file" @onclick="DownloadFile">
                             <img src="/svg/icon-download.svg" />
                         </button>
-                        @*<button id="delete_btn" class="btn btn-secondary  mr-2" title="Delete file">
+                        @*<button id="delete_btn" class="btn btn-secondary  me-2" title="Delete file">
                                 <img src="/svg/icon-delete-white.svg" />
                             </button>*@
                         <div class="custom-control custom-checkbox">
@@ -166,11 +166,11 @@
                         </div>
                     </div>
                     <div>
-                        <span class="badge badge-success">INFO</span> <span id="infoLabel" class="badge badge-light">@Logs.Select(s => s.Level).Where(x => x == "INFO").Count()</span>
-                        <span class="badge badge-info">DEBUG</span> <span id="debugLabel" class="badge badge-light">@Logs.Select(s => s.Level).Where(x => x == "DEBUG").Count()</span>
-                        <span class="badge badge-warning">WARN</span> <span id="warnLabel" class="badge badge-light">@Logs.Select(s => s.Level).Where(x => x == "WARN").Count()</span>
-                        <span class="badge badge-danger">ERROR</span> <span id="errorLabel" class="badge badge-light">@Logs.Select(s => s.Level).Where(x => x == "ERROR").Count()</span>
-                        <span class="badge badge-dark">FATAL</span> <span id="fatalLabel" class="badge badge-light">@Logs.Select(s => s.Level).Where(x => x == "FATAL").Count()</span>
+                        <span class="badge bg-success">INFO</span> <span id="infoLabel" class="badge bg-light">@Logs.Select(s => s.Level).Where(x => x == "INFO").Count()</span>
+                        <span class="badge bg-info">DEBUG</span> <span id="debugLabel" class="badge bg-light">@Logs.Select(s => s.Level).Where(x => x == "DEBUG").Count()</span>
+                        <span class="badge bg-warning">WARN</span> <span id="warnLabel" class="badge bg-light">@Logs.Select(s => s.Level).Where(x => x == "WARN").Count()</span>
+                        <span class="badge bg-danger">ERROR</span> <span id="errorLabel" class="badge bg-light">@Logs.Select(s => s.Level).Where(x => x == "ERROR").Count()</span>
+                        <span class="badge bg-dark">FATAL</span> <span id="fatalLabel" class="badge bg-light">@Logs.Select(s => s.Level).Where(x => x == "FATAL").Count()</span>
                     </div>
                     <div class="form-group has-search-right m-0">
                         <div class="form-control-feedback">
@@ -212,7 +212,7 @@
                                           || x.Method.Contains(searchText, StringComparison.OrdinalIgnoreCase)
                                           || x.Url.Contains(searchText, StringComparison.OrdinalIgnoreCase)))
                         {
-                            <tr data-toggle="modal" data-target="#modalView" @onclick="@(() => { LogModel = item; })">
+                            <tr data-bs-toggle="modal" data-bs-target="#modalView" @onclick="@(() => { LogModel = item; })">
                                 <td>
                                     @if (LocalTime)
                                     {
@@ -228,19 +228,19 @@
                                         switch (item.Level)
                                         {
                                             case "INFO":
-                                                <span class="badge badge-success">@item.Level</span>
+                                                <span class="badge bg-success">@item.Level</span>
                                                 break;
                                             case "DEBUG":
-                                                <span class="badge badge-info">@item.Level</span>
+                                                <span class="badge bg-info">@item.Level</span>
                                                 break;
                                             case "WARN":
-                                                <span class="badge badge-warning">@item.Level</span>
+                                                <span class="badge bg-warning">@item.Level</span>
                                                 break;
                                             case "ERROR":
-                                                <span class="badge badge-danger">@item.Level</span>
+                                                <span class="badge bg-danger">@item.Level</span>
                                                 break;
                                             case "FATAL":
-                                                <span class="badge badge-dark">@item.Level</span>
+                                                <span class="badge bg-dark">@item.Level</span>
                                                 break;
                                         }
                                     }
@@ -271,7 +271,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title text-navyblue">Log</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

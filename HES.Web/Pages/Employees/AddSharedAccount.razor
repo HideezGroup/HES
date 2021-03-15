@@ -9,7 +9,7 @@ else
     @if (SharedAccounts.Count == 0)
     {
         <h6 class="mb-3">There are no accounts, you can create a shared account on the <a href="/SharedAccounts">Shared Accounts</a> page.</h6>
-        <div class="text-right">
+        <div class="text-end">
             <button type="button" class="btn btn-secondary btn-min-w" @onclick="CloseAsync">Close</button>
         </div>
     }
@@ -34,7 +34,7 @@ else
                 <div><b>Login</b>: @SelectedSharedAccount.Login</div>
             </div>
         </div>
-        <div class="text-right">
+        <div class="text-end">
             <button type="button" class="btn btn-secondary btn-min-w" @onclick="CloseAsync">Close</button>
             <ButtonSpinner Text="Add" Class="btn btn-primary btn-min-w" Callback="AddSharedAccoountAsync" />
         </div>

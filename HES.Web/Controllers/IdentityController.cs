@@ -1,7 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.API;
 using HES.Core.Models.API.Identity;
+using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.Web.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -25,21 +27,30 @@ namespace HES.Web.Controllers
     [Route("api/[controller]/[action]")]
     public class IdentityController : ControllerBase
     {
+        private readonly IApplicationUserService _applicationUserService;
+        private readonly IFido2Service _fido2Service;
         private readonly UrlEncoder _urlEncoder;
         private readonly ILogger<IdentityController> _logger;
         private readonly IEmailSenderService _emailSenderService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAsyncRepository<FidoStoredCredential> _fidoCredentialRepository;
 
-        public IdentityController(UrlEncoder urlEncoder,
+        public IdentityController(IApplicationUserService applicationUserService,
+                                  IFido2Service fido2Service,
+                                  UrlEncoder urlEncoder,
                                   ILogger<IdentityController> logger,
                                   IEmailSenderService emailSenderService,
+                                  IAsyncRepository<FidoStoredCredential> fidoCredentialRepository,
                                   UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager)
         {
             _logger = logger;
+            _applicationUserService = applicationUserService;
+            _fido2Service = fido2Service;
             _urlEncoder = urlEncoder;
             _userManager = userManager;
+            _fidoCredentialRepository = fidoCredentialRepository;
             _signInManager = signInManager;
             _emailSenderService = emailSenderService;
         }
@@ -51,7 +62,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -62,92 +73,8 @@ namespace HES.Web.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateProfileInfo(ProfileInfo profileInfo)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                if (profileInfo.Email != user.Email)
-                {
-                    var setEmailResult = await _userManager.SetEmailAsync(user, profileInfo.Email);
-
-                    if (!setEmailResult.Succeeded)
-                        throw new InvalidOperationException($"Unexpected error occurred setting email for user '{user.Id}'.");
-                }
-
-                if (profileInfo.PhoneNumber != user.PhoneNumber)
-                {
-                    var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, profileInfo.PhoneNumber);
-
-                    if (!setPhoneResult.Succeeded)
-                        throw new InvalidOperationException($"Unexpected error occurred setting phone number for user '{user.Id}'.");
-                }
-
-                await _signInManager.RefreshSignInAsync(user);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SendVerificationEmail()
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                var callbackUrl = $"{HttpContext.Request.PathBase}Identity/Account/ConfirmEmail?userId={user.Id}&code={WebUtility.UrlEncode(code)}";
-
-                await _emailSenderService.SendUserConfirmEmailAsync(user.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateProfilePassword(ProfilePassword profilePassword)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                var changePasswordResult = await _userManager.ChangePasswordAsync(user, profilePassword.OldPassword, profilePassword.NewPassword);
-                if (!changePasswordResult.Succeeded)
-                    throw new Exception(string.Join(";", changePasswordResult.Errors));
-
-                await _signInManager.RefreshSignInAsync(user);
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+              
+        #region 2FA
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -156,7 +83,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -199,7 +126,7 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -227,50 +154,11 @@ namespace HES.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<VerifyTwoFactorInfo>> VerifyTwoFactor(VerificationCode verificationCode)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                var code = verificationCode.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
-                var isTokenValid = await _userManager.VerifyTwoFactorTokenAsync(user, _userManager.Options.Tokens.AuthenticatorTokenProvider, code);
-
-                var verifyTwoFactorInfo = new VerifyTwoFactorInfo { IsTwoFactorTokenValid = isTokenValid };
-
-                if (!isTokenValid)
-                    return Ok(verifyTwoFactorInfo);
-
-                await _userManager.SetTwoFactorEnabledAsync(user, true);
-
-                _logger.LogInformation($"User '{user.Id}' has enabled 2FA with an authenticator app.");
-
-                if (await _userManager.CountRecoveryCodesAsync(user) == 0)
-                {
-                    var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-                    verifyTwoFactorInfo.RecoveryCodes = recoveryCodes.ToList();
-
-                    return Ok(verifyTwoFactorInfo);
-                }
-
-                return Ok(verifyTwoFactorInfo);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ResetAuthenticatorKey()
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
@@ -292,23 +180,33 @@ namespace HES.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<List<string>>> GenerateNewTwoFactorRecoveryCodes()
+        public async Task<ActionResult<VerifyTwoFactorInfo>> VerifyTwoFactor(VerificationCode verificationCode)
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
-                var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
-                if (!isTwoFactorEnabled)
-                    throw new InvalidOperationException($"Cannot generate recovery codes for user '{user.Id}' as they do not have 2FA enabled.");
+                var code = verificationCode.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+                var isTokenValid = await _userManager.VerifyTwoFactorTokenAsync(user, _userManager.Options.Tokens.AuthenticatorTokenProvider, code);
 
-                var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                var verifyTwoFactorInfo = new VerifyTwoFactorInfo { IsTwoFactorTokenValid = isTokenValid };
 
-                _logger.LogInformation($"User '{user.Id}' has generated new 2FA recovery codes.");
+                if (!isTokenValid)
+                    return Ok(verifyTwoFactorInfo);
 
-                return Ok(recoveryCodes.ToList());
+                await _userManager.SetTwoFactorEnabledAsync(user, true);      
+
+                if (await _userManager.CountRecoveryCodesAsync(user) == 0)
+                {
+                    var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                    verifyTwoFactorInfo.RecoveryCodes = recoveryCodes.ToList();
+
+                    return Ok(verifyTwoFactorInfo);
+                }
+
+                return Ok(verifyTwoFactorInfo);
             }
             catch (Exception ex)
             {
@@ -323,15 +221,13 @@ namespace HES.Web.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
                 var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
                 if (!disable2faResult.Succeeded)
                     throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user '{user.Id}'.");
-
-                _logger.LogInformation($"User '{user.Id}' has disabled 2fa.");
 
                 return Ok();
             }
@@ -344,70 +240,23 @@ namespace HES.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<HttpResponseMessage> DownloadPersonalData()
+        public async Task<ActionResult<List<string>>> GenerateNewTwoFactorRecoveryCodes()
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new Exception("User is null");
 
-                _logger.LogInformation($"User '{user.Id}' asked for their personal data.");
+                var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+                if (!isTwoFactorEnabled)
+                    throw new InvalidOperationException($"Cannot generate recovery codes for user '{user.Id}' as they do not have 2FA enabled.");
 
-                var personalData = new Dictionary<string, string>();
-                var personalDataProps = typeof(ApplicationUser).GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
-                
-                foreach (var prop in personalDataProps)
-                    personalData.Add(prop.Name, prop.GetValue(user)?.ToString() ?? "null");
+                var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
 
+                _logger.LogInformation($"User '{user.Id}' has generated new 2FA recovery codes.");
 
-                var result = new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(personalData)))
-                };
-                result.Content.Headers.ContentDisposition =
-                    new ContentDispositionHeaderValue("attachment")
-                    {
-                        FileName = "PersonalData.json"
-                    };
-                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/json");
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    Content = new StringContent(ex.Message)
-                };
-            }
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletePersonalData(RequiredPassword requiredPassword)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                    throw new Exception("User is null");
-
-                var requirePassword = await _userManager.HasPasswordAsync(user);
-                if (requirePassword)
-                    if (!await _userManager.CheckPasswordAsync(user, requiredPassword.Password))
-                        throw new Exception("Password not correct.");
-
-                var result = await _userManager.DeleteAsync(user);
-                if (!result.Succeeded)
-                    throw new InvalidOperationException($"Unexpected error occurred deleteing user '{user.Id}'.");
-
-                await _signInManager.SignOutAsync();
-
-                _logger.LogInformation($"User '{user.Id}' deleted themselves.");
-
-                return Ok();
+                return Ok(recoveryCodes.ToList());
             }
             catch (Exception ex)
             {
@@ -442,6 +291,131 @@ namespace HES.Web.Controllers
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
+
+        #endregion
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<HttpResponseMessage> DownloadPersonalData()
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                if (user == null)
+                    throw new Exception("User is null");
+
+                _logger.LogInformation($"User '{user.Id}' asked for their personal data.");
+
+                var personalData = new Dictionary<string, string>();
+                var personalDataProps = typeof(ApplicationUser).GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
+
+                foreach (var prop in personalDataProps)
+                    personalData.Add(prop.Name, prop.GetValue(user)?.ToString() ?? "null");
+
+
+                var result = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new ByteArrayContent(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(personalData)))
+                };
+                result.Content.Headers.ContentDisposition =
+                    new ContentDispositionHeaderValue("attachment")
+                    {
+                        FileName = "PersonalData.json"
+                    };
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/json");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(ex.Message)
+                };
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeletePersonalData(RequiredPassword requiredPassword)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                if (user == null)
+                    throw new Exception("User is null");
+
+                var requirePassword = await _userManager.HasPasswordAsync(user);
+                if (requirePassword)
+                    if (!await _userManager.CheckPasswordAsync(user, requiredPassword.Password))
+                        throw new Exception("Password not correct.");
+
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                    throw new InvalidOperationException($"Unexpected error occurred deleteing user '{user.Id}'.");
+
+                await _signInManager.SignOutAsync();
+
+                _logger.LogInformation($"User '{user.Id}' deleted themselves.");
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #region Authorization
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<AuthorizationResponse> LoginWithPassword(PasswordSignInModel parameters)
+        {
+            return await _applicationUserService.LoginWithPasswordAsync(parameters);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<AuthorizationResponse> LoginWithFido2(SecurityKeySignInModel parameters)
+        {
+            return await _fido2Service.SignInAsync(parameters);
+        }
+
+        [HttpPost]
+        public async Task<AuthorizationResponse> Logout()
+        {
+            try
+            {
+                await _signInManager.SignOutAsync();
+                return AuthorizationResponse.Success(null);
+            }
+            catch (Exception ex)
+            {
+                return AuthorizationResponse.Error(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RefreshSignIn()
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                await _signInManager.RefreshSignInAsync(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
 
         [HttpPost]
         [AllowAnonymous]
@@ -562,8 +536,7 @@ namespace HES.Web.Controllers
 
             return Ok(new UserDto()
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FirstName = user.FullName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber
             });

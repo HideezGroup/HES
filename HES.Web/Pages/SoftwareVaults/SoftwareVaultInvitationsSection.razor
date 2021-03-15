@@ -11,11 +11,11 @@ else
             <InvitationFilter FilterChanged="FilterChangedAsync" />
         </FilterForm>
         <ActionButtons>
-            <button type="button" class="btn btn-light border my-1 mr-2 @(ShowButtons())" title="Resend invitation" @onclick="OpenDialogResendInvitationAsync">
+            <button type="button" class="btn btn-light border my-1 me-2 @(ShowButtons())" title="Resend invitation" @onclick="OpenDialogResendInvitationAsync">
                 <img class="icon-btn" src="/svg/icon-email.svg" />
                 Resend
             </button>
-            <button type="button" class="btn btn-light border my-1 mr-2 @(ShowButtons())" title="Delete invitation" @onclick="OpenDialogDeleteInvitationAsync">
+            <button type="button" class="btn btn-light border my-1 me-2 @(ShowButtons())" title="Delete invitation" @onclick="OpenDialogDeleteInvitationAsync">
                 <img class="icon-btn" src="/svg/icon-delete.svg" />
                 Delete
             </button>
