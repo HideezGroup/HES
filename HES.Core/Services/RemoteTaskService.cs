@@ -3,10 +3,9 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.PasswordManager;
-using Hideez.SDK.Communication.Remote;
 using Hideez.SDK.Communication.Utils;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -65,7 +64,7 @@ namespace HES.Core.Services
             await _hardwareVaultTaskService.DeleteTaskAsync(task);
         }
 
-        public async Task ExecuteRemoteTasks(string vaultId, RemoteDevice remoteDevice, bool primaryAccountOnly)
+        public async Task ExecuteRemoteTasks(string vaultId, Device remoteDevice, bool primaryAccountOnly)
         {
             _dataProtectionService.Validate();
 
@@ -104,7 +103,7 @@ namespace HES.Core.Services
             await _synchronizationService.HardwareVaultStateChanged(vault.Id);
         }
 
-        private async Task ExecuteRemoteTask(RemoteDevice remoteDevice, HardwareVaultTask task)
+        private async Task ExecuteRemoteTask(Device remoteDevice, HardwareVaultTask task)
         {
             switch (task.Operation)
             {
@@ -133,7 +132,7 @@ namespace HES.Core.Services
             }
         }
 
-        private async Task AddAccountAsync(RemoteDevice remoteDevice, HardwareVaultTask task)
+        private async Task AddAccountAsync(Device remoteDevice, HardwareVaultTask task)
         {
             var account = await _accountService.GetAccountByIdNoTrackingAsync(task.AccountId);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
@@ -142,7 +141,7 @@ namespace HES.Core.Services
             await pm.SaveOrUpdateAccount(new StorageId(account.StorageId), task.Timestamp, account.Name, task.Password, account.Login, task.OtpSecret, account.Apps, account.Urls, isPrimary, new AccountFlagsOptions() { IsReadOnly = true });
         }
 
-        private async Task UpdateAccountAsync(RemoteDevice remoteDevice, HardwareVaultTask task)
+        private async Task UpdateAccountAsync(Device remoteDevice, HardwareVaultTask task)
         {
             var account = await _accountService.GetAccountByIdNoTrackingAsync(task.AccountId);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
@@ -152,7 +151,7 @@ namespace HES.Core.Services
             await pm.SaveOrUpdateAccount(storageId, task.Timestamp, account.Name, task.Password, account.Login, task.OtpSecret, account.Apps, account.Urls, isPrimary, new AccountFlagsOptions() { IsReadOnly = true });
         }
 
-        private async Task SetAccountAsPrimaryAsync(RemoteDevice remoteDevice, HardwareVaultTask task)
+        private async Task SetAccountAsPrimaryAsync(Device remoteDevice, HardwareVaultTask task)
         {
             var account = await _accountService.GetAccountByIdNoTrackingAsync(task.AccountId);
 
@@ -161,7 +160,7 @@ namespace HES.Core.Services
             await pm.SaveOrUpdateAccount(storageId, task.Timestamp, null, null, null, null, null, null, true, new AccountFlagsOptions() { IsReadOnly = true });
         }
 
-        private async Task DeleteAccountAsync(RemoteDevice remoteDevice, HardwareVaultTask task)
+        private async Task DeleteAccountAsync(Device remoteDevice, HardwareVaultTask task)
         {
             var account = await _accountService.GetAccountByIdNoTrackingAsync(task.AccountId);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
@@ -171,21 +170,21 @@ namespace HES.Core.Services
             await pm.DeleteAccount(storageId, isPrimary);
         }
 
-        private async Task ProfileVaultAsync(RemoteDevice remoteDevice, HardwareVaultTask task)
+        private async Task ProfileVaultAsync(Device remoteDevice, HardwareVaultTask task)
         {
             var accessParams = await _hardwareVaultService.GetAccessParamsAsync(task.HardwareVaultId);
             var key = ConvertUtils.HexStringToBytes(task.Password);
             await remoteDevice.Access(DateTime.UtcNow, key, accessParams);
         }
 
-        public async Task AccessVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
+        public async Task AccessVaultAsync(Device remoteDevice, HardwareVault vault)
         {
             var accessParams = await _hardwareVaultService.GetAccessParamsAsync(vault.Id);
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
             await remoteDevice.Access(DateTime.UtcNow, key, accessParams);
         }
 
-        public async Task LinkVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
+        public async Task LinkVaultAsync(Device remoteDevice, HardwareVault vault)
         {
             if (!remoteDevice.AccessLevel.IsLinkRequired)
                 return;
@@ -196,7 +195,7 @@ namespace HES.Core.Services
             await _hardwareVaultService.SetVaultStatusAppliedAsync(vault);
         }
 
-        public async Task SuspendVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
+        public async Task SuspendVaultAsync(Device remoteDevice, HardwareVault vault)
         {
             if (vault.IsStatusApplied)
                 return;
@@ -207,7 +206,7 @@ namespace HES.Core.Services
             await _hardwareVaultService.SetVaultStatusAppliedAsync(vault);
         }
 
-        public async Task WipeVaultAsync(RemoteDevice remoteDevice, HardwareVault vault)
+        public async Task WipeVaultAsync(Device remoteDevice, HardwareVault vault)
         {
             if (!remoteDevice.AccessLevel.IsLinkRequired)
                 await remoteDevice.Wipe(ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword)));

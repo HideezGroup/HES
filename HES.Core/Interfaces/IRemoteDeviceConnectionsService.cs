@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HES.Core.RemoteDeviceConnection;
 using Hideez.SDK.Communication;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
 
@@ -19,8 +21,8 @@ namespace HES.Core.Interfaces
         void OnDeviceConnected(string deviceId, string workstationId, IRemoteAppConnection appConnection);
         void OnDeviceDisconnected(string deviceId, string workstationId);
 
-        Task<RemoteDevice> ConnectDevice(string deviceId, string workstationId);
-        RemoteDevice FindRemoteDevice(string deviceId, string workstationId);
+        Task<Device> ConnectDevice(string deviceId, string workstationId);
+        DeviceConnectionContainer FindConnectionContainer(string deviceId, string workstationId);
 
         Task<bool> CheckIsNeedUpdateHwVaultStatusAsync(HwVaultInfoFromClientDto dto);
         Task UpdateHardwareVaultStatusAsync(string vaultId, string workstationId);

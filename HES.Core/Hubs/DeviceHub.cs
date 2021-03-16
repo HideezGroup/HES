@@ -1,7 +1,9 @@
 ﻿using HES.Core.Interfaces;
+using HES.Core.RemoteDeviceConnection;
 using Hideez.SDK.Communication;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.Client;
-using Hideez.SDK.Communication.Remote;
+using Hideez.SDK.Communication.HES.DTO;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -42,14 +44,14 @@ namespace HES.Core.Hubs
         }
 
         // Gets a device from the context
-        private RemoteDevice GetDevice()
+        private DeviceConnectionContainer GetDeviceConnectionContainer()
         {
-            var remoteDevice = _remoteDeviceConnectionsService.FindRemoteDevice(GetDeviceId(), GetWorkstationId());
+            var connectionContainer = _remoteDeviceConnectionsService.FindConnectionContainer(GetDeviceId(), GetWorkstationId());
 
-            if (remoteDevice == null)
+            if (connectionContainer == null)
                 throw new Exception($"Cannot find remote device in the DeviceHub");
 
-            return remoteDevice;
+            return connectionContainer;
         }
 
         // HUB connection is connected
@@ -100,12 +102,12 @@ namespace HES.Core.Hubs
         }
 
         // Incoming request
-        public HesResponse OnVerifyResponse(byte[] data, string error)
+        public HesResponse VerifyCommandResponse(DeviceCommandReplyResult deviceCommandReplyResult, string error)
         {
             try
             {
-                var device = GetDevice();
-                device.OnVerifyResponse(data, error);
+                var connectionContainer = GetDeviceConnectionContainer();
+                connectionContainer.SetVerifyResponse(deviceCommandReplyResult, error);
                 return HesResponse.Ok;
             }
             catch (Exception ex)
@@ -116,12 +118,32 @@ namespace HES.Core.Hubs
         }
 
         // Incoming request
-        public HesResponse OnCommandResponse(byte[] data, string error)
+        public HesResponse GetRootKeyCommandResponse(DeviceCommandReplyResult deviceCommandReplyResult, string error)
         {
             try
             {
-                var device = GetDevice();
-                device.OnCommandResponse(data, error);
+                var connectionContainer = GetDeviceConnectionContainer();
+                connectionContainer.SetGetRootKeyResponse(deviceCommandReplyResult, error);
+                return HesResponse.Ok;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new HesResponse(ex);
+            }
+        }
+
+        // Incoming request
+        public HesResponse RemoteCommandResponse(MessageBufferDto bufferDto, string error)
+        {
+            try
+            {
+                var connectionContainer = GetDeviceConnectionContainer();
+                if (connectionContainer != null)
+                {
+                    MessageBuffer messageBuffer = new MessageBuffer(bufferDto.Data, bufferDto.ChannelNo);
+                    connectionContainer.SetRemoteCommandResponse(messageBuffer, error);
+                }
                 return HesResponse.Ok;
             }
             catch (Exception ex)

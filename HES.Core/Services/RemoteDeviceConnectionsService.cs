@@ -1,7 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Core.RemoteDeviceConnection;
 using Hideez.SDK.Communication;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.PasswordManager;
 using Hideez.SDK.Communication.Remote;
@@ -96,7 +98,7 @@ namespace HES.Core.Services
             return GetDeviceRemoteConnections(deviceId).IsDeviceConnectedToHost;
         }
 
-        public Task<RemoteDevice> ConnectDevice(string deviceId, string workstationId)
+        public Task<Device> ConnectDevice(string deviceId, string workstationId)
         {
             _deviceRemoteConnectionsList.TryGetValue(deviceId, out DeviceRemoteConnections deviceRemoteConnections);
             if (deviceRemoteConnections == null || !deviceRemoteConnections.IsDeviceConnectedToHost)
@@ -105,9 +107,9 @@ namespace HES.Core.Services
             return deviceRemoteConnections.ConnectDevice(workstationId);
         }
 
-        public RemoteDevice FindRemoteDevice(string deviceId, string workstationId)
+        public DeviceConnectionContainer FindConnectionContainer(string deviceId, string workstationId)
         {
-            return GetDeviceRemoteConnections(deviceId).GetRemoteDevice(workstationId);
+            return GetDeviceRemoteConnections(deviceId).GetConnectionContainer(workstationId);
         }
 
         public async Task<bool> CheckIsNeedUpdateHwVaultStatusAsync(HwVaultInfoFromClientDto dto)
