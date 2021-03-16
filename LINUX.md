@@ -91,32 +91,32 @@ $ sudo ufw enable
 *CentOS 7:*
 ```shell
   $ sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
-  $ sudo yum install dotnet-sdk-3.1 -y
+  $ sudo yum install dotnet-sdk-5.0 -y
 ```
 *CentOS 8:*
 ```shell
-  $ sudo dnf install dotnet-sdk-3.1 -y
+  $ sudo dnf install dotnet-sdk-5.0 -y
 ```
 *Ubuntu 18.04:*
 ```shell
   $ wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
   $ sudo dpkg -i packages-microsoft-prod.deb
   $ sudo apt update
-  $ sudo apt install dotnet-sdk-3.1 -y
+  $ sudo apt install dotnet-sdk-5.0 -y
 ```
 *Ubuntu 20.04:*
 ```shell
  $ wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
  $ sudo dpkg -i packages-microsoft-prod.deb
  $ sudo apt-get update
- $ sudo apt install dotnet-sdk-3.1 -y
+ $ sudo apt install dotnet-sdk-5.0 -y
 ```
 
 If the installation was successful, the output of the *dotnet* command will look something like this:
 
 ```shell
   $ dotnet --version
-3.1.404
+5.0.201
 ```
 
 ## 2.3 Install MySQL version 8
@@ -281,7 +281,7 @@ To exit from the MySql console, press Ctrl+D.
 
 ```shell
   $ cd /opt/src/HES/HES.Web/
-  $ sudo dotnet publish -c release -v d -o "/opt/HES" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
+  $ sudo dotnet publish -c release -v d -o "/opt/HES" --runtime linux-x64 HES.Web.csproj
 ```
 **[Note]** Internet connection required to download NuGet packages
 
@@ -569,7 +569,7 @@ change <MySQL_root_password> with your real password
 
 ```shell
   $ cd /opt/src/HES/HES.Web/
-  $ sudo dotnet publish -c release -v d -o "/opt/HES" --framework netcoreapp3.1 --runtime linux-x64 HES.Web.csproj
+  $ sudo dotnet publish -c release -v d -o "/opt/HES" --runtime linux-x64 HES.Web.csproj
   $ sudo cp /opt/src/HES/HES.Web/Crypto_linux.dll /opt/HES/Crypto.dll
 ```
 
