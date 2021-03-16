@@ -1,5 +1,5 @@
 ﻿@page "/Settings/DataProtection/Activate"
-@layout EmptyLayout
+@layout BlankLayout
 @attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
 
 <div class="container-fluid vh-100">
@@ -17,7 +17,7 @@
                     <InputText @bind-Value="Input.Password" class="form-control" type="password" />
                     <ValidationMessage For="@(() => Input.Password)" class="text-danger" />
                 </div>
-                <div class="text-right">
+                <div class="text-end">
                     <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Next" Class="btn btn-primary" />
                 </div>
             </EditForm>

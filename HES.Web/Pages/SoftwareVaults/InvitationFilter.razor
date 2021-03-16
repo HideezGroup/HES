@@ -28,7 +28,7 @@ else
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
                 <label class="mb-0 text-gray">Status</label>
-                <select id="filterStatus" @bind="Filter.Status" class="form-control">
+                <select id="filterStatus" @bind="Filter.Status" class="form-select">
                     <option selected></option>
                     @foreach (var item in StatusList)
                     {
@@ -52,7 +52,7 @@ else
                 <label class="mb-0 text-gray">Department</label>
                 <InputText id="filterDepartment" @bind-Value="Filter.Department" class="form-control text-navyblue" />
             </div>
-            <div class="col align-self-end text-right form-group">
+            <div class="col align-self-end text-end form-group">
                 <button id="clearFilter" type="button" class="btn btn-secondary" @onclick="ClearAsync">Clear</button>
                 <input id="submitFilter" type="submit" value="Filter" class="btn btn-primary" />
             </div>

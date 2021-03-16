@@ -23,7 +23,7 @@ else
                 <InputText @bind-Value="HardwareVault.RFID" class="form-control text-navyblue" />
                 <ValidationMessage For="() => HardwareVault.RFID" />
             </div>
-            <div class="form-group m-0 text-right">
+            <div class="form-group m-0 text-end">
                 <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CancelAsync())">Cancel</button>
                 <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />
             </div>

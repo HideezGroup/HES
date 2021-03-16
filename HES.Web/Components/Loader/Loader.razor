@@ -1,0 +1,14 @@
+﻿@namespace HES.Web.Components
+
+<div class="d-flex justify-content-center align-items-center w-100 h-100 @(AbsoluteCenter ? "position-absolute top-50 start-50 translate-middle" : null)">
+    <div class="loader" style="@(DisableShadow ? "box-shadow: none;": string.Empty)">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+
+@code{
+    [Parameter] public bool AbsoluteCenter { get; set; }
+    [Parameter] public bool DisableShadow { get; set; }
+}

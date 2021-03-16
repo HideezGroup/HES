@@ -1,0 +1,14 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+<button @attributes="AdditionalAttributes" @onclick="ClickHandler" disabled="@IsDisabled">
+    @if (_busy)
+    {
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+    }
+    else
+    {
+        @Image
+    }
+    @Text
+</button>

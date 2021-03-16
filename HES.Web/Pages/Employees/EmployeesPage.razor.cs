@@ -32,7 +32,7 @@ namespace HES.Web.Pages.Employees
 
                 await BreadcrumbsService.SetEmployees();
                 await MainTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, ModalDialogService, StateHasChanged, nameof(Employee.FullName));
-
+                
                 SetInitialized();
             }
             catch (Exception ex)

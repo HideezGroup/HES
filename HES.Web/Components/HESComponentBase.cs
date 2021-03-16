@@ -9,12 +9,19 @@ namespace HES.Web.Components
     public class HESComponentBase : OwningComponentBase
     {
         [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
+        [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] protected ISynchronizationService SynchronizationService { get; set; }
+        [Inject] protected NavigationManager NavigationManager { get; set; }
 
         public bool Initialized { get; private set; }
         public string PageId { get; private set; }
         public bool LoadFailed { get; private set; }
         public string ErrorMessage { get; private set; }
+
+        protected async Task<string> GetCurrentUserEmail()
+        {
+            return (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.Name;
+        }
 
         protected void SetInitialized()
         {
@@ -31,6 +38,12 @@ namespace HES.Web.Components
         protected void SetErrorMessage(string message)
         {
             ErrorMessage = message;
+            StateHasChanged();
+        }
+
+        protected void ClearErrorMessage()
+        {
+            ErrorMessage = string.Empty;
             StateHasChanged();
         }
     }

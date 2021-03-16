@@ -9,7 +9,7 @@
             <SharedAccountFilterComponent FilterChanged="MainTableService.FilterChangedAsync" />
         </FilterForm>
         <ActionButtons>
-            <button type="button" @onclick="CreateSharedAccountAsync" class="btn btn-primary mr-1" title="Create shared account">
+            <button type="button" @onclick="CreateSharedAccountAsync" class="btn btn-primary me-1" title="Create shared account">
                 Create shared account
             </button>
             @if (MainTableService.SelectedEntity != null)
@@ -121,5 +121,5 @@ else if (LoadFailed)
 }
 else
 {
-    <LoadingPage />
+    <Loader />
 }

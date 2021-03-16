@@ -21,7 +21,7 @@ else
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
                 <label class="mb-0 text-gray">Battery</label>
-                <select id="filterBattery" @bind="Filter.Battery" class="form-control">
+                <select id="filterBattery" @bind="Filter.Battery" class="form-select">
                     <option selected></option>
                     <option value="low">Low</option>
                     <option value="high">High</option>
@@ -53,7 +53,7 @@ else
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
                 <label class="mb-0 text-gray">Vault Status</label>
-                <select id="filterVaultStatus" @bind="Filter.Status" class="form-control">
+                <select id="filterVaultStatus" @bind="Filter.Status" class="form-select">
                     <option selected></option>
                     @foreach (var item in VaultStatusList)
                     {
@@ -63,7 +63,7 @@ else
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
                 <label class="mb-0 text-gray">License Status</label>
-                <select id="filterStatus" @bind="Filter.LicenseStatus" class="form-control">
+                <select id="filterStatus" @bind="Filter.LicenseStatus" class="form-select">
                     <option selected></option>
                     @foreach (var item in LicenseStatusList)
                     {
@@ -75,7 +75,7 @@ else
                 <label class="mb-0 text-gray">Till License End Date</label>
                 <InputDate id="filterLicenseEndDate" @bind-Value="Filter.LicenseEndDate" class="form-control" />
             </div>
-            <div class="col align-self-end text-right form-group">
+            <div class="col align-self-end text-end form-group">
                 <ButtonSpinner Text="Clear" Class="btn btn-secondary" Callback="ClearAsync"/>
                 <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Filter" Class="btn btn-primary" />
             </div>

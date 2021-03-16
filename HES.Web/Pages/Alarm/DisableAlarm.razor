@@ -7,7 +7,7 @@
     <label class="control-label text-gray">Please enter your password to confirm</label>
     <input type="password" @bind-value="UserConfirmPassword" @bind-value:event="oninput" class="form-control" />
 </div>
-<div class="text-right mt-2">
+<div class="text-end mt-2">
     <button type="button" class="btn btn-secondary" @onclick="ModalDialogService.CancelAsync">Cancel</button>
     <ButtonSpinner Text="Confirm" Class="btn btn-primary" Callback="DisableAlarmAsync" />
 </div>

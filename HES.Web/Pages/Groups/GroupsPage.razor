@@ -9,7 +9,7 @@
             <GroupsFilter FilterChanged="MainTableService.FilterChangedAsync" />
         </FilterForm>
         <ActionButtons>
-            <button type="button" class="btn btn-primary mr-1" @onclick="OpenModalAddGroupAsync">
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenModalAddGroupAsync">
                 Add from AD
             </button>
             <button type="button" class="btn btn-primary mx-1" @onclick="OpenModalCreateGroupAsync">
@@ -81,5 +81,5 @@ else if (LoadFailed)
 }
 else
 {
-    <LoadingPage />
+    <Loader />
 }

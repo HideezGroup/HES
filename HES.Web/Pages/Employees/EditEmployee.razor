@@ -37,7 +37,7 @@ else
             </div>
             <div class="form-group">
                 <label class="control-label text-gra">Company</label>
-                <select @onchange="OnCompanyChangeAsync" class="form-control text-navyblue">
+                <select @onchange="OnCompanyChangeAsync" class="form-select text-navyblue">
                     <option></option>
                     @foreach (var item in Companies)
                     {
@@ -54,7 +54,7 @@ else
             </div>
             <div class="form-group">
                 <FormLabel For="@(() => Employee.DepartmentId)" class="text-gray" />
-                <select @bind="Employee.DepartmentId" class="form-control text-navyblue">
+                <select @bind="Employee.DepartmentId" class="form-select text-navyblue">
                     @foreach (var item in Departments)
                     {
                         <option value="@item.Id">@item.Name</option>
@@ -63,7 +63,7 @@ else
             </div>
             <div class="form-group">
                 <FormLabel For="@(() => Employee.PositionId)" class="text-gray" />
-                <select @bind="Employee.PositionId" class="form-control text-navyblue">
+                <select @bind="Employee.PositionId" class="form-select text-navyblue">
                     <option></option>
                     @foreach (var item in Positions)
                     {
@@ -71,7 +71,7 @@ else
                     }
                 </select>
             </div>
-            <div class="text-right">
+            <div class="text-end">
                 <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>
                 <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />
             </div>

@@ -10,7 +10,7 @@ else
     {
         case ActiveDirectoryInitialization.HostNotSet:
             <h5>To import users from the active directory, set domain settings on the parameters page.</h5>
-            <div class="text-right  mt-4">
+            <div class="text-end  mt-4">
                 <button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
             </div>
             break;
@@ -85,7 +85,7 @@ else
                                 <small class="form-text text-muted">For the selected users, groups will be created in which they belong in the active directory.</small>
                             </div>
                         </div>
-                        <div class="text-right mt-auto">
+                        <div class="text-end mt-auto">
                             <button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
                             <button type="button" class="btn btn-primary btn-min-w" @onclick="@(async () => await AddAsync())">
                                 <span class="spinner-border spinner-border-sm @(IsBusy == true ? null : "d-none")" role="status" aria-hidden="true"></span>

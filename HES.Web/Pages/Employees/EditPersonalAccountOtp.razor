@@ -23,7 +23,7 @@ else
                 <InputText @bind-Value="_accountOtp.OtpSecret" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => _accountOtp.OtpSecret)" class="text-danger" />
             </div>
-            <div class="text-right">
+            <div class="text-end">
                 <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
                 <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />
             </div>

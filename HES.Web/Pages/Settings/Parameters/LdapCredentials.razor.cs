@@ -29,7 +29,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 await AppSettingsService.SetLdapSettingsAsync(LdapSettings);
 
             await LoadEntities.Invoke(LdapSettings);
-        }
+        }    
 
         public void Dispose()
         {    
