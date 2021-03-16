@@ -17,7 +17,7 @@ At this time, HES can be installed on Linux or Windows computer. Hideez Client c
 
 ## System requirements
 
-HES: Linux or Windows with .NET Core (.NET Core SDK version 3.1) installed, MySQL database server. More requirements see on the corresponding platform setup instructions. Hideez Client: Windows 7/10, one free USB port for a Hideez Dongle.
+HES: Linux or Windows with .NET Core (.NET Core SDK version 5.0) installed, MySQL database server. More requirements see on the corresponding platform setup instructions. Hideez Client: Windows 7/10, one free USB port for a Hideez Dongle.
 
 ## Get Started
 
