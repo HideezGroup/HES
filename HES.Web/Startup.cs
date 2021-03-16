@@ -198,7 +198,7 @@ namespace HES.Web
                 options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
                 options.WantAuthenticationRequestsSigned = false;
             })
-            .AddInMemoryServiceProviders(Config.GetServiceProviders(Configuration));
+            .AddInMemoryServiceProviders(Config.GetServiceProviders(Configuration))
             .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
 
 
