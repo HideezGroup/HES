@@ -177,6 +177,31 @@ namespace HES.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // IDP
+            services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.UserInteraction.LoginUrl = "/sso";
+                options.UserInteraction.LogoutUrl = "/slo";
+            })
+            .AddAspNetIdentity<ApplicationUser>()
+            .AddInMemoryIdentityResources(Config.GetIdentityResources())
+            .AddInMemoryApiResources(Config.GetApis())
+            .AddInMemoryClients(Config.GetClients(Configuration))
+            .AddSigningCredential(Config.GetCertificate(Configuration))
+            .AddSamlPlugin(options =>
+            {
+                options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
+                options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
+                options.WantAuthenticationRequestsSigned = false;
+            })
+            .AddInMemoryServiceProviders(Config.GetServiceProviders(Configuration));
+            .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
+
+
             // Auth policy
             services.AddAuthorization(config =>
                         {
@@ -218,31 +243,6 @@ namespace HES.Web
                     }
                 };
             });
-
-            // IDP
-            services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.UserInteraction.LoginUrl = "/login";
-                options.UserInteraction.LogoutUrl = "/identity/account/logout";
-            })
-            .AddAspNetIdentity<ApplicationUser>()
-            .AddInMemoryIdentityResources(Config.GetIdentityResources())
-            .AddInMemoryApiResources(Config.GetApis())
-            .AddInMemoryClients(Config.GetClients(Configuration))
-            .AddSigningCredential(Config.GetCertificate(Configuration))
-            .AddSamlPlugin(options =>
-            {
-                options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
-                options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
-                options.WantAuthenticationRequestsSigned = false;
-            })
-            .AddInMemoryServiceProviders(Config.GetServiceProviders(Configuration))
-            .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
-
 
             // Mvc
             services.AddMvc()
@@ -310,9 +310,11 @@ namespace HES.Web
 
             app.UseRequestLocalization();
             app.UseStaticFiles();
+            
+            app.UseRouting();
+
             app.UseIdentityServer();
             app.UseIdentityServerSamlPlugin();
-            app.UseRouting();
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
