@@ -13,6 +13,7 @@ namespace HES.Web.Pages.Identity
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ISamlInteractionService _samlInteractionService;
 
+        [TempData]
         public string ReturnUrl { get; set; }
 
         public SingleLogOutModel(SignInManager<ApplicationUser> signInManager, ISamlInteractionService samlInteractionService)
@@ -21,16 +22,12 @@ namespace HES.Web.Pages.Identity
             _samlInteractionService = samlInteractionService;
         }
 
-        public async Task<IActionResult> OnGetAsync(string requestId)
+        public async Task OnGetAsync(string requestId)
         {
-            if (requestId == null)
+            if (requestId != null)
             {
-                return LocalRedirect(Routes.SingleSignOn);
+                ReturnUrl = await _samlInteractionService.GetLogoutCompletionUrl(requestId);
             }
-
-            ReturnUrl = await _samlInteractionService.GetLogoutCompletionUrl(requestId);
-
-            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -42,7 +39,7 @@ namespace HES.Web.Pages.Identity
 
             if (ReturnUrl != null)
             {
-                return Redirect(ReturnUrl);
+                return LocalRedirect(ReturnUrl);
             }
             else
             {
