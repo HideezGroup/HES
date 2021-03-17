@@ -20,9 +20,7 @@ namespace HES.Web.Pages.Identity
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
-        [Inject] public HttpClient HttpClient { get; set; }
         [Inject] public ILogger<ConfirmEmailChange> Logger { get; set; }
 
         public string ErrorTitle { get; set; }

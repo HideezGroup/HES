@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -42,25 +43,16 @@ namespace HES.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null /*|| !(await _userManager.IsEmailConfirmedAsync(user))*/)
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    return RedirectToPage(Routes.ForgotPasswordConfirmation);
                 }
+
                 var employee = await _employeeService.EmployeeQuery().FirstOrDefaultAsync(e => e.Email == Input.Email);
                 var resetPasswordUrl = "/Account/ResetPassword";
                 var emailBody = $"Dear {Input.Email} <br/> Please reset your password by";
 
-                //var role = await _userManager.IsInRoleAsync(user, ApplicationRoles.UserRole);
-                //if (role)
-                //{
-                //    resetPasswordUrl = "/Account/External/ResetAccountPassword";
-                //    emailTitle = "Hideez Enterpise Server - Reset Password of SAML IdP account";
-                //    emailBody = $"Dear {employee.FullName} <br/> Please reset your password by";
-                //}
-
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var email = Input.Email;
                 var callbackUrl = Url.Page(
@@ -71,7 +63,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
 
                 await _emailSender.SendUserResetPasswordAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
-                return RedirectToPage("./ForgotPasswordConfirmation");
+                return RedirectToPage(Routes.ForgotPasswordConfirmation);
             }
 
             return Page();

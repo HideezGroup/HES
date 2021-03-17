@@ -1,12 +1,10 @@
+using HES.Core.Constants;
 using HES.Core.Entities;
-using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -93,8 +91,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                     user.EmailConfirmed = true;
                     await _userManager.UpdateAsync(user);
                     await _synchronizationService.UpdateAdministratorState();
-                    _logger.LogInformation($"User {user} accepted the invitation.");
-                    return LocalRedirect("/");
+                    return LocalRedirect(Routes.Dashboard);
                 }
             }
 

@@ -1,5 +1,5 @@
-﻿using HES.Core.Entities;
-using HES.Infrastructure;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -77,22 +77,14 @@ namespace HES.Web.Areas.Identity.Pages.Account
 
             var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
 
-            var userRole = await _signInManager.UserManager.IsInRoleAsync(user, ApplicationRoles.UserRole);
-
             if (result.Succeeded)
-            {
-                _logger.LogInformation($"User {user.Email} logged in with 2fa.");
-
-                if (userRole)
-                {
-                    return LocalRedirect("~/Identity/Account/External");
-                }
+            {              
                 return LocalRedirect(returnUrl);
             }
             else if (result.IsLockedOut)
             {
                 _logger.LogWarning($"User {user.Email} account locked out.", user.Id);
-                return RedirectToPage("./Lockout");
+                return RedirectToPage(Routes.Lockout);
             }
             else
             {

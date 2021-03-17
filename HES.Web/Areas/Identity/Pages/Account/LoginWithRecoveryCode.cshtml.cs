@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -68,22 +69,14 @@ namespace HES.Web.Areas.Identity.Pages.Account
 
             var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
-            var userRole = await _signInManager.UserManager.IsInRoleAsync(user, ApplicationRoles.UserRole);
-
             if (result.Succeeded)
             {
-                _logger.LogInformation($"User {user.Email} logged in with a recovery code.");
-
-                if (userRole)
-                {
-                    return LocalRedirect("~/Identity/Account/External");
-                }
                 return LocalRedirect(returnUrl ?? Url.Content("~/"));
             }
             if (result.IsLockedOut)
             {
                 _logger.LogWarning($"User {user.Email} account locked out.");
-                return RedirectToPage("./Lockout");
+                return RedirectToPage(Routes.Lockout);
             }
             else
             {
