@@ -1,4 +1,6 @@
-﻿using Hideez.SDK.Communication;
+﻿using HES.Core.RemoteDeviceConnection;
+using Hideez.SDK.Communication;
+using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.Remote;
 using Hideez.SDK.Communication.Utils;
 using System;
@@ -13,8 +15,8 @@ namespace HES.Core.Services
         class RemoteDeviceDescription
         {
             public IRemoteAppConnection AppConnection { get; }
-            public TaskCompletionSource<RemoteDevice> Tcs { get; set; }
-            public RemoteDevice Device { get; set; }
+            public TaskCompletionSource<Device> Tcs { get; set; }
+            public Device Device { get; set; }
 
             public RemoteDeviceDescription(IRemoteAppConnection appConnection)
             {
@@ -28,6 +30,9 @@ namespace HES.Core.Services
 
         readonly ConcurrentDictionary<string, RemoteDeviceDescription> _appConnections
             = new ConcurrentDictionary<string, RemoteDeviceDescription>();
+        
+        readonly ConcurrentDictionary<string, DeviceConnectionContainer> _connectionContainers
+            = new ConcurrentDictionary<string, DeviceConnectionContainer>();
 
         public bool IsDeviceConnectedToHost => _appConnections.Count > 0;
 
@@ -52,7 +57,7 @@ namespace HES.Core.Services
         {
             if (_appConnections.TryRemove(workstationId, out RemoteDeviceDescription descr))
             {
-                descr.Device?.Shutdown(HideezErrorCode.DeviceDisconnected);
+                descr.Device?.Shutdown();
             }
         }
 
@@ -61,11 +66,11 @@ namespace HES.Core.Services
         {
             if (_appConnections.TryRemove(workstationId, out RemoteDeviceDescription descr))
             {
-                descr.Device?.Shutdown(HideezErrorCode.HesAppHubDisconnected);
+                descr.Device?.Shutdown();
             }
         }
 
-        public async Task<RemoteDevice> ConnectDevice(string workstationId)
+        public async Task<Device> ConnectDevice(string workstationId)
         {
             RemoteDeviceDescription descr = null;
             if (workstationId == null)
@@ -83,7 +88,7 @@ namespace HES.Core.Services
             if (descr == null)
                 throw new HideezException(HideezErrorCode.DeviceNotConnectedToAnyHost);
 
-            TaskCompletionSource<RemoteDevice> tcs = null;
+            TaskCompletionSource<Device> tcs = null;
             lock (descr)
             {
                 if (descr.Device != null)
@@ -91,7 +96,7 @@ namespace HES.Core.Services
 
                 tcs = descr.Tcs;
                 if (tcs == null)
-                    descr.Tcs = new TaskCompletionSource<RemoteDevice>();
+                    descr.Tcs = new TaskCompletionSource<Device>();
             }
 
             if (tcs != null)
@@ -136,10 +141,15 @@ namespace HES.Core.Services
                     _appConnections.TryGetValue(workstationId, out descr);
                     if (descr != null)
                     {
-                        var remoteDevice = new RemoteDevice(_deviceId, channelNo, caller, null, SdkConfig.DefaultRemoteCommandTimeout, null, null);
+                        var connectionContainer = _connectionContainers.GetOrAdd(workstationId, (c) => new DeviceConnectionContainer(caller, _deviceId));
+                        var deviceConnection = new SignalRRemoteDeviceConnection(connectionContainer);
+                        var commandQueue = new CommandQueue(deviceConnection, null);
+
+                        var deviceCommands = new HesDeviceCommands(connectionContainer);
+                        var remoteDevice = new Device(commandQueue, channelNo, deviceCommands, null);
                         descr.Device = remoteDevice;
 
-                        await remoteDevice.VerifyAndInitialize(new System.Threading.CancellationToken());
+                        await remoteDevice.VerifyAndInitialize();
 
                         // Inform clients about connection ready
                         descr.Tcs.TrySetResult(remoteDevice);
@@ -159,17 +169,25 @@ namespace HES.Core.Services
         {
             if (_appConnections.TryRemove(workstationId, out RemoteDeviceDescription descr))
             {
-                descr.Device?.Shutdown(HideezErrorCode.HesDeviceHubDisconnected);
+                descr.Device?.Shutdown();
             }
+
+            _connectionContainers.TryRemove(workstationId, out DeviceConnectionContainer deviceConnection);
         }
 
-        internal RemoteDevice GetRemoteDevice(string workstationId)
+        internal Device GetRemoteDevice(string workstationId)
         {
             _appConnections.TryGetValue(workstationId, out RemoteDeviceDescription descr);
             return descr?.Device;
         }
 
-        internal RemoteDevice GetFirstOrDefaultRemoteDevice()
+        internal DeviceConnectionContainer GetConnectionContainer(string workstationId)
+        {
+            _connectionContainers.TryGetValue(workstationId, out DeviceConnectionContainer connectionContainer);
+            return connectionContainer;
+        }
+
+        internal Device GetFirstOrDefaultRemoteDevice()
         {
             var kvp = _appConnections.FirstOrDefault();
             if (kvp.Value == null)
