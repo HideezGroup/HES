@@ -46,7 +46,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                 if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage(Routes.ForgotPasswordConfirmation);
+                    return LocalRedirect(Routes.ForgotPasswordConfirmation);
                 }
 
                 var employee = await _employeeService.EmployeeQuery().FirstOrDefaultAsync(e => e.Email == Input.Email);
@@ -63,7 +63,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
 
                 await _emailSender.SendUserResetPasswordAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
-                return RedirectToPage(Routes.ForgotPasswordConfirmation);
+                return LocalRedirect(Routes.ForgotPasswordConfirmation);
             }
 
             return Page();

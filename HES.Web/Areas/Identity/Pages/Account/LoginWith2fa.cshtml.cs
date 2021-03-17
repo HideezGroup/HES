@@ -84,7 +84,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
             else if (result.IsLockedOut)
             {
                 _logger.LogWarning($"User {user.Email} account locked out.", user.Id);
-                return RedirectToPage(Routes.Lockout);
+                return LocalRedirect(Routes.Lockout);
             }
             else
             {

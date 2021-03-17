@@ -209,6 +209,10 @@ namespace HES.Core.Services
             if (user == null)
                 throw new HESException(HESCode.UserNotFound);
 
+            var exist = await GetUserByEmailAsync(parameters.NewEmail);
+            if (exist != null)
+                throw new HESException(HESCode.EmailAlreadyTaken);
+
             var code = await _userManager.GenerateChangeEmailTokenAsync(user, parameters.NewEmail);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
