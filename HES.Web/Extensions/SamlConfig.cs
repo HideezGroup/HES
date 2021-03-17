@@ -9,7 +9,7 @@ using System.Text;
 
 namespace HES.Web.Extensions
 {
-    public static class Config
+    public static class SamlConfig
     {
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
@@ -24,7 +24,7 @@ namespace HES.Web.Extensions
         {
             return new ApiResource[]
             {
-                new ApiResource("api1", "My API #1")
+                new ApiResource("api", "IDP API")
             };
         }
 

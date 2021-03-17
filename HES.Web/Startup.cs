@@ -195,17 +195,17 @@ namespace HES.Web
                     options.UserInteraction.LogoutUrl = "/slo";
                 })
                 .AddAspNetIdentity<ApplicationUser>()
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryClients(Config.GetClients(Configuration))
-                .AddSigningCredential(Config.GetCertificate(Configuration))
+                .AddInMemoryIdentityResources(SamlConfig.GetIdentityResources())
+                .AddInMemoryApiResources(SamlConfig.GetApis())
+                .AddInMemoryClients(SamlConfig.GetClients(Configuration))
+                .AddSigningCredential(SamlConfig.GetCertificate(Configuration))
                 .AddSamlPlugin(options =>
                 {
                     options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
                     options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
                     options.WantAuthenticationRequestsSigned = false;
                 })
-                .AddInMemoryServiceProviders(Config.GetServiceProviders(Configuration))
+                .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
                 .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
             }
 
