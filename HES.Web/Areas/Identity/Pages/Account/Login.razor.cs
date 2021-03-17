@@ -129,7 +129,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
 
                     if (response.Succeeded)
                     {
-                        NavigationManager.NavigateTo(Routes.Dashboard);
+                        NavigationManager.NavigateTo(Routes.Dashboard, true);
                         return;
                     }
 

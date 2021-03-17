@@ -66,7 +66,7 @@ namespace HES.Web.Extensions
                     EntityId = EntityId,
                     AssertionConsumerServices = {new Service(SamlConstants.BindingTypes.HttpPost, AssertionConsumerServices) },
                     SingleLogoutServices = {new Service(SamlConstants.BindingTypes.HttpRedirect, SingleLogoutServices) },
-                    SigningCertificates = {new X509Certificate2(Encoding.ASCII.GetBytes(SigningCertificates))}
+                    SigningCertificates = { new X509Certificate2(Encoding.ASCII.GetBytes(SigningCertificates)) }
                 },
             };
         }
