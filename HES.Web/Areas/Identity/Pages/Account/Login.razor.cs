@@ -109,7 +109,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                 var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
                 response.ThrowIfFailed();
 
-                NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard);
+                NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard, true);
             }
             catch (Exception ex)
             {
