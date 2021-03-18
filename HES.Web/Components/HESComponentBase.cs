@@ -18,9 +18,14 @@ namespace HES.Web.Components
         public bool LoadFailed { get; private set; }
         public string ErrorMessage { get; private set; }
 
-        protected async Task<string> GetCurrentUserEmail()
+        protected async Task<string> GetCurrentUserEmailAsync()
         {
             return (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.Name;
+        }
+
+        protected async Task<bool> GetCurrentUserAuthenticatedStateAsync()
+        {
+            return (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated;
         }
 
         protected void SetInitialized()

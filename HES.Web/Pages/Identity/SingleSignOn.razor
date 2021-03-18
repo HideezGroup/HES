@@ -1,0 +1,55 @@
+﻿@page "/sso"
+@layout BlankLayout
+@inherits HESComponentBase
+
+@if (Initialized)
+{
+    <ErrorAlert Message="@ErrorMessage" Close="@ClearErrorMessage" />
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="custom-card">
+            <div class="text-center m-3">
+                <img src="/svg/hideez-es-logo.svg" />
+            </div>
+            @switch (AuthenticationStep)
+            {
+                case AuthenticationStep.EmailValidation:
+                    <h3 class="text-navyblue my-3">Single Sign On</h3>
+                    <EditForm Model="UserEmailModel" OnValidSubmit="NextAsync">
+                        <DataAnnotationsValidator />
+                        <ValidationErrorMessage @ref="ValidationErrorMessage" />
+                        <div class="form-group">
+                            <InputText @bind-Value="UserEmailModel.Email" class="form-control" placeholder="Email" id="email" />
+                            <ValidationMessage For="@(() => UserEmailModel.Email)" class="text-danger" />
+                        </div>
+                        <div class="text-end">
+                            <Button @ref="Button" Text="Next" type="submit" class="btn btn-primary" />
+                        </div>
+                    </EditForm>
+                    break;                
+                case AuthenticationStep.SecurityKeyAuthentication:
+                    <h3 class="text-navyblue my-3">Sign in with a security key</h3>
+                    <span>Your PC will open a security window. Follow the instructions there to sign in.</span>
+                    <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                        <Loader DisableShadow="true" />
+                    </div>
+                    break;
+                case AuthenticationStep.SecurityKeyError:
+                    <h3 class="text-navyblue my-3">Sign in with a security key</h3>
+                    <span>We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</span>
+                    <div class="text-end mt-3">
+                        <Button Text="Back" OnClick="BackToEmailValidation" class="btn btn-outline-secondary" />
+                        <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-primary" />
+                    </div>
+                    break;
+            }
+        </div>
+    </div>
+}
+else if (LoadFailed)
+{
+    <LoadingFailed ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <Loader AbsoluteCenter="true" />
+}

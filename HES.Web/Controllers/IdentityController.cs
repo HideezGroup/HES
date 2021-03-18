@@ -73,7 +73,7 @@ namespace HES.Web.Controllers
                 return BadRequest(ex.Message);
             }
         }
-              
+
         #region 2FA
 
         [HttpGet]
@@ -196,7 +196,7 @@ namespace HES.Web.Controllers
                 if (!isTokenValid)
                     return Ok(verifyTwoFactorInfo);
 
-                await _userManager.SetTwoFactorEnabledAsync(user, true);      
+                await _userManager.SetTwoFactorEnabledAsync(user, true);
 
                 if (await _userManager.CountRecoveryCodesAsync(user) == 0)
                 {
@@ -385,11 +385,15 @@ namespace HES.Web.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<AuthorizationResponse> Logout()
         {
             try
             {
-                await _signInManager.SignOutAsync();
+                if (User.Identity.IsAuthenticated)
+                {
+                    await _signInManager.SignOutAsync();
+                }
                 return AuthorizationResponse.Success(null);
             }
             catch (Exception ex)

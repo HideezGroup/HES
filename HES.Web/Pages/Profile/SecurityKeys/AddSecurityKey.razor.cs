@@ -42,7 +42,7 @@ namespace HES.Web.Pages.Profile.SecurityKeys
             {
                 FidoService = ScopedServices.GetRequiredService<IFido2Service>();
 
-                CurrentUser = await ApplicationUserService.GetUserByEmailAsync(await GetCurrentUserEmail());
+                CurrentUser = await ApplicationUserService.GetUserByEmailAsync(await GetCurrentUserEmailAsync());
 
                 ChangeState(SecurityKeyAddingStep.Start);
 

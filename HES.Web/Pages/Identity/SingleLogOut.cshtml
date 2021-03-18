@@ -1,0 +1,23 @@
+﻿@page "/slo"
+@model HES.Web.Pages.Identity.SingleLogOutModel
+@{
+    Layout = "/Pages/Identity/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="custom-card text-center">
+        <div class="text-center m-3">
+            <img src="/svg/hideez-es-logo.svg" />
+        </div>
+        <h3 class="text-navyblue my-3">Single Log Out</h3>
+        @if (Model.User != null)
+        {
+            <h5 class="mb-5">
+                @Model.User.Identity.Name
+            </h5>
+        }
+        <form class="form-inline" asp-page="/slo" method="post">
+            <button type="submit" class="btn btn-outline-primary w-100">Log out</button>
+        </form>
+    </div>
+</div>

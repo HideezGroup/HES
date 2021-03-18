@@ -41,7 +41,7 @@ namespace HES.Web.Pages.Profile
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
                 FidoService = ScopedServices.GetRequiredService<IFido2Service>();
 
-                CurrentUser = await ApplicationUserService.GetUserByEmailAsync(await GetCurrentUserEmail());
+                CurrentUser = await ApplicationUserService.GetUserByEmailAsync(await GetCurrentUserEmailAsync());
 
                 // Password
                 ChangePasswordModel = new ChangePasswordModel() { UserId = CurrentUser.Id };
