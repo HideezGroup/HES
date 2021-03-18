@@ -14,6 +14,9 @@
 
         public const string Profile = "/profile";
 
+        public const string SingleSignOn = "/sso";
+        public const string SingleLogOut = "/slo";
+
         public const string Dashboard = "/";
     }
 }

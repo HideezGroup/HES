@@ -6,6 +6,8 @@ using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Infrastructure;
+using HES.Web.Extensions;
+using IdentityServer4;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Rsk.Saml.Configuration;
 using System;
 using System.Globalization;
 using System.Net.Http;
@@ -30,6 +33,7 @@ namespace HES.Web
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        public bool Saml2pEnabled { get; set; }
 
         public Startup(IConfiguration configuration)
         {
@@ -74,6 +78,11 @@ namespace HES.Web
             }
 
             #endregion
+
+            if (!string.IsNullOrWhiteSpace(configuration.GetValue<string>("SAML2P:LicenseName")) && !string.IsNullOrWhiteSpace(configuration.GetValue<string>("SAML2P:LicenseKey")))
+            {
+                Saml2pEnabled = true;
+            }
 
             Configuration = configuration;
         }
@@ -170,9 +179,35 @@ namespace HES.Web
 
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                //.AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            // IDP
+            if (Saml2pEnabled)
+            {
+                services.AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.UserInteraction.LoginUrl = "/sso";
+                    options.UserInteraction.LogoutUrl = "/slo";
+                })
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddInMemoryIdentityResources(SamlConfig.GetIdentityResources())
+                .AddInMemoryApiResources(SamlConfig.GetApis())
+                .AddInMemoryClients(SamlConfig.GetClients(Configuration))
+                .AddSigningCredential(SamlConfig.GetCertificate(Configuration))
+                .AddSamlPlugin(options =>
+                {
+                    options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
+                    options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
+                    options.WantAuthenticationRequestsSigned = false;
+                })
+                .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
+                .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
+            }
 
             // Auth policy
             services.AddAuthorization(config =>
@@ -221,7 +256,6 @@ namespace HES.Web
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage", "RequireAdministratorRole");
-                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/External");
                 })
                 .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -282,7 +316,14 @@ namespace HES.Web
 
             app.UseRequestLocalization();
             app.UseStaticFiles();
+
             app.UseRouting();
+
+            if (Saml2pEnabled)
+            {
+                app.UseIdentityServer();
+                app.UseIdentityServerSamlPlugin();
+            }
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
@@ -297,7 +338,7 @@ namespace HES.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<DeviceHub>("/deviceHub");
-                endpoints.MapHub<AppHub>("/appHub");           
+                endpoints.MapHub<AppHub>("/appHub");
                 endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");

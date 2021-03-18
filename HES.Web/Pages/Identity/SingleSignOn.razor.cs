@@ -1,4 +1,5 @@
 ﻿using HES.Core.Constants;
+using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Identity;
@@ -11,31 +12,21 @@ using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
-namespace HES.Web.Areas.Identity.Pages.Account
+namespace HES.Web.Pages.Identity
 {
-    public enum AuthenticationStep
-    {
-        EmailValidation,
-        EnterPassword,
-        SecurityKeyAuthentication,
-        SecurityKeyError
-    }
-
-    public partial class Login : HESComponentBase
+    public partial class SingleSignOn : HESComponentBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service Fido2Service { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
-        [Inject] public ILogger<Login> Logger { get; set; }
+        [Inject] public ILogger<SingleSignOn> Logger { get; set; }
 
         public AuthenticationStep AuthenticationStep { get; set; }
-        public PasswordSignInModel PasswordSignInModel { get; set; } = new PasswordSignInModel();
         public SecurityKeySignInModel SecurityKeySignInModel { get; set; } = new SecurityKeySignInModel();
         public UserEmailModel UserEmailModel { get; set; } = new UserEmailModel();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public Button ButtonSpinner { get; set; }
-        public bool HasSecurityKey { get; set; }
+        public Button Button { get; set; }
         public string ReturnUrl { get; set; }
 
         protected override void OnInitialized()
@@ -45,7 +36,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
                 Fido2Service = ScopedServices.GetRequiredService<IFido2Service>();
 
-                ReturnUrl = NavigationManager.GetQueryValue("returnUrl");
+                ReturnUrl = NavigationManager.GetQueryValue("returnUrl") ?? Routes.SingleSignOn;
 
                 SetInitialized();
             }
@@ -58,14 +49,16 @@ namespace HES.Web.Areas.Identity.Pages.Account
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            switch (AuthenticationStep)
+            if (firstRender)
             {
-                case AuthenticationStep.EmailValidation:
+                try
+                {
                     await JSRuntime.InvokeVoidAsync("setFocus", "email");
-                    break;
-                case AuthenticationStep.EnterPassword:
-                    await JSRuntime.InvokeVoidAsync("setFocus", "password");
-                    break;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex.Message);
+                }
             }
         }
 
@@ -73,7 +66,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     var user = await ApplicationUserService.GetUserByEmailAsync(UserEmailModel.Email);
                     if (user == null)
@@ -82,14 +75,8 @@ namespace HES.Web.Areas.Identity.Pages.Account
                         return;
                     }
 
-                    PasswordSignInModel.Email = UserEmailModel.Email;
-                    HasSecurityKey = (await Fido2Service.GetCredentialsByUserEmail(UserEmailModel.Email)).Count > 0;
-                    AuthenticationStep = AuthenticationStep.EnterPassword;
+                    await SignInWithSecurityKeyAsync();
                 });
-            }
-            catch (HESException ex)
-            {
-                ValidationErrorMessage.DisplayError(nameof(UserEmailModel.Email), ex.Message);
             }
             catch (Exception ex)
             {
@@ -104,56 +91,16 @@ namespace HES.Web.Areas.Identity.Pages.Account
             {
                 AuthenticationStep = AuthenticationStep.SecurityKeyAuthentication;
 
-                SecurityKeySignInModel.RememberMe = PasswordSignInModel.RememberMe;
                 SecurityKeySignInModel.AuthenticatorAssertionRawResponse = await Fido2Service.MakeAssertionRawResponse(UserEmailModel.Email, JSRuntime);
                 var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
                 response.ThrowIfFailed();
 
-                NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard, true);
+                NavigationManager.NavigateTo(ReturnUrl, true);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 AuthenticationStep = AuthenticationStep.SecurityKeyError;
-            }
-        }
-
-        private async Task LoginWithPasswordAsync()
-        {
-            try
-            {
-                await ButtonSpinner.SpinAsync(async () =>
-                {
-                    var response = await IdentityApiClient.LoginWithPasswordAsync(PasswordSignInModel);
-                    response.ThrowIfFailed();
-
-                    if (response.Succeeded)
-                    {
-                        NavigationManager.NavigateTo(Routes.Dashboard, true);
-                        return;
-                    }
-
-                    if (response.RequiresTwoFactor)
-                    {
-                        NavigationManager.NavigateTo($"{Routes.LoginWith2Fa}?returnUrl={ReturnUrl}", true);
-                        return;
-                    }
-
-                    if (response.IsLockedOut)
-                    {
-                        NavigationManager.NavigateTo(Routes.Lockout, true);
-                        return;
-                    }
-                });
-            }
-            catch (HESException ex) when (ex.Code == HESCode.InvalidLoginAttempt)
-            {
-                ValidationErrorMessage.DisplayError(nameof(PasswordSignInModel.Password), HESException.GetMessage(ex.Code));
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
-                SetErrorMessage(ex.Message);
             }
         }
 
