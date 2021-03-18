@@ -3,15 +3,15 @@
 ## Requirements
   * Internet Information Services (IIS)
   * Git
-  * .NET Core (.NET Core SDK version 3.1)
+  * .NET Core (.NET Core SDK version 5.0)
   * MySQL Server (version 8.0+)
 
 ## System Preparation
 
 
-1. If the web server is not enabled then use the [official guide](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/?view=aspnetcore-3.1#iis-configuration) to enable IIS.
+1. If the web server is not enabled then use the [official guide](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/?view=aspnetcore-5.0#iis-configuration) to enable IIS.
 
-2. Enable WebSockets on IIS according to this [guide](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/websockets?view=aspnetcore-3.1#enabling-websockets-on-iis)
+2. Enable WebSockets on IIS according to this [guide](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/websockets?view=aspnetcore-5.0#enabling-websockets-on-iis)
 
 If the IIS installation requires a restart, restart the system.
 
@@ -19,13 +19,13 @@ You can perform a simple test by opening a web browser and browsing http://local
 
 3. Download and install [Git](https://git-scm.com/download/win)
 
-4. Download and install .NET Core SDK 3.1:
+4. Download and install .NET Core SDK 5.0:
 
-- [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-3.1.404-windows-x64-installer) 
+- [.NET Core SDK 5.0](https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-5.0.201-windows-x64-installer) 
 
-- [Windows Hosting Bundle, which includes the .NET Core Runtime and IIS support](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-aspnetcore-3.1.10-windows-hosting-bundle-installer)
+- [Windows Hosting Bundle, which includes the .NET Core Runtime and IIS support](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-aspnetcore-5.0.4-windows-hosting-bundle-installer)
 
-You can download the latest versions of this applications. They can be found at https://dotnet.microsoft.com/download/dotnet-core/3.1
+You can download the latest versions of this applications. They can be found at https://dotnet.microsoft.com/download/dotnet-core/5.0
 
 **[Note]  You MUST have IIS installed before installing Windows Hosting Bundle** 
 
@@ -79,7 +79,7 @@ run the following commands (step by step) on the command line:
 
 ```shell
   > cd C:\Hideez\src\HES.Web
-  > dotnet publish -c release -v d -o "C:\Hideez\HES" --framework netcoreapp3.1 --runtime win-x64 HES.Web.csproj
+  > dotnet publish -c release -v d -o "C:\Hideez\HES" --runtime win-x64 HES.Web.csproj
 ```
    [Note] Requires internet connectivity to download NuGet packages
 
@@ -212,7 +212,7 @@ change <MySQL_root_password> with your real password
 
 ```shell
   > cd C:\Hideez\src\HES.Web
-  > dotnet publish -c release -v d -o "C:\Hideez\HES" --framework netcoreapp3.1 --runtime win-x64 HES.Web.csproj
+  > dotnet publish -c release -v d -o "C:\Hideez\HES" --runtime win-x64 HES.Web.csproj
 ```
   * **[Note]** Requires internet connectivity to download NuGet packages
 
