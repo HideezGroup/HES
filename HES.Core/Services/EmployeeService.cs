@@ -31,6 +31,7 @@ namespace HES.Core.Services
         private readonly IWorkstationService _workstationService;
         private readonly IDataProtectionService _dataProtectionService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFido2Service _fido2Service;
 
         public EmployeeService(IAsyncRepository<Employee> employeeRepository,
                                IHardwareVaultService hardwareVaultService,
@@ -40,7 +41,8 @@ namespace HES.Core.Services
                                ISharedAccountService sharedAccountService,
                                IWorkstationService workstationService,
                                IDataProtectionService dataProtectionService,
-                               UserManager<ApplicationUser> userManager)
+                               UserManager<ApplicationUser> userManager,
+                               IFido2Service fido2Service)
         {
             _employeeRepository = employeeRepository;
             _hardwareVaultService = hardwareVaultService;
@@ -51,6 +53,7 @@ namespace HES.Core.Services
             _workstationService = workstationService;
             _dataProtectionService = dataProtectionService;
             _userManager = userManager;
+            _fido2Service = fido2Service;
         }
 
         #region Employee
@@ -459,9 +462,19 @@ namespace HES.Core.Services
             }
         }
 
-        public Task DisableSsoAsync(Employee employee)
+        public async Task DisableSsoAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            if (employee == null)
+                throw new ArgumentNullException(nameof(employee));
+
+            await _fido2Service.RemoveCredentialsByUsername(employee.Email);
+
+            var user = await _userManager.FindByEmailAsync(employee.Email);
+
+            if (user == null)
+                throw new HESException(HESCode.UserNotFound);
+
+            await _userManager.DeleteAsync(user);
         }
 
         #endregion

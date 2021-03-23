@@ -386,10 +386,26 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(EmployeeEnableSso));
                 builder.AddAttribute(1, nameof(EmployeeEnableSso.Employee), Employee);
+                builder.AddAttribute(2, nameof(EmployeeEnableSso.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
             await ModalDialogService.ShowAsync("Enable SSO", body);
+        }
+
+        private async Task OpenModalDisableSsoAsync()
+        {
+            //if (!await VerifyAdUserAsync()) return;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(EmployeeDisableSso));
+                builder.AddAttribute(1, nameof(EmployeeDisableSso.Employee), Employee);
+                builder.AddAttribute(2, nameof(EmployeeDisableSso.ExceptPageId), PageId);
+                builder.CloseComponent();
+            };
+
+            await ModalDialogService.ShowAsync("Disable SSO", body);
         }
 
         #endregion

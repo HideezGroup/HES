@@ -273,7 +273,7 @@ namespace HES.Core.Services
 
         public async Task RemoveCredentialsByUsername(string username)
         {
-            var items = await _fidoCredentialsRepository.Query().Where(c => c.Username == username).AsNoTracking().ToListAsync();
+            var items = await _fidoCredentialsRepository.Query().Where(c => c.Username == username).ToListAsync();
             if (items != null)
                 await _fidoCredentialsRepository.DeleteRangeAsync(items);
         }
