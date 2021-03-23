@@ -1,10 +1,13 @@
 ﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Identity;
+using HES.Infrastructure;
 using HES.Web.Components;
 using HES.Web.Extensions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
@@ -28,6 +31,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<Login> Logger { get; set; }
+        [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
 
         public AuthenticationStep AuthenticationStep { get; set; }
         public PasswordSignInModel PasswordSignInModel { get; set; } = new PasswordSignInModel();
@@ -79,6 +83,13 @@ namespace HES.Web.Areas.Identity.Pages.Account
                     if (user == null)
                     {
                         ValidationErrorMessage.DisplayError(nameof(UserEmailModel.Email), HESException.GetMessage(HESCode.UserNotFound));
+                        return;
+                    }
+
+                    var isAdmin = await UserManager.IsInRoleAsync(user, ApplicationRoles.AdminRole);
+                    if (!isAdmin)
+                    {
+                        ValidationErrorMessage.DisplayError(nameof(UserEmailModel.Email), HESException.GetMessage(HESCode.InvalidLoginAttempt));
                         return;
                     }
 
