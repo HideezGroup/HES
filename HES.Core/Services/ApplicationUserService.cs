@@ -153,6 +153,17 @@ namespace HES.Core.Services
             return HtmlEncoder.Default.Encode(callbackUrl);
         }
 
+        public async Task<string> GetEnableSsoCallBackUrl(string email, string domain)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                throw new Exception($"User not found.");
+
+            var callbackUrl = $"{domain}register-security-key?email={email}";
+
+            return HtmlEncoder.Default.Encode(callbackUrl);
+        }
+
         public async Task<ApplicationUser> DeleteUserAsync(string id)
         {
             if (id == null)

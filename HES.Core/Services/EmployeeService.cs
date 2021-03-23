@@ -422,6 +422,48 @@ namespace HES.Core.Services
             return user != null ? true : false;
         }
 
+        public async Task EnableSsoAsync(Employee employee)
+        {
+            if (employee == null)
+                throw new ArgumentNullException(nameof(employee));
+
+            var user = new ApplicationUser 
+            { 
+                FullName = employee.FullName, 
+                PhoneNumber = employee.PhoneNumber, 
+                UserName = employee.Email, 
+                Email = employee.Email, 
+                EmailConfirmed = true 
+            };
+
+            var result = await _userManager.CreateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                string errors = string.Empty;
+                foreach (var item in result.Errors)
+                    errors += $"Code: {item.Code} Description: {item.Description} {Environment.NewLine}";
+
+                throw new Exception(errors);
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "User");
+
+            if (!roleResult.Succeeded)
+            {
+                string errors = string.Empty;
+                foreach (var item in result.Errors)
+                    errors += $"Code: {item.Code} Description: {item.Description} {Environment.NewLine}";
+
+                throw new Exception(errors);
+            }
+        }
+
+        public Task DisableSsoAsync(Employee employee)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Hardware Vault

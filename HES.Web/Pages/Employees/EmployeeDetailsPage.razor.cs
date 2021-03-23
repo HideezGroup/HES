@@ -71,6 +71,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await MainTableService.LoadTableDataAsync();
+                IsSsoEnabled = await EmployeeService.IsSsoEnabledAsync(Employee);
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -375,6 +376,20 @@ namespace HES.Web.Pages.Employees
             };
 
             await ModalDialogService.ShowAsync("Activation code", body);
+        }
+
+        private async Task OpenModalEnableSsoAsync()
+        {
+            //if (!await VerifyAdUserAsync()) return;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(EmployeeEnableSso));
+                builder.AddAttribute(1, nameof(EmployeeEnableSso.Employee), Employee);
+                builder.CloseComponent();
+            };
+
+            await ModalDialogService.ShowAsync("Enable SSO", body);
         }
 
         #endregion

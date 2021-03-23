@@ -33,6 +33,8 @@ namespace HES.Core.Interfaces
         #region SSO
 
         Task<bool> IsSsoEnabledAsync(Employee employee);
+        Task EnableSsoAsync(Employee employee);
+        Task DisableSsoAsync(Employee employee);
 
         #endregion
 
