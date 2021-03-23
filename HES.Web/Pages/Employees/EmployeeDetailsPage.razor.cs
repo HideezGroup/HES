@@ -49,7 +49,7 @@ namespace HES.Web.Pages.Employees
                 await LoadLdapSettingsAsync();
                 await MainTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
 
-                IsSsoEnabled = await EmployeeService.IsSsoEnableAsync(Employee);
+                IsSsoEnabled = await EmployeeService.IsSsoEnabledAsync(Employee);
 
                 SetInitialized();
             }
