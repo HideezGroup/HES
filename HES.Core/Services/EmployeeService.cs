@@ -9,6 +9,7 @@ using HES.Core.Utilities;
 using Hideez.SDK.Communication.PasswordManager;
 using Hideez.SDK.Communication.Security;
 using Hideez.SDK.Communication.Utils;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace HES.Core.Services
         private readonly ISharedAccountService _sharedAccountService;
         private readonly IWorkstationService _workstationService;
         private readonly IDataProtectionService _dataProtectionService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public EmployeeService(IAsyncRepository<Employee> employeeRepository,
                                IHardwareVaultService hardwareVaultService,
@@ -37,7 +39,8 @@ namespace HES.Core.Services
                                IAccountService accountService,
                                ISharedAccountService sharedAccountService,
                                IWorkstationService workstationService,
-                               IDataProtectionService dataProtectionService)
+                               IDataProtectionService dataProtectionService,
+                               UserManager<ApplicationUser> userManager)
         {
             _employeeRepository = employeeRepository;
             _hardwareVaultService = hardwareVaultService;
@@ -47,6 +50,7 @@ namespace HES.Core.Services
             _sharedAccountService = sharedAccountService;
             _workstationService = workstationService;
             _dataProtectionService = dataProtectionService;
+            _userManager = userManager;
         }
 
         #region Employee
@@ -399,6 +403,23 @@ namespace HES.Core.Services
             employee.ActiveDirectoryGuid = null;
             employee.WhenChanged = null;
             await _employeeRepository.UpdateAsync(employee);
+        }
+
+        #endregion
+
+        #region SSO
+
+        public async Task<bool> IsSsoEnabledAsync(Employee employee)
+        {
+            if (employee == null)
+                throw new ArgumentNullException(nameof(employee));
+
+            if (string.IsNullOrWhiteSpace(employee.Email))
+                return false;
+
+            var user = await _userManager.FindByEmailAsync(employee.Email);
+
+            return user != null ? true : false;
         }
 
         #endregion

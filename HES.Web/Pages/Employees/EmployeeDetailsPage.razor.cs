@@ -29,6 +29,8 @@ namespace HES.Web.Pages.Employees
         public Employee Employee { get; set; }
         public string LdapHost { get; set; }
         public bool AdUserNotFound { get; set; }
+        public bool IsSsoEnabled { get; set; }
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -46,6 +48,8 @@ namespace HES.Web.Pages.Employees
                 await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
                 await LoadLdapSettingsAsync();
                 await MainTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
+
+                IsSsoEnabled = await EmployeeService.IsSsoEnableAsync(Employee);
 
                 SetInitialized();
             }

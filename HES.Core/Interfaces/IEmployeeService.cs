@@ -30,6 +30,12 @@ namespace HES.Core.Interfaces
 
         #endregion
 
+        #region SSO
+
+        Task<bool> IsSsoEnabledAsync(Employee employee);
+
+        #endregion
+
         #region Hardware Vault
 
         Task AddHardwareVaultAsync(string employeeId, string vaultId);

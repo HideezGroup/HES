@@ -102,6 +102,49 @@
         }
     </section>
     <section>
+        <h4 class="text-navyblue me-2">Single Sign On</h4>
+        <div class="card mb-5">
+            <div class="card-body">
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="fw-bold">SSO Enable</span>
+                        <span class="mx-1">-</span>
+                        <span>
+                            @if (IsSsoEnabled)
+                            {
+                                <span>Yes</span>
+                            }
+                            else
+                            {
+                                <span>No</span>
+                            }
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="fw-bold">Email</span>
+                        <span class="mx-1">-</span>
+                        <span>@Employee.Email</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="fw-bold">Security Key</span>
+                        <span class="mx-1">-</span>
+                        <span></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="text-center py-3">
+                @if (!IsSsoEnabled && !string.IsNullOrWhiteSpace(Employee.Email))
+                {
+                    <button class="btn btn-primary w-25">Enable SSO</button>
+                }
+                else if(IsSsoEnabled)
+                {
+                    <button class="btn btn-danger w-25">Disable SSO</button>
+                }
+            </div>
+        </div>
+    </section>
+    <section>
         @if (MainTableService.Entities.Count > 0)
         {
             <TableAction>
