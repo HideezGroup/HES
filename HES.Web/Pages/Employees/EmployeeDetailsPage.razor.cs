@@ -49,7 +49,7 @@ namespace HES.Web.Pages.Employees
                 await LoadLdapSettingsAsync();
                 await MainTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
 
-                IsSsoEnabled = await EmployeeService.IsSsoEnabledAsync(Employee);
+                LoadEmployeeSsoState();
 
                 SetInitialized();
             }
@@ -71,7 +71,6 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await MainTableService.LoadTableDataAsync();
-                IsSsoEnabled = await EmployeeService.IsSsoEnabledAsync(Employee);
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -96,6 +95,12 @@ namespace HES.Web.Pages.Employees
             if (Employee == null)
                 throw new Exception("Employee not found.");
 
+            StateHasChanged();
+        }
+
+        private async Task LoadEmployeeSsoState()
+        {
+            IsSsoEnabled = await EmployeeService.IsSsoEnabledAsync(Employee);
             StateHasChanged();
         }
 
@@ -387,6 +392,7 @@ namespace HES.Web.Pages.Employees
                 builder.OpenComponent(0, typeof(EmployeeEnableSso));
                 builder.AddAttribute(1, nameof(EmployeeEnableSso.Employee), Employee);
                 builder.AddAttribute(2, nameof(EmployeeEnableSso.ExceptPageId), PageId);
+                builder.AddAttribute(3, nameof(EmployeeEnableSso.Refresh), EventCallback.Factory.Create(this, LoadEmployeeSsoState));
                 builder.CloseComponent();
             };
 
@@ -402,6 +408,7 @@ namespace HES.Web.Pages.Employees
                 builder.OpenComponent(0, typeof(EmployeeDisableSso));
                 builder.AddAttribute(1, nameof(EmployeeDisableSso.Employee), Employee);
                 builder.AddAttribute(2, nameof(EmployeeDisableSso.ExceptPageId), PageId);
+                builder.AddAttribute(3, nameof(EmployeeDisableSso.Refresh), EventCallback.Factory.Create(this, LoadEmployeeSsoState));
                 builder.CloseComponent();
             };
 

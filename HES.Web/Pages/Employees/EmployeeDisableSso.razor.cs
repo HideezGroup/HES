@@ -21,6 +21,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public ILogger<EmployeeDisableSso> Logger { get; set; }
         public IEmployeeService EmployeeService { get; set; }
 
+        [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public Employee Employee { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
@@ -45,8 +46,9 @@ namespace HES.Web.Pages.Employees
             {
                 await EmployeeService.DisableSsoAsync(Employee);
                 await EmailSenderService.SendEmployeeDisableSsoAsync(Employee.Email);
-                await SynchronizationService.UpdateEmployees(ExceptPageId);
+                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Employee.Id);
                 await ToastService.ShowToastAsync($"SSO for employee {Employee.Email} disabled.", ToastType.Success);
+                await Refresh.InvokeAsync();
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)

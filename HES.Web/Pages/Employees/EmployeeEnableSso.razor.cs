@@ -19,6 +19,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public ILogger<EmployeeEnableSso> Logger { get; set; }
         public IEmployeeService EmployeeService { get; set; }
 
+        [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public Employee Employee { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
@@ -44,8 +45,9 @@ namespace HES.Web.Pages.Employees
                 await EmployeeService.EnableSsoAsync(Employee);
                 var callBack = await ApplicationUserService.GetEnableSsoCallBackUrl(Employee.Email, NavigationManager.BaseUri);
                 await EmailSenderService.SendEmployeeEnableSsoAsync(Employee.Email, callBack);
-                await SynchronizationService.UpdateEmployees(ExceptPageId);
+                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Employee.Id);
                 await ToastService.ShowToastAsync($"SSO for employee {Employee.Email} enabled.", ToastType.Success);
+                await Refresh.InvokeAsync();
                 await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)
