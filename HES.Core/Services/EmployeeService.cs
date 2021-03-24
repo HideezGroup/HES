@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
@@ -204,7 +205,6 @@ namespace HES.Core.Services
             .Include(x => x.HardwareVaults)
             .Include(x => x.SoftwareVaults)
             .AsQueryable();
-
 
             // Filter
             if (dataLoadingOptions.Filter != null)
@@ -482,7 +482,7 @@ namespace HES.Core.Services
                 throw new Exception(errors);
             }
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "User");
+            var roleResult = await _userManager.AddToRoleAsync(user, ApplicationRoles.User);
 
             if (!roleResult.Succeeded)
             {
