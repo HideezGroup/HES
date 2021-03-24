@@ -106,15 +106,21 @@
         <section>
             <h4 class="text-navyblue me-2">Single Sign On</h4>
             <div class="card mb-3">
-                <div class="card-body d-flex align-items-center py-2">
-                    @if (IsSsoEnabled)
+                <div class="card-body d-flex align-items-center py-2" style="min-height:54px;">
+                    @if (UserSsoInfo.IsSsoEnabled)
                     {
-                        <span class="fw-bold me-2">SSO Enabled</span>
-                        <span class="badge bg-success">@Employee.Email</span>
-                        <button type="button" class="btn btn-light border ms-auto me-1" @onclick="OpenModalDisableSsoAsync">
-                            <img class="icon-btn" src="/svg/icon-sso-disable.svg" />
-                            Disable SSO
-                        </button>
+                        <span class="fw-bold">SSO Enabled</span>
+                        <span class="mx-2">-</span>
+                        <span>Login: @UserSsoInfo.UserEmail</span>
+                        <span class="mx-2">-</span>
+                        <span>Security Key: @UserSsoInfo.SecurityKeyName</span>
+                        @if (UserSsoInfo.UserRole != ApplicationRoles.Admin)
+                        {
+                            <button type="button" class="btn btn-light border ms-auto me-1" @onclick="OpenModalDisableSsoAsync">
+                                <img class="icon-btn" src="/svg/icon-sso-disable.svg" />
+                                Disable SSO
+                            </button>
+                        }
                     }
                     else
                     {

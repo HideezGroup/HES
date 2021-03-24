@@ -5,6 +5,7 @@ using HES.Core.Interfaces;
 using HES.Core.Models.Employees;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Web.AppUsers;
 using HES.Core.Utilities;
 using Hideez.SDK.Communication.PasswordManager;
 using Hideez.SDK.Communication.Security;
@@ -24,6 +25,7 @@ namespace HES.Core.Services
     public class EmployeeService : IEmployeeService, IDisposable
     {
         private readonly IAsyncRepository<Employee> _employeeRepository;
+        private readonly IAsyncRepository<ApplicationUser> _applicationUserRepository;
         private readonly IHardwareVaultService _hardwareVaultService;
         private readonly IHardwareVaultTaskService _hardwareVaultTaskService;
         private readonly ISoftwareVaultService _softwareVaultService;
@@ -36,6 +38,7 @@ namespace HES.Core.Services
         private readonly IConfiguration _configuration;
 
         public EmployeeService(IAsyncRepository<Employee> employeeRepository,
+                               IAsyncRepository<ApplicationUser> applicationUserRepository,
                                IHardwareVaultService hardwareVaultService,
                                IHardwareVaultTaskService hardwareVaultTaskService,
                                ISoftwareVaultService softwareVaultService,
@@ -48,6 +51,7 @@ namespace HES.Core.Services
                                IConfiguration configuration)
         {
             _employeeRepository = employeeRepository;
+            _applicationUserRepository = applicationUserRepository;
             _hardwareVaultService = hardwareVaultService;
             _hardwareVaultTaskService = hardwareVaultTaskService;
             _softwareVaultService = softwareVaultService;
@@ -426,17 +430,31 @@ namespace HES.Core.Services
             return false;
         }
 
-        public async Task<bool> IsSsoEnabledAsync(Employee employee)
+        public async Task<UserSsoInfo> GetUserSsoInfoAsync(Employee employee)
         {
             if (employee == null)
                 throw new ArgumentNullException(nameof(employee));
 
-            if (string.IsNullOrWhiteSpace(employee.Email))
-                return false;
+            var user = await _applicationUserRepository
+                .Query()
+                .Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role)
+                .FirstOrDefaultAsync(x => x.Email == employee.Email);
 
-            var user = await _userManager.FindByEmailAsync(employee.Email);
+            if (user == null)
+            {
+                return new UserSsoInfo();
+            }
 
-            return user != null ? true : false;
+            var cred = await _fido2Service.GetCredentialsByUserEmail(employee.Email);
+
+            return new UserSsoInfo
+            {
+                IsSsoEnabled = user != null ? true : false,
+                UserEmail = user.Email,
+                UserRole = user.UserRoles.FirstOrDefault().Role.Name,
+                SecurityKeyName = cred.Count > 0 ? cred.FirstOrDefault().SecurityKeyName : "Not added"
+            };
         }
 
         public async Task EnableSsoAsync(Employee employee)

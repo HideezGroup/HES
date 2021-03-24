@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Models.Employees;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Web.AppUsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,6 @@ namespace HES.Core.Interfaces
     public interface IEmployeeService : IDisposable
     {
         #region Employee
-
         IQueryable<Employee> EmployeeQuery();
         Task<List<Employee>> GetEmployeesAsync(DataLoadingOptions<EmployeeFilter> dataLoadingOptions);
         Task<int> GetEmployeesCountAsync(DataLoadingOptions<EmployeeFilter> dataLoadingOptions);
@@ -27,15 +27,13 @@ namespace HES.Core.Interfaces
         Task UpdateLastSeenAsync(string vaultId);
         Task UnchangedEmployeeAsync(Employee employee);
         Task RemoveFromHideezKeyOwnersAsync(string employeeId);
-
         #endregion
 
         #region SSO
         bool IsSaml2PEnabled();
-        Task<bool> IsSsoEnabledAsync(Employee employee);
+        Task<UserSsoInfo> GetUserSsoInfoAsync(Employee employee);
         Task EnableSsoAsync(Employee employee);
         Task DisableSsoAsync(Employee employee);
-
         #endregion
 
         #region Hardware Vault
