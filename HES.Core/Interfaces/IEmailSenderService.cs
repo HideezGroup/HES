@@ -13,6 +13,8 @@ namespace HES.Core.Interfaces
         Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults, IList<ApplicationUser> administrators);
         Task SendActivateDataProtectionAsync(IList<ApplicationUser> administrators);
         Task SendUserInvitationAsync(string email, string callbackUrl);
+        Task SendEmployeeEnableSsoAsync(string email, string callbackUrl);
+        Task SendEmployeeDisableSsoAsync(string email);
         Task SendUserResetPasswordAsync(string email, string callbackUrl);
         Task SendUserConfirmEmailAsync(string userId, string email, string code);
         Task SendSoftwareVaultInvitationAsync(Employee employee, SoftwareVaultActivation activation, DateTime validTo);

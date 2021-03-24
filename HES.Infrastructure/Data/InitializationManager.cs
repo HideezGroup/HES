@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,22 +40,22 @@ namespace HES.Infrastructure.Data
         private static async Task InitializeRoleAndAdmin(IServiceScope scope)
         {
             using var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            using var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            using var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
-            var roleResult = await roleManager.RoleExistsAsync(ApplicationRoles.AdminRole);
+            var roleResult = await roleManager.RoleExistsAsync(ApplicationRoles.Admin);
             if (!roleResult)
             {
                 string adminName = "admin@hideez.com";
                 string adminPassword = "admin";
 
                 // Create roles
-                await roleManager.CreateAsync(new IdentityRole(ApplicationRoles.AdminRole));
-                await roleManager.CreateAsync(new IdentityRole(ApplicationRoles.UserRole));
+                await roleManager.CreateAsync(new ApplicationRole(ApplicationRoles.Admin));
+                await roleManager.CreateAsync(new ApplicationRole(ApplicationRoles.User));
                 // Create admin
                 var admin = new ApplicationUser { UserName = adminName, Email = adminName, EmailConfirmed = true };
                 await userManager.CreateAsync(admin, adminPassword);
                 // Add admin to role
-                await userManager.AddToRoleAsync(admin, ApplicationRoles.AdminRole);
+                await userManager.AddToRoleAsync(admin, ApplicationRoles.Admin);
             }
         }
 

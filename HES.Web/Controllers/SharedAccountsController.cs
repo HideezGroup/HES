@@ -1,14 +1,11 @@
-﻿using HES.Core.Entities;
-using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models;
 using HES.Core.Models.API;
-using HES.Core.Models.API.SharedAccount;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
 using HES.Core.Models.Web.SharedAccounts;
-using HES.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Controllers
 {
-    [Authorize(Roles = ApplicationRoles.AdminRole)]
+    [Authorize(Roles = ApplicationRoles.Admin)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class SharedAccountsController : ControllerBase

@@ -1,15 +1,19 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Employees;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Web.AppUsers;
 using HES.Core.Utilities;
 using Hideez.SDK.Communication.PasswordManager;
 using Hideez.SDK.Communication.Security;
 using Hideez.SDK.Communication.Utils;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +26,7 @@ namespace HES.Core.Services
     public class EmployeeService : IEmployeeService, IDisposable
     {
         private readonly IAsyncRepository<Employee> _employeeRepository;
+        private readonly IAsyncRepository<ApplicationUser> _applicationUserRepository;
         private readonly IHardwareVaultService _hardwareVaultService;
         private readonly IHardwareVaultTaskService _hardwareVaultTaskService;
         private readonly ISoftwareVaultService _softwareVaultService;
@@ -29,17 +34,25 @@ namespace HES.Core.Services
         private readonly ISharedAccountService _sharedAccountService;
         private readonly IWorkstationService _workstationService;
         private readonly IDataProtectionService _dataProtectionService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFido2Service _fido2Service;
+        private readonly IConfiguration _configuration;
 
         public EmployeeService(IAsyncRepository<Employee> employeeRepository,
+                               IAsyncRepository<ApplicationUser> applicationUserRepository,
                                IHardwareVaultService hardwareVaultService,
                                IHardwareVaultTaskService hardwareVaultTaskService,
                                ISoftwareVaultService softwareVaultService,
                                IAccountService accountService,
                                ISharedAccountService sharedAccountService,
                                IWorkstationService workstationService,
-                               IDataProtectionService dataProtectionService)
+                               IDataProtectionService dataProtectionService,
+                               UserManager<ApplicationUser> userManager,
+                               IFido2Service fido2Service,
+                               IConfiguration configuration)
         {
             _employeeRepository = employeeRepository;
+            _applicationUserRepository = applicationUserRepository;
             _hardwareVaultService = hardwareVaultService;
             _hardwareVaultTaskService = hardwareVaultTaskService;
             _softwareVaultService = softwareVaultService;
@@ -47,6 +60,9 @@ namespace HES.Core.Services
             _sharedAccountService = sharedAccountService;
             _workstationService = workstationService;
             _dataProtectionService = dataProtectionService;
+            _userManager = userManager;
+            _fido2Service = fido2Service;
+            _configuration = configuration;
         }
 
         #region Employee
@@ -190,7 +206,6 @@ namespace HES.Core.Services
             .Include(x => x.SoftwareVaults)
             .AsQueryable();
 
-
             // Filter
             if (dataLoadingOptions.Filter != null)
             {
@@ -272,7 +287,7 @@ namespace HES.Core.Services
 
             return await _employeeRepository.AddAsync(employee);
         }
-        
+
         public async Task<Employee> ImportEmployeeAsync(Employee employee)
         {
             if (employee == null)
@@ -399,6 +414,97 @@ namespace HES.Core.Services
             employee.ActiveDirectoryGuid = null;
             employee.WhenChanged = null;
             await _employeeRepository.UpdateAsync(employee);
+        }
+
+        #endregion
+
+        #region SSO
+
+        public bool IsSaml2PEnabled()
+        {
+            if (!string.IsNullOrWhiteSpace(_configuration.GetValue<string>("SAML2P:LicenseName")) && !string.IsNullOrWhiteSpace(_configuration.GetValue<string>("SAML2P:LicenseKey")))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<UserSsoInfo> GetUserSsoInfoAsync(Employee employee)
+        {
+            if (employee == null)
+                throw new ArgumentNullException(nameof(employee));
+
+            var user = await _applicationUserRepository
+                .Query()
+                .Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role)
+                .FirstOrDefaultAsync(x => x.Email == employee.Email);
+
+            if (user == null)
+            {
+                return new UserSsoInfo();
+            }
+
+            var cred = await _fido2Service.GetCredentialsByUserEmail(employee.Email);
+
+            return new UserSsoInfo
+            {
+                IsSsoEnabled = user != null ? true : false,
+                UserEmail = user.Email,
+                UserRole = user.UserRoles.FirstOrDefault().Role.Name,
+                SecurityKeyName = cred.Count > 0 ? cred.FirstOrDefault().SecurityKeyName : "Not added"
+            };
+        }
+
+        public async Task EnableSsoAsync(Employee employee)
+        {
+            if (employee == null)
+                throw new ArgumentNullException(nameof(employee));
+
+            var user = new ApplicationUser
+            {
+                FullName = employee.FullName,
+                PhoneNumber = employee.PhoneNumber,
+                UserName = employee.Email,
+                Email = employee.Email,
+                EmailConfirmed = true
+            };
+
+            var result = await _userManager.CreateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                string errors = string.Empty;
+                foreach (var item in result.Errors)
+                    errors += $"Code: {item.Code} Description: {item.Description} {Environment.NewLine}";
+
+                throw new Exception(errors);
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(user, ApplicationRoles.User);
+
+            if (!roleResult.Succeeded)
+            {
+                string errors = string.Empty;
+                foreach (var item in result.Errors)
+                    errors += $"Code: {item.Code} Description: {item.Description} {Environment.NewLine}";
+
+                throw new Exception(errors);
+            }
+        }
+
+        public async Task DisableSsoAsync(Employee employee)
+        {
+            if (employee == null)
+                throw new ArgumentNullException(nameof(employee));
+
+            var user = await _userManager.FindByEmailAsync(employee.Email);
+            if (user == null)
+                throw new HESException(HESCode.UserNotFound);
+
+            await _fido2Service.RemoveCredentialsByUsername(employee.Email);
+            await _userManager.DeleteAsync(user);
         }
 
         #endregion

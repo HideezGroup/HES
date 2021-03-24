@@ -1,5 +1,5 @@
 ﻿@page "/Employees/Details/{EmployeeId}"
-@attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
+@attribute [Authorize(Roles = ApplicationRoles.Admin)]
 @inherits HESComponentBase
 
 @if (Initialized)
@@ -101,6 +101,39 @@
             </ul>
         }
     </section>
+    @if (EmployeeService.IsSaml2PEnabled() && !string.IsNullOrWhiteSpace(Employee.Email) && Employee.HardwareVaults.Count > 0)
+    {
+        <section>
+            <h4 class="text-navyblue me-2">Single Sign On</h4>
+            <div class="card mb-3">
+                <div class="card-body d-flex align-items-center py-2" style="min-height:54px;">
+                    @if (UserSsoInfo.IsSsoEnabled)
+                    {
+                        <span class="fw-bold">SSO Enabled</span>
+                        <span class="mx-2">-</span>
+                        <span>Login: @UserSsoInfo.UserEmail</span>
+                        <span class="mx-2">-</span>
+                        <span>Security Key: @UserSsoInfo.SecurityKeyName</span>
+                        @if (UserSsoInfo.UserRole != ApplicationRoles.Admin)
+                        {
+                            <button type="button" class="btn btn-light border ms-auto me-1" @onclick="OpenModalDisableSsoAsync">
+                                <img class="icon-btn" src="/svg/icon-sso-disable.svg" />
+                                Disable SSO
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        <span class="fw-bold">SSO Disabled</span>
+                        <button type="button" class="btn btn-light border ms-auto me-1" @onclick="OpenModalEnableSsoAsync">
+                            <img class="icon-btn" src="/svg/icon-sso-enable.svg" />
+                            Enable SSO
+                        </button>
+                    }
+                </div>
+            </div>
+        </section>
+    }
     <section>
         @if (MainTableService.Entities.Count > 0)
         {

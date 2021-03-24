@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Web.AppUsers;
 using HES.Web.Components;
 using LdapForNet;
 using Microsoft.AspNetCore.Components;
@@ -29,6 +30,7 @@ namespace HES.Web.Pages.Employees
         public Employee Employee { get; set; }
         public string LdapHost { get; set; }
         public bool AdUserNotFound { get; set; }
+        public UserSsoInfo UserSsoInfo { get; set; } 
 
         protected override async Task OnInitializedAsync()
         {
@@ -46,6 +48,8 @@ namespace HES.Web.Pages.Employees
                 await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
                 await LoadLdapSettingsAsync();
                 await MainTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
+
+                await LoadEmployeeSsoState();          
 
                 SetInitialized();
             }
@@ -91,6 +95,12 @@ namespace HES.Web.Pages.Employees
             if (Employee == null)
                 throw new Exception("Employee not found.");
 
+            StateHasChanged();
+        }
+
+        private async Task LoadEmployeeSsoState()
+        {
+            UserSsoInfo = await EmployeeService.GetUserSsoInfoAsync(Employee);
             StateHasChanged();
         }
 
@@ -156,7 +166,7 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(DeleteHardwareVault));
                 builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
-                builder.AddAttribute(2, "HardwareVaultId", hardwareVault.Id);   
+                builder.AddAttribute(2, "HardwareVaultId", hardwareVault.Id);
                 builder.AddAttribute(3, nameof(DeleteHardwareVault.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
@@ -171,7 +181,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddSoftwareVault));
-                builder.AddAttribute(1, "Employee", Employee);        
+                builder.AddAttribute(1, "Employee", Employee);
                 builder.CloseComponent();
             };
 
@@ -201,7 +211,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddSharedAccount));
-                builder.AddAttribute(1, "EmployeeId", EmployeeId);  
+                builder.AddAttribute(1, "EmployeeId", EmployeeId);
                 builder.AddAttribute(2, nameof(AddSharedAccount.ExceptPageId), PageId);
                 builder.AddAttribute(3, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
                 builder.CloseComponent();
@@ -233,7 +243,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccount));
-                builder.AddAttribute(1, nameof(EditPersonalAccount.AccountId), MainTableService.SelectedEntity.Id);        
+                builder.AddAttribute(1, nameof(EditPersonalAccount.AccountId), MainTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(EditPersonalAccount.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
@@ -248,7 +258,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountPwd));
-                builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);  
+                builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(EditPersonalAccountPwd.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
@@ -263,7 +273,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountOtp));
-                builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);  
+                builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(EditPersonalAccountOtp.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
@@ -278,7 +288,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(GenerateAdPassword));
-                builder.AddAttribute(1, nameof(GenerateAdPassword.AccountId), MainTableService.SelectedEntity.Id);   
+                builder.AddAttribute(1, nameof(GenerateAdPassword.AccountId), MainTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(GenerateAdPassword.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
@@ -293,7 +303,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteAccount));
-                builder.AddAttribute(1, nameof(DeleteAccount.AccountId), MainTableService.SelectedEntity.Id);    
+                builder.AddAttribute(1, nameof(DeleteAccount.AccountId), MainTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(DeleteAccount.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
@@ -373,10 +383,42 @@ namespace HES.Web.Pages.Employees
             await ModalDialogService.ShowAsync("Activation code", body);
         }
 
+        private async Task OpenModalEnableSsoAsync()
+        {
+            if (!await VerifyAdUserAsync()) return;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(EmployeeEnableSso));
+                builder.AddAttribute(1, nameof(EmployeeEnableSso.Employee), Employee);
+                builder.AddAttribute(2, nameof(EmployeeEnableSso.ExceptPageId), PageId);
+                builder.AddAttribute(3, nameof(EmployeeEnableSso.Refresh), EventCallback.Factory.Create(this, LoadEmployeeSsoState));
+                builder.CloseComponent();
+            };
+
+            await ModalDialogService.ShowAsync("Enable SSO", body);
+        }
+
+        private async Task OpenModalDisableSsoAsync()
+        {
+            if (!await VerifyAdUserAsync()) return;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(EmployeeDisableSso));
+                builder.AddAttribute(1, nameof(EmployeeDisableSso.Employee), Employee);
+                builder.AddAttribute(2, nameof(EmployeeDisableSso.ExceptPageId), PageId);
+                builder.AddAttribute(3, nameof(EmployeeDisableSso.Refresh), EventCallback.Factory.Create(this, LoadEmployeeSsoState));
+                builder.CloseComponent();
+            };
+
+            await ModalDialogService.ShowAsync("Disable SSO", body);
+        }
+
         #endregion
 
         public void Dispose()
-        {         
+        {
             SynchronizationService.UpdateEmployeeDetailsPage -= UpdateEmployeeDetailsPage;
             SynchronizationService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
 
