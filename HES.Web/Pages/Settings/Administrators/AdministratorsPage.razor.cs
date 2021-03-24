@@ -18,12 +18,10 @@ namespace HES.Web.Pages.Settings.Administrators
         public IApplicationUserService ApplicationUserService { get; set; }
         public IEmailSenderService EmailSenderService { get; set; }
         public IMainTableService<ApplicationUser, ApplicationUserFilter> MainTableService { get; set; }
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<AdministratorsPage> Logger { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
         public AuthenticationState AuthenticationState { get; set; }
 
         protected override async Task OnInitializedAsync()

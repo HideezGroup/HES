@@ -86,7 +86,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                         return;
                     }
 
-                    var isAdmin = await UserManager.IsInRoleAsync(user, ApplicationRoles.AdminRole);
+                    var isAdmin = await UserManager.IsInRoleAsync(user, ApplicationRoles.Admin);
                     if (!isAdmin)
                     {
                         ValidationErrorMessage.DisplayError(nameof(UserEmailModel.Email), HESException.GetMessage(HESCode.InvalidLoginAttempt));

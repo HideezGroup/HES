@@ -1,18 +1,18 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace HES.Web.Controllers
 {
-    [Authorize(Roles = ApplicationRoles.AdminRole)]
+    [Authorize(Roles = ApplicationRoles.Admin)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class OrgStructureController : ControllerBase
