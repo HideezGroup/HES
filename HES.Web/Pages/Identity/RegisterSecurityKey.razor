@@ -1,0 +1,45 @@
+﻿@page  "/register-security-key"
+@layout BlankLayout
+@inherits HESComponentBase
+
+@if (Initialized)
+{
+    <ErrorAlert Message="@ErrorMessage" Close="@ClearErrorMessage" />
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="custom-card">
+            <div class="text-center m-3">
+                <img src="/svg/hideez-es-logo.svg" />
+            </div>
+            <h3 class="text-navyblue my-3">Register a security key</h3>
+            @switch (RegistrationStep)
+            {
+                case KeyRegistrationStep.SecurityKeyRegistration:
+                    <span>Your PC will open a security window. Follow the instructions there to sign in.</span>
+                    <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                        <Loader DisableShadow="true" />
+                    </div>
+                    <div class="text-end mt-3">
+                        <Button Text="Register" OnClick="SignInWithSecurityKeyAsync" class="btn btn-primary" />
+                    </div>
+                    break;
+                case KeyRegistrationStep.SecurityKeyRegistrationFinish:
+                    <span>You have successfully completed the security key registration process. Thank!</span>
+                    break;
+                case KeyRegistrationStep.SecurityKeyRegistrationError:
+                    <span>We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</span>
+                    <div class="text-end mt-3">
+                        <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-primary" />
+                    </div>
+                    break;
+            }
+        </div>
+    </div>
+}
+else if (LoadFailed)
+{
+    <LoadingFailed ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <Loader AbsoluteCenter="true" />
+}
