@@ -10,26 +10,32 @@
             <div class="text-center m-3">
                 <img src="/svg/hideez-es-logo.svg" />
             </div>
-            <h3 class="text-navyblue my-3">Register a security key</h3>
+            <h3 class="text-navyblue text-center my-3">Register a Security Key</h3>
             @switch (RegistrationStep)
             {
-                case KeyRegistrationStep.SecurityKeyRegistration:
-                    <span>Your PC will open a security window. Follow the instructions there to sign in.</span>
-                    <div class="d-flex justify-content-center align-items-center w-100 h-100">
-                        <Loader DisableShadow="true" />
-                    </div>
-                    <div class="text-end mt-3">
-                        <Button Text="Register" OnClick="SignInWithSecurityKeyAsync" class="btn btn-primary" />
+                case SecurityKeyRegistrationStep.Start:
+                    <h3 class="text-center">@User.FullName</h3>
+                    <h5 class="text-center text-gray">@User.Email</h5>
+                    <span>When you choose Next, you woll be promoted to plug your security key. Your PC will open a security window. Follow the instructions there to register.</span>
+                    <div class="mt-3">
+                        <Button Text="Next" OnClick="RegisterSecurityKeyAsync" class="btn btn-outline-primary w-100" />
                     </div>
                     break;
-                case KeyRegistrationStep.SecurityKeyRegistrationFinish:
-                    <span>You have successfully completed the security key registration process. Thank!</span>
+                case SecurityKeyRegistrationStep.Configuration:
+                    <span>Your PC will open a security window. Follow the instructions there to register.</span>
+                    <Loader DisableShadow="true" />
                     break;
-                case KeyRegistrationStep.SecurityKeyRegistrationError:
+                case SecurityKeyRegistrationStep.Done:
+                    <span>You have successfully completed the security key registration process. Thanks!</span>
+                    break;
+                case SecurityKeyRegistrationStep.Error:
                     <span>We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</span>
-                    <div class="text-end mt-3">
-                        <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-primary" />
+                    <div class="mt-3">
+                        <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-outline-secondary w-100" />
                     </div>
+                    break;
+                case SecurityKeyRegistrationStep.UserNotFound:
+                    <span>We could not find a user with such an email, please contact the administrator.</span>
                     break;
             }
         </div>
