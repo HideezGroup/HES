@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
@@ -59,7 +60,23 @@ namespace HES.Core.Services
 
         public async Task<List<ApplicationUser>> GetAdministratorsAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
         {
-            var query = _applicationUserRepository.Query();
+            var query = AdministratorsQuery(dataLoadingOptions);
+            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetAdministratorsCountAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
+        {
+            var query = AdministratorsQuery(dataLoadingOptions);
+            return await query.CountAsync();
+        }
+
+        private IQueryable<ApplicationUser> AdministratorsQuery(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
+        {
+            var query = _applicationUserRepository.Query()
+            .Include(x => x.UserRoles)
+            .ThenInclude(x => x.Role)
+            .Where(x => x.UserRoles.Any(x => x.Role.Name == ApplicationRoles.Admin))
+            .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
             {
@@ -85,22 +102,7 @@ namespace HES.Core.Services
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
-        }
-
-        public async Task<int> GetAdministratorsCountAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
-        {
-            var query = _applicationUserRepository.Query();
-
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
-            {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.Email.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.PhoneNumber.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return await query.CountAsync();
+            return query;
         }
 
         public async Task<string> InviteAdministratorAsync(string email, string domain)

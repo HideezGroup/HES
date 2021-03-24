@@ -3,10 +3,18 @@ using System.Collections.Generic;
 
 namespace HES.Core.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationRole : IdentityRole
     {
-        public string FullName { get; set; }
-
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+
+        public ApplicationRole()
+        {
+
+        }
+
+        public ApplicationRole(string roleName) : base(roleName)
+        {
+
+        }
     }
 }

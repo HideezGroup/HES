@@ -1,5 +1,5 @@
 ﻿@page "/Employees/Details/{EmployeeId}"
-@attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
+@attribute [Authorize(Roles = ApplicationRoles.Admin)]
 @inherits HESComponentBase
 
 @if (Initialized)
@@ -101,52 +101,29 @@
             </ul>
         }
     </section>
-    @if (!string.IsNullOrWhiteSpace(Employee.Email))
+    @if (EmployeeService.IsSaml2PEnabled() && !string.IsNullOrWhiteSpace(Employee.Email) && Employee.HardwareVaults.Count > 0)
     {
         <section>
             <h4 class="text-navyblue me-2">Single Sign On</h4>
-            <div class="row">
-                <div class="col-6">
-                    <div class="card mb-5">
-                        <div class="card-body">
-                            <ul class="list-group mb-3">
-                                <li class="list-group-item d-flex align-items-center">
-                                    <span class="fw-bold">SSO Enable</span>
-                                    <span class="mx-1">-</span>
-                                    <span>
-                                        @if (IsSsoEnabled)
-                                        {
-                                            <span>Yes</span>
-                                        }
-                                        else
-                                        {
-                                            <span>No</span>
-                                        }
-                                    </span>
-                                </li>
-                                <li class="list-group-item d-flex align-items-center">
-                                    <span class="fw-bold">Email</span>
-                                    <span class="mx-1">-</span>
-                                    <span>@Employee.Email</span>
-                                </li>
-                                <li class="list-group-item d-flex align-items-center">
-                                    <span class="fw-bold">Security Key</span>
-                                    <span class="mx-1">-</span>
-                                    <span></span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="text-center py-3">
-                            @if (!IsSsoEnabled)
-                            {
-                                <button class="btn btn-primary w-25" @onclick="OpenModalEnableSsoAsync">Enable SSO</button>
-                            }
-                            else
-                            {
-                                <button class="btn btn-danger w-25" @onclick="OpenModalDisableSsoAsync">Disable SSO</button>
-                            }
-                        </div>
-                    </div>
+            <div class="card mb-3">
+                <div class="card-body d-flex align-items-center py-2">
+                    @if (IsSsoEnabled)
+                    {
+                        <span class="fw-bold me-2">SSO Enabled</span>
+                        <span class="badge bg-success">@Employee.Email</span>
+                        <button type="button" class="btn btn-light border ms-auto me-1" @onclick="OpenModalDisableSsoAsync">
+                            <img class="icon-btn" src="/svg/icon-sso-disable.svg" />
+                            Disable SSO
+                        </button>
+                    }
+                    else
+                    {
+                        <span class="fw-bold">SSO Disabled</span>
+                        <button type="button" class="btn btn-light border ms-auto me-1" @onclick="OpenModalEnableSsoAsync">
+                            <img class="icon-btn" src="/svg/icon-sso-enable.svg" />
+                            Enable SSO
+                        </button>
+                    }
                 </div>
             </div>
         </section>

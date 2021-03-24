@@ -11,6 +11,7 @@ using Hideez.SDK.Communication.Security;
 using Hideez.SDK.Communication.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +33,7 @@ namespace HES.Core.Services
         private readonly IDataProtectionService _dataProtectionService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFido2Service _fido2Service;
+        private readonly IConfiguration _configuration;
 
         public EmployeeService(IAsyncRepository<Employee> employeeRepository,
                                IHardwareVaultService hardwareVaultService,
@@ -42,7 +44,8 @@ namespace HES.Core.Services
                                IWorkstationService workstationService,
                                IDataProtectionService dataProtectionService,
                                UserManager<ApplicationUser> userManager,
-                               IFido2Service fido2Service)
+                               IFido2Service fido2Service,
+                               IConfiguration configuration)
         {
             _employeeRepository = employeeRepository;
             _hardwareVaultService = hardwareVaultService;
@@ -54,6 +57,7 @@ namespace HES.Core.Services
             _dataProtectionService = dataProtectionService;
             _userManager = userManager;
             _fido2Service = fido2Service;
+            _configuration = configuration;
         }
 
         #region Employee
@@ -279,7 +283,7 @@ namespace HES.Core.Services
 
             return await _employeeRepository.AddAsync(employee);
         }
-        
+
         public async Task<Employee> ImportEmployeeAsync(Employee employee)
         {
             if (employee == null)
@@ -412,6 +416,16 @@ namespace HES.Core.Services
 
         #region SSO
 
+        public bool IsSaml2PEnabled()
+        {
+            if (!string.IsNullOrWhiteSpace(_configuration.GetValue<string>("SAML2P:LicenseName")) && !string.IsNullOrWhiteSpace(_configuration.GetValue<string>("SAML2P:LicenseKey")))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<bool> IsSsoEnabledAsync(Employee employee)
         {
             if (employee == null)
@@ -430,13 +444,13 @@ namespace HES.Core.Services
             if (employee == null)
                 throw new ArgumentNullException(nameof(employee));
 
-            var user = new ApplicationUser 
-            { 
-                FullName = employee.FullName, 
-                PhoneNumber = employee.PhoneNumber, 
-                UserName = employee.Email, 
-                Email = employee.Email, 
-                EmailConfirmed = true 
+            var user = new ApplicationUser
+            {
+                FullName = employee.FullName,
+                PhoneNumber = employee.PhoneNumber,
+                UserName = employee.Email,
+                Email = employee.Email,
+                EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(user);
@@ -467,13 +481,11 @@ namespace HES.Core.Services
             if (employee == null)
                 throw new ArgumentNullException(nameof(employee));
 
-            await _fido2Service.RemoveCredentialsByUsername(employee.Email);
-
             var user = await _userManager.FindByEmailAsync(employee.Email);
-
             if (user == null)
                 throw new HESException(HESCode.UserNotFound);
 
+            await _fido2Service.RemoveCredentialsByUsername(employee.Email);
             await _userManager.DeleteAsync(user);
         }
 

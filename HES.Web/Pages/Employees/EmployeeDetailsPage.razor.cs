@@ -385,7 +385,7 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenModalEnableSsoAsync()
         {
-            //if (!await VerifyAdUserAsync()) return;
+            if (!await VerifyAdUserAsync()) return;
 
             RenderFragment body = (builder) =>
             {
@@ -401,7 +401,7 @@ namespace HES.Web.Pages.Employees
 
         private async Task OpenModalDisableSsoAsync()
         {
-            //if (!await VerifyAdUserAsync()) return;
+            if (!await VerifyAdUserAsync()) return;
 
             RenderFragment body = (builder) =>
             {
