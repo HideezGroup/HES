@@ -315,7 +315,7 @@ else
                         <div>@(AccountSkiped ? "" : PersonalAccount.Name)</div>
                         <div class="fw-bold">User name</div>
                         <div>@(AccountSkiped ? "" : PersonalAccount.Login)</div>
-                    </div>                   
+                    </div>
                 }
                 else
                 {
@@ -341,17 +341,13 @@ else
                 <label class="control-label text-gray">You can send the code to the email</label>
                 <div class="input-group form-group">
                     <input type="text" class="form-control text-navyblue" @bind="Email" />
-                    <div class="input-group-append">
-                        <ButtonSpinner Class="btn btn-outline-primary" Text="Send email" Callback="SendEmailAsync" />
-                    </div>
+                    <ButtonSpinner Class="btn btn-outline-primary" Text="Send email" Callback="SendEmailAsync" />
                 </div>
                 <label class="control-label text-gray">Activation code</label>
                 <div class="input-group form-group">
                     <input type="@(InputType)" id="activationCodeInput" value="@Code" readonly class="form-control">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
-                        <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">Copy</button>
-                    </div>
+                    <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
+                    <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">Copy</button>
                 </div>
             </div>
         </div>

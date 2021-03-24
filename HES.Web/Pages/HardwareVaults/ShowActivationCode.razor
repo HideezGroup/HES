@@ -21,10 +21,8 @@ else
     }
     <div class="input-group form-group">
         <input type="@(InputType)" id="activationCodeInput" value="@Code" readonly class="form-control">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
-            <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">Copy</button>
-        </div>
+        <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
+        <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">Copy</button>
     </div>
     <div class="text-end">
         <button class="btn btn-secondary" @onclick="CloseAsync">Close</button>
