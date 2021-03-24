@@ -1,0 +1,234 @@
+﻿@page "/logs"
+@page "/logs/{FileName}"
+@layout LogsLayout
+@attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
+
+<style>
+    .logs-wrapper {
+        display: flex;
+        height: 100vh;
+    }
+
+    .logs-sidebar {
+        display: flex;
+        flex-direction: column;
+        background-color: #FFFFFF;
+        min-width: 245px;
+        max-width: 245px;
+        height: 100vh;
+        overflow: auto;
+    }
+
+    .logs-main {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    .table > :not(:last-child) > :last-child > * {
+        border-bottom-color: #dee2e6;
+    }
+
+    table > thead > tr > th {
+        padding: 12px !important;
+    }
+
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 12px !important;
+    }
+
+    tr {
+        cursor: pointer;
+        padding: 12px !important;
+    }
+
+    .icon-download {
+        width: 24px;
+        height: 24px;
+        background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04ZM17 13L12 18L7 13H10V9H14V13H17Z' fill='white'/%3E%3C/svg%3E%0A");
+    }
+
+    .icon-delete {
+        width: 24px;
+        height: 24px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' width='24px' height='24px'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v10zM18 4h-2.5l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1z'/%3E%3C/svg%3E");
+    }
+</style>
+
+@if (ErrorMessage != null)
+{
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="alert alert-warning alert-dismissible fade show shadow" role="alert">
+            <strong>Error!</strong> @ErrorMessage.
+            <button type="button" class="btn-close" aria-label="Close" @onclick="@(() => { ErrorMessage = null; })"></button>
+        </div>
+    </div>
+}
+<div class="logs-wrapper">
+    <div class="logs-sidebar shadow p-3">
+        <div class="list-group">
+            @foreach (var file in FileNames)
+            {
+                <a href="/logs/@file.Key" class="text-center list-group-item list-group-item-action @(file.Key == LogsList?.First().Name ? "active" : null)">
+                    <span class="text-uppercase">
+                        @file.Key
+                    </span>
+                </a>
+            }
+        </div>
+    </div>
+    <div class="logs-main">
+        @if (LogsList == null)
+        {
+            <div class="d-flex justify-content-center align-items-center vh-100">
+                <h5>Select log file</h5>
+            </div>
+        }
+        else
+        {
+            <div class="content p-0">
+                @if (IsBusy)
+                {
+                    <div class="position-absolute top-50 start-50 translate-middle">
+                        <div class="spinner-grow text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <nav class="navbar sticky-top navbar-light bg-light border rounded shadow-sm m-1">
+                        <div class="container-fluid">
+                            <div class="d-flex align-items-center">
+                                <button id="download_btn" class="btn btn-secondary me-2" title="Download file" @onclick="DownloadFileAsync">
+                                    <div class="icon-download"></div>
+                                </button>
+                                <button id="delete_btn" class="btn btn-secondary  me-2" title="Delete file" @onclick="@(DeleteFile)">
+                                    <div class="icon-delete"></div>
+                                </button>
+                                <input type="checkbox" class="btn-check" id="btn-check-local" autocomplete="off" @bind="LocalTime">
+                                <label class="btn btn-outline-primary m-0" for="btn-check-local">Local Time @(LocalTime ? "On" : "Off")</label>
+                            </div>
+                            <div>
+                                <span class="badge bg-success">INFO</span> <span id="infoLabel" class="badge bg-light text-dark">@LogsList.Select(s => s.Level).Where(x => x == "INFO").Count()</span>
+                                <span class="badge bg-secondary">DEBUG</span> <span id="debugLabel" class="badge bg-light text-dark">@LogsList.Select(s => s.Level).Where(x => x == "DEBUG").Count()</span>
+                                <span class="badge bg-warning text-dark">WARN</span> <span id="warnLabel" class="badge bg-light text-dark">@LogsList.Select(s => s.Level).Where(x => x == "WARN").Count()</span>
+                                <span class="badge bg-danger">ERROR</span> <span id="errorLabel" class="badge bg-light text-dark">@LogsList.Select(s => s.Level).Where(x => x == "ERROR").Count()</span>
+                                <span class="badge bg-dark">FATAL</span> <span id="fatalLabel" class="badge bg-light text-dark">@LogsList.Select(s => s.Level).Where(x => x == "FATAL").Count()</span>
+                            </div>
+                            <form class="d-flex">
+                                <input class="form-control" type="search" placeholder="Search" aria-label="Search" @oninput="@((e) => { SearchText = (string)e.Value; })">
+                            </form>
+                        </div>
+                    </nav>
+                    <div class="border rounded shadow-sm m-1">
+                        <table class="table table-hover rounded bg-white w-100" style="table-layout:fixed; margin:0px !important">
+                            <thead>
+                                <tr>
+                                    <th style="width:215px">
+                                        Date
+                                    </th>
+                                    <th style="width:100px">
+                                        Level
+                                    </th>
+                                    <th>
+                                        Logger
+                                    </th>
+                                    <th>
+                                        Message
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in LogsList.Where(x => x.Date.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                                                       || x.Level.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                                                       || x.Logger.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                                                       || x.Message.Contains(SearchText, StringComparison.OrdinalIgnoreCase)))
+                                {
+                                    <tr data-toggle="modal" data-target="#modalView" @onclick="@(() => ModalToggle(item))">
+                                        <td>
+                                            @if (LocalTime)
+                                            {
+                                                @DateTime.Parse(item.Date).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.ffff")
+                                            }
+                                            else
+                                            {
+                                                @item.Date
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
+                                                switch (item.Level)
+                                                {
+                                                    case "INFO":
+                                                        <span class="badge bg-success">@item.Level</span>
+                                                        break;
+                                                    case "DEBUG":
+                                                        <span class="badge bg-secondary">@item.Level</span>
+                                                        break;
+                                                    case "WARN":
+                                                        <span class="badge bg-warning text-dark">@item.Level</span>
+                                                        break;
+                                                    case "ERROR":
+                                                        <span class="badge bg-danger">@item.Level</span>
+                                                        break;
+                                                    case "FATAL":
+                                                        <span class="badge bg-dark">@item.Level</span>
+                                                        break;
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @item.Logger
+                                        </td>
+                                        <td>
+                                            @item.Message
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@if (IsShown)
+{
+    <div class="modal show" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true" role="dialog" style="display: block;">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Log</h5>
+                    <button class="btn-close" @onclick="@(() => ModalToggle())" />
+                </div>
+                <div id="modalBody" class="modal-body">
+                    <h6 class="fw-bold">Date</h6>
+                    <p id="date">
+                        @if (LocalTime)
+                        {
+                            @DateTime.Parse(CurrentLog?.Date).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.ffff")
+                        }
+                        else
+                        {
+                            @CurrentLog?.Date
+                        }
+                    </p>
+                    <h6 class="fw-bold">Level</h6>
+                    <p id="level">@CurrentLog?.Level</p>
+                    <h6 class="fw-bold">Logger</h6>
+                    <p id="logger">@CurrentLog?.Logger</p>
+                    <h6 class="fw-bold">Message</h6>
+                    <p id="message">@CurrentLog?.Message</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop show"></div>
+}

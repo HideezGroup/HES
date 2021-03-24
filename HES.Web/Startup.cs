@@ -104,7 +104,6 @@ namespace HES.Web
             services.AddScoped<ITemplateService, TemplateService>();
             services.AddScoped<IApplicationUserService, ApplicationUserService>();
             services.AddScoped<IOrgStructureService, OrgStructureService>();
-            services.AddScoped<ILogsViewerService, LogsViewerService>();
             services.AddScoped<IRemoteWorkstationConnectionsService, RemoteWorkstationConnectionsService>();
             services.AddScoped<IRemoteDeviceConnectionsService, RemoteDeviceConnectionsService>();
             services.AddScoped<IRemoteTaskService, RemoteTaskService>();
