@@ -17,7 +17,8 @@ namespace HES.Web.Pages.Identity
         Configuration,
         Done,
         Error,
-        UserNotFound
+        UserNotFound,
+        AlreadyAdded
     }
 
     public partial class RegisterSecurityKey : HESComponentBase
@@ -46,6 +47,12 @@ namespace HES.Web.Pages.Identity
                 if (User == null)
                 {
                     RegistrationStep = SecurityKeyRegistrationStep.UserNotFound;
+                }
+
+                var cred = await Fido2Service.GetCredentialsByUserEmail(User.Email);
+                if (cred.Count > 0)
+                {
+                    RegistrationStep = SecurityKeyRegistrationStep.AlreadyAdded;
                 }
 
                 SetInitialized();

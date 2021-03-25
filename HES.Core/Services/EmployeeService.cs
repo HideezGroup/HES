@@ -453,7 +453,7 @@ namespace HES.Core.Services
                 IsSsoEnabled = user != null ? true : false,
                 UserEmail = user.Email,
                 UserRole = user.UserRoles.FirstOrDefault().Role.Name,
-                SecurityKeyName = cred.Count > 0 ? cred.FirstOrDefault().SecurityKeyName : "Not added"
+                SecurityKeyName = cred.Count > 0 ? "Added" : "Not added"
             };
         }
 

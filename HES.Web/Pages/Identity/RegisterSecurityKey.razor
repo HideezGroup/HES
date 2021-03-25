@@ -6,38 +6,45 @@
 {
     <ErrorAlert Message="@ErrorMessage" Close="@ClearErrorMessage" />
     <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="custom-card">
+        <div class="d-flex flex-column">
             <div class="text-center m-3">
                 <img src="/svg/hideez-es-logo.svg" />
             </div>
-            <h3 class="text-navyblue text-center my-3">Register a Security Key</h3>
-            @switch (RegistrationStep)
-            {
-                case SecurityKeyRegistrationStep.Start:
-                    <h3 class="text-center">@User.FullName</h3>
-                    <h5 class="text-center text-gray">@User.Email</h5>
-                    <span>When you choose Next, you woll be promoted to plug your security key. Your PC will open a security window. Follow the instructions there to register.</span>
-                    <div class="mt-3">
-                        <Button Text="Next" OnClick="RegisterSecurityKeyAsync" class="btn btn-outline-primary w-100" />
-                    </div>
-                    break;
-                case SecurityKeyRegistrationStep.Configuration:
-                    <span>Your PC will open a security window. Follow the instructions there to register.</span>
-                    <Loader DisableShadow="true" />
-                    break;
-                case SecurityKeyRegistrationStep.Done:
-                    <span>You have successfully completed the security key registration process. Thanks!</span>
-                    break;
-                case SecurityKeyRegistrationStep.Error:
-                    <span>We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</span>
-                    <div class="mt-3">
-                        <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-outline-secondary w-100" />
-                    </div>
-                    break;
-                case SecurityKeyRegistrationStep.UserNotFound:
-                    <span>We could not find a user with such an email, please contact the administrator.</span>
-                    break;
-            }
+            <div class="custom-card">
+                <h3 class="text-navyblue text-center mb-4">Security key registration</h3>
+                @switch (RegistrationStep)
+                {
+                    case SecurityKeyRegistrationStep.Start:
+                        <h3 class="text-center">@User.FullName</h3>
+                        <h5 class="text-center text-gray mb-4">@User.Email</h5>
+                        <div class="text-center">When you choose Next, you woll be promoted to plug your security key. Your PC will open a security window. Follow the instructions there to register.</div>
+                        <div class="mt-3">
+                            <Button Text="Next" OnClick="RegisterSecurityKeyAsync" class="btn btn-outline-primary w-100" />
+                        </div>
+                        break;
+                    case SecurityKeyRegistrationStep.Configuration:
+                        <div class="text-center">Your PC will open a security window. Follow the instructions there to register.</div>
+                        <Loader DisableShadow="true" />
+                        break;
+                    case SecurityKeyRegistrationStep.Done:
+                        <div class="text-center">You have successfully completed the security key registration process. Thanks!</div>
+                        break;
+                    case SecurityKeyRegistrationStep.Error:
+                        <div class="text-center">We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</div>
+                        <div class="mt-3">
+                            <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-outline-secondary w-100" />
+                        </div>
+                        break;
+                    case SecurityKeyRegistrationStep.UserNotFound:
+                        <div class="text-center">We could not find a user with such an email, please contact the administrator.</div>
+                        break;
+                    case SecurityKeyRegistrationStep.AlreadyAdded:
+                        <h3 class="text-center">@User.FullName</h3>
+                        <h5 class="text-center text-gray mb-4">@User.Email</h5>
+                        <div class="text-center">You have already added a security key.</div>
+                        break;
+                }
+            </div>
         </div>
     </div>
 }

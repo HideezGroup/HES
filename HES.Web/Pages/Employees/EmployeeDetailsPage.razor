@@ -23,9 +23,9 @@
             <ButtonSpinner Class="btn btn-primary" Text="Add Shared Account" Callback="OpenDialogAddSharedAccountAsync" />
         </div>
     </div>
-    <section>
-        @if (Employee.SoftwareVaultInvitations.Count > 0 || Employee.SoftwareVaults.Count > 0 || Employee.HardwareVaults.Count > 0)
-        {
+    @if (Employee.SoftwareVaultInvitations.Count > 0 || Employee.SoftwareVaults.Count > 0 || Employee.HardwareVaults.Count > 0)
+    {
+        <section>
             <h4 class="text-navyblue">Vaults</h4>
             <ul class="list-group w-100 mb-3">
                 @foreach (var invitation in Employee.SoftwareVaultInvitations.Where(x => x.Status != SoftwareVaultInvitationStatus.Accepted))
@@ -99,8 +99,8 @@
                     </li>
                 }
             </ul>
-        }
-    </section>
+        </section>
+    }
     @if (EmployeeService.IsSaml2PEnabled() && !string.IsNullOrWhiteSpace(Employee.Email) && Employee.HardwareVaults.Count > 0)
     {
         <section>
@@ -134,9 +134,9 @@
             </div>
         </section>
     }
-    <section>
-        @if (MainTableService.Entities.Count > 0)
-        {
+    @if (MainTableService.Entities.Count > 0)
+    {
+        <section>
             <TableAction>
                 <ActionButtons>
                     <h4 class="text-navyblue me-2">Accounts</h4>
@@ -300,8 +300,8 @@
                         CurrentPage="MainTableService.CurrentPage"
                         DisplayRows="MainTableService.DataLoadingOptions.Take"
                         DisplayRecords="MainTableService.Entities.Count" />
-        }
-    </section>
+        </section>
+    }
 }
 else if (LoadFailed)
 {
