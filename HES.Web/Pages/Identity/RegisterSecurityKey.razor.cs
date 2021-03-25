@@ -18,7 +18,8 @@ namespace HES.Web.Pages.Identity
         Done,
         Error,
         UserNotFound,
-        AlreadyAdded
+        AlreadyAdded,
+        InvalidToken
     }
 
     public partial class RegisterSecurityKey : HESComponentBase
@@ -40,19 +41,28 @@ namespace HES.Web.Pages.Identity
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
                 Fido2Service = ScopedServices.GetRequiredService<IFido2Service>();
 
+                var code = NavigationManager.GetQueryValue("code");
                 var email = NavigationManager.GetQueryValue("email");
 
+                // Check user exist
                 User = await ApplicationUserService.GetUserByEmailAsync(email);
-
                 if (User == null)
                 {
                     RegistrationStep = SecurityKeyRegistrationStep.UserNotFound;
                 }
 
+                // Check key is already added
                 var cred = await Fido2Service.GetCredentialsByUserEmail(User.Email);
                 if (cred.Count > 0)
                 {
                     RegistrationStep = SecurityKeyRegistrationStep.AlreadyAdded;
+                }
+
+                // Verify token
+                var tokenIsValid = await ApplicationUserService.VerifyRegisterSecurityKeyTokenAsync(User, code);
+                if (!tokenIsValid)
+                {
+                    RegistrationStep = SecurityKeyRegistrationStep.InvalidToken;
                 }
 
                 SetInitialized();

@@ -22,9 +22,13 @@ namespace HES.Core.Interfaces
         Task<int> GetAdministratorsCountAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions);
         Task<string> InviteAdministratorAsync(string email, string domain);
         Task<string> GetCallBackUrl(string email, string domain);
-        Task<string> GetEnableSsoCallBackUrl(string email, string domain);
         Task<ApplicationUser> DeleteUserAsync(string id);
         Task<IList<ApplicationUser>> GetAllAdministratorsAsync();
+        #endregion
+
+        #region Users
+        Task<string> GenerateEnableSsoCallBackUrlAsync(string email, string domain);
+        Task<bool> VerifyRegisterSecurityKeyTokenAsync(ApplicationUser user, string code);
         #endregion
 
         #region Profile

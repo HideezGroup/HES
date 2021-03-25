@@ -33,6 +33,9 @@ namespace HES.Core.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
+        private const string _registerSecurityKeyTokenProvoderName = "RegisterSecurityKey";
+        private const string _registerSecurityKeyTokenProvoderPurpose = "RegisterSecurityKeyPurpose";
+
         public ApplicationUserService(IAsyncRepository<ApplicationUser> applicationUserRepository,
                                       IAsyncRepository<FidoStoredCredential> fidoCredentialsRepository,
                                       IEmailSenderService emailSenderService,
@@ -155,17 +158,6 @@ namespace HES.Core.Services
             return HtmlEncoder.Default.Encode(callbackUrl);
         }
 
-        public async Task<string> GetEnableSsoCallBackUrl(string email, string domain)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-                throw new Exception($"User not found.");
-
-            var callbackUrl = $"{domain}register-security-key?email={email}";
-
-            return HtmlEncoder.Default.Encode(callbackUrl);
-        }
-
         public async Task<ApplicationUser> DeleteUserAsync(string id)
         {
             if (id == null)
@@ -184,6 +176,30 @@ namespace HES.Core.Services
         public async Task<IList<ApplicationUser>> GetAllAdministratorsAsync()
         {
             return await _userManager.GetUsersInRoleAsync("Administrator");
+        }
+
+        #endregion
+
+        #region Users
+
+        public async Task<string> GenerateEnableSsoCallBackUrlAsync(string email, string domain)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                throw new HESException(HESCode.UserNotFound);
+
+            var code = await _userManager.GenerateUserTokenAsync(user, _registerSecurityKeyTokenProvoderName, _registerSecurityKeyTokenProvoderPurpose);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var callbackUrl = $"{domain.TrimEnd('/')}{Routes.RegisterSecurityKey}?code={code}&email={email}";
+
+            return HtmlEncoder.Default.Encode(callbackUrl);
+        }
+
+        public async Task<bool> VerifyRegisterSecurityKeyTokenAsync(ApplicationUser user, string code)
+        {
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            return await _userManager.VerifyUserTokenAsync(user, _registerSecurityKeyTokenProvoderName, _registerSecurityKeyTokenProvoderPurpose, code);
         }
 
         #endregion

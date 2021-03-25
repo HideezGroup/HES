@@ -43,7 +43,7 @@ namespace HES.Web.Pages.Employees
             try
             {
                 await EmployeeService.EnableSsoAsync(Employee);
-                var callBack = await ApplicationUserService.GetEnableSsoCallBackUrl(Employee.Email, NavigationManager.BaseUri);
+                var callBack = await ApplicationUserService.GenerateEnableSsoCallBackUrlAsync(Employee.Email, NavigationManager.BaseUri);
                 await EmailSenderService.SendEmployeeEnableSsoAsync(Employee.Email, callBack);
                 await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Employee.Id);
                 await ToastService.ShowToastAsync($"SSO for employee {Employee.Email} enabled.", ToastType.Success);

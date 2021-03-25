@@ -43,6 +43,9 @@
                         <h5 class="text-center text-gray mb-4">@User.Email</h5>
                         <div class="text-center">You have already added a security key.</div>
                         break;
+                    case SecurityKeyRegistrationStep.InvalidToken:
+                        <div class="text-center text-danger">Invitation token has expired.</div>
+                        break;
                 }
             </div>
         </div>

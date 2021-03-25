@@ -7,6 +7,7 @@ using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Infrastructure;
 using HES.Web.Extensions;
+using HES.Web.Providers;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -179,8 +180,9 @@ namespace HES.Web
             // Identity
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<RegisterSecurityKeyTokenProvider<ApplicationUser>>(RegisterSecurityKeyTokenConstants.TokenName);
+                  
             // IDP
             if (Saml2pEnabled)
             {
