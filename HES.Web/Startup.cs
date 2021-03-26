@@ -205,6 +205,7 @@ namespace HES.Web
                     options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
                     options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
                     options.WantAuthenticationRequestsSigned = false;
+                    options.UseLegacyRsaEncryption = false;
                 })
                 .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
                 .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
