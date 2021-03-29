@@ -132,7 +132,7 @@ namespace HES.Web
             services.AddHostedService<LicenseHostedService>();
             services.AddHostedService<ActiveDirectoryHostedService>();
 
-            services.AddHttpClient().RemoveAll<IHttpMessageHandlerBuilderFilter>();
+            services.AddHttpClient();
             services.AddSignalR();
             services.AddMemoryCache();
 
@@ -177,14 +177,16 @@ namespace HES.Web
 
             // Database
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
 
             // Identity
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddTokenProvider<RegisterSecurityKeyTokenProvider<ApplicationUser>>(RegisterSecurityKeyTokenConstants.TokenName);
-                  
+
             // IDP
             if (Saml2pEnabled)
             {
@@ -207,6 +209,7 @@ namespace HES.Web
                     options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
                     options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
                     options.WantAuthenticationRequestsSigned = false;
+                    options.UseLegacyRsaEncryption = false;
                 })
                 .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
                 .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });

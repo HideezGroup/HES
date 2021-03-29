@@ -1,0 +1,38 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+<div class="d-flex justify-content-between flex-wrap disable-selection text-secondary">
+    @if (DisplayRecordsSelector)
+    {
+        <div class="d-flex">
+            <label class="col-form-label me-2">Show entries</label>
+            <div>
+                <select @oninput="OnChangeShowEntries" class="form-select">
+                    <option selected value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+    }
+    @if (DisplayTotalRecordsInfo)
+    {
+        <div class="d-flex text-secondary">
+            <label class="col-form-label">
+                @string.Format("Showing {0} to {1} of {2} entries", GetShowing(), GetShowingTo(), TotalRecords)
+            </label>
+        </div>
+    }
+    <nav class="cursor-pointer">
+        <ul class="pagination justify-content-center m-0">
+            @foreach (var link in Links)
+            {
+                <li @onclick="@(async() => await SelectedPageLinkAsync(link))"
+                    class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+                    <span class="page-link">@link.Text</span>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

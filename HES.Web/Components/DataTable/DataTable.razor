@@ -1,0 +1,19 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+@typeparam TItem
+
+<div class="table-responsive shadow-sm mb-3">
+    <table class="table table-hover table-striped border w-100 mb-0 disable-selection bg-white text-nowrap">
+        <thead>
+            <tr>
+                @TableHeader
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr @onclick="(async () => await OnRowSelectedAsync(item))" @ondblclick="OnRowDblClickAsync" class="table-row @GetRowStyle(item)">@TableRow(item)</tr>
+            }
+        </tbody>
+    </table>
+</div>
