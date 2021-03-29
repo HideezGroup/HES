@@ -82,11 +82,17 @@ namespace HES.Web.Pages.Templates
             {
                 builder.OpenComponent(0, typeof(EditTemplate));
                 builder.AddAttribute(1, nameof(EditTemplate.TemplateId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditTemplate.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Edit Template", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DeleteTemplateAsync()
@@ -95,11 +101,17 @@ namespace HES.Web.Pages.Templates
             {
                 builder.OpenComponent(0, typeof(DeleteTemplate));
                 builder.AddAttribute(1, nameof(DeleteTemplate.TemplateId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteTemplate.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Delete Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Delete Template", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()

@@ -36,7 +36,7 @@ namespace HES.Web.Pages.Workstations
                         MainTableService.DataLoadingOptions.Filter.Approved = false;
                         break;
                     case "Online":
-                        //
+                        //TODO
                         break;
                 }
 

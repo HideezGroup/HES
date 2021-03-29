@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (Template == null)
 {
@@ -25,7 +25,7 @@ else
             <ValidationMessage For="@(() => Template.Apps)" class="text-danger" />
         </div>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogInstance.CloseAsync(ModalResult.Cancel))">Cancel</button>
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
             <Button @ref="Button" Text="Create" type="submit" class="btn btn-primary" />
         </div>
     </EditForm>

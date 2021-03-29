@@ -11,11 +11,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class CreateTemplateModal
+    public partial class CreateTemplateModal : HESModalBase
     {
         public ITemplateService TemplateService { get; set; }
-        [CascadingParameter] public ModalDialogInstance ModalDialogInstance { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateTemplateModal> Logger { get; set; }
 
         public Template Template { get; set; } = new Template();
@@ -35,7 +33,7 @@ namespace HES.Web.Pages.Templates
                 {
                     await TemplateService.CreateTmplateAsync(Template);
                     await ToastService.ShowToastAsync("Template created.", ToastType.Success);
-                    await ModalDialogInstance.CloseAsync(ModalResult.Success);
+                    await ModalDialogClose();
                 });
             }
             catch (AlreadyExistException ex)
@@ -50,7 +48,7 @@ namespace HES.Web.Pages.Templates
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogInstance.CloseAsync(ModalResult.Cancel);
+                await ModalDialogCancel();
             }
         }
     }
