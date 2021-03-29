@@ -1,0 +1,7 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+<th style="width:@(TitleWidth + "%"); cursor: pointer;" @onclick="@SortTable">
+    @Title
+    <img class="table-sort-arrow mb-1 @GetSortIcon()" />
+</th>
