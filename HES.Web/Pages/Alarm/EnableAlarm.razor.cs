@@ -12,11 +12,9 @@ namespace HES.Web.Pages.Alarm
     public partial class EnableAlarm : HESComponentBase
     {
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EnableAlarm> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        [Parameter] public EventCallback CallBack { get; set; }
+        [CascadingParameter] public ModalDialogInstance ModalDialogInstance { get; set; }
 
         private async Task EnableAlarmAsync()
         {
@@ -27,7 +25,7 @@ namespace HES.Web.Pages.Alarm
                 string userEmail = null;
                 try
                 {
-                    userEmail = (await AuthenticationStateTask).User.Identity.Name;             
+                    userEmail = (await AuthenticationStateTask).User.Identity.Name;
                 }
                 catch (Exception ex)
                 {
@@ -38,16 +36,14 @@ namespace HES.Web.Pages.Alarm
                     await RemoteWorkstationConnections.LockAllWorkstationsAsync(userEmail);
                 }
 
-                await SynchronizationService.UpdateAlarm(ExceptPageId);
-                await CallBack.InvokeAsync(this);
                 await ToastService.ShowToastAsync("All workstations are locked.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogInstance.CloseAsync(ModalResult.Success);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogInstance.CloseAsync(ModalResult.Cancel);
             }
         }
     }
