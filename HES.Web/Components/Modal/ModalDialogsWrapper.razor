@@ -1,0 +1,10 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+@if (ModalDialogItems != null && ModalDialogItems.Any())
+{
+    @foreach (var modalDialogItem in ModalDialogItems)
+    {
+        <ModalDialogItem @key="modalDialogItem" ModalDialogInstance="modalDialogItem" />
+    }
+}

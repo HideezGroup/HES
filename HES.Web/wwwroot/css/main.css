@@ -145,9 +145,36 @@ div.connection-rejected {
     margin-bottom: 1rem;
 }
 
+.form-footer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    padding: .75rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: calc(.3rem - 1px);
+    border-bottom-left-radius: calc(.3rem - 1px);
+    margin: 0px -14px -14px -14px;
+}
+
+    .form-footer > * {
+        margin: .25rem;
+    }
+
+@media (min-width: 768px) {
+    .form-footer {
+        margin-left: -16px;
+        margin-right: -16px;
+        margin-bottom: -16px;
+        margin-top: 0;
+    }
+}
+
 label {
     margin-bottom: .5rem;
 }
+
 /* #endregion */
 
 .loading-page {

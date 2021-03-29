@@ -11,17 +11,16 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class CreateTemplate : HESComponentBase
+    public partial class CreateTemplateModal
     {
-        ITemplateService TemplateService { get; set; }
-        [Inject] IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
-        [Inject] ILogger<CreateTemplate> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
+        public ITemplateService TemplateService { get; set; }
+        [CascadingParameter] public ModalDialogInstance ModalDialogInstance { get; set; }
+        [Inject] public IToastService ToastService { get; set; }
+        [Inject] public ILogger<CreateTemplateModal> Logger { get; set; }
 
         public Template Template { get; set; } = new Template();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override void OnInitialized()
         {
@@ -32,12 +31,11 @@ namespace HES.Web.Pages.Templates
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await TemplateService.CreateTmplateAsync(Template);
                     await ToastService.ShowToastAsync("Template created.", ToastType.Success);
-                    await SynchronizationService.UpdateTemplates(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogInstance.CloseAsync(ModalResult.Success);
                 });
             }
             catch (AlreadyExistException ex)
@@ -52,7 +50,7 @@ namespace HES.Web.Pages.Templates
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogInstance.CloseAsync(ModalResult.Cancel);
             }
         }
     }

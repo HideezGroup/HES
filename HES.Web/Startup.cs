@@ -6,6 +6,7 @@ using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Infrastructure;
+using HES.Web.Components;
 using HES.Web.Extensions;
 using HES.Web.Providers;
 using IdentityServer4;
@@ -113,6 +114,7 @@ namespace HES.Web
             services.AddScoped<IAppSettingsService, AppSettingsService>();
             services.AddScoped<IToastService, ToastService>();
             services.AddScoped<IModalDialogService, ModalDialogService>();
+            services.AddScoped<IModalDialogService2, ModalDialogService2>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ILdapService, LdapService>();
             services.AddScoped<ISoftwareVaultService, SoftwareVaultService>();

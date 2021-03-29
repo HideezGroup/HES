@@ -24,9 +24,9 @@ else
             <InputText @bind-Value="Template.Apps" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => Template.Apps)" class="text-danger" />
         </div>
-        <div class="text-end">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>
-            <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Create" Class="btn btn-primary" />
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogInstance.CloseAsync(ModalResult.Cancel))">Cancel</button>
+            <Button @ref="Button" Text="Create" type="submit" class="btn btn-primary" />
         </div>
     </EditForm>
 }

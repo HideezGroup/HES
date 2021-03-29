@@ -17,6 +17,7 @@ namespace HES.Web.Pages.Templates
         public ITemplateService TemplateService { get; set; }
         public IMainTableService<Template, TemplateFilter> MainTableService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
+        [Inject] public IModalDialogService2 ModalDialogService2 { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<TemplatesPage> Logger { get; set; }
@@ -61,12 +62,18 @@ namespace HES.Web.Pages.Templates
         {
             RenderFragment body = (builder) =>
             {
-                builder.OpenComponent(0, typeof(CreateTemplate));
-                builder.AddAttribute(1, nameof(CreateTemplate.ExceptPageId), PageId);
+                builder.OpenComponent(0, typeof(CreateTemplateModal));
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Create Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Create Template", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {              
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task EditTemplateAsync()
