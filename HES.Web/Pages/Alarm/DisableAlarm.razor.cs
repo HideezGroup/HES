@@ -15,11 +15,9 @@ namespace HES.Web.Pages.Alarm
     {
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnections { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DisableAlarm> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        [Parameter] public EventCallback CallBack { get; set; }
+        [CascadingParameter] public ModalDialogInstance ModalDialogInstance { get; set; }
 
         public string UserConfirmPassword { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
@@ -29,7 +27,7 @@ namespace HES.Web.Pages.Alarm
             try
             {
                 RemoteWorkstationConnections = ScopedServices.GetRequiredService<IRemoteWorkstationConnectionsService>();
-                ApplicationUser = await UserManager.GetUserAsync((await AuthenticationStateTask).User);
+                ApplicationUser = await UserManager.FindByEmailAsync(await GetCurrentUserEmailAsync());
                 if (ApplicationUser == null)
                     throw new Exception("Required relogin");
             }
@@ -37,7 +35,7 @@ namespace HES.Web.Pages.Alarm
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogInstance.CloseAsync(ModalResult.Cancel);
             }
         }
 
@@ -51,16 +49,14 @@ namespace HES.Web.Pages.Alarm
                     throw new Exception("Invalid password");
 
                 await RemoteWorkstationConnections.UnlockAllWorkstationsAsync(ApplicationUser.Email);
-                await SynchronizationService.UpdateAlarm(ExceptPageId);
-                await CallBack.InvokeAsync(this);
                 await ToastService.ShowToastAsync("All workstations are unlocked.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogInstance.CloseAsync(ModalResult.Success);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogInstance.CloseAsync(ModalResult.Cancel);
             }
         }
     }
