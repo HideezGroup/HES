@@ -130,7 +130,7 @@ namespace HES.Web
             services.AddHostedService<LicenseHostedService>();
             services.AddHostedService<ActiveDirectoryHostedService>();
 
-            services.AddHttpClient().RemoveAll<IHttpMessageHandlerBuilderFilter>();
+            services.AddHttpClient();
             services.AddSignalR();
             services.AddMemoryCache();
 
