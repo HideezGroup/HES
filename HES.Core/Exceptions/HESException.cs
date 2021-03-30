@@ -16,6 +16,7 @@ namespace HES.Core.Exceptions
         AccountLockout,
         IncorrectCurrentPassword,
         EmailAlreadyTaken,
+        RequiresRelogin,
 
         // Employees
         EmployeeNotFound,
@@ -50,6 +51,7 @@ namespace HES.Core.Exceptions
             { HESCode.AccountLockout,"Account lockout" },
             { HESCode.IncorrectCurrentPassword,"Incorrect current password." },
             { HESCode.EmailAlreadyTaken,"This email already taken." },
+            { HESCode.RequiresRelogin,"Requires relogin." },
 
             { HESCode.RequiresTwoFactor, "Requires two factor." },
             { HESCode.EmployeeNotFound,  "Employee not found." },
