@@ -131,6 +131,13 @@ namespace HES.Web
             services.AddHostedService<ActiveDirectoryHostedService>();
 
             services.AddHttpClient();
+            services.AddHttpClient("HES").ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler()
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+            });
             services.AddSignalR();
             services.AddMemoryCache();
 
