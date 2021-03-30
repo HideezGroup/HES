@@ -12,21 +12,18 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class EditSharedAccountPassword : HESComponentBase, IDisposable
+    public partial class EditSharedAccountPassword : HESModalBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditSharedAccountPassword> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string AccountId { get; set; }
 
         public SharedAccount Account { get; set; }
         public AccountPassword AccountPassword { get; set; } = new AccountPassword();
         public bool EntityBeingEdited { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,7 +37,6 @@ namespace HES.Web.Pages.SharedAccounts
                 if (Account == null)
                     throw new Exception("Account not found");
 
-                ModalDialogService.OnCancel += OnCancelAsync;
                 EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Account.Id, Account);
@@ -51,40 +47,38 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
-        private async Task OnCancelAsync()
+        protected override async Task ModalDialogCancel()
         {
             await SharedAccountService.UnchangedAsync(Account);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditAccoountPasswordAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     var vaults = await SharedAccountService.EditSharedAccountPwdAsync(Account, AccountPassword);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
-                    await SynchronizationService.UpdateSharedAccounts(ExceptPageId);
                     await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= OnCancelAsync;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Account.Id);
         }

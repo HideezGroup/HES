@@ -11,15 +11,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class DeleteSharedAccount : HESComponentBase, IDisposable
+    public partial class DeleteSharedAccount : HESModalBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteSharedAccount> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string AccountId { get; set; }
 
         public SharedAccount Account { get; set; }
@@ -47,7 +44,7 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -57,15 +54,14 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 var vaults = await SharedAccountService.DeleteSharedAccountAsync(Account.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
-                await SynchronizationService.UpdateSharedAccounts(ExceptPageId);
                 await ToastService.ShowToastAsync("Account deleted.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 

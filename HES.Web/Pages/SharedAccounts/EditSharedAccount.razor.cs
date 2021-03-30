@@ -13,21 +13,18 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class EditSharedAccount : HESComponentBase, IDisposable
+    public partial class EditSharedAccount : HESModalBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditSharedAccount> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string AccountId { get; set; }
 
         public SharedAccount SharedAccount { get; set; }
         public SharedAccountEditModel SharedAccountEditModel { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -36,8 +33,6 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
                 RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
-
-                ModalDialogService.OnCancel += OnCancelAsync;
 
                 SharedAccount = await SharedAccountService.GetSharedAccountByIdAsync(AccountId);
                 if (SharedAccount == null)
@@ -55,21 +50,26 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
+        }
+
+        protected override async Task ModalDialogCancel()
+        {
+            await SharedAccountService.UnchangedAsync(SharedAccount);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditAccountAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     var vaults = await SharedAccountService.EditSharedAccountAsync(SharedAccountEditModel);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);             
-                    await SynchronizationService.UpdateSharedAccounts(ExceptPageId);
                     await ToastService.ShowToastAsync("Shared account updated.", ToastType.Success);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (AlreadyExistException ex)
@@ -84,19 +84,12 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
-        }
-
-        private async Task OnCancelAsync()
-        {
-            await SharedAccountService.UnchangedAsync(SharedAccount);
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= OnCancelAsync;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(SharedAccountEditModel.Id);
         }

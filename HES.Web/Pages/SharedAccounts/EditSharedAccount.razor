@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (!Initialized)
 {
@@ -8,7 +8,7 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="shared account" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="shared account" CloseAction="ModalDialogCancel" />
     }
     else
     {
@@ -82,9 +82,9 @@ else
                     </div>
                     break;
             }
-            <div class="text-end">
-                <button type="button" class="btn btn-secondary" @onclick="async () => await ModalDialogService.CancelAsync()">Cancel</button>
-                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />
+            <div class="form-footer">
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+                <Button @ref="Button" Text="Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }
