@@ -1,5 +1,4 @@
-﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
+﻿using HES.Core.Interfaces;
 using HES.Core.Models.Web.Dashboard;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -11,12 +10,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Dashboard
 {
-    public partial class DashboardPage : HESComponentBase, IDisposable
+    public partial class DashboardPage : HESPageBase, IDisposable
     {
         public IDashboardService DashboardService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DashboardPage> Logger { get; set; }
 
         public DashboardCard ServerdCard { get; set; }
@@ -55,7 +51,8 @@ namespace HES.Web.Pages.Dashboard
                 builder.OpenComponent(0, typeof(HardwareVaultTasks));
                 builder.CloseComponent();
             };
-            await ModalDialogService.ShowAsync("Hardware Vault Tasks", body, ModalDialogSize.Large);
+
+            await ModalDialogService2.ShowAsync("Hardware Vault Tasks", body, ModalDialogSize2.Large);
         }
 
         public void Dispose()
