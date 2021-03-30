@@ -1,7 +1,7 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 <h5 class="text-gray mb-4 ">You want to delete vault @WorkstationProximityVault.HardwareVaultId from this workstation?</h5>
-<div class="text-end">
-    <button type="button" class="btn btn-secondary" @onclick="@ModalDialogService.CancelAsync">Cancel</button>
-    <ButtonSpinner Class="btn btn-danger" Text="Delete" Callback="@DeleteVaultAsync" />
+<div class="form-footer">
+    <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+    <Button class="btn btn-danger" Text="Delete" OnClick="DeleteVaultAsync" />
 </div>

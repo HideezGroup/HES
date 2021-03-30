@@ -11,13 +11,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class WorkstationDetailsPage : HESComponentBase, IDisposable
+    public partial class WorkstationDetailsPage : HESPageBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IMainTableService<WorkstationProximityVault, WorkstationDetailsFilter> MainTableService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<WorkstationDetailsPage> Logger { get; set; }
         [Parameter] public string WorkstationId { get; set; }
 
@@ -67,12 +65,18 @@ namespace HES.Web.Pages.Workstations
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddProximityVault));
-                builder.AddAttribute(1, "WorkstationId", WorkstationId);
-                builder.AddAttribute(2, "ExceptPageId", PageId);
+                builder.AddAttribute(1, nameof(AddProximityVault.WorkstationId), WorkstationId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Add Proximity Vault", body);
+            var instance = await ModalDialogService2.ShowAsync("Add Proximity Vault", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogDeleteHardwareVaultAsync()
@@ -80,13 +84,19 @@ namespace HES.Web.Pages.Workstations
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteProximityVault));
-                builder.AddAttribute(1, "WorkstationProximityVault", MainTableService.SelectedEntity);
-                builder.AddAttribute(2, "WorkstationId", WorkstationId);
-                builder.AddAttribute(3, "ExceptPageId", PageId);
+                builder.AddAttribute(1, nameof(DeleteProximityVault.WorkstationProximityVault), MainTableService.SelectedEntity);
+                builder.AddAttribute(2, nameof(DeleteProximityVault.WorkstationId), WorkstationId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Delete Proximity Vault", body);
+            var instance = await ModalDialogService2.ShowAsync("Delete Proximity Vault", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()

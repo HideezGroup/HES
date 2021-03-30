@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (HardwareVaults == null)
 {
@@ -22,8 +22,8 @@ else
             Warning! You are trying to allow proximity on more than one device. This can lead to unstable system behavior.
         </div>
     }
-    <div class="text-end">
-        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogService.CancelAsync">Cancel</button>
-        <ButtonSpinner Text="Add" Class="btn btn-primary btn-min-w" Callback="AddVaultAsync" />
+    <div class="form-footer">
+        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Cancel</button>
+        <Button class="btn btn-primary btn-min-w" Text="Add" OnClick="AddVaultAsync" />
     </div>
 }

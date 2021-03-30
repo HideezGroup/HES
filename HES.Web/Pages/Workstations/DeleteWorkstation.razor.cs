@@ -11,16 +11,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class DeleteWorkstation : HESComponentBase, IDisposable
+    public partial class DeleteWorkstation : HESModalBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DeleteWorkstation> Logger { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Parameter] public string WorkstationId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public Workstation Workstation { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -47,7 +44,7 @@ namespace HES.Web.Pages.Workstations
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -58,14 +55,13 @@ namespace HES.Web.Pages.Workstations
                 await WorkstationService.DeleteWorkstationAsync(Workstation.Id);
                 await RemoteWorkstationConnectionsService.UpdateWorkstationApprovedAsync(Workstation.Id, isApproved: false);
                 await ToastService.ShowToastAsync("Workstation deleted.", ToastType.Success);
-                await SynchronizationService.UpdateWorkstations(ExceptPageId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
-                await ModalDialogService.CancelAsync();
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogCancel();
             }
         }
 

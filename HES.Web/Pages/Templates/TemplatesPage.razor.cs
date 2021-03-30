@@ -12,14 +12,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class TemplatesPage : HESComponentBase, IDisposable
+    public partial class TemplatesPage : HESPageBase, IDisposable
     {
         public ITemplateService TemplateService { get; set; }
         public IMainTableService<Template, TemplateFilter> MainTableService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IModalDialogService2 ModalDialogService2 { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<TemplatesPage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
