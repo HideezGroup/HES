@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -11,16 +12,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class DeleteAccount : HESComponentBase, IDisposable
+    public partial class DeleteAccount : HESModalBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteAccount> Logger { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
+
         public Account Account { get; set; }
         public bool EntityBeingEdited { get; set; }
 
@@ -33,7 +32,7 @@ namespace HES.Web.Pages.Employees
 
                 Account = await EmployeeService.GetAccountByIdAsync(AccountId);
                 if (Account == null)
-                    throw new Exception("Account not found.");
+                    throw new HESException(HESCode.AccountNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
                 if (!EntityBeingEdited)
@@ -43,7 +42,7 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -54,14 +53,13 @@ namespace HES.Web.Pages.Employees
                 var account = await EmployeeService.DeleteAccountAsync(Account.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
                 await ToastService.ShowToastAsync("Account deleted.", ToastType.Success);
-                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 

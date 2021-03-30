@@ -31,6 +31,8 @@ namespace HES.Core.Exceptions
         // Accounts
         AccountNotFound,
         AccountExist,
+        IncorrectUrl,
+        IncorrectOtp,
 
         // SharedAccounts
         SharedAccountNotFound,
@@ -58,8 +60,12 @@ namespace HES.Core.Exceptions
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
             { HESCode.HardwareVaultNotFound,  "Hardware Vault not found." },
             { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
+
             { HESCode.AccountNotFound,  "Account not found." },
             { HESCode.AccountExist,  "Account with the same name and login exist." },
+            { HESCode.IncorrectUrl,  "Incorrect URL address." },
+            { HESCode.IncorrectOtp,  "Incorrect OTP secret." },
+
             { HESCode.SharedAccountNotFound,  "Shared Account not found." },
             { HESCode.SharedAccountExist,  "Shared Account with the same name and login exist." },
             { HESCode.SecurityKeyNotFound,  "Security key not found." },

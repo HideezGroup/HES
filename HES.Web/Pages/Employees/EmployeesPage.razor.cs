@@ -11,13 +11,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EmployeesPage : HESComponentBase, IDisposable
+    public partial class EmployeesPage : HESPageBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IMainTableService<Employee, EmployeeFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        [Inject] public IModalDialogService ModalDialogService { get; set; } // TODO remove
         [Inject] public ILogger<EmployeesPage> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
 
@@ -42,29 +40,22 @@ namespace HES.Web.Pages.Employees
             }
         }
 
-
-        //private async Task ImportEmployeesFromAdAsync()
-        //{
-        //    RenderFragment body = (builder) =>
-        //    {
-        //        builder.OpenComponent(0, typeof(AddEmployee));
-        //        builder.AddAttribute(1, "ConnectionId", hubConnection?.ConnectionId);
-        //        builder.CloseComponent();
-        //    };
-
-        //    await MainTableService.ShowModalAsync("Import from AD", body);
-        //}
-
         private async Task SyncEmployeesWithAdAsync()
         {
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SyncEmployeesWithAD));
-                builder.AddAttribute(1, nameof(SyncEmployeesWithAD.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Sync with Active Directory", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService2.ShowAsync("Sync with Active Directory", body, ModalDialogSize2.Large);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployees(PageId);
+            }
         }
 
         private async Task EmployeeDetailsAsync()
@@ -80,10 +71,17 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateEmployee));
-                builder.AddAttribute(1, nameof(CreateEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
-            await MainTableService.ShowModalAsync("Create Employee", body, ModalDialogSize.Large);
+
+            var instance = await ModalDialogService2.ShowAsync("Create Employee", body, ModalDialogSize2.Large);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployees(PageId);
+            }
         }
 
         private async Task EditEmployeeAsync()
@@ -92,11 +90,17 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(EditEmployee));
                 builder.AddAttribute(1, nameof(EditEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit Employee", body);
+            var instance = await ModalDialogService2.ShowAsync("Edit Employee", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployees(PageId);
+            }
         }
 
         private async Task DeleteEmployeeAsync()
@@ -105,11 +109,17 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(DeleteEmployee));
                 builder.AddAttribute(1, nameof(DeleteEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteEmployee.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Delete Employee", body);
+            var instance = await ModalDialogService2.ShowAsync("Delete Employee", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployees(PageId);
+            }
         }
 
         private async Task UpdateEmployeePage(string exceptPageId, string userName)

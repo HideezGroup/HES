@@ -1,44 +1,44 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (!Initialized)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="account" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="account" CloseAction="ModalDialogCancel" />
     }
     else
     {
-        <EditForm Model="_accountPassword" OnValidSubmit="EditAccountPasswordAsync">
+        <EditForm Model="AccountPassword" OnValidSubmit="EditAccountPasswordAsync">
             <DataAnnotationsValidator />
             <div class="form-group">
                 <h5 class="text-navyblue">@Account.Name</h5>
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => _accountPassword.Password)" class="text-gray" />
-                <InputText @bind-Value="_accountPassword.Password" type="password" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => _accountPassword.Password)" class="text-danger" />
+                <FormLabel For="@(() => AccountPassword.Password)" class="text-gray" />
+                <InputText @bind-Value="AccountPassword.Password" type="password" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => AccountPassword.Password)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => _accountPassword.ConfirmPassword)" class="text-gray" />
-                <InputText @bind-Value="_accountPassword.ConfirmPassword" type="password" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => _accountPassword.ConfirmPassword)" class="text-danger" />
+                <FormLabel For="@(() => AccountPassword.ConfirmPassword)" class="text-gray" />
+                <InputText @bind-Value="AccountPassword.ConfirmPassword" type="password" class="form-control text-navyblue" />
+                <ValidationMessage For="@(() => AccountPassword.ConfirmPassword)" class="text-danger" />
             </div>
             @if (Employee.ActiveDirectoryGuid != null && LdapSettings != null && Account.Login.Contains(LdapSettings?.Host.Split(".")[0], StringComparison.OrdinalIgnoreCase))
             {
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                        <input id="updPwd" type="checkbox" class="custom-control-input" @bind="_accountPassword.UpdateActiveDirectoryPassword" />
+                        <input id="updPwd" type="checkbox" class="custom-control-input" @bind="AccountPassword.UpdateActiveDirectoryPassword" />
                         <label class="custom-control-label" for="updPwd">Update the password in the Active Directory</label>
                     </div>
                 </div>
             }
-            <div class="text-end">
-                <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
-                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />
+            <div class="form-footer">
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+                <Button @ref="ButtonSpinner" Text="Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }

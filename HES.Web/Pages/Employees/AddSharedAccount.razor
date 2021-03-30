@@ -1,8 +1,8 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (SharedAccounts == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
@@ -10,12 +10,12 @@ else
     {
         <h6 class="mb-3">There are no accounts, you can create a shared account on the <a href="/SharedAccounts">Shared Accounts</a> page.</h6>
         <div class="text-end">
-            <button type="button" class="btn btn-secondary btn-min-w" @onclick="CloseAsync">Close</button>
+            <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Close</button>
         </div>
     }
     else
     {
-        <div class="row">
+        <div class="row mb-3">
             <div class="col">
                 <div class="list-group overflow-auto max-50-vh">
                     @foreach (var sharedAccount in SharedAccounts)
@@ -34,9 +34,9 @@ else
                 <div><b>Login</b>: @SelectedSharedAccount.Login</div>
             </div>
         </div>
-        <div class="text-end">
-            <button type="button" class="btn btn-secondary btn-min-w" @onclick="CloseAsync">Close</button>
-            <ButtonSpinner Text="Add" Class="btn btn-primary btn-min-w" Callback="AddSharedAccoountAsync" />
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Close</button>
+            <Button Text="Add" OnClick="AddSharedAccoountAsync" class="btn btn-primary btn-min-w" />
         </div>
     }
 }

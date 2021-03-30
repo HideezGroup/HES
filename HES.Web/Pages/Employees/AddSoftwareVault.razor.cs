@@ -14,7 +14,7 @@ namespace HES.Web.Pages.Employees
         [Inject] public ISoftwareVaultService SoftwareVaultService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddSoftwareVault> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         //[Inject] public IHubContext<RefreshHub> HubContext { get; set; }
         [Parameter] public Employee Employee { get; set; } // TODO change to id
@@ -38,13 +38,13 @@ namespace HES.Web.Pages.Employees
                 await SoftwareVaultService.CreateAndSendInvitationAsync(Employee, ServerSettings, ValidTo);         
                 await ToastService.ShowToastAsync("Invitation sent.", ToastType.Success);
                 //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Employee.Id);
-                await ModalDialogService.CloseAsync();
+                //await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                //await ModalDialogService.CloseAsync();
             }
         }
     }

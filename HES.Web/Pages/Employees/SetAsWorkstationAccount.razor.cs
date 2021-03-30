@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -11,17 +12,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class SetAsWorkstationAccount : HESComponentBase, IDisposable
+    public partial class SetAsWorkstationAccount : HESModalBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteAccount> Logger { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public Account Account { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -35,7 +32,7 @@ namespace HES.Web.Pages.Employees
 
                 Account = await EmployeeService.GetAccountByIdAsync(AccountId);
                 if (Account == null)
-                    throw new Exception("Account not found.");
+                    throw new HESException(HESCode.AccountNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
                 if (!EntityBeingEdited)
@@ -46,9 +43,8 @@ namespace HES.Web.Pages.Employees
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -59,22 +55,15 @@ namespace HES.Web.Pages.Employees
                 await EmployeeService.SetAsPrimaryAccountAsync(Account.Employee.Id, Account.Id);
                 var employee = await EmployeeService.GetEmployeeByIdAsync(Account.Employee.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(employee.Id));
-                await Refresh.InvokeAsync(this);
                 await ToastService.ShowToastAsync("Account setted as primary.", ToastType.Success);
-                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
-            {
-                await ModalDialogService.CloseAsync();
+            {      
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogCancel();
             }
-        }
-
-        private async Task CloseAsync()
-        {
-            await ModalDialogService.CloseAsync();
         }
 
         public void Dispose()

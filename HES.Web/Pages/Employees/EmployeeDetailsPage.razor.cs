@@ -15,22 +15,20 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EmployeeDetailsPage : HESComponentBase, IDisposable
+    public partial class EmployeeDetailsPage : HESPageBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IAppSettingsService AppSettingsService { get; set; }
         public IMainTableService<Account, AccountFilter> MainTableService { get; set; }
         public ILdapService LdapService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        [Inject] public IModalDialogService ModalDialogService { get; set; } // TODO remove
         [Inject] public ILogger<EmployeeDetailsPage> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }
 
         public Employee Employee { get; set; }
         public string LdapHost { get; set; }
         public bool AdUserNotFound { get; set; }
-        public UserSsoInfo UserSsoInfo { get; set; } 
+        public UserSsoInfo UserSsoInfo { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -49,7 +47,7 @@ namespace HES.Web.Pages.Employees
                 await LoadLdapSettingsAsync();
                 await MainTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
 
-                await LoadEmployeeSsoState();          
+                await LoadEmployeeSsoState();
 
                 SetInitialized();
             }
@@ -149,13 +147,18 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddHardwareVault));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
-                builder.AddAttribute(2, "EmployeeId", EmployeeId);
-                builder.AddAttribute(3, nameof(AddHardwareVault.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(AddHardwareVault.EmployeeId), EmployeeId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Add hardware vault", body);
+            var instance = await ModalDialogService2.ShowAsync("Add hardware vault", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadEmployeeAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogRemoveHardwareVaultAsync(HardwareVault hardwareVault)
@@ -165,27 +168,32 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteHardwareVault));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
-                builder.AddAttribute(2, "HardwareVaultId", hardwareVault.Id);
-                builder.AddAttribute(3, nameof(DeleteHardwareVault.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(DeleteHardwareVault.HardwareVaultId), hardwareVault.Id);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Delete hardware vault", body);
+            var instance = await ModalDialogService2.ShowAsync("Delete hardware vault", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadEmployeeAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         public async Task OpenModalAddSoftwareVaultAsync()
         {
             if (!await VerifyAdUserAsync()) return;
 
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(AddSoftwareVault));
-                builder.AddAttribute(1, "Employee", Employee);
-                builder.CloseComponent();
-            };
+            //RenderFragment body = (builder) =>
+            //{
+            //    builder.OpenComponent(0, typeof(AddSoftwareVault));
+            //    builder.AddAttribute(1, "Employee", Employee);
+            //    builder.CloseComponent();
+            //};
 
-            await ModalDialogService.ShowAsync("Add software vault", body);
+            //await ModalDialogService2.ShowAsync("Add software vault", body);
         }
 
         private async Task OpenDialogCreatePersonalAccountAsync()
@@ -195,13 +203,18 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreatePersonalAccount));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, MainTableService.LoadTableDataAsync));
-                builder.AddAttribute(2, "EmployeeId", EmployeeId);
-                builder.AddAttribute(3, nameof(CreatePersonalAccount.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(CreatePersonalAccount.EmployeeId), EmployeeId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Create personal account", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService2.ShowAsync("Create personal account", body, ModalDialogSize2.Large);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogAddSharedAccountAsync()
@@ -211,13 +224,19 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddSharedAccount));
-                builder.AddAttribute(1, "EmployeeId", EmployeeId);
-                builder.AddAttribute(2, nameof(AddSharedAccount.ExceptPageId), PageId);
-                builder.AddAttribute(3, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
+                builder.AddAttribute(1, nameof(AddSharedAccount.EmployeeId), EmployeeId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Add shared account", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService2.ShowAsync("Add shared account", body, ModalDialogSize2.Large);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadEmployeeAsync();
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogSetAsWorkstationAccountAsync()
@@ -227,13 +246,19 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SetAsWorkstationAccount));
-                builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(SetAsWorkstationAccount.ExceptPageId), PageId);
-                builder.AddAttribute(3, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
+                builder.AddAttribute(1, nameof(SetAsWorkstationAccount.AccountId), MainTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Account", body);
+            var instance = await ModalDialogService2.ShowAsync("Set As Workstation Account", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadEmployeeAsync();
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogEditPersonalAccountAsync()
@@ -244,11 +269,17 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccount));
                 builder.AddAttribute(1, nameof(EditPersonalAccount.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditPersonalAccount.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit account", body);
+            var instance = await ModalDialogService2.ShowAsync("Edit account", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogEditPersonalAccountPasswordAsync()
@@ -258,12 +289,18 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountPwd));
-                builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditPersonalAccountPwd.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(EditPersonalAccountPwd.AccountId), MainTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit account password", body);
+            var instance = await ModalDialogService2.ShowAsync("Edit account password", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogEditPersonalAccountOtpAsync()
@@ -274,11 +311,17 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountOtp));
                 builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditPersonalAccountOtp.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit account OTP", body);
+            var instance = await ModalDialogService2.ShowAsync("Edit account OTP", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogGenerateAdPasswordAsync()
@@ -289,11 +332,17 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(GenerateAdPassword));
                 builder.AddAttribute(1, nameof(GenerateAdPassword.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(GenerateAdPassword.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Generate AD Password", body);
+            var instance = await ModalDialogService2.ShowAsync("Generate AD Password", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogDeleteAccountAsync()
@@ -304,41 +353,47 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(DeleteAccount));
                 builder.AddAttribute(1, nameof(DeleteAccount.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteAccount.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Delete Account", body);
+            var instance = await ModalDialogService2.ShowAsync("Delete Account", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenDialogResendInvitationAsync(SoftwareVaultInvitation softwareVaultInvitation)
         {
             if (!await VerifyAdUserAsync()) return;
 
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(SoftwareVaults.ResendSoftwareVaultInvitation));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
-                builder.AddAttribute(2, "SoftwareVaultInvitation", softwareVaultInvitation);
-                builder.CloseComponent();
-            };
+            //RenderFragment body = (builder) =>
+            //{
+            //    builder.OpenComponent(0, typeof(SoftwareVaults.ResendSoftwareVaultInvitation));
+            //    builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
+            //    builder.AddAttribute(2, "SoftwareVaultInvitation", softwareVaultInvitation);
+            //    builder.CloseComponent();
+            //};
 
-            await ModalDialogService.ShowAsync("Resend invitation", body);
+            //await ModalDialogService2.ShowAsync("Resend invitation", body);
         }
 
         private async Task OpenDialogDeleteInvitationAsync(SoftwareVaultInvitation softwareVaultInvitation)
         {
             if (!await VerifyAdUserAsync()) return;
 
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(SoftwareVaults.DeleteSoftwareVaultInvitation));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
-                builder.AddAttribute(2, "SoftwareVaultInvitation", softwareVaultInvitation);
-                builder.CloseComponent();
-            };
+            //RenderFragment body = (builder) =>
+            //{
+            //    builder.OpenComponent(0, typeof(SoftwareVaults.DeleteSoftwareVaultInvitation));
+            //    builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, LoadEmployeeAsync));
+            //    builder.AddAttribute(2, "SoftwareVaultInvitation", softwareVaultInvitation);
+            //    builder.CloseComponent();
+            //};
 
-            await ModalDialogService.ShowAsync("Delete invitation", body);
+            //await ModalDialogService2.ShowAsync("Delete invitation", body);
         }
 
         private async Task OpenDialogSoftwareVaultDetailsAsync(SoftwareVault softwareVault)
@@ -348,11 +403,11 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SoftwareVaultDetails));
-                builder.AddAttribute(1, "SoftwareVault", softwareVault);
+                builder.AddAttribute(1, nameof(SoftwareVaultDetails.SoftwareVault), softwareVault);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Software vault details", body);
+            await ModalDialogService2.ShowAsync("Software vault details", body);
         }
 
         private async Task OpenDialogHardwareVaultDetailsAsync(HardwareVault hardwareVault)
@@ -362,11 +417,11 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(HardwareVaultDetails));
-                builder.AddAttribute(1, "HardwareVault", hardwareVault);
+                builder.AddAttribute(1, nameof(HardwareVaultDetails.HardwareVault), hardwareVault);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Hardware vault details", body);
+            await ModalDialogService2.ShowAsync("Hardware vault details", body);
         }
 
         private async Task OpenDialogShowActivationCodeAsync(HardwareVault hardwareVault)
@@ -380,7 +435,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Activation code", body);
+           await ModalDialogService2.ShowAsync("Activation code", body);            
         }
 
         private async Task OpenModalEnableSsoAsync()
@@ -391,12 +446,17 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(EmployeeEnableSso));
                 builder.AddAttribute(1, nameof(EmployeeEnableSso.Employee), Employee);
-                builder.AddAttribute(2, nameof(EmployeeEnableSso.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(EmployeeEnableSso.Refresh), EventCallback.Factory.Create(this, LoadEmployeeSsoState));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Enable SSO", body);
+            var instance = await ModalDialogService2.ShowAsync("Enable SSO", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadEmployeeSsoState();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         private async Task OpenModalDisableSsoAsync()
@@ -407,12 +467,17 @@ namespace HES.Web.Pages.Employees
             {
                 builder.OpenComponent(0, typeof(EmployeeDisableSso));
                 builder.AddAttribute(1, nameof(EmployeeDisableSso.Employee), Employee);
-                builder.AddAttribute(2, nameof(EmployeeDisableSso.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(EmployeeDisableSso.Refresh), EventCallback.Factory.Create(this, LoadEmployeeSsoState));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Disable SSO", body);
+            var instance = await ModalDialogService2.ShowAsync("Disable SSO", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadEmployeeSsoState();
+                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
         }
 
         #endregion

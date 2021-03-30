@@ -1,5 +1,4 @@
-﻿@inherits HESComponentBase
-
+﻿@inherits HESModalBase
 @if (Initialized)
 {
     <Alert Message="@WarningMessage" />
@@ -12,12 +11,12 @@
             </button>
         }
     </div>
-    <div class="text-end">
-        <button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
-        <ButtonSpinner Text="Add" Class="btn btn-primary btn-min-w" Callback="AddVaultAsync" />
+    <div class="form-footer">
+        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogClose">Close</button>
+        <Button Text="Add" OnClick="AddVaultAsync" class="btn btn-primary btn-min-w" />
     </div>
 }
 else
 {
-    <LoadingText />
+    <Loader />
 }

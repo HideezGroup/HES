@@ -1,6 +1,6 @@
 ﻿@page "/Employees/Details/{EmployeeId}"
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
-@inherits HESComponentBase
+@inherits HESPageBase
 
 @if (Initialized)
 {
@@ -17,10 +17,14 @@
             </button>
         </div>
         <div class="col-auto ps-1 pe-1">
-            <ButtonSpinner Class="btn btn-primary" Text="Create Personal Account" Callback="OpenDialogCreatePersonalAccountAsync" />
+            <button type="button" class="btn btn-primary" @onclick="OpenDialogCreatePersonalAccountAsync">
+                Create Personal Account
+            </button>
         </div>
         <div class="col-auto ps-1">
-            <ButtonSpinner Class="btn btn-primary" Text="Add Shared Account" Callback="OpenDialogAddSharedAccountAsync" />
+            <button type="button" class="btn btn-primary" @onclick="OpenDialogAddSharedAccountAsync">
+                Add Shared Account
+            </button>
         </div>
     </div>
     @if (Employee.SoftwareVaultInvitations.Count > 0 || Employee.SoftwareVaults.Count > 0 || Employee.HardwareVaults.Count > 0)

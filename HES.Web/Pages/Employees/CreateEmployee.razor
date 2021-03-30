@@ -1,8 +1,8 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (!Initialized)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
@@ -353,7 +353,7 @@ else
         </div>
     </div>
     <!-- Navigation Buttons -->
-    <div class="text-end">
+    <div class="form-footer">
         @if (WizardStep == WizardStep.HardwareVault)
         {
             <button type="button" class="btn btn-outline-secondary me-3" @onclick="SkipVault">Skip</button>
@@ -366,6 +366,6 @@ else
         {
             <button type="button" class="btn btn-secondary me-1" @onclick="Back">Back</button>
         }
-        <ButtonSpinner Class="btn btn-primary" Callback="Next" Text="@(WizardStep == WizardStep.Activation ? "Done" : WizardStep == WizardStep.Overview ? "Create" : "Next")" />
+        <Button class="btn btn-primary" OnClick="Next" Text="@(WizardStep == WizardStep.Activation ? "Done" : WizardStep == WizardStep.Overview ? "Create" : "Next")" />
     </div>
 }
