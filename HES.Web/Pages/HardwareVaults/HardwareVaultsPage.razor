@@ -5,236 +5,227 @@
 
 @if (Initialized)
 {
-    <TableAction>
-        <FilterForm>
-            <VaultFilter FilterChanged="MainTableService.FilterChangedAsync" />
-        </FilterForm>
-        <ActionButtons>
-            <ButtonSpinner Class="btn btn-primary me-1" Text="Import Vaults" Callback="ImportVaultsAsync" />
-            @if (MainTableService.SelectedEntity != null)
-            {
-                <button type="button" @onclick="EditRfidAsync" class="btn btn-light border mx-1" title="Edit RFID">
-                    <img class="icon-btn" src="/svg/icon-edit.svg" />
-                    Edit RFID
-                </button>
-                @if (MainTableService.SelectedEntity.Status == VaultStatus.Locked)
-                {
-                    <button type="button" @onclick="ActivateVaultAsync" class="btn btn-light border mx-1" title="Activate vault">
-                        <img class="icon-btn" src="/svg/icon-unlock.svg" />
-                        Activate vault
-                    </button>
-                }
-                @if (MainTableService.SelectedEntity.Status == VaultStatus.Active)
-                {
-                    <button type="button" @onclick="SuspendVaultAsync" class="btn btn-light border mx-1" title="Suspend vault">
-                        <img class="icon-btn" src="/svg/icon-otp.svg" />
-                        Suspend vault
-                    </button>
-
-                    <button type="button" @onclick="ChangeVaultProfileAsync" class="btn btn-light border mx-1" title="Set vault profile">
-                        <img class="icon-btn" src="/svg/icon-done.svg" />
-                        Change profile
-                    </button>
-                }
-                @if (MainTableService.SelectedEntity.Status == VaultStatus.Suspended || MainTableService.SelectedEntity.Status == VaultStatus.Reserved)
-                {
-                    <button type="button" @onclick="ShowActivationCodeAsync" class="btn btn-light border mx-1" title="Show activation code">
-                        <img class="icon-btn" src="/svg/icon-security.svg" />
-                        Activation code
-                    </button>
-                }
-                @if (MainTableService.SelectedEntity.Status == VaultStatus.Active || MainTableService.SelectedEntity.Status == VaultStatus.Locked || MainTableService.SelectedEntity.Status == VaultStatus.Suspended || MainTableService.SelectedEntity.Status == VaultStatus.Reserved)
-                {
-                    <button type="button" @onclick="CompromisedVaultAsync" class="btn btn-light border mx-1" title="Compromised">
-                        <img class="icon-btn" src="/svg/icon-password.svg" />
-                        Vault Is Compromised
-                    </button>
-                }
-            }
-        </ActionButtons>
-        <FilterButtons>
-            <TableFilter SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-        </FilterButtons>
-    </TableAction>
-    <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" Loading="MainTableService.Loading">
-        <TableHeader>
-            <MainTableHeader Title="ID"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.Id)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="MAC"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.MAC)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Battery"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.Battery)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Firmware"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.Firmware)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Profile"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.HardwareVaultProfile)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Status"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.Status)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Last Synced"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.LastSynced)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="License Status"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.LicenseStatus)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="License End Date"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.LicenseEndDate)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Employee"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.Employee)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Company"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.Employee.Department.Company)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Department"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.Employee.Department)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="@nameof(HardwareVault.Model)"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.Model)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="@nameof(HardwareVault.RFID)"
-                             TitleWidth="7.1"
-                             SortColumn="@nameof(HardwareVault.RFID)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-        </TableHeader>
-        <TableRow>
-            <td>
-                @context.Id
-            </td>
-            <td>
-                @context.MAC
-            </td>
-            <td>
-                @if (context.Battery >= 30)
+    <DataTableWrapper Loading="DataTableService.Loading">
+        <WrapperHeader>
+            <DataTableActions RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
+                <FilterForm>
+                    <VaultFilter FilterChanged="DataTableService.FilterChangedAsync" />
+                </FilterForm>
+                <ActionButtons>
+                    <Button class="btn btn-primary me-1" Text="Import Vaults" OnClick="ImportVaultsAsync" />
+                    @if (DataTableService.SelectedEntity != null)
                     {
-                    <img src="/svg/icon-battery_full.svg" alt="@context.Battery" />
-                    <span>@context.Battery%</span>
-                    }
-                    else if (context.Battery >= 15 && context.Battery <= 30)
-                    {
-                    <img src="/svg/icon-battery_30.svg" alt="@context.Battery" />
-                    <span>@context.Battery%</span>
-                    }
-                    else
-                    {
-                    <img src="/svg/icon-battery_15.svg" alt="@context.Battery" />
-                    <span>@context.Battery%</span>
-                    }
-            </td>
-            <td>
-                @context.Firmware
-            </td>
-            <td>
-                @context.HardwareVaultProfile.Name
-            </td>
-            <td>
-                @context.Status
-            </td>
-            <td>
-                @if (context.IsOnline)
-                    {
-                    <span class="badge bg-success">Connected</span>
-                    }
-                    else
-                    {
-                        if (context.LastSynced != null)
+                        <button type="button" @onclick="EditRfidAsync" class="btn btn-light border mx-1" title="Edit RFID">
+                            <img class="icon-btn" src="/svg/icon-edit.svg" />
+                            Edit RFID
+                        </button>
+                        @if (DataTableService.SelectedEntity.Status == VaultStatus.Locked)
                         {
-                        @context.LastSynced.Value.ToLocalTime()
+                            <button type="button" @onclick="ActivateVaultAsync" class="btn btn-light border mx-1" title="Activate vault">
+                                <img class="icon-btn" src="/svg/icon-unlock.svg" />
+                                Activate vault
+                            </button>
+                        }
+                        @if (DataTableService.SelectedEntity.Status == VaultStatus.Active)
+                        {
+                            <button type="button" @onclick="SuspendVaultAsync" class="btn btn-light border mx-1" title="Suspend vault">
+                                <img class="icon-btn" src="/svg/icon-otp.svg" />
+                                Suspend vault
+                            </button>
+
+                            <button type="button" @onclick="ChangeVaultProfileAsync" class="btn btn-light border mx-1" title="Set vault profile">
+                                <img class="icon-btn" src="/svg/icon-done.svg" />
+                                Change profile
+                            </button>
+                        }
+                        @if (DataTableService.SelectedEntity.Status == VaultStatus.Suspended || DataTableService.SelectedEntity.Status == VaultStatus.Reserved)
+                        {
+                            <button type="button" @onclick="ShowActivationCodeAsync" class="btn btn-light border mx-1" title="Show activation code">
+                                <img class="icon-btn" src="/svg/icon-security.svg" />
+                                Activation code
+                            </button>
+                        }
+                        @if (DataTableService.SelectedEntity.Status == VaultStatus.Active || DataTableService.SelectedEntity.Status == VaultStatus.Locked || DataTableService.SelectedEntity.Status == VaultStatus.Suspended || DataTableService.SelectedEntity.Status == VaultStatus.Reserved)
+                        {
+                            <button type="button" @onclick="CompromisedVaultAsync" class="btn btn-light border mx-1" title="Compromised">
+                                <img class="icon-btn" src="/svg/icon-password.svg" />
+                                Vault Is Compromised
+                            </button>
                         }
                     }
-            </td>
-            <td>
-                @context.LicenseStatus
-            </td>
-            <td>
-                @if (context.LicenseEndDate != null)
-                    {
-                    @context.LicenseEndDate.Value.ToShortDateString()
-                    }
-            </td>
-            <td>
-                @context.Employee?.FullName
-            </td>
-            <td>
-                @context.Employee?.Department?.Company?.Name
-            </td>
-            <td>
-                @context.Employee?.Department?.Name
-            </td>
-            <td>
-                @context.Model
-            </td>
-            <td>
-                @context.RFID
-            </td>
-        </TableRow>
-    </MainTable>
-    <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                TotalRecords="MainTableService.TotalRecords"
-                CurrentPage="MainTableService.CurrentPage"
-                DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />
+                </ActionButtons>
+            </DataTableActions>
+        </WrapperHeader>
+        <WrapperBody>
+            <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
+                <TableHeader>
+                    <DataTableHeaderItem Title="ID"
+                                         SortColumn="@nameof(HardwareVault.Id)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="MAC"
+                                         SortColumn="@nameof(HardwareVault.MAC)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Battery"
+                                         SortColumn="@nameof(HardwareVault.Battery)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Firmware"
+                                         SortColumn="@nameof(HardwareVault.Firmware)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Profile"
+                                         SortColumn="@nameof(HardwareVault.HardwareVaultProfile)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Status"
+                                         SortColumn="@nameof(HardwareVault.Status)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Last Synced"
+                                         SortColumn="@nameof(HardwareVault.LastSynced)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="License Status"
+                                         SortColumn="@nameof(HardwareVault.LicenseStatus)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="License End Date"
+                                         SortColumn="@nameof(HardwareVault.LicenseEndDate)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Employee"
+                                         SortColumn="@nameof(HardwareVault.Employee)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Company"
+                                         SortColumn="@nameof(HardwareVault.Employee.Department.Company)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Department"
+                                         SortColumn="@nameof(HardwareVault.Employee.Department)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="@nameof(HardwareVault.Model)"
+                                         SortColumn="@nameof(HardwareVault.Model)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="@nameof(HardwareVault.RFID)"
+                                         SortColumn="@nameof(HardwareVault.RFID)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                </TableHeader>
+                <TableRow>
+                    <td>
+                        @context.Id
+                    </td>
+                    <td>
+                        @context.MAC
+                    </td>
+                    <td>
+                        @if (context.Battery >= 30)
+                            {
+                            <img src="/svg/icon-battery_full.svg" alt="@context.Battery" />
+                            <span>@context.Battery%</span>
+                            }
+                            else if (context.Battery >= 15 && context.Battery <= 30)
+                            {
+                            <img src="/svg/icon-battery_30.svg" alt="@context.Battery" />
+                            <span>@context.Battery%</span>
+                            }
+                            else
+                            {
+                            <img src="/svg/icon-battery_15.svg" alt="@context.Battery" />
+                            <span>@context.Battery%</span>
+                            }
+                    </td>
+                    <td>
+                        @context.Firmware
+                    </td>
+                    <td>
+                        @context.HardwareVaultProfile.Name
+                    </td>
+                    <td>
+                        @context.Status
+                    </td>
+                    <td>
+                        @if (context.IsOnline)
+                            {
+                            <span class="badge bg-success">Connected</span>
+                            }
+                            else
+                            {
+                                if (context.LastSynced != null)
+                                {
+                                @context.LastSynced.Value.ToLocalTime()
+                                }
+                            }
+                    </td>
+                    <td>
+                        @context.LicenseStatus
+                    </td>
+                    <td>
+                        @if (context.LicenseEndDate != null)
+                            {
+                            @context.LicenseEndDate.Value.ToShortDateString()
+                            }
+                    </td>
+                    <td>
+                        @context.Employee?.FullName
+                    </td>
+                    <td>
+                        @context.Employee?.Department?.Company?.Name
+                    </td>
+                    <td>
+                        @context.Employee?.Department?.Name
+                    </td>
+                    <td>
+                        @context.Model
+                    </td>
+                    <td>
+                        @context.RFID
+                    </td>
+                </TableRow>
+            </DataTable>
+        </WrapperBody>
+        <WrapperFooter>
+            <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"
+                                 DisplayRowsChanged="DataTableService.DisplayRowsChangedAsync"
+                                 TotalRecords="DataTableService.TotalRecords"
+                                 CurrentPage="DataTableService.CurrentPage"
+                                 DisplayRows="DataTableService.DataLoadingOptions.Take"
+                                 DisplayRecords="DataTableService.Entities.Count" />
+        </WrapperFooter>
+    </DataTableWrapper>
 }
 else if (LoadFailed)
 {
