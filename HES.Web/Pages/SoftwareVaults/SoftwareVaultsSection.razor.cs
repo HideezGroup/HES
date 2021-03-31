@@ -29,73 +29,73 @@ namespace HES.Web.Pages.SoftwareVaults
 
         protected override async Task OnInitializedAsync()
         {
-            await LoadTableDataAsync();
+            //await LoadTableDataAsync();
         }
 
         #region MainTable
 
-        private async Task LoadTableDataAsync()
-        {
-            var currentTotalRows = TotalRecords;
-            TotalRecords = await SoftwareVaultService.GetVaultsCountAsync(SearchText, Filter);
+        //private async Task LoadTableDataAsync()
+        //{
+        //    var currentTotalRows = TotalRecords;
+        //    TotalRecords = await SoftwareVaultService.GetVaultsCountAsync(SearchText, Filter);
 
-            if (currentTotalRows != TotalRecords)
-                CurrentPage = 1;
+        //    if (currentTotalRows != TotalRecords)
+        //        CurrentPage = 1;
 
-            SoftwareVaults = await SoftwareVaultService.GetSoftwareVaultsAsync((CurrentPage - 1) * DisplayRows, DisplayRows, SortedColumn, SortDirection, SearchText, Filter);
-            SelectedSoftwareVault = null;
+        //    SoftwareVaults = await SoftwareVaultService.GetSoftwareVaultsAsync((CurrentPage - 1) * DisplayRows, DisplayRows, SortedColumn, SortDirection, SearchText, Filter);
+        //    SelectedSoftwareVault = null;
 
-            StateHasChanged();
-        }
+        //    StateHasChanged();
+        //}
 
-        private async Task FilterChangedAsync(SoftwareVaultFilter filter)
-        {
-            Filter = filter;
-            await LoadTableDataAsync();
-        }
+        //private async Task FilterChangedAsync(SoftwareVaultFilter filter)
+        //{
+        //    Filter = filter;
+        //    await LoadTableDataAsync();
+        //}
 
-        private async Task SearchTextChangedAsync(string searchText)
-        {
-            SearchText = searchText;
-            await LoadTableDataAsync();
-        }
+        //private async Task SearchTextChangedAsync(string searchText)
+        //{
+        //    SearchText = searchText;
+        //    await LoadTableDataAsync();
+        //}
 
-        private async Task SortedColumnChangedAsync(string columnName)
-        {
-            SortedColumn = columnName;
-            await LoadTableDataAsync();
-        }
+        //private async Task SortedColumnChangedAsync(string columnName)
+        //{
+        //    SortedColumn = columnName;
+        //    await LoadTableDataAsync();
+        //}
 
-        private async Task SortDirectionChangedAsync(ListSortDirection sortDirection)
-        {
-            SortDirection = sortDirection;
-            await LoadTableDataAsync();
-        }
+        //private async Task SortDirectionChangedAsync(ListSortDirection sortDirection)
+        //{
+        //    SortDirection = sortDirection;
+        //    await LoadTableDataAsync();
+        //}
 
-        private async Task CurrentPageChangedAsync(int currentPage)
-        {
-            CurrentPage = currentPage;
-            await LoadTableDataAsync();
-        }
+        //private async Task CurrentPageChangedAsync(int currentPage)
+        //{
+        //    CurrentPage = currentPage;
+        //    await LoadTableDataAsync();
+        //}
 
-        private async Task DisplayRowsChangedAsync(int displayRows)
-        {
-            DisplayRows = displayRows;
-            CurrentPage = 1;
-            await LoadTableDataAsync();
-        }
+        //private async Task DisplayRowsChangedAsync(int displayRows)
+        //{
+        //    DisplayRows = displayRows;
+        //    CurrentPage = 1;
+        //    await LoadTableDataAsync();
+        //}
 
-        private Task SelectedItemChangedAsync(SoftwareVault item)
-        {
-            SelectedSoftwareVault = item;
-            StateHasChanged();
-            return Task.CompletedTask;
-        }
+        //private Task SelectedItemChangedAsync(SoftwareVault item)
+        //{
+        //    SelectedSoftwareVault = item;
+        //    StateHasChanged();
+        //    return Task.CompletedTask;
+        //}
 
-        private Task SelectedItemDblClickAsync()
-        {
-            return Task.CompletedTask;
-        }
+        //private Task SelectedItemDblClickAsync()
+        //{
+        //    return Task.CompletedTask;
+        //}
 
         #endregion
     }
