@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Audit.WorkstationSummaries
 {
-    public partial class ByDaysAndEmployeesTab : HESComponentBase, IDisposable
+    public partial class ByDaysAndEmployeesTab : HESPageBase, IDisposable
     {
         public IWorkstationAuditService WorkstationAuditService { get; set; }
-        public IMainTableService<SummaryByDayAndEmployee, SummaryFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        public IDataTableService<SummaryByDayAndEmployee, SummaryFilter> DataTableService { get; set; }
         [Inject] public ILogger<ByDaysAndEmployeesTab> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -21,8 +20,8 @@ namespace HES.Web.Pages.Audit.WorkstationSummaries
             try
             {
                 WorkstationAuditService = ScopedServices.GetRequiredService<IWorkstationAuditService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<SummaryByDayAndEmployee, SummaryFilter>>();
-                await MainTableService.InitializeAsync(WorkstationAuditService.GetSummaryByDayAndEmployeesAsync, WorkstationAuditService.GetSummaryByDayAndEmployeesCountAsync, ModalDialogService, StateHasChanged, nameof(SummaryByDayAndEmployee.Date), syncPropName: "Date");
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<SummaryByDayAndEmployee, SummaryFilter>>();
+                await DataTableService.InitializeAsync(WorkstationAuditService.GetSummaryByDayAndEmployeesAsync, WorkstationAuditService.GetSummaryByDayAndEmployeesCountAsync, StateHasChanged, nameof(SummaryByDayAndEmployee.Date), syncPropName: "Date");
 
                 SetInitialized();
             }
@@ -35,7 +34,7 @@ namespace HES.Web.Pages.Audit.WorkstationSummaries
 
         public void Dispose()
         {
-            MainTableService.Dispose();
+
         }
     }
 }
