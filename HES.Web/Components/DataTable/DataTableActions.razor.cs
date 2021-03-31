@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace HES.Web.Components
 {
-    public partial class DataTableTableActions : HESDomComponentBase
+    public partial class DataTableActions : HESDomComponentBase
     {
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Parameter] public RenderFragment FilterForm { get; set; }
@@ -27,15 +27,6 @@ namespace HES.Web.Components
             SearchBoxTimer();
         }
 
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                await JSRuntime.InvokeVoidAsync("initTooltips");
-            }
-        }
-       
         private void SearchBoxTimer()
         {
             _timer = new Timer(500);

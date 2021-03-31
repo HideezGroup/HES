@@ -11,7 +11,7 @@ namespace HES.Web.Pages.Templates
         [Parameter] public Func<TemplateFilter, Task> FilterChanged { get; set; }
 
         public TemplateFilter Filter { get; set; } = new TemplateFilter();
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button ButtonSpinner { get; set; }
 
         private async Task FilteredAsync()
         {

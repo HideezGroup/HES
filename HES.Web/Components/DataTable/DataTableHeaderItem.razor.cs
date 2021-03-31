@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Components
 {
-    public partial class DataTableTableHeaderItem : HESDomComponentBase
+    public partial class DataTableHeaderItem : HESDomComponentBase
     {
         [Parameter] public string Title { get; set; }
         [Parameter] public double TitleWidth { get; set; } = 1;

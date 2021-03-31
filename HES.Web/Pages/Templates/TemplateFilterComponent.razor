@@ -1,6 +1,6 @@
 ﻿@if (Filter == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
@@ -18,9 +18,9 @@ else
                 <label class="text-gray">Apps</label>
                 <InputText class="form-control" @bind-Value="Filter.Apps" />
             </div>
-            <div class="col align-self-end text-end form-group">            
-                <ButtonSpinner Text="Clear" Class="btn btn-secondary" Callback="ClearAsync" />
-                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Filter" Class="btn btn-primary" />
+            <div class="col align-self-end text-end form-group">
+                <Button Text="Clear" OnClick="ClearAsync" class="btn btn-secondary" />
+                <Button @ref="ButtonSpinner" Text="Filter" type="submit" class="btn btn-primary" />
             </div>
         </div>
     </EditForm>

@@ -1,0 +1,33 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+<div id="filter-collapse" class="collapse @(CollapseFilter ? "show" : "") mb-3">
+    <div class="card">
+        <div class="card-body">
+            @FilterForm
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-between" style="margin: -0.25rem -0.25rem 1rem -0.25rem !important;">
+    <div class="d-flex align-items-center flex-nowrap overflow-auto p-1">
+        @ActionButtons
+    </div>
+    <div class="d-flex align-items-center flex-nowrap overflow-auto p-1">
+        <button type="button" class="btn btn-light border me-2 text-nowrap" title="Refresh table" @onclick="RefreshAsync">
+            <div class="d-flex justify-content-between align-items-center">
+                <img class="icon-btn" src="/svg/icon-refresh.svg" />
+                Refresh
+            </div>
+        </button>
+        @if (ShowFilterButton)
+        {
+            <button type="button" class="btn btn-light border me-2 text-nowrap" data-bs-toggle="collapse" data-bs-target="#filter-collapse" aria-expanded="false" aria-controls="filter-collapse" title="Filter">
+                <div class="d-flex justify-content-between align-items-center">
+                    <img class="icon-btn" src="/svg/icon-filter.svg" />
+                    Filters
+                </div>
+            </button>
+        }
+        <input type="text" @bind-value="SearchText" @bind-value:event="oninput" @onkeyup="@SearchBoxKeyUp" class="form-control input-search-icon" placeholder="Search" title="@TooltipText">
+    </div>
+</div>
