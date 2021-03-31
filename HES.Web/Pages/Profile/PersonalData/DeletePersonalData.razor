@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (Initialized)
 {
@@ -16,8 +16,8 @@
                 <ValidationMessage For="@(() => PasswordModel.Password)" class="text-danger" />
             </div>
             <div class="text-end">
-                <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
-                <Button class="btn btn-danger" type="submit" @ref="ButtonSpinner" Text="Delete data and close my account" />
+                <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
+                <Button @ref="ButtonSpinner" Text="Delete data and close my account" class="btn btn-danger" type="submit" />
             </div>
         </EditForm>
     </div>

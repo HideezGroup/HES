@@ -1,5 +1,4 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -11,11 +10,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile.TwoFactor
 {
-    public partial class GenerateRecoveryCodes : HESComponentBase
+    public partial class GenerateRecoveryCodes : HESModalBase
     {
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public HttpClient HttpClient { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<GenerateRecoveryCodes> Logger { get; set; }
         public string[] RecoveryCodes { get; set; }
 
@@ -29,7 +26,7 @@ namespace HES.Web.Pages.Profile.TwoFactor
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -44,14 +41,13 @@ namespace HES.Web.Pages.Profile.TwoFactor
 
                 var recoveryCodes = JsonConvert.DeserializeObject<List<string>>(await response.Content.ReadAsStringAsync());
 
-                RecoveryCodes = recoveryCodes.ToArray();
-               
+                RecoveryCodes = recoveryCodes.ToArray();               
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESPageBase
 
 @if (Initialized)
 {
@@ -41,7 +41,7 @@
                     </div>
                     <div>
                         <button type="button" class="btn btn-outline-secondary" @onclick="@(async () =>  await EditSecurityKeyAsync(credential.Id))">Edit</button>
-                        <button type="button" class="btn btn-outline-secondary ms-1" @onclick="@(async () =>  await RemoveSecurityKeyAsync(credential.Id))">Delete</button>
+                        <button type="button" class="btn btn-outline-secondary ms-1" @onclick="@(async () =>  await DeleteSecurityKeyAsync(credential.Id))">Delete</button>
                     </div>
                 </div>
             }

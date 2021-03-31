@@ -1,5 +1,4 @@
-﻿using HES.Core.Interfaces;
-using HES.Web.Components;
+﻿using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -11,9 +10,8 @@ namespace HES.Web.Pages.Profile
         Security
     }
 
-    public partial class ProfilePage : HESComponentBase
+    public partial class ProfilePage : HESPageBase
     {
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         public RenderFragment Tab { get; set; }
         public ProfileTabs SelectedTab { get; set; }
 
