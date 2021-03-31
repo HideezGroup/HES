@@ -2,11 +2,11 @@
 
 @if (SoftwareVaultInvitations == null)
 {
-    <LoadingTab />
+    @*<LoadingTab />*@
 }
 else
 {
-    <TableAction>
+    @*<TableAction>
         <FilterForm>
             <InvitationFilter FilterChanged="FilterChangedAsync" />
         </FilterForm>
@@ -106,5 +106,5 @@ else
                 TotalRecords="TotalRecords"
                 CurrentPage="CurrentPage"
                 DisplayRows="DisplayRows"
-                DisplayRecords="SoftwareVaultInvitations.Count" />
+                DisplayRecords="SoftwareVaultInvitations.Count" />*@
 }

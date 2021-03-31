@@ -19,12 +19,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile
 {
-    public partial class GeneralTab : HESComponentBase
+    public partial class GeneralTab : HESPageBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<ProfilePage> Logger { get; set; }
 
@@ -137,7 +135,7 @@ namespace HES.Web.Pages.Profile
                     builder.CloseComponent();
                 };
 
-                await ModalDialogService.ShowAsync("Delete Personal Data", body);
+                await ModalDialogService2.ShowAsync("Delete Personal Data", body);
             }
             catch (Exception ex)
             {

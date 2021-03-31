@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -10,14 +11,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Administrators
 {
-    public partial class DeleteAdministrator : HESComponentBase
+    public partial class DeleteAdministrator : HESModalBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DeleteAdministrator> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string ApplicationUserId { get; set; }
+
         public ApplicationUser ApplicationUser { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -28,13 +27,13 @@ namespace HES.Web.Pages.Settings.Administrators
 
                 ApplicationUser = await ApplicationUserService.GetUserByIdAsync(ApplicationUserId);
                 if (ApplicationUser == null)
-                    throw new Exception("User not found.");
+                    throw new HESException(HESCode.UserNotFound);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -44,14 +43,13 @@ namespace HES.Web.Pages.Settings.Administrators
             {
                 await ApplicationUserService.DeleteUserAsync(ApplicationUserId);
                 await ToastService.ShowToastAsync("Administrator deleted.", ToastType.Success);
-                await SynchronizationService.UpdateAdministrators(ExceptPageId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
     }

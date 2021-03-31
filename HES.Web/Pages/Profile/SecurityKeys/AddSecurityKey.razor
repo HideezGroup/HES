@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (Initialized)
 {
@@ -12,7 +12,7 @@
             <label class="form-label">Security Key Name</label>
             <input type="text" class="form-control" @bind-value="SecurityKeyName" @bind-value:event="oninput" />
         </div>
-        <div class="text-end">
+        <div class="form-footer">
             <button type="button" @onclick="SaveSecurityKeyAsync" class="btn btn-primary">Done</button>
         </div>
     }
@@ -22,15 +22,15 @@
             <h6 class="alert-heading">Something went wrong. Try again.</h6>
             <p class="mb-0">We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</p>
         </div>
-        <div class="text-end">
-            <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
+        <div class="form-footer">
+            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
             <button type="button" @onclick="ConfigureSecurityKeyAsync" class="btn btn-primary">Try Again</button>
         </div>
     }
     if (AddingStep == SecurityKeyAddingStep.Start)
     {
-        <div class="text-end">
-            <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
+        <div class="form-footer">
+            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
             <button type="button" @onclick="ConfigureSecurityKeyAsync" class="btn btn-primary">Next</button>
         </div>
     }
@@ -41,5 +41,5 @@
 }
 else
 {
-    <LoadingText />
+    <Loader />
 }

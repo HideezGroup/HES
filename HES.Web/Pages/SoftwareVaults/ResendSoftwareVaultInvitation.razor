@@ -2,7 +2,7 @@
 
 @if (!_initialized)
 {
-    <LoadingText />
+    @*<LoadingText />*@
 }
 else
 {
@@ -10,22 +10,22 @@ else
     {
         <Alert Message="To send an invitation, a server address is required, please add it in the parameters page." />
         <div class="text-end mt-3">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
+            @*<button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>*@
         </div>
     }
     else if (SoftwareVaultInvitation.Employee.Email == null)
     {
         <Alert Message="The employee does not have an email, for the invitation you must add an email to the employee." />
         <div class="text-end mt-3">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
+            @*<button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>*@
         </div>
     }
     else
     {
         <h5 class="mb-4">You want to resend invitation to @SoftwareVaultInvitation.Employee.FullName?</h5>
         <div class="form-group text-end mb-0">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
-            <ButtonSpinner Class="btn btn-primary" Callback="SendAsync" Text="Send" />
+            @*<button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>*@
+          @*  <ButtonSpinner Class="btn btn-primary" Callback="SendAsync" Text="Send" />*@
         </div>
     }
 }

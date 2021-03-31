@@ -1,12 +1,12 @@
 ﻿@if (SoftwareVaultInvitation == null)
 {
-    <LoadingText />
+    @*<LoadingText />*@
 }
 else
 {
     <h5 class="mb-4">You want to delete invitation to @SoftwareVaultInvitation.Employee.FullName?</h5>
     <div class="form-group text-end mb-0">
-        <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
-        <ButtonSpinner Class="btn btn-danger" Callback="DeleteAsync" Text="Delete"/>
+        @*<button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>*@
+        @*<ButtonSpinner Class="btn btn-danger" Callback="DeleteAsync" Text="Delete"/>*@
     </div>
 }

@@ -1,14 +1,14 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (ApplicationUser == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
-    <h5 class="text-gray mb-4 text-break">You want to delete administrator @ApplicationUser.Email?</h5>
-    <div class="text-end">
-        <button type="button" class="btn btn-secondary" @onclick="async () => await ModalDialogService.CancelAsync()">Cancel</button>
-        <ButtonSpinner Class="btn btn-danger" Text="Delete" Callback="@(async () => await DeleteUserAsync())" />
+    <h5 class="text-gray mb-3 text-break">You want to delete administrator @ApplicationUser.Email?</h5>
+    <div class="form-footer">
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+        <Button Class="btn btn-danger" Text="Delete" OnClick="@(async () => await DeleteUserAsync())" />
     </div>
 }
