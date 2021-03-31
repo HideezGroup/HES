@@ -10,15 +10,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Parameters
 {
-    public partial class LdapSettingsDialog : HESComponentBase
+    public partial class LdapSettingsDialog : HESModalBase
     {
         [Inject] public ILdapService LdapService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<LdapSettingsDialog> Logger { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Parameter] public string Host { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public LdapSettings LdapSettings { get; set; }
         public EditContext LdapSettingsContext { get; set; }
@@ -52,8 +49,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 await LdapService.ValidateCredentialsAsync(LdapSettings);
                 await AppSettingsService.SetLdapSettingsAsync(LdapSettings);
                 await ToastService.ShowToastAsync("Domain settings updated.", ToastType.Success);    
-                await SynchronizationService.UpdateParameters(ExceptPageId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (LdapForNet.LdapInvalidCredentialsException)
             {
@@ -63,7 +59,7 @@ namespace HES.Web.Pages.Settings.Parameters
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
     }
