@@ -14,8 +14,7 @@ namespace HES.Web.Pages.Employees
     public partial class EmployeesPage : HESPageBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
-        public IMainTableService<Employee, EmployeeFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; } // TODO remove
+        public IDataTableService<Employee, EmployeeFilter> DataTableService { get; set; }
         [Inject] public ILogger<EmployeesPage> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
 
@@ -24,12 +23,12 @@ namespace HES.Web.Pages.Employees
             try
             {
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<Employee, EmployeeFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<Employee, EmployeeFilter>>();
 
                 SynchronizationService.UpdateEmployeePage += UpdateEmployeePage;
 
                 await BreadcrumbsService.SetEmployees();
-                await MainTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, ModalDialogService, StateHasChanged, nameof(Employee.FullName));
+                await DataTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, StateHasChanged, nameof(Employee.FullName));
                 
                 SetInitialized();
             }
@@ -53,7 +52,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployees(PageId);
             }
         }
@@ -62,7 +61,7 @@ namespace HES.Web.Pages.Employees
         {
             await InvokeAsync(() =>
             {
-                NavigationManager.NavigateTo($"/Employees/Details/{MainTableService.SelectedEntity.Id}");
+                NavigationManager.NavigateTo($"/Employees/Details/{DataTableService.SelectedEntity.Id}");
             });
         }
 
@@ -79,7 +78,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployees(PageId);
             }
         }
@@ -89,7 +88,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditEmployee));
-                builder.AddAttribute(1, nameof(EditEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(EditEmployee.EmployeeId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -98,7 +97,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployees(PageId);
             }
         }
@@ -108,7 +107,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteEmployee));
-                builder.AddAttribute(1, nameof(DeleteEmployee.EmployeeId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(DeleteEmployee.EmployeeId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -117,7 +116,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployees(PageId);
             }
         }
@@ -129,7 +128,7 @@ namespace HES.Web.Pages.Employees
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -138,7 +137,6 @@ namespace HES.Web.Pages.Employees
         public void Dispose()
         {
             SynchronizationService.UpdateEmployeePage -= UpdateEmployeePage;
-            MainTableService.Dispose();
         }
     }
 }
