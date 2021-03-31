@@ -14,8 +14,7 @@ namespace HES.Web.Pages.Workstations
     public partial class WorkstationPage : HESPageBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
-        public IMainTableService<Workstation, WorkstationFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        public IDataTableService<Workstation, WorkstationFilter> DataTableService { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public ILogger<WorkstationPage> Logger { get; set; }
         [Parameter] public string DashboardFilter { get; set; }
@@ -25,13 +24,13 @@ namespace HES.Web.Pages.Workstations
             try
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<Workstation, WorkstationFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<Workstation, WorkstationFilter>>();
                 SynchronizationService.UpdateWorkstationsPage += UpdateWorkstationsPage;
 
                 switch (DashboardFilter)
                 {
                     case "NotApproved":
-                        MainTableService.DataLoadingOptions.Filter.Approved = false;
+                        DataTableService.DataLoadingOptions.Filter.Approved = false;
                         break;
                     case "Online":
                         //TODO
@@ -39,7 +38,7 @@ namespace HES.Web.Pages.Workstations
                 }
 
                 await BreadcrumbsService.SetWorkstations();
-                await MainTableService.InitializeAsync(WorkstationService.GetWorkstationsAsync, WorkstationService.GetWorkstationsCountAsync, ModalDialogService, StateHasChanged, nameof(Workstation.Name));
+                await DataTableService.InitializeAsync(WorkstationService.GetWorkstationsAsync, WorkstationService.GetWorkstationsCountAsync, StateHasChanged, nameof(Workstation.Name));
 
                 SetInitialized();
             }
@@ -57,7 +56,7 @@ namespace HES.Web.Pages.Workstations
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -68,7 +67,7 @@ namespace HES.Web.Pages.Workstations
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(ApproveWorkstation));
-                builder.AddAttribute(1, nameof(ApproveWorkstation.WorkstationId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(ApproveWorkstation.WorkstationId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -77,7 +76,7 @@ namespace HES.Web.Pages.Workstations
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -87,7 +86,7 @@ namespace HES.Web.Pages.Workstations
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(UnapproveWorkstation));
-                builder.AddAttribute(1, nameof(UnapproveWorkstation.WorkstationId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(UnapproveWorkstation.WorkstationId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -96,7 +95,7 @@ namespace HES.Web.Pages.Workstations
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -106,7 +105,7 @@ namespace HES.Web.Pages.Workstations
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteWorkstation));
-                builder.AddAttribute(1, nameof(DeleteWorkstation.WorkstationId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(DeleteWorkstation.WorkstationId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -115,7 +114,7 @@ namespace HES.Web.Pages.Workstations
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -124,7 +123,7 @@ namespace HES.Web.Pages.Workstations
         {
             await InvokeAsync(() =>
             {
-                NavigationManager.NavigateTo($"/Workstations/Details/{MainTableService.SelectedEntity.Id}");
+                NavigationManager.NavigateTo($"/Workstations/Details/{DataTableService.SelectedEntity.Id}");
             });
         }
 
@@ -133,7 +132,7 @@ namespace HES.Web.Pages.Workstations
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditWorkstation));
-                builder.AddAttribute(1, nameof(EditWorkstation.WorkstationId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(EditWorkstation.WorkstationId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -142,7 +141,7 @@ namespace HES.Web.Pages.Workstations
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -150,7 +149,6 @@ namespace HES.Web.Pages.Workstations
         public void Dispose()
         {
             SynchronizationService.UpdateWorkstationsPage -= UpdateWorkstationsPage;
-            MainTableService.Dispose();
         }
     }
 }
