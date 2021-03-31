@@ -11,17 +11,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.HardwareVaults
 {
-    public partial class ShowActivationCode : HESComponentBase
+    public partial class ShowActivationCode : HESModalBase
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<ShowActivationCode> Logger { get; set; }
         [Inject] public IJSRuntime JsRuntime { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }
-        public HardwareVault HardwareVault { get; set; }
 
+        public HardwareVault HardwareVault { get; set; }
         public string Code { get; set; }
         public string InputType { get; private set; }
 
@@ -43,24 +41,38 @@ namespace HES.Web.Pages.HardwareVaults
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
         private async Task SendEmailAsync()
         {
-            await EmailSenderService.SendHardwareVaultActivationCodeAsync(HardwareVault.Employee, Code);
+            try
+            {
+                await EmailSenderService.SendHardwareVaultActivationCodeAsync(HardwareVault.Employee, Code);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
         }
 
         private async Task CopyToClipboardAsync()
         {
-            await JsRuntime.InvokeVoidAsync("copyToClipboard");
+            try
+            {
+                await JsRuntime.InvokeVoidAsync("copyToClipboard");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
         }
 
         private async Task CloseAsync()
         {
             Code = string.Empty;
-            await ModalDialogService.CloseAsync();
+            await ModalDialogClose();
         }
     }
 }

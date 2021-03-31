@@ -1,18 +1,18 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (VaultProfiles == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogCancel" />
     }
     else
     {
-        <div class="alert alert-success rounded-0" role="alert" style="margin-left:-16px; margin-right:-16px">
+        <div class="alert alert-success" role="alert">
             Change access profile for <b>@HardwareVault.Id</b> vault?
         </div>
         <div>
@@ -31,9 +31,9 @@ else
                 }
             </select>
         </div>
-        <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-secondary me-2" @onclick="ModalDialogService.CancelAsync">Cancel</button>
-            <ButtonSpinner Text="Change" Class="btn btn-primary btn-min-w" Callback="ChangeProfileAsync" />
+        <div class="form-footer">
+            <button class="btn btn-secondary me-2" @onclick="ModalDialogCancel">Cancel</button>
+            <Button Text="Change" class="btn btn-primary btn-min-w" OnClick="ChangeProfileAsync" />
         </div>
     }
 }

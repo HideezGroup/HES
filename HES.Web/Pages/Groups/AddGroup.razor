@@ -15,7 +15,7 @@ else
             </div>
             break;
         case ActiveDirectoryInitialization.CredentialsNotSet:
-            <HES.Web.Pages.Settings.Parameters.LdapCredentials Host="@LdapSettings.Host" LoadEntities="GetGroups" CancelRequested="ModalDialogService.CloseAsync" />
+            @*<HES.Web.Pages.Settings.Parameters.LdapCredentials Host="@LdapSettings.Host" LoadEntities="GetGroups" CancelRequested="ModalDialogService.CloseAsync" />*@
             break;
         case ActiveDirectoryInitialization.Loaded:
             <Alert Message="@WarningMessage" />

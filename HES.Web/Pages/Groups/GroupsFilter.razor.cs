@@ -20,10 +20,10 @@ namespace HES.Web.Pages.Groups
 
         private async Task FilterAsync()
         {
-            await ButtonSpinner.SpinAsync(async () =>
-            {
-                await FilterChanged.Invoke(Filter);
-            });
+            //await ButtonSpinner.SpinAsync(async () =>
+            //{
+            //    await FilterChanged.Invoke(Filter);
+            //});
         }
 
         private async Task ClearAsync()
