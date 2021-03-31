@@ -1,14 +1,14 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (GroupMembership == null)
 {
-    <LoadingText />
+    @*<LoadingText />*@
 }
 else
 {
     <h5 class="mb-4">You want to remove employee @GroupMembership.Employee.FullName?</h5>
     <div class="form-group text-end mb-0">
-        <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
-        <ButtonSpinner Text="Remove" Class="btn btn-danger" Callback="DeleteAsync" />
+        @*<button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>*@
+        @*<ButtonSpinner Text="Remove" Class="btn btn-danger" Callback="DeleteAsync" />*@
     </div>
 }

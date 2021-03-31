@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class RemoveEmployee : HESComponentBase
+    public partial class RemoveEmployee : HESModalBase
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<RemoveEmployee> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string GroupId { get; set; }
@@ -39,7 +39,7 @@ namespace HES.Web.Pages.Groups
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                //await ModalDialogService.CancelAsync();
             }
         }
 
@@ -48,7 +48,7 @@ namespace HES.Web.Pages.Groups
             try
             {
                 await GroupService.RemoveEmployeeFromGroupAsync(GroupMembership.Id);         
-                await SynchronizationService.UpdateGroupDetails(ExceptPageId, GroupId);
+                //await SynchronizationService.UpdateGroupDetails(ExceptPageId, GroupId);
                 await ToastService.ShowToastAsync("Employee removed.", ToastType.Success);
             }
             catch (Exception ex)
@@ -58,7 +58,7 @@ namespace HES.Web.Pages.Groups
             }
             finally
             {
-                await ModalDialogService.CloseAsync();
+                //await ModalDialogService.CloseAsync();
             }
         }
     }

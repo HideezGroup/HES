@@ -10,7 +10,7 @@ namespace HES.Web.Pages.Groups
     {
         [Parameter] public Func<GroupFilter, Task> FilterChanged { get; set; }
         GroupFilter Filter { get; set; } = new GroupFilter();
-        public ButtonSpinner ButtonSpinner { get; set; }
+        //public ButtonSpinner ButtonSpinner { get; set; }
         public bool Initialized { get; set; }
 
         protected override void OnInitialized()

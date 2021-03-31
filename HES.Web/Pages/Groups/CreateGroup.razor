@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 <EditForm Model="Group" OnValidSubmit="CreateAsync">
     <DataAnnotationsValidator />
@@ -29,7 +29,7 @@
         </li>
     </ul>
     <div class="text-end mt-4">
-        <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
-        <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Create" Class="btn btn-primary" />
+        @*<button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
+        <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Create" Class="btn btn-primary" />*@
     </div>
 </EditForm>

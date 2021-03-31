@@ -11,15 +11,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class GroupDetails : HESComponentBase, IDisposable
+    public partial class GroupDetails : HESPageBase, IDisposable
     {
         public IGroupService GroupService { get; set; }
-        public IMainTableService<GroupMembership, GroupMembershipFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        //public IMainTableService<GroupMembership, GroupMembershipFilter> MainTableService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<GroupDetails> Logger { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Parameter] public string GroupId { get; set; }
 
         public Group Group { get; set; }
@@ -29,31 +28,31 @@ namespace HES.Web.Pages.Groups
             try
             {
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<GroupMembership, GroupMembershipFilter>>();
+                //MainTableService = ScopedServices.GetRequiredService<IMainTableService<GroupMembership, GroupMembershipFilter>>();
 
-                SynchronizationService.UpdateGroupDetailsPage += UpdateGroupDetailsPage;
+                //SynchronizationService.UpdateGroupDetailsPage += UpdateGroupDetailsPage;
   
                 await LoadGroupAsync();
                 await BreadcrumbsService.SetGroupDetails(Group.Name);
-                await MainTableService.InitializeAsync(GroupService.GetGruopMembersAsync, GroupService.GetGruopMembersCountAsync, ModalDialogService, StateHasChanged, nameof(GroupMembership.Employee.FullName), entityId: GroupId);
+                //await MainTableService.InitializeAsync(GroupService.GetGruopMembersAsync, GroupService.GetGruopMembersCountAsync, ModalDialogService, StateHasChanged, nameof(GroupMembership.Employee.FullName), entityId: GroupId);
 
                 SetInitialized();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                SetLoadFailed(ex.Message);
+                //SetLoadFailed(ex.Message);
             }
         }
 
         private async Task UpdateGroupDetailsPage(string exceptPageId, string groupId, string userName)
         {
-            if (Group.Id != groupId || PageId == exceptPageId)
-                return;
+            //if (Group.Id != groupId || PageId == exceptPageId)
+            //    return;
 
             await InvokeAsync(async () =>
             {      
-                await MainTableService.LoadTableDataAsync();
+                //await MainTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -72,12 +71,12 @@ namespace HES.Web.Pages.Groups
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddEmployee));
-                builder.AddAttribute(1, "ExceptPageId", PageId);
+                //builder.AddAttribute(1, "ExceptPageId", PageId);
                 builder.AddAttribute(2, "GroupId", GroupId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Add Employees", body, ModalDialogSize.Large);
+            //await ModalDialogService.ShowAsync("Add Employees", body, ModalDialogSize.Large);
         }
 
         private async Task OpenModalDeleteEmployeeAsync()
@@ -85,19 +84,19 @@ namespace HES.Web.Pages.Groups
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(RemoveEmployee));
-                builder.AddAttribute(1, "ExceptPageId", PageId);
+                //builder.AddAttribute(1, "ExceptPageId", PageId);
                 builder.AddAttribute(2, "GroupId", GroupId);
-                builder.AddAttribute(3, "EmployeeId", MainTableService.SelectedEntity.EmployeeId);
+                //builder.AddAttribute(3, "EmployeeId", MainTableService.SelectedEntity.EmployeeId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Delete Employee", body);
+            //await ModalDialogService.ShowAsync("Delete Employee", body);
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateGroupDetailsPage -= UpdateGroupDetailsPage;
-            MainTableService.Dispose();
+            //SynchronizationService.UpdateGroupDetailsPage -= UpdateGroupDetailsPage;
+            //MainTableService.Dispose();
         }
     }
 }

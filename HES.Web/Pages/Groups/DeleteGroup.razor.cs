@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class DeleteGroup : HESComponentBase, IDisposable
+    public partial class DeleteGroup : HESModalBase, IDisposable
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<DeleteGroup> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
@@ -44,7 +44,7 @@ namespace HES.Web.Pages.Groups
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                //await ModalDialogService.CloseAsync();
             }
         }
 
@@ -53,15 +53,15 @@ namespace HES.Web.Pages.Groups
             try
             {
                 await GroupService.DeleteGroupAsync(GroupId);               
-                await SynchronizationService.UpdateGroups(ExceptPageId);
+                //await SynchronizationService.UpdateGroups(ExceptPageId);
                 await ToastService.ShowToastAsync("Group deleted.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                //await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                //await ModalDialogService.CancelAsync();
             }
         }
 
