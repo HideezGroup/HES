@@ -15,7 +15,6 @@ namespace HES.Web.Pages.Settings.OrgStructure
     public partial class PositionsTab : HESPageBase, IDisposable
     {
         public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<PositionsTab> Logger { get; set; }
 
         public List<Position> Positions { get; set; }

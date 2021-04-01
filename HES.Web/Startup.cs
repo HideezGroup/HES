@@ -113,7 +113,6 @@ namespace HES.Web
             services.AddScoped<ILicenseService, LicenseService>();
             services.AddScoped<IAppSettingsService, AppSettingsService>();
             services.AddScoped<IToastService, ToastService>();
-            services.AddScoped<IModalDialogService, ModalDialogService>();
             services.AddScoped<IModalDialogService2, ModalDialogService2>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ILdapService, LdapService>();

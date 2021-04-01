@@ -14,7 +14,6 @@ namespace HES.Web.Pages.Settings.OrgStructure
     public partial class CompaniesTab : HESPageBase, IDisposable
     {
         public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<CompaniesTab> Logger { get; set; }
 
         public List<Company> Companies { get; set; }

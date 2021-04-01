@@ -13,7 +13,6 @@ namespace HES.Web.Pages.Settings.Parameters
     public partial class Parameters : HESPageBase, IDisposable
     {
         public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<Parameters> Logger { get; set; }
 
         public LicensingSettings LicensingSettings { get; set; }
