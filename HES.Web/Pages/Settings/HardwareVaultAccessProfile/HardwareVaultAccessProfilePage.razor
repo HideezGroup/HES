@@ -38,30 +38,30 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <MainTableHeader Title="Name"
-                                     SortColumn="@nameof(HardwareVaultProfile.Name)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Creaated"
-                                     SortColumn="@nameof(HardwareVaultProfile.CreatedAt)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Updated"
-                                     SortColumn="@nameof(HardwareVaultProfile.UpdatedAt)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="HardwareVaults"
-                                     SortColumn="@nameof(HardwareVaultProfile.HardwareVaults)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Name"
+                                         SortColumn="@nameof(HardwareVaultProfile.Name)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Creaated"
+                                         SortColumn="@nameof(HardwareVaultProfile.CreatedAt)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Updated"
+                                         SortColumn="@nameof(HardwareVaultProfile.UpdatedAt)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="HardwareVaults"
+                                         SortColumn="@nameof(HardwareVaultProfile.HardwareVaults)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
                 </TableHeader>
                 <TableRow>
                     <td>
