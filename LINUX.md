@@ -404,10 +404,10 @@ The output of the command should be something like this:
 Mar 25 09:05:04 hesservertest systemd[1]: Started Hideez Enterprise Service.
 ```
 
-# 4. Configuring Reverse Proxy Server
+# 5. Configuring Reverse Proxy Server
 To access your server from the local network as well as from the Internet, you have to configure a reverse proxy. We will use the Nginx server for this.
 
-## 4.1 Creating a Self-Signed SSL Certificate for Nginx
+## 5.1 Creating a Self-Signed SSL Certificate for Nginx
 
 **Note 1:**
 
@@ -433,12 +433,12 @@ Email Address []:.
 
 
 
-## 4.1 Restart nginx (CentOS only)
+## 5.2 Restart nginx (CentOS only)
 ```shell
   $ sudo systemctl restart nginx
 ```
 
-## 4.2 Check that nginx service is installed and started
+## 5.3 Check that nginx service is installed and started
 ```shell
   $ sudo systemctl status nginx
 ```
@@ -469,7 +469,7 @@ You must use your domain name to access the HES server (e.g. 'http://hideez.exam
 **Remember that if you use a self-signed certificate, you must enter the server name instead of the domain name. Otherwise, the SSL connection will not work**
 
 
-## 4.3 Updating Nginx config
+## 5.4 Updating Nginx config
 
 We prepared some Nginx configurations for different versions of Linux and placed them in the HES GitHub repository. You may just copy the corresponding file or you can review and edit it for your needs.
 
@@ -506,7 +506,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 Otherwise, you should carefully review the settings and correct the errors.
 
 
-## 4.4 Restarting Nginx and checking its status
+## 5.5 Restarting Nginx and checking its status
 
 ```shell
   $ sudo systemctl restart nginx
@@ -523,7 +523,7 @@ Otherwise, you should carefully review the settings and correct the errors.
            +-13096 nginx: worker process
 ```
 
-# 5. Microsoft Active Directory Integration
+# 6. Microsoft Active Directory Integration
 If you plan to integrate your HES with AD you need to add AD Server's name and IP address to the `/etc/hosts` file, for example:
 ```conf
 192.168.10.75 ad.example.com
@@ -551,7 +551,7 @@ you will also need an openldaps library
 sudo dnf -y install openldap-clients
 ```
 
-# 6. Final Verification
+# 7. Final Verification
 After these steps, your server should be up and running. Go to the `https://<you_domain_name>` in the browser and verify if the site is available.
  
 **Note: for a self-signed certificate, it should be a warning that your connection isn't private. Press Advanced/Proceed to ignore the warning.**
