@@ -12,13 +12,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class HardwareVaultAccessProfilePage : HESComponentBase, IDisposable
+    public partial class HardwareVaultAccessProfilePage : HESPageBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
         public IMainTableService<HardwareVaultProfile, HardwareVaultProfileFilter> MainTableService { get; set; }
         [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<HardwareVaultAccessProfilePage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -60,11 +58,17 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateAccessProfile));
-                builder.AddAttribute(1, nameof(CreateAccessProfile.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Create Profile", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Create Profile", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task EditProfileAsync()
@@ -72,12 +76,18 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditProfile));
-                builder.AddAttribute(1, nameof(EditProfile.ExceptPageId), PageId);
                 builder.AddAttribute(2, nameof(EditProfile.HardwareVaultProfileId), MainTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit Profile", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Edit Profile", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DeleteProfileAsync()
@@ -85,12 +95,18 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteProfile));
-                builder.AddAttribute(1, nameof(DeleteProfile.ExceptPageId), PageId);
                 builder.AddAttribute(2, nameof(DeleteProfile.HardwareVaultProfileId), MainTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Delete Profile", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Delete Profile", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DetailsProfileAsync()
@@ -102,7 +118,14 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Details Profile", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Details Profile", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await MainTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()

@@ -1,10 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,16 +11,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class CreateAccessProfile : HESComponentBase
+    public partial class CreateAccessProfile : HESModalBase
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateAccessProfile> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public HardwareVaultProfile AccessProfile { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public int InitPinExpirationValue { get; set; }
         public int InitPinLengthValue { get; set; }
         public int InitPinTryCountValue { get; set; }
@@ -45,19 +40,18 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await HardwareVaultService.CreateProfileAsync(AccessProfile);
                     await ToastService.ShowToastAsync("Hardware vault profile created.", ToastType.Success); 
-                    await SynchronizationService.UpdateHardwareVaultProfiles(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
