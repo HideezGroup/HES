@@ -11,28 +11,22 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class EditCompany : HESComponentBase, IDisposable
+    public partial class EditCompany : HESModalBase, IDisposable
     {
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditCompany> Logger { get; set; }
         [Parameter] public string CompanyId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
         public Company Company { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                ModalDialogService.OnCancel += ModalDialogService_OnCancel;
-
                 Company = await OrgStructureService.GetCompanyByIdAsync(CompanyId);
                 if (Company == null)
                     throw new Exception("Company not found.");
@@ -47,21 +41,25 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
+        }
+
+        protected override async Task ModalDialogCancel()
+        {
+            await OrgStructureService.UnchangedCompanyAsync(Company);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.EditCompanyAsync(Company);
                     await ToastService.ShowToastAsync("Company updated.", ToastType.Success);
-                    await Refresh.InvokeAsync(this);
-                    await SynchronizationService.UpdateOrgSructureCompanies(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (AlreadyExistException ex)
@@ -72,19 +70,12 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
-        }
-
-        private async Task ModalDialogService_OnCancel()
-        {
-            await OrgStructureService.UnchangedCompanyAsync(Company);
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= ModalDialogService_OnCancel;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Company.Id);
         }

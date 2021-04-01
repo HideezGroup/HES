@@ -168,6 +168,41 @@ namespace HES.Core.Services
             await SendAsync(mailMessage, emailSettings);
         }
 
+        public async Task SendEmployeeEnableSsoAsync(string email, string callbackUrl)
+        {
+            var emailSettings = await GetEmailSettingsAsync();
+            var serverSettings = await GetServerSettingsAsync();
+
+            var htmlMessage = GetTemplate("mail-employee-enable-sso");
+            htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
+
+            MailMessage mailMessage = new MailMessage(emailSettings.UserName, email);
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
+            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
+            mailMessage.AlternateViews.Add(htmlView);
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Subject = $"Action required - SSO Enabled to Hideez Enterprise Server - {serverSettings.Name}";
+
+            await SendAsync(mailMessage, emailSettings);
+        }
+
+        public async Task SendEmployeeDisableSsoAsync(string email)
+        {
+            var emailSettings = await GetEmailSettingsAsync();
+            var serverSettings = await GetServerSettingsAsync();
+
+            var htmlMessage = GetTemplate("mail-employee-disable-sso");
+
+            MailMessage mailMessage = new MailMessage(emailSettings.UserName, email);
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
+            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
+            mailMessage.AlternateViews.Add(htmlView);
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Subject = $"Action required - SSO Disabled to Hideez Enterprise Server - {serverSettings.Name}";
+
+            await SendAsync(mailMessage, emailSettings);
+        }
+
         public async Task SendUserResetPasswordAsync(string email, string callbackUrl)
         {
             var emailSettings = await GetEmailSettingsAsync();

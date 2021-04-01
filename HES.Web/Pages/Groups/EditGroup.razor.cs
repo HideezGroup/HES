@@ -12,19 +12,19 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class EditGroup : HESComponentBase, IDisposable
+    public partial class EditGroup : HESModalBase, IDisposable
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<EditGroup> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
+        //[Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Parameter] public string GroupId { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
         public Group Group { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        //public ButtonSpinner ButtonSpinner { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -33,7 +33,7 @@ namespace HES.Web.Pages.Groups
             {
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
 
-                ModalDialogService.OnCancel += ModalDialogService_OnCancel;
+                //ModalDialogService.OnCancel += ModalDialogService_OnCancel;
 
                 Group = await GroupService.GetGroupByIdAsync(GroupId);
 
@@ -50,7 +50,7 @@ namespace HES.Web.Pages.Groups
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                //await ModalDialogService.CancelAsync();
             }
         }
 
@@ -58,13 +58,13 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
-                {
-                    await GroupService.EditGroupAsync(Group);
-                    await ToastService.ShowToastAsync("Group updated.", ToastType.Success);          
-                    await SynchronizationService.UpdateGroups(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
-                });
+                //await ButtonSpinner.SpinAsync(async () =>
+                //{
+                //    await GroupService.EditGroupAsync(Group);
+                //    await ToastService.ShowToastAsync("Group updated.", ToastType.Success);          
+                //    //await SynchronizationService.UpdateGroups(ExceptPageId);
+                //    //await ModalDialogService.CloseAsync();
+                //});
             }
             catch (AlreadyExistException ex)
             {
@@ -74,7 +74,7 @@ namespace HES.Web.Pages.Groups
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                //await ModalDialogService.CancelAsync();
             }
         }
 
@@ -85,7 +85,7 @@ namespace HES.Web.Pages.Groups
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= ModalDialogService_OnCancel;
+            //ModalDialogService.OnCancel -= ModalDialogService_OnCancel;
 
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Group.Id);

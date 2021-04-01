@@ -1,6 +1,6 @@
 ﻿@page "/"
-@attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
-@inherits HESComponentBase
+@attribute [Authorize(Roles = ApplicationRoles.Admin)]
+@inherits HESPageBase
 
 @if (Initialized)
 {

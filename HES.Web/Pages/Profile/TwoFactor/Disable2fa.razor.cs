@@ -1,55 +1,46 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
+using HES.Core.Helpers;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile.TwoFactor
 {
-    public partial class Disable2fa : HESComponentBase
+    public partial class Disable2fa : HESModalBase
     {
-        [Inject] public HttpClient HttpClient { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<Disable2fa> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            try
-            {
-                SetInitialized();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
-                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
-            }
+            SetInitialized();
         }
 
         private async Task DisableTwoFactorAsync()
         {
             try
             {
-                var response = await HttpClient.PostAsync("api/Identity/DisableTwoFactor", new StringContent(string.Empty));
+                var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
+                var response = await client.PostAsync("api/Identity/DisableTwoFactor", new StringContent(string.Empty));
 
                 if (!response.IsSuccessStatusCode)
                     throw new Exception(await response.Content.ReadAsStringAsync());
 
-                await Refresh.InvokeAsync();
                 await ToastService.ShowToastAsync("2fa has been disabled. You can reenable 2fa when you setup an authenticator app", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
-            }         
+                await ModalDialogCancel();
+            }
         }
     }
 }

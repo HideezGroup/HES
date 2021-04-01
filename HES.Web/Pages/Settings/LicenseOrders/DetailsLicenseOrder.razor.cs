@@ -1,12 +1,11 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class DetailsLicenseOrder : ComponentBase
+    public partial class DetailsLicenseOrder : HESModalBase
     {
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Parameter] public LicenseOrder LicenseOrder { get; set; }
     }
 }

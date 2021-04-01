@@ -12,13 +12,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class HardwareVaultAccessProfilePage : HESComponentBase, IDisposable
+    public partial class HardwareVaultAccessProfilePage : HESPageBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        public IMainTableService<HardwareVaultProfile, HardwareVaultProfileFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        public IDataTableService<HardwareVaultProfile, HardwareVaultProfileFilter> DataTableService { get; set; }
         [Inject] public ILogger<HardwareVaultAccessProfilePage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -26,11 +23,11 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             try
             {
                 HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<HardwareVaultProfile, HardwareVaultProfileFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<HardwareVaultProfile, HardwareVaultProfileFilter>>();
 
                 SynchronizationService.UpdateHardwareVaultProfilesPage += UpdateHardwareVaultProfilesPage;
 
-                await MainTableService.InitializeAsync(HardwareVaultService.GetHardwareVaultProfilesAsync, HardwareVaultService.GetHardwareVaultProfileCountAsync, ModalDialogService, StateHasChanged, nameof(HardwareVaultProfile.Name), ListSortDirection.Ascending);
+                await DataTableService.InitializeAsync(HardwareVaultService.GetHardwareVaultProfilesAsync, HardwareVaultService.GetHardwareVaultProfileCountAsync, StateHasChanged, nameof(HardwareVaultProfile.Name), ListSortDirection.Ascending);
                 await BreadcrumbsService.SetHardwareVaultProfiles();
 
                 SetInitialized();
@@ -49,7 +46,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -60,11 +57,17 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateAccessProfile));
-                builder.AddAttribute(1, nameof(CreateAccessProfile.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Create Profile", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Create Profile", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task EditProfileAsync()
@@ -72,12 +75,18 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditProfile));
-                builder.AddAttribute(1, nameof(EditProfile.ExceptPageId), PageId);
-                builder.AddAttribute(2, nameof(EditProfile.HardwareVaultProfileId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(2, nameof(EditProfile.HardwareVaultProfileId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit Profile", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Profile", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DeleteProfileAsync()
@@ -85,12 +94,18 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteProfile));
-                builder.AddAttribute(1, nameof(DeleteProfile.ExceptPageId), PageId);
-                builder.AddAttribute(2, nameof(DeleteProfile.HardwareVaultProfileId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(2, nameof(DeleteProfile.HardwareVaultProfileId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Delete Profile", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Profile", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DetailsProfileAsync()
@@ -98,17 +113,23 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DetailsProfile));
-                builder.AddAttribute(1, nameof(DetailsProfile.AccessProfile), MainTableService.SelectedEntity);
+                builder.AddAttribute(1, nameof(DetailsProfile.AccessProfile), DataTableService.SelectedEntity);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Details Profile", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Details Profile", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()
         {
             SynchronizationService.UpdateHardwareVaultProfilesPage -= UpdateHardwareVaultProfilesPage;
-            MainTableService.Dispose();
         }
     }
 }

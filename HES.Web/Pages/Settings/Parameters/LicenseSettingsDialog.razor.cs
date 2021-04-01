@@ -9,15 +9,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Parameters
 {
-    public partial class LicenseSettingsDialog : HESComponentBase
+    public partial class LicenseSettingsDialog : HESModalBase
     {
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<LicenseSettingsDialog> Logger { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Parameter] public LicensingSettings LicensingSettings { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         public string InputType { get; private set; }
 
@@ -30,19 +27,18 @@ namespace HES.Web.Pages.Settings.Parameters
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await AppSettingsService.SetLicensingSettingsAsync(LicensingSettings);
                     await ToastService.ShowToastAsync("License settings updated.", ToastType.Success);
-                    await SynchronizationService.UpdateParameters(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
     }

@@ -1,8 +1,0 @@
-﻿@if (EnableFilterButton)
-{
-    <button type="button" class="btn btn-light border mx-2 text-nowrap" data-bs-toggle="collapse" data-bs-target="#filter-collapse" title="Filter">
-        <img class="icon-btn" src="/svg/icon-filter.svg" />
-        Filter
-    </button>
-}
-<input type="text" @bind-value="SearchText" @bind-value:event="oninput" @onkeyup="@SearchBoxKeyUp" class="form-control is-search" placeholder="Search">

@@ -12,7 +12,7 @@ namespace HES.Web.Pages.SoftwareVaults
     {
         [Inject] public ISoftwareVaultService SoftwareVaultService { get; set; }
         [Inject] public ILogger<DeleteSoftwareVaultInvitation> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IToastService ToastService { get; set; }
         [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public SoftwareVaultInvitation SoftwareVaultInvitation { get; set; }
@@ -30,7 +30,7 @@ namespace HES.Web.Pages.SoftwareVaults
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                //await ModalDialogService.CloseAsync();
             }
         }
 
@@ -49,7 +49,7 @@ namespace HES.Web.Pages.SoftwareVaults
             }
             finally
             {
-                await ModalDialogService.CloseAsync();
+                //await ModalDialogService.CloseAsync();
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (LdapSettings == null)
 {
@@ -31,9 +31,9 @@ else
             <InputNumber @bind-Value="LdapSettings.MaxPasswordAge" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => LdapSettings.MaxPasswordAge)" class="text-danger" />
         </div>
-        <div class="text-end">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CancelAsync())">Cancel</button>
-            <ButtonSpinner Class="btn btn-primary" Text="Save" Callback="SaveSettingsAsync" />
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+            <Button  Text="Save" class="btn btn-primary" OnClick="SaveSettingsAsync" />
         </div>
     </EditForm>
 }

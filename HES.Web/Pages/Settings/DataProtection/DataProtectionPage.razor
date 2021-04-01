@@ -1,6 +1,6 @@
 ﻿@page "/Settings/DataProtection"
-@inherits HESComponentBase
-@attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
+@inherits HESPageBase
+@attribute [Authorize(Roles = ApplicationRoles.Admin)]
 
 @if (Initialized)
 {

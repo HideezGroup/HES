@@ -1,9 +1,9 @@
 ﻿@page "/Groups/Details/{GroupId}"
-@inherits HESComponentBase
+@inherits HESPageBase
 
 @if (Initialized)
 {
-    <div class="d-flex justify-content-between align-items-center details-card mb-2">
+    @*<div class="d-flex justify-content-between align-items-center details-card mb-2">
         <h1 class="text-navyblue text-break m-0 px-3">@Group.Name</h1>
     </div>
     <div class="d-flex flex-column details-card mb-3">
@@ -24,8 +24,8 @@
                 </span>
             }
         </div>
-    </div>
-    <TableAction>
+    </div>*@
+    @*<TableAction>
         <ActionButtons>
             <button type="button" class="btn btn-primary my-1 me-2 text-nowrap" @onclick="OpenModalAddEmployeesAsync">
                 Add Employee
@@ -73,7 +73,7 @@
                 TotalRecords="MainTableService.TotalRecords"
                 CurrentPage="MainTableService.CurrentPage"
                 DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />
+                DisplayRecords="MainTableService.Entities.Count" />*@
 }
 else if (LoadFailed)
 {

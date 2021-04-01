@@ -11,12 +11,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class CompaniesTab : HESComponentBase, IDisposable
+    public partial class CompaniesTab : HESPageBase, IDisposable
     {
         public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CompaniesTab> Logger { get; set; }
 
         public List<Company> Companies { get; set; }
@@ -65,12 +62,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateCompany));
-                builder.AddAttribute(1, nameof(CreateCompany.ExceptPageId), PageId);
-                builder.AddAttribute(2, nameof(CreateCompany.Refresh), EventCallback.Factory.Create(this, LoadCompaniesAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Create Company", body);
+            var instance = await ModalDialogService.ShowAsync("Create Company", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadCompaniesAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogEditCompanyAsync(Company company)
@@ -79,12 +81,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(EditCompany));
                 builder.AddAttribute(1, nameof(EditCompany.CompanyId), company.Id);
-                builder.AddAttribute(2, nameof(EditCompany.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(EditCompany.Refresh), EventCallback.Factory.Create(this, LoadCompaniesAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Edit Company", body);
+            var instance = await ModalDialogService.ShowAsync("Edit Company", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadCompaniesAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogDeleteCompanyAsync(Company company)
@@ -93,12 +100,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(DeleteCompany));
                 builder.AddAttribute(1, nameof(DeleteCompany.CompanyId), company.Id);
-                builder.AddAttribute(2, nameof(DeleteCompany.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(DeleteCompany.Refresh), EventCallback.Factory.Create(this, LoadCompaniesAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Delete Company", body);
+            var instance = await ModalDialogService.ShowAsync("Delete Company", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadCompaniesAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogCreateDepartmentAsync(Company company)
@@ -107,12 +119,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(CreateDepartment));
                 builder.AddAttribute(1, nameof(CreateDepartment.CompanyId), company.Id);
-                builder.AddAttribute(2, nameof(CreateDepartment.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(CreateDepartment.Refresh), EventCallback.Factory.Create(this, LoadCompaniesAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Create Department", body);
+            var instance = await ModalDialogService.ShowAsync("Create Departmen", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadCompaniesAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogEditDepartmentAsync(Department department)
@@ -121,12 +138,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(EditDepartment));
                 builder.AddAttribute(1, nameof(EditDepartment.DepartmentId), department.Id);
-                builder.AddAttribute(2, nameof(EditDepartment.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(EditDepartment.Refresh), EventCallback.Factory.Create(this, LoadCompaniesAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Edit Department", body);
+            var instance = await ModalDialogService.ShowAsync("Edit Departmen", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadCompaniesAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogDeleteDepartmentAsync(Department department)
@@ -135,12 +157,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(DeleteDepartment));
                 builder.AddAttribute(1, nameof(DeleteDepartment.DepartmentId), department.Id);
-                builder.AddAttribute(2, nameof(DeleteDepartment.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(DeleteDepartment.Refresh), EventCallback.Factory.Create(this, LoadCompaniesAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Delete Department", body);
+            var instance = await ModalDialogService.ShowAsync("Delete Departmen", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadCompaniesAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()

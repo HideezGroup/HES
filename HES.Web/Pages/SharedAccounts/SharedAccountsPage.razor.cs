@@ -12,13 +12,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class SharedAccountsPage : HESComponentBase, IDisposable
+    public partial class SharedAccountsPage : HESPageBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
-        public IMainTableService<SharedAccount, SharedAccountsFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        public IDataTableService<SharedAccount, SharedAccountsFilter> DataTableService { get; set; }
         [Inject] public ILogger<SharedAccountsPage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -26,12 +23,12 @@ namespace HES.Web.Pages.SharedAccounts
             try
             {
                 SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<SharedAccount, SharedAccountsFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<SharedAccount, SharedAccountsFilter>>();
 
                 SynchronizationService.UpdateSharedAccountsPage += UpdateSharedAccountsPage;
 
                 await BreadcrumbsService.SetSharedAccounts();
-                await MainTableService.InitializeAsync(SharedAccountService.GetSharedAccountsAsync, SharedAccountService.GetSharedAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(SharedAccount.Name), ListSortDirection.Ascending);
+                await DataTableService.InitializeAsync(SharedAccountService.GetSharedAccountsAsync, SharedAccountService.GetSharedAccountsCountAsync, StateHasChanged, nameof(SharedAccount.Name), ListSortDirection.Ascending);
 
                 SetInitialized();
             }
@@ -49,7 +46,7 @@ namespace HES.Web.Pages.SharedAccounts
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -61,11 +58,17 @@ namespace HES.Web.Pages.SharedAccounts
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateSharedAccount));
-                builder.AddAttribute(1, nameof(CreateSharedAccount.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Create Shared Account", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync("Create Shared Account", body, ModalDialogSize.Large);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DeleteSharedAccountAsync()
@@ -73,12 +76,18 @@ namespace HES.Web.Pages.SharedAccounts
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteSharedAccount));
-                builder.AddAttribute(1, nameof(DeleteSharedAccount.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteSharedAccount.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(DeleteSharedAccount.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Delete Shared Account", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Shared Account", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task EditSharedAccountOTPAsync()
@@ -86,12 +95,18 @@ namespace HES.Web.Pages.SharedAccounts
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditSharedAccountOtp));
-                builder.AddAttribute(1, nameof(EditSharedAccountOtp.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditSharedAccountOtp.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(EditSharedAccountOtp.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit Shared Account OTP", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Shared Account OTP", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task EditSharedAccountAsync()
@@ -99,12 +114,18 @@ namespace HES.Web.Pages.SharedAccounts
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditSharedAccount));
-                builder.AddAttribute(1, nameof(EditSharedAccount.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditSharedAccount.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(EditSharedAccount.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit Shared Account", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Shared Account", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task EditSharedAccountPasswordAsync()
@@ -112,18 +133,23 @@ namespace HES.Web.Pages.SharedAccounts
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditSharedAccountPassword));
-                builder.AddAttribute(1, nameof(EditSharedAccountPassword.AccountId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditSharedAccountPassword.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(EditSharedAccountPassword.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit Shared Account Password", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Shared Account Password", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()
         {
             SynchronizationService.UpdateSharedAccountsPage -= UpdateSharedAccountsPage;
-            MainTableService.Dispose();
         }
     }
 }

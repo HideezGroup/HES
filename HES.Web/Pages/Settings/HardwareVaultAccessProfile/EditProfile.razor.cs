@@ -11,18 +11,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class EditProfile : HESComponentBase, IDisposable
+    public partial class EditProfile : HESModalBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditProfile> Logger { get; set; }
         [Parameter] public string HardwareVaultProfileId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public HardwareVaultProfile AccessProfile { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public bool EntityBeingEdited { get; set; }
         public int InitPinExpirationValue { get; set; }
         public int InitPinLengthValue { get; set; }
@@ -34,8 +31,6 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             try
             {
                 HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-
-                ModalDialogService.OnCancel += OnCancelAsync;
 
                 AccessProfile = await HardwareVaultService.GetProfileByIdAsync(HardwareVaultProfileId);
                 if (AccessProfile == null)
@@ -53,33 +48,32 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
+        }
+        protected override async Task ModalDialogCancel()
+        {
+            await HardwareVaultService.UnchangedProfileAsync(AccessProfile);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditProfileAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await HardwareVaultService.EditProfileAsync(AccessProfile);
                     await ToastService.ShowToastAsync("Hardware vault profile updated.", ToastType.Success);            
-                    await SynchronizationService.UpdateHardwareVaultProfiles(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
-        }
-
-        private async Task OnCancelAsync()
-        {
-            await HardwareVaultService.UnchangedProfileAsync(AccessProfile);
         }
 
         private void OnInputPinExpiration(ChangeEventArgs args)
@@ -99,8 +93,6 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= OnCancelAsync;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(AccessProfile.Id);
         }

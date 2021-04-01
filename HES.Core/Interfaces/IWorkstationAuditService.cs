@@ -1,6 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Audit;
+using HES.Core.Models.Web.DataTableComponent;
 using Hideez.SDK.Communication.HES.DTO;
 using System;
 using System.Collections.Generic;

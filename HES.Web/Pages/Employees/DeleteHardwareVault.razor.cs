@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -11,18 +12,15 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class DeleteHardwareVault : HESComponentBase, IDisposable
+    public partial class DeleteHardwareVault : HESModalBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        [Inject] public ISynchronizationService SynchronizationService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteHardwareVault> Logger { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
         public HardwareVault HardwareVault { get; set; }
         public VaultStatusReason Reason { get; set; } = VaultStatusReason.Withdrawal;
@@ -39,7 +37,7 @@ namespace HES.Web.Pages.Employees
 
                 HardwareVault = await HardwareVaultService.GetVaultByIdAsync(HardwareVaultId);
                 if (HardwareVault == null)
-                    throw new Exception("HardwareVault not found.");
+                    throw new HESException(HESCode.HardwareVaultNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(HardwareVault.Id, out object _);
                 if (!EntityBeingEdited)
@@ -50,9 +48,8 @@ namespace HES.Web.Pages.Employees
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -62,24 +59,17 @@ namespace HES.Web.Pages.Employees
             {
                 var employeeId = HardwareVault.EmployeeId;
                 await EmployeeService.RemoveHardwareVaultAsync(HardwareVault.Id, Reason, IsNeedBackup);
-                await Refresh.InvokeAsync(this);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultStatus(HardwareVault.Id);
-                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, employeeId);
                 await SynchronizationService.HardwareVaultStateChanged(HardwareVault.Id);
                 await ToastService.ShowToastAsync("Vault removed.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
-        }
-
-        public async Task CancelAsync()
-        {
-            await ModalDialogService.CloseAsync();
         }
 
         public void Dispose()

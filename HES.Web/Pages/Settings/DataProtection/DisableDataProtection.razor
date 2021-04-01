@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (CurrentPassword == null)
 {
@@ -13,9 +13,9 @@ else
             <InputText @bind-Value="CurrentPassword.Password" type="password" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => CurrentPassword.Password)" class="text-danger" />
         </div>
-        <div class="text-end">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>
-            <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Disable" Class="btn btn-danger" />
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+            <Button @ref="Button" type="submit" Text="Disable" class="btn btn-danger" />
         </div>
     </EditForm>
 }

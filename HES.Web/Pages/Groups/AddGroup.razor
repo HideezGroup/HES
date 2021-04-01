@@ -1,8 +1,8 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (!Initialized)
 {
-    <LoadingText />
+    @*<LoadingText />*@
 }
 else
 {
@@ -11,11 +11,11 @@ else
         case ActiveDirectoryInitialization.HostNotSet:
             <h5>To import groups from the active directory, set domain settings on the parameters page.</h5>
             <div class="text-end  mt-4">
-                <button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
+                @*<button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>*@
             </div>
             break;
         case ActiveDirectoryInitialization.CredentialsNotSet:
-            <HES.Web.Pages.Settings.Parameters.LdapCredentials Host="@LdapSettings.Host" LoadEntities="GetGroups" CancelRequested="ModalDialogService.CloseAsync" />
+            @*<HES.Web.Pages.Settings.Parameters.LdapCredentials Host="@LdapSettings.Host" LoadEntities="GetGroups" CancelRequested="ModalDialogService.CloseAsync" />*@
             break;
         case ActiveDirectoryInitialization.Loaded:
             <Alert Message="@WarningMessage" />
@@ -71,8 +71,8 @@ else
                 </div>
             </div>
             <div class="text-end mt-3">
-                <button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
-                <ButtonSpinner Text="Add" Class="btn btn-primary" Callback="AddAsync" />
+                @*<button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>*@
+                @*<ButtonSpinner Text="Add" Class="btn btn-primary" Callback="AddAsync" />*@
             </div>
             break;
     }

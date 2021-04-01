@@ -1,10 +1,10 @@
 ﻿@if (SoftwareVaults == null)
 {
-    <LoadingTab />
+    @*<LoadingTab />*@
 }
 else
 {
-    <TableAction>
+    @*<TableAction>
         <FilterForm>
             <VaultFilter FilterChanged="FilterChangedAsync" />
         </FilterForm>
@@ -96,5 +96,5 @@ else
                 TotalRecords="TotalRecords"
                 CurrentPage="CurrentPage"
                 DisplayRows="DisplayRows"
-                DisplayRecords="SoftwareVaults.Count" />
+                DisplayRecords="SoftwareVaults.Count" />*@
 }

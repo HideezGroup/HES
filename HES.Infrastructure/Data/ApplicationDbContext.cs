@@ -1,11 +1,14 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Models.Web.Audit;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HES.Infrastructure
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string,
+       IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>,
+       IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -14,6 +17,19 @@ namespace HES.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            // ApplicationUser
+            modelBuilder.Entity<ApplicationUser>(x =>
+            {
+                // Each User can have many entries in the UserRole join table
+                x.HasMany(e => e.UserRoles).WithOne(e => e.User).HasForeignKey(ur => ur.UserId).IsRequired();
+            });
+            modelBuilder.Entity<ApplicationRole>(x =>
+            {
+                // Each Role can have many entries in the UserRole join table
+                x.HasMany(e => e.UserRoles).WithOne(e => e.Role).HasForeignKey(ur => ur.RoleId).IsRequired();
+            });
             // HardwareVault
             modelBuilder.Entity<HardwareVault>().HasIndex(x => x.MAC).IsUnique();
             modelBuilder.Entity<HardwareVault>().HasIndex(x => x.RFID).IsUnique();
@@ -49,10 +65,9 @@ namespace HES.Infrastructure
             modelBuilder.Entity<SummaryByEmployees>().HasNoKey().ToView(null);
             modelBuilder.Entity<SummaryByDepartments>().HasNoKey().ToView(null);
             modelBuilder.Entity<SummaryByWorkstations>().HasNoKey().ToView(null);
-
-            base.OnModelCreating(modelBuilder);
         }
 
+        #region DbSet
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<HardwareVault> HardwareVaults { get; set; }
@@ -81,5 +96,6 @@ namespace HES.Infrastructure
         public DbSet<SummaryByEmployees> SummaryByEmployees { get; set; }
         public DbSet<SummaryByDepartments> SummaryByDepartments { get; set; }
         public DbSet<SummaryByWorkstations> SummaryByWorkstations { get; set; }
+        #endregion
     }
 }

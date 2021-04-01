@@ -1,12 +1,11 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class DetailsProfile : ComponentBase
+    public partial class DetailsProfile : HESModalBase
     {
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Parameter] public HardwareVaultProfile AccessProfile { get; set; }
     }
 }

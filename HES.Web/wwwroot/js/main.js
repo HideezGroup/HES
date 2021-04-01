@@ -72,6 +72,20 @@ function removeCookie(cookieName) {
     document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
+function getCookie() {
+    return document.cookie;
+}
+
 function setFocus(elementId) {
     document.getElementById(elementId).focus();
+}
+
+function showModalDialog(dialogId) {
+    let modal = new bootstrap.Modal(document.getElementById(dialogId), { backdrop: 'static', keyboard: false });
+    modal.show();
+}
+
+function hideModalDialog(dialogId) {
+    var modal = bootstrap.Modal.getInstance(document.getElementById(dialogId));
+    modal.hide();
 }

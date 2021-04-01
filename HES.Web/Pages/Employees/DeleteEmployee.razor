@@ -1,32 +1,30 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (Employee == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
     @if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="employee" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="employee" CloseAction="ModalDialogCancel" />
     }
     else
     {
         @if (EmployeeHasVault)
         {
             <h5 class="text-gray mb-3 ">The employee @Employee.FullName is tied device, first untie the device to remove the employee.</h5>
-
             <div class="text-end mt-2">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogService.CancelAsync">Cancel</button>
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
             </div>
         }
         else
         {
             <h5 class="text-gray mb-4 text-break">You want to delete employee @Employee.FullName? Also all events and sessions will be deleted.</h5>
-
-            <div class="text-end mt-2">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogService.CancelAsync">Cancel</button>
-                <ButtonSpinner Text="Delete" Class="btn btn-danger" Callback="DeleteEmployeeAsync" />
+            <div class="form-footer">
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+                <Button Text="Delete" OnClick="DeleteEmployeeAsync" class="btn btn-danger" />
             </div>
         }
     }

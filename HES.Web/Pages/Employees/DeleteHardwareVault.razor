@@ -1,14 +1,14 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (!Initialized)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
     @if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogCancel" />
     }
     else
     {
@@ -20,9 +20,9 @@ else
                 <option valut="@VaultStatusReason.Broken">Broken</option>
             </select>
         </div>
-        <div class="text-end mt-2">
-            <button type="button" class="btn btn-secondary" @onclick="CancelAsync">Cancel</button>
-            <ButtonSpinner Text="Delete" Class="btn btn-danger" Callback="DeleteVaultAsync" />
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+            <Button Text="Delete" class="btn btn-danger" OnClick="DeleteVaultAsync" />
         </div>
     }
 }

@@ -1,0 +1,32 @@
+﻿@inherits HESModalBase
+
+@if (Template == null)
+{
+    <Loader />
+}
+else
+{
+    <EditForm Model="Template" OnValidSubmit="CreateTemplateAsync">
+        <DataAnnotationsValidator />
+        <ValidationErrorMessage @ref="ValidationErrorMessage" />
+        <div class="form-group">
+            <FormLabel For="@(() => Template.Name)" class="text-gray" />
+            <InputText @bind-Value="Template.Name" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => Template.Name)" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <FormLabel For="@(() => Template.Urls)" class="text-gray" />
+            <InputText @bind-Value="Template.Urls" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => Template.Urls)" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <FormLabel For="@(() => Template.Apps)" class="text-gray" />
+            <InputText @bind-Value="Template.Apps" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => Template.Apps)" class="text-danger" />
+        </div>
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+            <Button @ref="Button" Text="Create" type="submit" class="btn btn-primary" />
+        </div>
+    </EditForm>
+}

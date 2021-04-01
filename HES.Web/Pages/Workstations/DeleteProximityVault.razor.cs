@@ -10,15 +10,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class DeleteProximityVault : HESComponentBase
+    public partial class DeleteProximityVault : HESModalBase
     {
         IWorkstationService WorkstationService { get; set; }
-        [Inject] IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<DeleteProximityVault> Logger { get; set; }
         [Parameter] public WorkstationProximityVault WorkstationProximityVault { get; set; }
         [Parameter] public string WorkstationId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         protected override void OnInitialized()
         {
@@ -31,14 +28,13 @@ namespace HES.Web.Pages.Workstations
             {
                 await WorkstationService.DeleteProximityVaultAsync(WorkstationProximityVault.Id);
                 await ToastService.ShowToastAsync("Vault deleted.", ToastType.Success);
-                await SynchronizationService.UpdateWorkstationDetails(ExceptPageId, WorkstationId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
     }

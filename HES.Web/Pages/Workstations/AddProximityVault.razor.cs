@@ -2,6 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.HardwareVaults;
 using HES.Core.Models.Web.Workstations;
 using HES.Web.Components;
@@ -16,16 +17,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class AddProximityVault : HESComponentBase
+    public partial class AddProximityVault : HESModalBase
     {
         IWorkstationService WorkstationService { get; set; }
         IHardwareVaultService HardwareVaultService { get; set; }
         IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
-        [Inject] IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<AddProximityVault> Logger { get; set; }
         [Parameter] public string WorkstationId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public List<HardwareVault> HardwareVaults { get; set; }
         public HardwareVault SelectedHardwareVault { get; set; }
@@ -48,9 +46,8 @@ namespace HES.Web.Pages.Workstations
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -119,14 +116,13 @@ namespace HES.Web.Pages.Workstations
                 await WorkstationService.AddProximityVaultAsync(WorkstationId, SelectedHardwareVault.Id);
                 await RemoteWorkstationConnectionsService.UpdateProximitySettingsAsync(WorkstationId, await WorkstationService.GetProximitySettingsAsync(WorkstationId));
                 await ToastService.ShowToastAsync("Vault added", ToastType.Success);
-                await SynchronizationService.UpdateWorkstationDetails(ExceptPageId, WorkstationId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
     }

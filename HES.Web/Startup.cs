@@ -6,7 +6,9 @@ using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Infrastructure;
+using HES.Web.Components;
 using HES.Web.Extensions;
+using HES.Web.Providers;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -92,7 +94,7 @@ namespace HES.Web
         {
             // Add Services
             services.AddScoped(typeof(IAsyncRepository<>), typeof(Repository<>));
-            services.AddScoped(typeof(IMainTableService<,>), typeof(MainTableService<,>));
+            services.AddScoped(typeof(IDataTableService<,>), typeof(DataTableService<,>));
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IHardwareVaultService, HardwareVaultService>();
@@ -104,7 +106,6 @@ namespace HES.Web
             services.AddScoped<ITemplateService, TemplateService>();
             services.AddScoped<IApplicationUserService, ApplicationUserService>();
             services.AddScoped<IOrgStructureService, OrgStructureService>();
-            services.AddScoped<ILogsViewerService, LogsViewerService>();
             services.AddScoped<IRemoteWorkstationConnectionsService, RemoteWorkstationConnectionsService>();
             services.AddScoped<IRemoteDeviceConnectionsService, RemoteDeviceConnectionsService>();
             services.AddScoped<IRemoteTaskService, RemoteTaskService>();
@@ -120,7 +121,6 @@ namespace HES.Web
             services.AddScoped<IFido2Service, Fido2Service>();
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();
 
-            services.AddScoped<HttpClient>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
@@ -130,7 +130,14 @@ namespace HES.Web
             services.AddHostedService<LicenseHostedService>();
             services.AddHostedService<ActiveDirectoryHostedService>();
 
-            services.AddHttpClient().RemoveAll<IHttpMessageHandlerBuilderFilter>();
+            services.AddHttpClient();
+            services.AddHttpClient("HES").ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler()
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+            });
             services.AddSignalR();
             services.AddMemoryCache();
 
@@ -175,12 +182,15 @@ namespace HES.Web
 
             // Database
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
 
             // Identity
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<RegisterSecurityKeyTokenProvider<ApplicationUser>>(RegisterSecurityKeyTokenConstants.TokenName);
 
             // IDP
             if (Saml2pEnabled)
@@ -204,6 +214,7 @@ namespace HES.Web
                     options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
                     options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
                     options.WantAuthenticationRequestsSigned = false;
+                    options.UseLegacyRsaEncryption = false;
                 })
                 .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
                 .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });

@@ -13,17 +13,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Administrators
 {
-    public partial class AdministratorsPage : HESComponentBase, IDisposable
+    public partial class AdministratorsPage : HESPageBase, IDisposable
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IEmailSenderService EmailSenderService { get; set; }
-        public IMainTableService<ApplicationUser, ApplicationUserFilter> MainTableService { get; set; }
-        [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
-        [Inject] public ILogger<AdministratorsPage> Logger { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
+        public IDataTableService<ApplicationUser, ApplicationUserFilter> DataTableService { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] public ILogger<AdministratorsPage> Logger { get; set; }
         public AuthenticationState AuthenticationState { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -32,14 +28,14 @@ namespace HES.Web.Pages.Settings.Administrators
             {
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
                 EmailSenderService = ScopedServices.GetRequiredService<IEmailSenderService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<ApplicationUser, ApplicationUserFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<ApplicationUser, ApplicationUserFilter>>();
 
                 SynchronizationService.UpdateAdministratorsPage += UpdateAdministratorsPage;
                 SynchronizationService.UpdateAdministratorStatePage += UpdateAdministratorStatePage;
-            
+
                 AuthenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 await BreadcrumbsService.SetAdministrators();
-                await MainTableService.InitializeAsync(ApplicationUserService.GetAdministratorsAsync, ApplicationUserService.GetAdministratorsCountAsync, ModalDialogService, StateHasChanged, nameof(ApplicationUser.Email), ListSortDirection.Ascending);
+                await DataTableService.InitializeAsync(ApplicationUserService.GetAdministratorsAsync, ApplicationUserService.GetAdministratorsCountAsync, StateHasChanged, nameof(ApplicationUser.Email), ListSortDirection.Ascending);
 
                 SetInitialized();
             }
@@ -57,7 +53,7 @@ namespace HES.Web.Pages.Settings.Administrators
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -67,7 +63,7 @@ namespace HES.Web.Pages.Settings.Administrators
         {
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();       
+                await DataTableService.LoadTableDataAsync();
                 StateHasChanged();
             });
         }
@@ -77,19 +73,25 @@ namespace HES.Web.Pages.Settings.Administrators
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(InviteAdmin));
-                builder.AddAttribute(1, nameof(InviteAdmin.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Invite Administrator", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Invite Administrator", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateAdministrators(PageId);
+            }
         }
 
         private async Task ResendInviteAsync()
         {
             try
             {
-                var callBakcUrl = await ApplicationUserService.GetCallBackUrl(MainTableService.SelectedEntity.Email, NavigationManager.BaseUri);
-                await EmailSenderService.SendUserInvitationAsync(MainTableService.SelectedEntity.Email, callBakcUrl);
+                var callBakcUrl = await ApplicationUserService.GetCallBackUrl(DataTableService.SelectedEntity.Email, NavigationManager.BaseUri);
+                await EmailSenderService.SendUserInvitationAsync(DataTableService.SelectedEntity.Email, callBakcUrl);
                 await ToastService.ShowToastAsync("Administrator invited.", ToastType.Success);
             }
             catch (Exception ex)
@@ -101,25 +103,30 @@ namespace HES.Web.Pages.Settings.Administrators
 
         private async Task DeleteAdminAsync()
         {
-            if (MainTableService.Entities.Count == 1)
+            if (DataTableService.Entities.Count == 1)
                 return;
 
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteAdministrator));
-                builder.AddAttribute(1, nameof(DeleteAdministrator.ApplicationUserId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteAdministrator.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(DeleteAdministrator.ApplicationUserId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Delete Administrator", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Administrator", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateAdministrators(PageId);
+            }
         }
 
         public void Dispose()
         {
             SynchronizationService.UpdateAdministratorsPage -= UpdateAdministratorsPage;
             SynchronizationService.UpdateAdministratorStatePage -= UpdateAdministratorStatePage;
-            MainTableService.Dispose();
         }
     }
 }

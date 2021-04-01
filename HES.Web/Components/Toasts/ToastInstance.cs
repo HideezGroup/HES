@@ -8,7 +8,7 @@ namespace HES.Web.Components.Toasts
     {
         public string Id { get; private set; }
         public DateTime TimeStamp { get; private set; }
-        public string ToastTypeClass { get; private set; }
+        public ToastType ToastType { get; private set; }
 
         public string Header { get; set; }
         public RenderFragment Message { get; set; }
@@ -18,19 +18,17 @@ namespace HES.Web.Components.Toasts
             Id = Guid.NewGuid().ToString();
             TimeStamp = DateTime.Now;
             Message = message;
+            ToastType = toastType;
 
             switch (toastType)
             {
                 case ToastType.Success:
-                    ToastTypeClass = "alert-success";
                     Header = string.IsNullOrWhiteSpace(header) ? "Success" : header;
                     break;
                 case ToastType.Notify:
-                    ToastTypeClass = "alert-secondary";
                     Header = string.IsNullOrWhiteSpace(header) ? "Notification" : header;
                     break;
                 case ToastType.Error:
-                    ToastTypeClass = "alert-danger";
                     Header = string.IsNullOrWhiteSpace(header) ? "Error" : header;
                     break;
                 default:

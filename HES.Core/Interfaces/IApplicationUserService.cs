@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Models.API;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.Identity;
 using HES.Core.Models.Web.Users;
 using System;
@@ -24,6 +25,11 @@ namespace HES.Core.Interfaces
         Task<string> GetCallBackUrl(string email, string domain);
         Task<ApplicationUser> DeleteUserAsync(string id);
         Task<IList<ApplicationUser>> GetAllAdministratorsAsync();
+        #endregion
+
+        #region Users
+        Task<string> GenerateEnableSsoCallBackUrlAsync(string email, string domain);
+        Task<bool> VerifyRegisterSecurityKeyTokenAsync(ApplicationUser user, string code);
         #endregion
 
         #region Profile

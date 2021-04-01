@@ -11,28 +11,22 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class EditDepartment : HESComponentBase, IDisposable
+    public partial class EditDepartment : HESModalBase, IDisposable
     {
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditDepartment> Logger { get; set; }
         [Parameter] public string DepartmentId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
         public Department Department { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                ModalDialogService.OnCancel += ModalDialogService_OnCancel;
-
                 Department = await OrgStructureService.GetDepartmentByIdAsync(DepartmentId);
                 if (Department == null)
                     throw new Exception("Department not found.");
@@ -47,21 +41,25 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
+        }
+
+        protected override async Task ModalDialogCancel()
+        {
+            await OrgStructureService.UnchangedDepartmentAsync(Department);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.EditDepartmentAsync(Department);
                     await ToastService.ShowToastAsync("Department updated.", ToastType.Success);
-                    await Refresh.InvokeAsync(this);
-                    await SynchronizationService.UpdateOrgSructureCompanies(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (AlreadyExistException ex)
@@ -72,19 +70,12 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
-        }
-
-        private async Task ModalDialogService_OnCancel()
-        {
-            await OrgStructureService.UnchangedDepartmentAsync(Department);
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= ModalDialogService_OnCancel;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Department.Id);
         }

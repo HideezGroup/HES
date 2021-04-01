@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Accounts;
 using HES.Core.Models.Web.AppSettings;
@@ -15,7 +16,7 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class GenerateAdPassword : HESComponentBase, IDisposable
+    public partial class GenerateAdPassword : HESModalBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IAccountService AccountService { get; set; }
@@ -23,11 +24,8 @@ namespace HES.Web.Pages.Employees
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<GenerateAdPassword> Logger { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public Account Account { get; set; }
         public LdapSettings LdapSettings { get; set; }
@@ -44,7 +42,7 @@ namespace HES.Web.Pages.Employees
 
                 Account = await AccountService.GetAccountByIdAsync(AccountId);
                 if (Account == null)
-                    throw new Exception("Account not found.");
+                    throw new HESException(HESCode.AccountNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
                 if (!EntityBeingEdited)
@@ -57,9 +55,8 @@ namespace HES.Web.Pages.Employees
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -81,14 +78,13 @@ namespace HES.Web.Pages.Employees
 
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
                 await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
-                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Account.EmployeeId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 

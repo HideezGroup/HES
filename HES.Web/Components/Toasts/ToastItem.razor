@@ -1,6 +1,21 @@
-﻿<div class="alert toast-item alert-dismissible @ToastInstance.ToastTypeClass">
-    <button type="button" class="btn-close" aria-label="Close" @onclick="ToastCloseAsync"></button>
-    <h4 class="alert-heading">@ToastInstance.Header</h4>
-    <hr>
-    <p class="mb-0">@ToastInstance.Message</p>
+﻿<div class="toast-item">
+    <div class="toast-header">
+        @switch (ToastInstance.ToastType)
+        {
+            case ToastType.Success:
+                <img src="/svg/icon-success.svg" class="rounded me-2" />
+                break;
+            case ToastType.Notify:
+                <img src="/svg/icon-warning.svg" class="rounded me-2" />
+                break;
+            case ToastType.Error:
+                <img src="/svg/icon-error.svg" class="rounded me-2" />
+                break;
+        }
+        <h6 class="me-auto my-0">@ToastInstance.Header</h6>
+        <button class="btn-close" @onclick=@ToastCloseAsync />
+    </div>
+    <div class="toast-body text-secondary">
+        @ToastInstance.Message
+    </div>
 </div>

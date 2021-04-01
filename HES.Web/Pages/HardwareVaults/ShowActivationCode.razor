@@ -1,8 +1,8 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (Code == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
@@ -16,15 +16,13 @@ else
     {
         <div class="d-flex justify-content-sm-between align-items-center form-group">
             <span>You can send the code to the email</span>
-            <ButtonSpinner Class="btn btn-outline-primary" Text="Send email" Callback="SendEmailAsync" />
+            <Button class="btn btn-outline-primary" Text="Send email" OnClick="SendEmailAsync" />
         </div>
     }
     <div class="input-group form-group">
         <input type="@(InputType)" id="activationCodeInput" value="@Code" readonly class="form-control">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
-            <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">Copy</button>
-        </div>
+        <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
+        <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">Copy</button>
     </div>
     <div class="text-end">
         <button class="btn btn-secondary" @onclick="CloseAsync">Close</button>

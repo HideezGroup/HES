@@ -1,5 +1,6 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,32 +9,29 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile.SecurityKeys
 {
-    public partial class EditSecurityKey : OwningComponentBase
+    public partial class EditSecurityKey : HESModalBase
     {
-        [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        public IFido2Service FidoService { get; set; }
         [Inject] public ILogger<EditSecurityKey> Logger { get; set; }
         [Parameter] public string SecurityKeyId { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
-        public IFido2Service FidoService { get; set; }
         public string SecurityKeyName { get; set; }
-        public bool Initialized { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 FidoService = ScopedServices.GetRequiredService<IFido2Service>();
+
                 var credential = await FidoService.GetCredentialsById(SecurityKeyId);
                 SecurityKeyName = credential.SecurityKeyName;
 
-                Initialized = true;
+                SetInitialized();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -43,14 +41,13 @@ namespace HES.Web.Pages.Profile.SecurityKeys
             {
                 await FidoService.UpdateSecurityKeyNameAsync(SecurityKeyId, SecurityKeyName);
                 await ToastService.ShowToastAsync("Security key updated.", ToastType.Success);
-                await Refresh.InvokeAsync();
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
     }

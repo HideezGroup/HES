@@ -1,10 +1,10 @@
 ﻿@*@page "/Groups"*@
-@attribute [Authorize(Roles = ApplicationRoles.AdminRole)]
-@inherits HESComponentBase
+@attribute [Authorize(Roles = ApplicationRoles.Admin)]
+@inherits HESPageBase
 
 @if (Initialized)
 {
-    <TableAction>
+    @*<TableAction>
         <FilterForm>
             <GroupsFilter FilterChanged="MainTableService.FilterChangedAsync" />
         </FilterForm>
@@ -73,7 +73,7 @@
                 TotalRecords="MainTableService.TotalRecords"
                 CurrentPage="MainTableService.CurrentPage"
                 DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />
+                DisplayRecords="MainTableService.Entities.Count" />*@
 }
 else if (LoadFailed)
 {

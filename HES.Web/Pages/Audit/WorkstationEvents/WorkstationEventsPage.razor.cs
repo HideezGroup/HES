@@ -11,12 +11,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Audit.WorkstationEvents
 {
-    public partial class WorkstationEventsPage : HESComponentBase, IDisposable
+    public partial class WorkstationEventsPage : HESPageBase, IDisposable
     {
         public IWorkstationAuditService WorkstationAuditService { get; set; }
-        public IMainTableService<WorkstationEvent, WorkstationEventFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
+        public IDataTableService<WorkstationEvent, WorkstationEventFilter> DataTableService { get; set; }
         [Inject] public ILogger<WorkstationEventsPage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -24,10 +22,10 @@ namespace HES.Web.Pages.Audit.WorkstationEvents
             try
             {
                 WorkstationAuditService = ScopedServices.GetRequiredService<IWorkstationAuditService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<WorkstationEvent, WorkstationEventFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<WorkstationEvent, WorkstationEventFilter>>();
 
                 await BreadcrumbsService.SetAuditWorkstationEvents();
-                await MainTableService.InitializeAsync(WorkstationAuditService.GetWorkstationEventsAsync, WorkstationAuditService.GetWorkstationEventsCountAsync, ModalDialogService, StateHasChanged, nameof(WorkstationEvent.Date), ListSortDirection.Descending);
+                await DataTableService.InitializeAsync(WorkstationAuditService.GetWorkstationEventsAsync, WorkstationAuditService.GetWorkstationEventsCountAsync, StateHasChanged, nameof(WorkstationEvent.Date), ListSortDirection.Descending);
 
                 SetInitialized();
             }
@@ -40,7 +38,7 @@ namespace HES.Web.Pages.Audit.WorkstationEvents
 
         public void Dispose()
         {
-            MainTableService.Dispose();
+           
         }
     }
 }

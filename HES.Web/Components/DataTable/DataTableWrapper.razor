@@ -1,0 +1,28 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+<div class="mb-3">
+    <div class="position-relative">
+        @if (Loading)
+        {
+            <div class="table-loading"></div>
+        }
+        @WrapperHeader
+    </div>
+    <div class="position-relative">
+        @if (Loading)
+        {
+            <div class="table-loading table-blur justify-content-center align-items-center">
+                <Loader />
+            </div>
+        }
+        @WrapperBody
+    </div>
+    <div class="position-relative">
+        @if (Loading)
+        {
+            <div class="table-loading"></div>
+        }
+        @WrapperFooter
+    </div>
+</div>

@@ -1,4 +1,4 @@
-﻿@inherits OwningComponentBase
+﻿@inherits HESModalBase
 
 @if (Initialized)
 {
@@ -6,12 +6,12 @@
         <label class="form-label">Name</label>
         <input type="text" class="form-control" @bind-value="SecurityKeyName" @bind-value:event="oninput" />
     </div>
-    <div class="text-end">
-        <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
+    <div class="form-footer">
+        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
         <button type="button" @onclick="UpdateSecurityKeyAsync" class="btn btn-danger">Save</button>
     </div>
 }
 else
 {
-    <LoadingText />
+    <Loader />
 }

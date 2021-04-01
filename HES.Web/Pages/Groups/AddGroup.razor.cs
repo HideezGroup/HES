@@ -14,14 +14,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class AddGroup : HESComponentBase
+    public partial class AddGroup : HESModalBase
     {
         public ILdapService LdapService { get; set; }
         public IGroupService GroupService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddGroup> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
+        //[Inject] IToastService ToastService { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
         public List<ActiveDirectoryGroup> Groups { get; set; }
@@ -61,7 +61,7 @@ namespace HES.Web.Pages.Groups
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                //await ModalDialogService.CancelAsync();
             }
         }
 
@@ -78,7 +78,7 @@ namespace HES.Web.Pages.Groups
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                //await ModalDialogService.CancelAsync();
             }
         }
 
@@ -94,14 +94,14 @@ namespace HES.Web.Pages.Groups
 
                 await LdapService.AddGroupsAsync(Groups.Where(x => x.Checked).ToList(), CreateEmployees);
                 await ToastService.ShowToastAsync("Groups added.", ToastType.Success);
-                await SynchronizationService.UpdateGroups(ExceptPageId);
-                await ModalDialogService.CloseAsync();
+                //await SynchronizationService.UpdateGroups(ExceptPageId);
+                //await ModalDialogService.CloseAsync();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                //await ModalDialogService.CancelAsync();
             }
         }
 

@@ -1,10 +1,12 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.Identity;
 using HES.Core.Models.Web.Users;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +33,9 @@ namespace HES.Core.Services
         private readonly IEmailSenderService _emailSenderService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+
+        private const string _registerSecurityKeyTokenProvoderName = "RegisterSecurityKey";
+        private const string _registerSecurityKeyTokenProvoderPurpose = "RegisterSecurityKeyPurpose";
 
         public ApplicationUserService(IAsyncRepository<ApplicationUser> applicationUserRepository,
                                       IAsyncRepository<FidoStoredCredential> fidoCredentialsRepository,
@@ -59,7 +64,23 @@ namespace HES.Core.Services
 
         public async Task<List<ApplicationUser>> GetAdministratorsAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
         {
-            var query = _applicationUserRepository.Query();
+            var query = AdministratorsQuery(dataLoadingOptions);
+            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetAdministratorsCountAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
+        {
+            var query = AdministratorsQuery(dataLoadingOptions);
+            return await query.CountAsync();
+        }
+
+        private IQueryable<ApplicationUser> AdministratorsQuery(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
+        {
+            var query = _applicationUserRepository.Query()
+            .Include(x => x.UserRoles)
+            .ThenInclude(x => x.Role)
+            .Where(x => x.UserRoles.Any(x => x.Role.Name == ApplicationRoles.Admin))
+            .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
             {
@@ -85,22 +106,7 @@ namespace HES.Core.Services
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
-        }
-
-        public async Task<int> GetAdministratorsCountAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions)
-        {
-            var query = _applicationUserRepository.Query();
-
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
-            {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.Email.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.PhoneNumber.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return await query.CountAsync();
+            return query;
         }
 
         public async Task<string> InviteAdministratorAsync(string email, string domain)
@@ -108,7 +114,7 @@ namespace HES.Core.Services
             var userExist = await _userManager.FindByEmailAsync(email);
 
             if (userExist != null)
-                throw new AlreadyExistException($"User {email} already exists");
+                throw new HESException(HESCode.EmailAlreadyTaken);
 
             var user = new ApplicationUser { UserName = email, Email = email };
             var password = Guid.NewGuid().ToString();
@@ -171,6 +177,30 @@ namespace HES.Core.Services
         public async Task<IList<ApplicationUser>> GetAllAdministratorsAsync()
         {
             return await _userManager.GetUsersInRoleAsync("Administrator");
+        }
+
+        #endregion
+
+        #region Users
+
+        public async Task<string> GenerateEnableSsoCallBackUrlAsync(string email, string domain)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                throw new HESException(HESCode.UserNotFound);
+
+            var code = await _userManager.GenerateUserTokenAsync(user, _registerSecurityKeyTokenProvoderName, _registerSecurityKeyTokenProvoderPurpose);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var callbackUrl = $"{domain.TrimEnd('/')}{Routes.RegisterSecurityKey}?code={code}&email={email}";
+
+            return HtmlEncoder.Default.Encode(callbackUrl);
+        }
+
+        public async Task<bool> VerifyRegisterSecurityKeyTokenAsync(ApplicationUser user, string code)
+        {
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            return await _userManager.VerifyUserTokenAsync(user, _registerSecurityKeyTokenProvoderName, _registerSecurityKeyTokenProvoderPurpose, code);
         }
 
         #endregion
