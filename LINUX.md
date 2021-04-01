@@ -283,7 +283,7 @@ To exit from the MySql console, press Ctrl+D.
   $ cd /opt/src/HES/HES.Web/
   $ sudo dotnet publish -c release -v d -o "/opt/HES" --runtime linux-x64 HES.Web.csproj
 ```
-**[Note]** Internet connection required to download NuGet packages
+**Note:** Internet connection required to download NuGet packages
 
 After a while (depending on the computer performance), the compilation process will be completed:
 
@@ -297,7 +297,7 @@ After a while (depending on the computer performance), the compilation process w
 Time Elapsed 00:00:37.35
 ```
 
-**[Note]** Several warnings may be issued during compilation, this is ok.
+**Note:** Several warnings may be issued during compilation, this is ok.
 
 Then you need to copy Crypto_linux.dll as follows:
 
@@ -328,9 +328,17 @@ Edit the file `/opt/HES/appsettings.Production.json`
     "Password": "<email_password>"
   },
 
+  "Fido2": {
+    "ServerDomain":"<your_domain_name>",
+    "ServerName": "HES",
+    "Origin": "https://<your_domain_name>",
+    "TimestampDriftTolerance": 300000,
+    "MDSAccessKey": null
+  },
+
   "ServerSettings": {
     "Name": "HES",
-    "Url": "<url_to_your_hes_site>"
+    "Url": "https://<your_domain_name>"
   },
   
   ...
@@ -338,14 +346,13 @@ Edit the file `/opt/HES/appsettings.Production.json`
 
 Replace the following settings in this file with your own:
 
-* **user_password** - Password for the user on MySQL server
+* **`<user_password>`** - Password for the user on MySQL server
 
-* **smtp_host** - Host name of your SMTP server (example `smtp.example.com`)
-* **smtp_port** - Port number of your SMTP server (example `123`)
-* **email_address** - Your email adress (example `user@example.com`)
-* **email_password** - Password to access the SMTP server (example `password`)
-
-* **url_to_you_hes_site** - URL of your HES site (example `https://hideez.example.com`)
+* **`<smtp_host>`** - Host name of your SMTP server (example: `smtp.example.com`)
+* **`<smtp_port>`** - Port number of your SMTP server (example: `123`)
+* **`<email_address>`** - Your email adress (example: `user@example.com`)
+* **`<email_password>`** - Password to access the SMTP server (example: `password`)
+* **`<you_domain_name>`** - you  fully qualified domain name (FQDN) of your HES site (example: `hideez.example.com`)
 
 
 Important note: by default, .Net Core uses ports 5000 and 5001. Therefore, if only one domain 
@@ -367,6 +374,8 @@ on one computer, then it is necessary to specify different ports for each site i
 ```
 
 ## 4.4 Daemonizing of the Enterprise Server
+We prepared file for to start and manage the HES server
+
 Copy file `HES.service` to the `/lib/systemd/system/`:
 ```shell
   $ sudo cp /opt/src/HES/HES.Deploy/HES.service /lib/systemd/system/HES.service
@@ -395,14 +404,18 @@ The output of the command should be something like this:
 Mar 25 09:05:04 hesservertest systemd[1]: Started Hideez Enterprise Service.
 ```
 
-# 4. Configuring Reverse Proxy Server
+# 5. Configuring Reverse Proxy Server
 To access your server from the local network as well as from the Internet, you have to configure a reverse proxy. We will use the Nginx server for this.
 
-## 4.1 Creating a Self-Signed SSL Certificate for Nginx
+## 5.1 Creating a Self-Signed SSL Certificate for Nginx
 
-**Note: in production, you should take care of acquiring a certificate from a certificate authority. For a self-signed certificate, the browser will alert you that site has security issues.**
+**Note 1:**
 
- When generating a certificate, answer a few simple questions, of which Common Name (CN) will be important - here be the name of your site, in our example it is "hideez.example.com"
+**In production, you should take care of acquiring a certificate from a certificate authority. For a self-signed certificate, the browser will alert you that site has security issues.**
+
+**Note 2:**
+
+**When generating a certificate, answer a few simple questions, of which Common Name (CN) will be important - here be the name of your site, in our example it is `hideez.example.com`**
 ```shell
  $ sudo mkdir /etc/nginx/certs
  $ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/hes.key -out /etc/nginx/certs/hes.crt
@@ -418,12 +431,14 @@ Common Name (e.g. server FQDN or YOUR name) []:hideez.example.com
 Email Address []:.
 ```
 
-## 4.1 Restart nginx (CentOS only)
+
+
+## 5.2 Restart nginx (CentOS only)
 ```shell
   $ sudo systemctl restart nginx
 ```
 
-## 4.2 Check that nginx service is installed and started
+## 5.3 Check that nginx service is installed and started
 ```shell
   $ sudo systemctl status nginx
 ```
@@ -442,9 +457,19 @@ Email Address []:.
            +-1705 nginx: worker process
 ```
 
-After performing these steps, the server should already be accessible from the network and respond in the browser to the ip address or its domain name. (http://<ip_or_domain_name\>)
+Setup is complete. The server should be accessible in a browser at the address 
+`(http://<you_domain_name>`).
 
-## 4.3 Updating Nginx config
+
+You must use your domain name to access the HES server (e.g. 'http://hideez.example.com').
+
+
+**Warning! The CN (common name) of your certificate must match your domain.**
+
+**Remember that if you use a self-signed certificate, you must enter the server name instead of the domain name. Otherwise, the SSL connection will not work**
+
+
+## 5.4 Updating Nginx config
 
 We prepared some Nginx configurations for different versions of Linux and placed them in the HES GitHub repository. You may just copy the corresponding file or you can review and edit it for your needs.
 
@@ -480,13 +505,8 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 Otherwise, you should carefully review the settings and correct the errors.
 
-## 4.4 Disable the Nginx default page (Ubuntu only)
-  
-```shell
-  $ sudo rm /etc/nginx/sites-enabled/default
-```
 
-## 4.5 Restarting Nginx and checking its status
+## 5.5 Restarting Nginx and checking its status
 
 ```shell
   $ sudo systemctl restart nginx
@@ -503,7 +523,7 @@ Otherwise, you should carefully review the settings and correct the errors.
            +-13096 nginx: worker process
 ```
 
-# 5. Microsoft Active Directory Integration
+# 6. Microsoft Active Directory Integration
 If you plan to integrate your HES with AD you need to add AD Server's name and IP address to the `/etc/hosts` file, for example:
 ```conf
 192.168.10.75 ad.example.com
@@ -531,10 +551,10 @@ you will also need an openldaps library
 sudo dnf -y install openldap-clients
 ```
 
-# 6. Final Verification
-After these steps, your server should be up and running. Go to the https://<Name_Of_Domain> in the browser and verify if the site is available.
+# 7. Final Verification
+After these steps, your server should be up and running. Go to the `https://<you_domain_name>` in the browser and verify if the site is available.
  
-*Note: for a self-signed certificate, it should be a warning that your connection isn't private. Press Advanced/Proceed to ignore the warning.**
+**Note: for a self-signed certificate, it should be a warning that your connection isn't private. Press Advanced/Proceed to ignore the warning.**
 
 
 # Updating HES
@@ -557,7 +577,7 @@ The following command will create a copy of the database in file db.sql in your 
 ```shell
   $ sudo mysqldump -uroot -p<MySQL_root_password>  db > ~/db.sql
 ```
-change <MySQL_root_password> with your real password
+change `<MySQL_root_password>` with your real password
 
 ## 4. Back up the HES binaries and the configuration file
 
@@ -601,10 +621,10 @@ Mar 25 10:48:12 hesservertest systemd[1]: Started Hideez Enterprise Service.
 ```shell
 $ sudo systemctl stop HES
 $ sudo mv /opt/HES.old /opt/HES
-$ sudo mysqldump -uroot -p<MySQL_root_password> db < ~/db.sql
+$ sudo mysql -uroot -p<MySQL_root_password> db < ~/db.sql
 $ sudo systemctl start HES
 ```
-change <MySQL_root_password> with your real password
+change `<MySQL_root_password>` with your real password
 
 ## After checking that the update was successful and everything works fine, you can delete copies of the database and server:
 
