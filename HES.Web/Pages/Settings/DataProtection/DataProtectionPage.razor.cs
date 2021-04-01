@@ -9,12 +9,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.DataProtection
 {
-    public partial class DataProtectionPage : HESComponentBase, IDisposable
+    public partial class DataProtectionPage : HESPageBase, IDisposable
     {
         [Inject] public IDataProtectionService DataProtectionService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public ILogger<DataProtectionPage> Logger { get; set; }
 
@@ -60,12 +57,17 @@ namespace HES.Web.Pages.Settings.DataProtection
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EnableDataProtection));
-                builder.AddAttribute(1, nameof(EnableDataProtection.Refresh), EventCallback.Factory.Create(this, ProtectionStatus));
-                builder.AddAttribute(2, nameof(EnableDataProtection.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Enable Data Protection", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Enable Data Protection", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                ProtectionStatus();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task ChangeDataProtectionPasswordAsync()
@@ -73,12 +75,17 @@ namespace HES.Web.Pages.Settings.DataProtection
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(ChangeDataProtectionPassword));
-                builder.AddAttribute(1, nameof(ChangeDataProtectionPassword.Refresh), EventCallback.Factory.Create(this, ProtectionStatus));
-                builder.AddAttribute(2, nameof(ChangeDataProtectionPassword.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Change Data Protection Password", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Change Data Protection Password", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                ProtectionStatus();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DisableDataProtectionAsync()
@@ -86,12 +93,17 @@ namespace HES.Web.Pages.Settings.DataProtection
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DisableDataProtection));
-                builder.AddAttribute(1, nameof(DisableDataProtection.Refresh), EventCallback.Factory.Create(this, ProtectionStatus));
-                builder.AddAttribute(2, nameof(DisableDataProtection.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Disable Data Protection", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService2.ShowAsync("Disable Data Protection", body, ModalDialogSize2.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                ProtectionStatus();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()

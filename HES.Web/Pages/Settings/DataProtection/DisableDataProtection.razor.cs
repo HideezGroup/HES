@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.DataProtection
 {
-    public partial class DisableDataProtection : HESComponentBase
+    public partial class DisableDataProtection : HESModalBase
     {
         public class CurrentPasswordModel
         {
@@ -22,28 +22,23 @@ namespace HES.Web.Pages.Settings.DataProtection
         }
 
         [Inject] public IDataProtectionService DataProtectionService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<DisableDataProtection> Logger { get; set; }
         [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
         public CurrentPasswordModel CurrentPassword { get; set; } = new CurrentPasswordModel();
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         private async Task DisableDataProtectionAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
                     await DataProtectionService.DisableProtectionAsync(CurrentPassword.Password);
-                    await Refresh.InvokeAsync(this);
                     await ToastService.ShowToastAsync("Data protection disabled.", ToastType.Success);
-                    await SynchronizationService.UpdateDataProtection(ExceptPageId);
                     Logger.LogInformation($"Data protection disabled by {authState.User.Identity.Name}");
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
@@ -53,7 +48,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             }
             finally
             {   
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
     }
