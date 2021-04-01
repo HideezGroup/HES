@@ -2,7 +2,7 @@
 
 namespace HES.Web.Components
 {
-    public class DataLoadingOptions2<TFilter> where TFilter : class, new()
+    public class DataLoadingOptions<TFilter> where TFilter : class, new()
     {
         public int Take { get; set; }
         public int Skip { get; set; }
@@ -12,7 +12,7 @@ namespace HES.Web.Components
         public ListSortDirection SortDirection { get; set; }
         public string EntityId { get; set; }
 
-        public DataLoadingOptions2()
+        public DataLoadingOptions()
         {
             Skip = 0;
             Take = 10;
