@@ -10,7 +10,7 @@ namespace HES.Web.Components
     {
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Inject] protected ISynchronizationService SynchronizationService { get; set; }
-        [Inject] protected IModalDialogService2 ModalDialogService2 { get; set; }
+        [Inject] protected IModalDialogService ModalDialogService { get; set; }
         [Inject] protected IBreadcrumbsService BreadcrumbsService { get; set; }
 
         protected string PageId { get; private set; }

@@ -110,7 +110,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit RFID", body);
+            var instance = await ModalDialogService.ShowAsync("Edit RFID", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -130,7 +130,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Suspend", body);
+            var instance = await ModalDialogService.ShowAsync("Suspend", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -150,7 +150,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Activate", body);
+            var instance = await ModalDialogService.ShowAsync("Activate", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -170,7 +170,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Compromised", body);
+            var instance = await ModalDialogService.ShowAsync("Compromised", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -189,7 +189,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            await ModalDialogService2.ShowAsync("Activation code", body);
+            await ModalDialogService.ShowAsync("Activation code", body);
         }
 
         private async Task ChangeVaultProfileAsync()
@@ -201,7 +201,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Profile", body);
+            var instance = await ModalDialogService.ShowAsync("Profile", body);
             var result = await instance.Result;
 
             if (result.Succeeded)

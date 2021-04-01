@@ -76,7 +76,7 @@ namespace HES.Web.Pages.Settings.Administrators
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Invite Administrator", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Invite Administrator", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -113,7 +113,7 @@ namespace HES.Web.Pages.Settings.Administrators
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Administrator", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Administrator", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

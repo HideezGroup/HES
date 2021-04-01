@@ -60,7 +60,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Create License Order", body, ModalDialogSize2.Large);
+            var instance = await ModalDialogService.ShowAsync("Create License Order", body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -79,7 +79,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Send License Order", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Send License Order", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -98,7 +98,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("License Order Details", body, ModalDialogSize2.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync("License Order Details", body, ModalDialogSize.ExtraLarge);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -117,7 +117,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit License Order", body, ModalDialogSize2.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync("Edit License Order", body, ModalDialogSize.ExtraLarge);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -136,7 +136,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete License Order", body, ModalDialogSize2.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync("Delete License Order", body, ModalDialogSize.ExtraLarge);
             var result = await instance.Result;
 
             if (result.Succeeded)

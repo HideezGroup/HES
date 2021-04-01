@@ -73,7 +73,7 @@ namespace HES.Web.Pages.Alarm
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Turn on alarm", body);
+            var instance = await ModalDialogService.ShowAsync("Turn on alarm", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -92,7 +92,7 @@ namespace HES.Web.Pages.Alarm
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Turn off alarm", body);
+            var instance = await ModalDialogService.ShowAsync("Turn off alarm", body);
             var result = await instance.Result;
 
             if (result.Succeeded)

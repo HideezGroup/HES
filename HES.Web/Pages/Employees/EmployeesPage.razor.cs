@@ -47,7 +47,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Sync with Active Directory", body, ModalDialogSize2.Large);
+            var instance = await ModalDialogService.ShowAsync("Sync with Active Directory", body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -73,7 +73,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Create Employee", body, ModalDialogSize2.Large);
+            var instance = await ModalDialogService.ShowAsync("Create Employee", body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -92,7 +92,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit Employee", body);
+            var instance = await ModalDialogService.ShowAsync("Edit Employee", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -111,7 +111,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Employee", body);
+            var instance = await ModalDialogService.ShowAsync("Delete Employee", body);
             var result = await instance.Result;
 
             if (result.Succeeded)

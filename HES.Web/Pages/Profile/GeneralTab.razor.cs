@@ -135,7 +135,7 @@ namespace HES.Web.Pages.Profile
                     builder.CloseComponent();
                 };
 
-                await ModalDialogService2.ShowAsync("Delete Personal Data", body);
+                await ModalDialogService.ShowAsync("Delete Personal Data", body);
             }
             catch (Exception ex)
             {

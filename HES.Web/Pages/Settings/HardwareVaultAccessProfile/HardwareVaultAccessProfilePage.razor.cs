@@ -60,7 +60,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Create Profile", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Create Profile", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -79,7 +79,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit Profile", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Profile", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -98,7 +98,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Profile", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Profile", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -117,7 +117,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Details Profile", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Details Profile", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

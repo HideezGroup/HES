@@ -68,7 +68,7 @@ namespace HES.Web.Pages.Workstations
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Add Proximity Vault", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Add Proximity Vault", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -88,7 +88,7 @@ namespace HES.Web.Pages.Workstations
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Proximity Vault", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Proximity Vault", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

@@ -60,7 +60,7 @@ namespace HES.Web.Pages.Settings.DataProtection
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Enable Data Protection", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Enable Data Protection", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -78,7 +78,7 @@ namespace HES.Web.Pages.Settings.DataProtection
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Change Data Protection Password", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Change Data Protection Password", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -96,7 +96,7 @@ namespace HES.Web.Pages.Settings.DataProtection
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Disable Data Protection", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Disable Data Protection", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

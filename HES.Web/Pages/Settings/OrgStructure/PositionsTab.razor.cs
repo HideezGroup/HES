@@ -95,7 +95,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Create Position", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Create Position", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -114,7 +114,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit Position", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Position", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -133,7 +133,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Position", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Position", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

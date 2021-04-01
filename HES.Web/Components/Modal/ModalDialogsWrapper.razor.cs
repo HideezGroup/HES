@@ -9,7 +9,7 @@ namespace HES.Web.Components
     public partial class ModalDialogsWrapper : HESDomComponentBase, IDisposable
     {
         [Inject] IJSRuntime JSRuntime { get; set; }
-        [Inject] private IModalDialogService2 ModalDialogService { get; set; }
+        [Inject] private IModalDialogService ModalDialogService { get; set; }
 
         private List<ModalDialogInstance> ModalDialogItems { get; set; }
 
@@ -30,7 +30,7 @@ namespace HES.Web.Components
             });
         }
 
-        public async Task<ModalDialogInstance> OpenDialogAsync(string title, RenderFragment body, ModalDialogSize2 modalDialogSize)
+        public async Task<ModalDialogInstance> OpenDialogAsync(string title, RenderFragment body, ModalDialogSize modalDialogSize)
         {
             var modalDialogInstance = new ModalDialogInstance(title, body, modalDialogSize, ModalDialogService);
 

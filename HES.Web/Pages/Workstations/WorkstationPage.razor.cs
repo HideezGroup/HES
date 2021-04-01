@@ -71,7 +71,7 @@ namespace HES.Web.Pages.Workstations
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Approve Workstation", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Approve Workstation", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -90,7 +90,7 @@ namespace HES.Web.Pages.Workstations
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Unapprove Workstation", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Unapprove Workstation", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -109,7 +109,7 @@ namespace HES.Web.Pages.Workstations
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Workstation", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Workstation", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -136,7 +136,7 @@ namespace HES.Web.Pages.Workstations
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit Workstation", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Workstation", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

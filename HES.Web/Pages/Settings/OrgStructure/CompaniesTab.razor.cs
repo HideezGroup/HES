@@ -65,7 +65,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Create Company", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Create Company", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -84,7 +84,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit Company", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Company", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -103,7 +103,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Company", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Company", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -122,7 +122,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Create Departmen", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Create Departmen", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -141,7 +141,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit Departmen", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Departmen", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -160,7 +160,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Departmen", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Departmen", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

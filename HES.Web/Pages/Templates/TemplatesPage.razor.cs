@@ -62,7 +62,7 @@ namespace HES.Web.Pages.Templates
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Create Template", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Create Template", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -81,7 +81,7 @@ namespace HES.Web.Pages.Templates
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit Template", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Template", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -100,7 +100,7 @@ namespace HES.Web.Pages.Templates
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Template", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Template", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

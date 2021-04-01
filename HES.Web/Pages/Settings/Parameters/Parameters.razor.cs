@@ -74,7 +74,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("License Settings", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("License Settings", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -99,7 +99,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Domain Settings", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Domain Settings", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -118,7 +118,7 @@ namespace HES.Web.Pages.Settings.Parameters
             };
 
 
-            var instance = await ModalDialogService2.ShowAsync("Delete", body, ModalDialogSize2.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete", body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

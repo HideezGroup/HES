@@ -1,6 +1,6 @@
 ﻿namespace HES.Web.Components
 {
-    public enum ModalDialogSize2
+    public enum ModalDialogSize
     {
         Default,
         Small,

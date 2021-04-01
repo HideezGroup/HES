@@ -98,7 +98,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Add new security key", body);
+            var instance = await ModalDialogService.ShowAsync("Add new security key", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -116,7 +116,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Remove security key", body);
+            var instance = await ModalDialogService.ShowAsync("Remove security key", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -134,7 +134,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Change security key name", body);
+            var instance = await ModalDialogService.ShowAsync("Change security key name", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -160,7 +160,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
                    
-            var instance = await ModalDialogService2.ShowAsync("Enable Authenticator", body, ModalDialogSize2.Large);
+            var instance = await ModalDialogService.ShowAsync("Enable Authenticator", body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -177,7 +177,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
      
-            var instance = await ModalDialogService2.ShowAsync("Reset Authenticator", body, ModalDialogSize2.Large);
+            var instance = await ModalDialogService.ShowAsync("Reset Authenticator", body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -194,7 +194,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
         
-            var instance = await ModalDialogService2.ShowAsync("Disable two-factor authentication (2FA)", body, ModalDialogSize2.Large);
+            var instance = await ModalDialogService.ShowAsync("Disable two-factor authentication (2FA)", body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -211,7 +211,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            await ModalDialogService2.ShowAsync("Generate two-factor authentication (2FA) recovery codes", body, ModalDialogSize2.Large);        
+            await ModalDialogService.ShowAsync("Generate two-factor authentication (2FA) recovery codes", body, ModalDialogSize.Large);        
         }
 
         private async Task ForgetBrowserAsync()

@@ -150,7 +150,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Add hardware vault", body);
+            var instance = await ModalDialogService.ShowAsync("Add hardware vault", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -171,7 +171,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete hardware vault", body);
+            var instance = await ModalDialogService.ShowAsync("Delete hardware vault", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -206,7 +206,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Create personal account", body, ModalDialogSize2.Large);
+            var instance = await ModalDialogService.ShowAsync("Create personal account", body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -227,7 +227,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Add shared account", body, ModalDialogSize2.Large);
+            var instance = await ModalDialogService.ShowAsync("Add shared account", body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -249,7 +249,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Set As Workstation Account", body);
+            var instance = await ModalDialogService.ShowAsync("Set As Workstation Account", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -271,7 +271,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit account", body);
+            var instance = await ModalDialogService.ShowAsync("Edit account", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -292,7 +292,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit account password", body);
+            var instance = await ModalDialogService.ShowAsync("Edit account password", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -313,7 +313,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Edit account OTP", body);
+            var instance = await ModalDialogService.ShowAsync("Edit account OTP", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -334,7 +334,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Generate AD Password", body);
+            var instance = await ModalDialogService.ShowAsync("Generate AD Password", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -355,7 +355,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Delete Account", body);
+            var instance = await ModalDialogService.ShowAsync("Delete Account", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -406,7 +406,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            await ModalDialogService2.ShowAsync("Software vault details", body);
+            await ModalDialogService.ShowAsync("Software vault details", body);
         }
 
         private async Task OpenDialogHardwareVaultDetailsAsync(HardwareVault hardwareVault)
@@ -420,7 +420,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            await ModalDialogService2.ShowAsync("Hardware vault details", body);
+            await ModalDialogService.ShowAsync("Hardware vault details", body);
         }
 
         private async Task OpenDialogShowActivationCodeAsync(HardwareVault hardwareVault)
@@ -434,7 +434,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-           await ModalDialogService2.ShowAsync("Activation code", body);            
+           await ModalDialogService.ShowAsync("Activation code", body);            
         }
 
         private async Task OpenModalEnableSsoAsync()
@@ -448,7 +448,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Enable SSO", body);
+            var instance = await ModalDialogService.ShowAsync("Enable SSO", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -469,7 +469,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService2.ShowAsync("Disable SSO", body);
+            var instance = await ModalDialogService.ShowAsync("Disable SSO", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
