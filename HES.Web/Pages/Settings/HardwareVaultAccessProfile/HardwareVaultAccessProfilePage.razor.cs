@@ -15,8 +15,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
     public partial class HardwareVaultAccessProfilePage : HESPageBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        public IMainTableService<HardwareVaultProfile, HardwareVaultProfileFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        public IDataTableService<HardwareVaultProfile, HardwareVaultProfileFilter> DataTableService { get; set; }
         [Inject] public ILogger<HardwareVaultAccessProfilePage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -24,11 +23,11 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             try
             {
                 HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<HardwareVaultProfile, HardwareVaultProfileFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<HardwareVaultProfile, HardwareVaultProfileFilter>>();
 
                 SynchronizationService.UpdateHardwareVaultProfilesPage += UpdateHardwareVaultProfilesPage;
 
-                await MainTableService.InitializeAsync(HardwareVaultService.GetHardwareVaultProfilesAsync, HardwareVaultService.GetHardwareVaultProfileCountAsync, ModalDialogService, StateHasChanged, nameof(HardwareVaultProfile.Name), ListSortDirection.Ascending);
+                await DataTableService.InitializeAsync(HardwareVaultService.GetHardwareVaultProfilesAsync, HardwareVaultService.GetHardwareVaultProfileCountAsync, StateHasChanged, nameof(HardwareVaultProfile.Name), ListSortDirection.Ascending);
                 await BreadcrumbsService.SetHardwareVaultProfiles();
 
                 SetInitialized();
@@ -47,7 +46,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -66,7 +65,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -76,7 +75,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditProfile));
-                builder.AddAttribute(2, nameof(EditProfile.HardwareVaultProfileId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(2, nameof(EditProfile.HardwareVaultProfileId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -85,7 +84,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -95,7 +94,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteProfile));
-                builder.AddAttribute(2, nameof(DeleteProfile.HardwareVaultProfileId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(2, nameof(DeleteProfile.HardwareVaultProfileId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -104,7 +103,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -114,7 +113,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DetailsProfile));
-                builder.AddAttribute(1, nameof(DetailsProfile.AccessProfile), MainTableService.SelectedEntity);
+                builder.AddAttribute(1, nameof(DetailsProfile.AccessProfile), DataTableService.SelectedEntity);
                 builder.CloseComponent();
             };
 
@@ -123,7 +122,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -131,7 +130,6 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
         public void Dispose()
         {
             SynchronizationService.UpdateHardwareVaultProfilesPage -= UpdateHardwareVaultProfilesPage;
-            MainTableService.Dispose();
         }
     }
 }
