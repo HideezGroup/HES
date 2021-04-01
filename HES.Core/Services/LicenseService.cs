@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.API.License;
 using HES.Core.Models.Web;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.LicenseOrders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

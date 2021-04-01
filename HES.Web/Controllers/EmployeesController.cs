@@ -7,6 +7,7 @@ using HES.Core.Models.API.Employee;
 using HES.Core.Models.Employees;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Web.DataTableComponent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

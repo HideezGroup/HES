@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace HES.Web.Components
+namespace HES.Core.Models.Web.DataTableComponent
 {
     public class DataLoadingOptions<TFilter> where TFilter : class, new()
     {

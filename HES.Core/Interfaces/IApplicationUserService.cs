@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Models.API;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.Identity;
 using HES.Core.Models.Web.Users;
 using System;

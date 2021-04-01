@@ -1,6 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.Workstations;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Workstation;

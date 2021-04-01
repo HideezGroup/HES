@@ -2,6 +2,7 @@
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.AppSettings;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.Workstations;
 using HES.Core.Services;
 using HES.Web.Components;

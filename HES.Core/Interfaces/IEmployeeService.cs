@@ -4,6 +4,7 @@ using HES.Core.Models.Employees;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
 using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.Web.DataTableComponent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
