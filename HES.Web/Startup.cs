@@ -121,7 +121,6 @@ namespace HES.Web
             services.AddScoped<IFido2Service, Fido2Service>();
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();
 
-            services.AddScoped<HttpClient>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
