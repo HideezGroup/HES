@@ -1,0 +1,18 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+<div class="modal" id="@ModalDialogInstance.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered @ModalDialogInstance.ModalDialogSizeClass">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-navyblue">@ModalDialogInstance.Title</h5>
+                <button class="btn-close" @onclick="@(async () => await ModalDialogInstance.CloseAsync(ModalResult.Cancel))" />
+            </div>
+            <div class="modal-body">
+                <CascadingValue Value=ModalDialogInstance>
+                    @ModalDialogInstance.Body
+                </CascadingValue>
+            </div>
+        </div>
+    </div>
+</div>

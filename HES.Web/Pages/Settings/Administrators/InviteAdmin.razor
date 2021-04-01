@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 <EditForm Model="Invitation" OnValidSubmit="InviteAdminAsync">
     <DataAnnotationsValidator />
@@ -8,8 +8,8 @@
         <InputText @bind-Value="Invitation.Email" class="form-control text-navyblue" />
         <ValidationMessage For="@(() => Invitation.Email)" class="text-danger" />
     </div>
-    <div class="text-end">
-        <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>
-        <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Invite" Class="btn btn-primary" />
+    <div class="form-footer">
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+        <Button @ref="ButtonSpinner" Text="Invite" type="submit" class="btn btn-primary" />
     </div>
 </EditForm>

@@ -1,10 +1,10 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 <div>
-    <div class="alert alert-warning rounded-0" role="alert" style="margin-left:-16px; margin-right:-16px">
+    <div class="alert alert-warning rounded-0 form-group" role="alert">
         <b>Are you sure you want to turn on the alarm and lock all workstations?</b>
     </div>
-    <div class="text-end mt-2">
-        <button type="button" class="btn btn-secondary" @onclick="ModalDialogService.CancelAsync">Cancel</button>
-        <ButtonSpinner Text="Confirm" Class="btn btn-danger" Callback="EnableAlarmAsync" />
+    <div class="form-footer">
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+        <Button Text="Confirm" OnClick="EnableAlarmAsync" class="btn btn-danger" />
     </div>
 </div>

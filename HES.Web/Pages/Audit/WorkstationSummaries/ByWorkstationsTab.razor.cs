@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Audit.WorkstationSummaries
 {
-    public partial class ByWorkstationsTab : HESComponentBase, IDisposable
+    public partial class ByWorkstationsTab : HESPageBase, IDisposable
     {
         public IWorkstationAuditService WorkstationAuditService { get; set; }
-        public IMainTableService<SummaryByWorkstations, SummaryFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        public IDataTableService<SummaryByWorkstations, SummaryFilter> DataTableService { get; set; }
         [Inject] public ILogger<ByWorkstationsTab> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -21,8 +20,9 @@ namespace HES.Web.Pages.Audit.WorkstationSummaries
             try
             {
                 WorkstationAuditService = ScopedServices.GetRequiredService<IWorkstationAuditService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<SummaryByWorkstations, SummaryFilter>>();
-                await MainTableService.InitializeAsync(WorkstationAuditService.GetSummaryByWorkstationsAsync, WorkstationAuditService.GetSummaryByWorkstationsCountAsync, ModalDialogService, StateHasChanged, nameof(SummaryByWorkstations.Workstation), syncPropName: "Workstation");
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<SummaryByWorkstations, SummaryFilter>>();
+
+                await DataTableService.InitializeAsync(WorkstationAuditService.GetSummaryByWorkstationsAsync, WorkstationAuditService.GetSummaryByWorkstationsCountAsync, StateHasChanged, nameof(SummaryByWorkstations.Workstation), syncPropName: "Workstation");
 
                 SetInitialized();
             }
@@ -35,7 +35,7 @@ namespace HES.Web.Pages.Audit.WorkstationSummaries
 
         public void Dispose()
         {
-            MainTableService.Dispose();
+
         }
     }
 }

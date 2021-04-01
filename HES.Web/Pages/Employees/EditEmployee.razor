@@ -1,14 +1,14 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (!Initialized)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="employee" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="employee" CloseAction="ModalDialogCancel" />
     }
     else
     {
@@ -71,9 +71,9 @@ else
                     }
                 </select>
             </div>
-            <div class="text-end">
-                <button type="button" class="btn btn-secondary" @onclick="@(async () => await  ModalDialogService.CancelAsync())">Cancel</button>
-                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Save" Class="btn btn-primary" />
+            <div class="form-footer">
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+                <Button @ref="ButtonSpinner" Text="Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }

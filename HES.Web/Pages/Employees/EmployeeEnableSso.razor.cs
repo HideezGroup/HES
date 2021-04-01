@@ -10,31 +10,27 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EmployeeEnableSso : HESComponentBase
+    public partial class EmployeeEnableSso : HESModalBase
     {
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IEmailSenderService EmailSenderService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IApplicationUserService ApplicationUserService { get; set; }
-        [Inject] public ILogger<EmployeeEnableSso> Logger { get; set; }
         public IEmployeeService EmployeeService { get; set; }
-
-        [Parameter] public EventCallback Refresh { get; set; }
+        public IApplicationUserService ApplicationUserService { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] public IEmailSenderService EmailSenderService { get; set; }
+        [Inject] public ILogger<EmployeeEnableSso> Logger { get; set; }
         [Parameter] public Employee Employee { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+                ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -43,18 +39,16 @@ namespace HES.Web.Pages.Employees
             try
             {
                 await EmployeeService.EnableSsoAsync(Employee);
-                var callBack = await ApplicationUserService.GenerateEnableSsoCallBackUrlAsync(Employee.Email, NavigationManager.BaseUri);
-                await EmailSenderService.SendEmployeeEnableSsoAsync(Employee.Email, callBack);
-                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, Employee.Id);
-                await ToastService.ShowToastAsync($"SSO for employee {Employee.Email} enabled.", ToastType.Success);
-                await Refresh.InvokeAsync();
-                await ModalDialogService.CloseAsync();
+                var callback = await ApplicationUserService.GenerateEnableSsoCallBackUrlAsync(Employee.Email, NavigationManager.BaseUri);
+                await EmailSenderService.SendEmployeeEnableSsoAsync(Employee.Email, callback);
+                await ToastService.ShowToastAsync($"SSO enabled.", ToastType.Success);         
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
     }

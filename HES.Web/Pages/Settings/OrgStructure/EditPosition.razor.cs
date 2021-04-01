@@ -11,28 +11,22 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class EditPosition : HESComponentBase, IDisposable
+    public partial class EditPosition : HESModalBase, IDisposable
     {
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditPosition> Logger { get; set; }
         [Parameter] public string PositionId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
         public Position Position { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                ModalDialogService.OnCancel += ModalDialogService_OnCancel;
-
                 Position = await OrgStructureService.GetPositionByIdAsync(PositionId);
                 if (Position == null)
                     throw new Exception("Position not found.");
@@ -47,21 +41,25 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
+        }
+
+        protected override async Task ModalDialogCancel()
+        {
+            await OrgStructureService.UnchangedPositionAsync(Position);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.EditPositionAsync(Position);
                     await ToastService.ShowToastAsync("Position updated.", ToastType.Success);
-                    await Refresh.InvokeAsync(this);
-                    await SynchronizationService.UpdateOrgSructurePositions(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (AlreadyExistException ex)
@@ -72,14 +70,8 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
-        }
-
-        private async Task ModalDialogService_OnCancel()
-        {
-            await OrgStructureService.UnchangedPositionAsync(Position);
-            ModalDialogService.OnCancel -= ModalDialogService_OnCancel;
         }
 
         public void Dispose()

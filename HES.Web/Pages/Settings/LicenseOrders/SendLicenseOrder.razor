@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (LicenseOrder == null)
 {
@@ -8,14 +8,14 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="order" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="order" CloseAction="ModalDialogCancel" />
     }
     else
     {
         <h5 class="text-gray mb-4 ">Confirm sending order.</h5>
         <div class="text-end">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogService.CancelAsync">Cancel</button>
-            <ButtonSpinner Text="Send" Class="btn btn-primary" Callback="SendOrderAsync" />
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+            <Button Text="Send" class="btn btn-primary" OnClick="SendOrderAsync" />
         </div>
     }
 }

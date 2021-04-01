@@ -11,14 +11,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class DeleteLicenseOrder : HESComponentBase, IDisposable
+    public partial class DeleteLicenseOrder : HESModalBase, IDisposable
     {
         public ILicenseService LicenseService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteLicenseOrder> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string LicenseOrderId { get; set; }
 
         public LicenseOrder LicenseOrder { get; set; }
@@ -42,7 +39,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -51,15 +48,14 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             try
             {
                 await LicenseService.DeleteOrderAsync(LicenseOrder);
-                await SynchronizationService.UpdateLicenses(ExceptPageId);
                 await ToastService.ShowToastAsync("License order deleted.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 

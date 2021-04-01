@@ -13,21 +13,18 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class EditSharedAccountOtp : HESComponentBase, IDisposable
+    public partial class EditSharedAccountOtp : HESModalBase, IDisposable
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditSharedAccountOtp> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string AccountId { get; set; }
 
         public SharedAccount Account { get; set; }
         public AccountOtp AccountOtp { get; set; } = new AccountOtp();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -36,8 +33,6 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
                 RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
-
-                ModalDialogService.OnCancel += OnCancelAsync;
 
                 Account = await SharedAccountService.GetSharedAccountByIdAsync(AccountId);
 
@@ -54,26 +49,26 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
-        private async Task OnCancelAsync()
+        protected override async Task ModalDialogCancel()
         {
             await SharedAccountService.UnchangedAsync(Account);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditAccoountOtpAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     var vaults = await SharedAccountService.EditSharedAccountOtpAsync(Account, AccountOtp);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
-                    await SynchronizationService.UpdateSharedAccounts(ExceptPageId);
                     await ToastService.ShowToastAsync("Account OTP updated.", ToastType.Success);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (IncorrectOtpException ex)
@@ -84,14 +79,12 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= OnCancelAsync;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Account.Id);
         }

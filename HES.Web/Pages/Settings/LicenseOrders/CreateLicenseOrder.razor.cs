@@ -12,19 +12,16 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class CreateLicenseOrder : HESComponentBase
+    public partial class CreateLicenseOrder : HESModalBase
     {
         ILicenseService LicenseService { get; set; }
         IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
         [Inject] ILogger<CreateLicenseOrder> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public ValidationErrorMessage ValidationErrorMessageNewOrder { get; set; }
         public ValidationErrorMessage ValidationErrorMessageRenewOrder { get; set; }
-        public ButtonSpinner ButtonSpinnerNewOrder { get; set; }
-        public ButtonSpinner ButtonSpinnerRenewOrder { get; set; }
+        public Button ButtonNewOrder { get; set; }
+        public Button ButtonRenewOrder { get; set; }
 
         private NewLicenseOrder _newLicenseOrder;
         private RenewLicenseOrder _renewLicenseOrder;
@@ -52,7 +49,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -60,7 +57,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
         {
             try
             {
-                await ButtonSpinnerNewOrder.SpinAsync(async () =>
+                await ButtonNewOrder.SpinAsync(async () =>
                 {
                     if (_newLicenseOrder.StartDate < DateTime.Now.Date)
                     {
@@ -91,16 +88,15 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
                     var checkedHardwareVaults = _newLicenseOrder.HardwareVaults.Where(x => x.Checked).ToList();
                     await LicenseService.CreateOrderAsync(licenseOrder, checkedHardwareVaults);
-                    await SynchronizationService.UpdateLicenses(ExceptPageId);
                     await ToastService.ShowToastAsync("Order created.", ToastType.Success);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -108,7 +104,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
         {
             try
             {
-                await ButtonSpinnerRenewOrder.SpinAsync(async () =>
+                await ButtonRenewOrder.SpinAsync(async () =>
                 {
                     if (_renewLicenseOrder.EndDate < DateTime.Now)
                     {
@@ -141,16 +137,15 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                     };
 
                     await LicenseService.CreateOrderAsync(licenseOrder, checkedHardwareVaults);
-                    await SynchronizationService.UpdateLicenses(ExceptPageId);
                     await ToastService.ShowToastAsync("Order created.", ToastType.Success);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
     }

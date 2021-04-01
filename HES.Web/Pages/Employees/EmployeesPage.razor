@@ -1,147 +1,141 @@
 ﻿@page "/Employees"
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
-@inherits HESComponentBase
+@inherits HESPageBase
 
 @if (Initialized)
 {
-    <TableAction>
-        <FilterForm>
-            <EmployeeFilterComponent FilterChanged="MainTableService.FilterChangedAsync" />
-        </FilterForm>
-        <ActionButtons>
-            @*<button type="button" @onclick="ImportEmployeesFromAdAsync" class="btn btn-primary me-1" title="Import employee from AD">
-            Import from AD
-        </button>*@
-            <button type="button" @onclick="SyncEmployeesWithAdAsync" class="btn btn-primary me-1" title="Sync with AD">
-                Sync with AD
-            </button>
-            <button type="button" @onclick="CreateEmployeeAsync" class="btn btn-primary mx-1" title="Create employee">
-                Create employee
-            </button>
-            @if (MainTableService.SelectedEntity != null)
-            {
-                <button type="button" @onclick="EmployeeDetailsAsync" class="btn btn-light border mx-1" title="Employee details">
-                    <img class="icon-btn" src="/svg/icon-details.svg" />
-                    Details
-                </button>
-                @if (MainTableService.SelectedEntity.ActiveDirectoryGuid == null)
-                {
-                    <button type="button" @onclick="EditEmployeeAsync" class="btn btn-light border mx-1" title="Edit employee">
-                        <img class="icon-btn" src="/svg/icon-edit.svg" />
-                        Edit
+    <DataTableWrapper Loading="DataTableService.Loading">
+        <WrapperHeader>
+            <DataTableActions RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
+                <FilterForm>
+                    <EmployeeFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
+                </FilterForm>
+                <ActionButtons>
+                    <button type="button" @onclick="SyncEmployeesWithAdAsync" class="btn btn-primary me-1" title="Sync with AD">
+                        Sync with AD
                     </button>
-                }
-                <button type="button" @onclick="DeleteEmployeeAsync" class="btn btn-light border mx-1" title="Delete employee">
-                    <img class="icon-btn" src="/svg/icon-delete.svg" />
-                    Delete
-                </button>
-            }
-        </ActionButtons>
-        <FilterButtons>
-            <TableFilter SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-        </FilterButtons>
-    </TableAction>
-    <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" SelecedItemDblClick="EmployeeDetailsAsync" Loading="MainTableService.Loading">
-        <TableHeader>
-            <MainTableHeader Title="Name"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(Employee.FullName)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Email"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(Employee.Email)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Phone Number"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(Employee.PhoneNumber)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Company"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(Employee.Department.Company)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Department"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(Employee.Department)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Position"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(Employee.Position)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Last Seen"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(Employee.LastSeen)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Vaults Count"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(Employee.VaultsCount)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-        </TableHeader>
-        <TableRow>
-            <td>
-                @context.FullName
-                @if (context.ActiveDirectoryGuid != null)
-                {
-                    <span class="badge @(MainTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-primary") ms-1" title="Imported from Active Directory">
-                        AD
-                    </span>
-                }
-            </td>
-            <td>
-                @context.Email
-            </td>
-            <td>
-                @context.PhoneNumber
-            </td>
-            <td>
-                @context.Department?.Company?.Name
-            </td>
-            <td>
-                @context.Department?.Name
-            </td>
-            <td>
-                @context.Position?.Name
-            </td>
-            <td>
-                @if (context.LastSeen != null)
-                {
-                    @context.LastSeen.Value.ToLocalTime()
-                }
-            </td>
-            <td>
-                @context.VaultsCount
-            </td>
-        </TableRow>
-    </MainTable>
-    <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                TotalRecords="MainTableService.TotalRecords"
-                CurrentPage="MainTableService.CurrentPage"
-                DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />
+                    <button type="button" @onclick="CreateEmployeeAsync" class="btn btn-primary mx-1" title="Create employee">
+                        Create employee
+                    </button>
+                    @if (DataTableService.SelectedEntity != null)
+                    {
+                        <button type="button" @onclick="EmployeeDetailsAsync" class="btn btn-light border mx-1" title="Employee details">
+                            <img class="icon-btn" src="/svg/icon-details.svg" />
+                            Details
+                        </button>
+                        @if (DataTableService.SelectedEntity.ActiveDirectoryGuid == null)
+                        {
+                            <button type="button" @onclick="EditEmployeeAsync" class="btn btn-light border mx-1" title="Edit employee">
+                                <img class="icon-btn" src="/svg/icon-edit.svg" />
+                                Edit
+                            </button>
+                        }
+                        <button type="button" @onclick="DeleteEmployeeAsync" class="btn btn-light border mx-1" title="Delete employee">
+                            <img class="icon-btn" src="/svg/icon-delete.svg" />
+                            Delete
+                        </button>
+                    }
+                </ActionButtons>
+            </DataTableActions>
+        </WrapperHeader>
+        <WrapperBody>
+            <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" SelecedItemDblClick="EmployeeDetailsAsync">
+                <TableHeader>
+                    <DataTableHeaderItem Title="Name"
+                                         SortColumn="@nameof(Employee.FullName)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Email"
+                                         SortColumn="@nameof(Employee.Email)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Phone Number"
+                                         SortColumn="@nameof(Employee.PhoneNumber)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Company"
+                                         SortColumn="@nameof(Employee.Department.Company)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Department"
+                                         SortColumn="@nameof(Employee.Department)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Position"
+                                         SortColumn="@nameof(Employee.Position)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Last Seen"
+                                         SortColumn="@nameof(Employee.LastSeen)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Vaults Count"
+                                         SortColumn="@nameof(Employee.VaultsCount)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                </TableHeader>
+                <TableRow>
+                    <td>
+                        @context.FullName
+                        @if (context.ActiveDirectoryGuid != null)
+                            {
+                            <span class="badge @(DataTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-primary") ms-1" title="Imported from Active Directory">
+                                AD
+                            </span>
+                            }
+                    </td>
+                    <td>
+                        @context.Email
+                    </td>
+                    <td>
+                        @context.PhoneNumber
+                    </td>
+                    <td>
+                        @context.Department?.Company?.Name
+                    </td>
+                    <td>
+                        @context.Department?.Name
+                    </td>
+                    <td>
+                        @context.Position?.Name
+                    </td>
+                    <td>
+                        @if (context.LastSeen != null)
+                            {
+                            @context.LastSeen.Value.ToLocalTime()
+                            }
+                    </td>
+                    <td>
+                        @context.VaultsCount
+                    </td>
+                </TableRow>
+            </DataTable>
+        </WrapperBody>
+        <WrapperFooter>
+            <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"
+                                 DisplayRowsChanged="DataTableService.DisplayRowsChangedAsync"
+                                 TotalRecords="DataTableService.TotalRecords"
+                                 CurrentPage="DataTableService.CurrentPage"
+                                 DisplayRows="DataTableService.DataLoadingOptions.Take"
+                                 DisplayRecords="DataTableService.Entities.Count" />
+        </WrapperFooter>
+    </DataTableWrapper>
 }
 else if (LoadFailed)
 {
@@ -149,5 +143,5 @@ else if (LoadFailed)
 }
 else
 {
-    <Loader/>
+    <Loader />
 }

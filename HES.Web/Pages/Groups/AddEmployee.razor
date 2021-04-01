@@ -1,8 +1,8 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (Employees == null)
 {
-    <LoadingText />
+    @*<LoadingText />*@
 }
 else
 {
@@ -10,7 +10,7 @@ else
     {
         <h5>All employees have already been added.</h5>
         <div class="form-group text-end mb-0">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
+            @*<button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>*@
         </div>
     }
     else
@@ -61,8 +61,8 @@ else
             </div>
         }
         <div class="form-group text-end mb-0">
-            <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>
-            <ButtonSpinner Text="Add" Class="btn btn-primary" Callback="AddAsync" />
+            @*<button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>*@
+            @*<ButtonSpinner Text="Add" Class="btn btn-primary" Callback="AddAsync" />*@
         </div>
     }
 }

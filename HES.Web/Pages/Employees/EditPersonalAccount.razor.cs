@@ -13,21 +13,18 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EditPersonalAccount : HESComponentBase, IDisposable
+    public partial class EditPersonalAccount : HESModalBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EditPersonalAccount> Logger { get; set; }
         [Parameter] public string AccountId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public Account Account { get; set; }
         public AccountEditModel PersonalAccount { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button ButtonSpinner { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -37,11 +34,9 @@ namespace HES.Web.Pages.Employees
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
-                ModalDialogService.OnCancel += OnCancelAsync;
-
                 Account = await EmployeeService.GetAccountByIdAsync(AccountId);
                 if (Account == null)
-                    throw new Exception("Account not found.");
+                    throw new HESException(HESCode.AccountNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
                 if (!EntityBeingEdited)
@@ -53,7 +48,7 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -66,15 +61,14 @@ namespace HES.Web.Pages.Employees
                     await EmployeeService.EditPersonalAccountAsync(PersonalAccount);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(PersonalAccount.EmployeeId));
                     await ToastService.ShowToastAsync("Account updated.", ToastType.Success);
-                    await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, PersonalAccount.EmployeeId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.AccountExist)
             {
                 ValidationErrorMessage.DisplayError(nameof(Account.Name), ex.Message);
             }
-            catch (IncorrectUrlException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectUrl)
             {
                 ValidationErrorMessage.DisplayError(nameof(Account.Urls), ex.Message);
             }
@@ -82,19 +76,18 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
-        private async Task OnCancelAsync()
+        protected override async Task ModalDialogCancel()
         {
             await EmployeeService.UnchangedPersonalAccountAsync(Account);
+            await base.ModalDialogCancel();
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnClose -= OnCancelAsync;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Account.Id);
         }

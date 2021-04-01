@@ -7,12 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile.SecurityKeys
 {
-    public partial class AddSecurityKey : HESComponentBase
+    public partial class AddSecurityKey : HESModalBase
     {
         public enum SecurityKeyAddingStep
         {
@@ -22,17 +21,12 @@ namespace HES.Web.Pages.Profile.SecurityKeys
             Error
         }
 
-        [Inject] public IApplicationUserService ApplicationUserService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<AddSecurityKey> Logger { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
-        [Inject] public HttpClient HttpClient { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
+        [Parameter] public ApplicationUser CurrentUser { get; set; }
 
         public IFido2Service FidoService { get; set; }
         public SecurityKeyAddingStep AddingStep { get; set; }
-        public ApplicationUser CurrentUser { get; set; }
         public FidoStoredCredential FidoStoredCredential { get; set; }
         public string SecurityKeyName { get; set; } = string.Empty;
 
@@ -41,18 +35,14 @@ namespace HES.Web.Pages.Profile.SecurityKeys
             try
             {
                 FidoService = ScopedServices.GetRequiredService<IFido2Service>();
-
-                CurrentUser = await ApplicationUserService.GetUserByEmailAsync(await GetCurrentUserEmailAsync());
-
                 ChangeState(SecurityKeyAddingStep.Start);
-
                 SetInitialized();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -79,14 +69,13 @@ namespace HES.Web.Pages.Profile.SecurityKeys
             try
             {
                 await FidoService.UpdateSecurityKeyNameAsync(FidoStoredCredential.Id, SecurityKeyName);
-                await Refresh.InvokeAsync();
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
 

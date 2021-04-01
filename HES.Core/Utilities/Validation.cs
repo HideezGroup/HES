@@ -19,7 +19,7 @@ namespace HES.Core.Utilities
             {
                 if (!UrlUtils.TryGetDomain(url.Trim(), out string domain))
                 {
-                    throw new IncorrectUrlException($"Incorrect url.");
+                    throw new HESException(HESCode.IncorrectUrl);
                 }
 
                 verifiedUrls.Add(domain);
@@ -38,7 +38,7 @@ namespace HES.Core.Utilities
 
             if (!valid)
             {
-                throw new IncorrectOtpException("Incorrect OTP secret.");
+                throw new HESException(HESCode.IncorrectOtp);
             }
 
             return otp;

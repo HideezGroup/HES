@@ -15,17 +15,13 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class AddSharedAccount : HESComponentBase
+    public partial class AddSharedAccount : HESModalBase
     {
         public ISharedAccountService SheredAccountSevice { get; set; }
         public IEmployeeService EmployeeService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public ILogger<AddSharedAccount> Logger { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public string EmployeeId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public List<SharedAccount> SharedAccounts { get; set; }
         public SharedAccount SelectedSharedAccount { get; set; }
@@ -53,22 +49,15 @@ namespace HES.Web.Pages.Employees
                 var account = await EmployeeService.AddSharedAccountAsync(EmployeeId, SelectedSharedAccount.Id);
                 var employee = await EmployeeService.GetEmployeeByIdAsync(account.EmployeeId);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(employee.HardwareVaults.Select(x => x.Id).ToArray());
-                await Refresh.InvokeAsync(this);
                 await ToastService.ShowToastAsync("Account added and will be recorded when the device is connected to the server.", ToastType.Success);
-                await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, EmployeeId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
-                await ModalDialogService.CloseAsync();
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogCancel();
             }
-        }
-
-        private async Task CloseAsync()
-        {
-            await ModalDialogService.CloseAsync();
         }
     }
 }

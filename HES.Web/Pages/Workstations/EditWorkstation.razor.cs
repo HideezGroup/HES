@@ -13,23 +13,20 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Workstations
 {
-    public partial class EditWorkstation : HESComponentBase, IDisposable
+    public partial class EditWorkstation : HESModalBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IOrgStructureService OrgStructureService { get; set; }
         public IRemoteWorkstationConnectionsService RemoteWorkstationConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<ApproveWorkstation> Logger { get; set; }
         [Parameter] public string WorkstationId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public Workstation Workstation { get; set; }
         public List<Company> Companies { get; set; }
         public List<Department> Departments { get; set; }
         public bool EntityBeingEdited { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -43,8 +40,6 @@ namespace HES.Web.Pages.Workstations
 
                 if (Workstation == null)
                     throw new Exception("Workstation not found.");
-
-                ModalDialogService.OnCancel += OnCancel;
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Workstation.Id, out object _);
                 if (!EntityBeingEdited)
@@ -67,28 +62,33 @@ namespace HES.Web.Pages.Workstations
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
+        }
+
+        protected override async Task ModalDialogCancel()
+        {
+            await WorkstationService.UnchangedWorkstationAsync(Workstation);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await WorkstationService.ApproveWorkstationAsync(Workstation);
                     await RemoteWorkstationConnectionsService.UpdateRfidStateAsync(Workstation.Id, Workstation.RFID);
                     await ToastService.ShowToastAsync("Workstation updated.", ToastType.Success);
-                    await SynchronizationService.UpdateWorkstations(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -98,15 +98,8 @@ namespace HES.Web.Pages.Workstations
             Workstation.DepartmentId = Departments.FirstOrDefault()?.Id;
         }
 
-        private async Task OnCancel()
-        {
-            await WorkstationService.UnchangedWorkstationAsync(Workstation);
-        }
-
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= OnCancel;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Workstation.Id);
         }

@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 <h5>How does it work?</h5>
 <p>
@@ -25,7 +25,7 @@
 <div class="text-center mt-4">
     @if (!Initialized)
     {
-        <LoadingText />
+        <Loader />
     }
     else
     {
@@ -33,12 +33,12 @@
         {
             <Alert Message="To sync users from the active directory, set domain settings on the parameters page." />
             <div class="text-center  mt-1">
-                <button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
+                <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Close</button>
             </div>
         }
         else
         {
-            <ButtonSpinner Text="Sync Now" Class="btn btn-primary btn-min-w" Callback="SyncAsync" />
+            <Button Text="Sync Now" class="btn btn-primary btn-min-w" OnClick="SyncAsync" />
         }
     }
 </div>

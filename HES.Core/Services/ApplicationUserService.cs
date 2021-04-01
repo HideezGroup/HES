@@ -113,7 +113,7 @@ namespace HES.Core.Services
             var userExist = await _userManager.FindByEmailAsync(email);
 
             if (userExist != null)
-                throw new AlreadyExistException($"User {email} already exists");
+                throw new HESException(HESCode.EmailAlreadyTaken);
 
             var user = new ApplicationUser { UserName = email, Email = email };
             var password = Guid.NewGuid().ToString();

@@ -1,6 +1,6 @@
 ﻿@if (!Initialized)
 {
-    <LoadingText />
+    @*<LoadingText />*@
 }
 else
 {
@@ -19,8 +19,8 @@ else
                 <InputText id="groupMembersCount" @bind-Value="Filter.MembersCount" class="form-control text-navyblue" />
             </div>
             <div class="col align-self-end text-end form-group">
-                <ButtonSpinner Text="Clear" Class="btn btn-secondary" Callback="ClearAsync" />
-                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Filter" Class="btn btn-primary" />
+                @*<ButtonSpinner Text="Clear" Class="btn btn-secondary" Callback="ClearAsync" />*@
+                @*<ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Filter" Class="btn btn-primary" />*@
             </div>
         </div>
     </EditForm>

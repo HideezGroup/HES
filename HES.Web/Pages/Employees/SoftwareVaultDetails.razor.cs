@@ -1,12 +1,11 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class SoftwareVaultDetails: ComponentBase
+    public partial class SoftwareVaultDetails: HESModalBase
     {
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Parameter] public SoftwareVault SoftwareVault { get; set; }  
     }
 }

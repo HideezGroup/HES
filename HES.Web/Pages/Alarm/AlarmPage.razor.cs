@@ -13,18 +13,16 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Alarm
 {
-    public partial class AlarmPage : HESComponentBase, IDisposable
+    public partial class AlarmPage : HESPageBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
         public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<AlarmPage> Logger { get; set; }
 
         public AlarmState AlarmState { get; set; }
         public int WorkstationOnline { get; set; }
         public int WorkstationCount { get; set; }
+        public string CurrentUserEmail { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -39,6 +37,7 @@ namespace HES.Web.Pages.Alarm
                 await GetAlarmStateAsync();
                 WorkstationOnline = RemoteWorkstationConnectionsService.WorkstationsOnlineCount();
                 WorkstationCount = await WorkstationService.GetWorkstationsCountAsync(new DataLoadingOptions<WorkstationFilter>());
+                CurrentUserEmail = await GetCurrentUserEmailAsync();
                 SetInitialized();
             }
             catch (Exception ex)
@@ -70,12 +69,18 @@ namespace HES.Web.Pages.Alarm
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EnableAlarm));
-                builder.AddAttribute(1, nameof(EnableAlarm.CallBack), EventCallback.Factory.Create(this, GetAlarmStateAsync));
-                builder.AddAttribute(2, nameof(EnableAlarm.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(EnableAlarm.CurrentUserEmail), CurrentUserEmail);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Turn on alarm", body);
+            var instance = await ModalDialogService.ShowAsync("Turn on alarm", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await GetAlarmStateAsync();
+                await SynchronizationService.UpdateAlarm(PageId);
+            }
         }
 
         private async Task DisableAlarmAsync()
@@ -83,12 +88,18 @@ namespace HES.Web.Pages.Alarm
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DisableAlarm));
-                builder.AddAttribute(1, nameof(DisableAlarm.CallBack), EventCallback.Factory.Create(this, GetAlarmStateAsync));
-                builder.AddAttribute(2, nameof(DisableAlarm.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(DisableAlarm.CurrentUserEmail), CurrentUserEmail);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Turn off alarm", body);
+            var instance = await ModalDialogService.ShowAsync("Turn off alarm", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await GetAlarmStateAsync();
+                await SynchronizationService.UpdateAlarm(PageId);
+            }
         }
 
         public void Dispose()

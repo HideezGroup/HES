@@ -1,7 +1,6 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Interfaces;
 using HES.Core.Models.Web.Identity;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -17,11 +16,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile.PersonalData
 {
-    public partial class DeletePersonalData : HESComponentBase
+    public partial class DeletePersonalData : HESModalBase
     {
         [Inject] public HttpClient HttpClient { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<DeletePersonalData> Logger { get; set; }
         [Parameter] public ApplicationUser ApplicationUser { get; set; }
@@ -67,7 +65,7 @@ namespace HES.Web.Pages.Profile.PersonalData
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
     }

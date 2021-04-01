@@ -1,5 +1,4 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
 using HES.Core.Models.Web.AppUsers;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -13,14 +12,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile.TwoFactor
 {
-    public partial class EnableAuthenticator : HESComponentBase
+    public partial class EnableAuthenticator : HESModalBase
     {
         [Inject] public HttpClient HttpClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EnableAuthenticator> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
         public VerificationCode VerificationCode { get; set; } = new VerificationCode();
         public SharedKeyInfo SharedKeyInfo { get; set; } = new SharedKeyInfo();
@@ -37,7 +33,7 @@ namespace HES.Web.Pages.Profile.TwoFactor
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -89,7 +85,6 @@ namespace HES.Web.Pages.Profile.TwoFactor
                 }
 
                 await ToastService.ShowToastAsync("Your authenticator app has been verified.", ToastType.Success);
-                await Refresh.InvokeAsync();
 
                 if (verifyTwoFactorTokenInfo.RecoveryCodes != null)
                 {
@@ -97,14 +92,14 @@ namespace HES.Web.Pages.Profile.TwoFactor
                 }
                 else
                 {
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
     }

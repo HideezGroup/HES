@@ -12,13 +12,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.LicenseOrders
 {
-    public partial class LicenseOrdersPage : HESComponentBase, IDisposable
+    public partial class LicenseOrdersPage : HESPageBase, IDisposable
     {
         public ILicenseService LicenseService { get; set; }
-        public IMainTableService<LicenseOrder, LicenseOrderFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        public IDataTableService<LicenseOrder, LicenseOrderFilter> DataTableService { get; set; }
         [Inject] public ILogger<LicenseOrdersPage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -26,12 +23,12 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             try
             {
                 LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<LicenseOrder, LicenseOrderFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<LicenseOrder, LicenseOrderFilter>>();
 
                 SynchronizationService.UpdateLicensesPage += UpdateLicensesPage;     
                 
                 await BreadcrumbsService.SetLicenseOrders();
-                await MainTableService.InitializeAsync(LicenseService.GetLicenseOrdersAsync, LicenseService.GetLicenseOrdersCountAsync, ModalDialogService, StateHasChanged, nameof(LicenseOrder.CreatedAt), ListSortDirection.Descending);
+                await DataTableService.InitializeAsync(LicenseService.GetLicenseOrdersAsync, LicenseService.GetLicenseOrdersCountAsync, StateHasChanged, nameof(LicenseOrder.CreatedAt), ListSortDirection.Descending);
 
                 SetInitialized();
             }
@@ -49,7 +46,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -60,11 +57,17 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreateLicenseOrder));
-                builder.AddAttribute(1, nameof(CreateLicenseOrder.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Create License Order", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync("Create License Order", body, ModalDialogSize.Large);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task SendLicenseOrderAsync()
@@ -72,12 +75,18 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SendLicenseOrder));
-                builder.AddAttribute(1, nameof(SendLicenseOrder.LicenseOrderId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(SendLicenseOrder.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(SendLicenseOrder.LicenseOrderId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Send License Order", body);
+            var instance = await ModalDialogService.ShowAsync("Send License Order", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task LicenseOrderDetailsAsync()
@@ -85,11 +94,18 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DetailsLicenseOrder));
-                builder.AddAttribute(1, nameof(DetailsLicenseOrder.LicenseOrder), MainTableService.SelectedEntity);
+                builder.AddAttribute(1, nameof(DetailsLicenseOrder.LicenseOrder), DataTableService.SelectedEntity);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("License Order Details", body, ModalDialogSize.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync("License Order Details", body, ModalDialogSize.ExtraLarge);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task EditLicenseOrderAsync()
@@ -97,12 +113,18 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditLicenseOrder));
-                builder.AddAttribute(1, nameof(EditLicenseOrder.LicenseOrderId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditLicenseOrder.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(EditLicenseOrder.LicenseOrderId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit License Order", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync("Edit License Order", body, ModalDialogSize.ExtraLarge);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DeleteLicenseOrderAsync()
@@ -110,18 +132,23 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteLicenseOrder));
-                builder.AddAttribute(1, nameof(DeleteLicenseOrder.LicenseOrderId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteLicenseOrder.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(DeleteLicenseOrder.LicenseOrderId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Delete License Order", body);
+            var instance = await ModalDialogService.ShowAsync("Delete License Order", body, ModalDialogSize.ExtraLarge);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()
         {
             SynchronizationService.UpdateLicensesPage -= UpdateLicensesPage;
-            MainTableService.Dispose();
         }
     }
 }

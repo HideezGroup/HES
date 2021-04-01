@@ -1,4 +1,6 @@
-﻿<div class="list-group mb-3">
+﻿@inherits HESModalBase
+
+<div class="list-group mb-3">
     <div class="list-group-item">
         <h6 class="mb-1">OS</h6>
         <p class="mb-1">@SoftwareVault.OS</p>
@@ -54,6 +56,6 @@
         </p>
     </div>
 </div>
-<div class="text-end">
-    <button type="button" class="btn btn-secondary" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
+<div class="form-footer">
+    <button type="button" class="btn btn-secondary" @onclick="ModalDialogClose">Close</button>
 </div>

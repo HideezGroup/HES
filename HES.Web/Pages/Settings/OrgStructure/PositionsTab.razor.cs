@@ -12,12 +12,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class PositionsTab : HESComponentBase, IDisposable
+    public partial class PositionsTab : HESPageBase, IDisposable
     {
         public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<PositionsTab> Logger { get; set; }
 
         public List<Position> Positions { get; set; }
@@ -95,12 +92,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(CreatePosition));
-                builder.AddAttribute(1, nameof(CreatePosition.ExceptPageId), PageId);
-                builder.AddAttribute(2, nameof(CreatePosition.Refresh), EventCallback.Factory.Create(this, LoadPositionsAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Create Position", body);
+            var instance = await ModalDialogService.ShowAsync("Create Position", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadPositionsAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogEditPositionAsync(Position position)
@@ -109,12 +111,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(EditPosition));
                 builder.AddAttribute(1, nameof(EditPosition.PositionId), position.Id);
-                builder.AddAttribute(2, nameof(EditPosition.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(EditPosition.Refresh), EventCallback.Factory.Create(this, LoadPositionsAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Edit Position", body);
+            var instance = await ModalDialogService.ShowAsync("Edit Position", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadPositionsAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogDeletePositionAsync(Position position)
@@ -123,12 +130,17 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 builder.OpenComponent(0, typeof(DeletePosition));
                 builder.AddAttribute(1, nameof(DeletePosition.PositionId), position.Id);
-                builder.AddAttribute(2, nameof(DeletePosition.ExceptPageId), PageId);
-                builder.AddAttribute(3, nameof(DeletePosition.Refresh), EventCallback.Factory.Create(this, LoadPositionsAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Delete Position", body);
+            var instance = await ModalDialogService.ShowAsync("Delete Position", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadPositionsAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()

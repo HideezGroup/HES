@@ -1,5 +1,4 @@
-﻿using HES.Core.Interfaces;
-using HES.Core.Models.Employees;
+﻿using HES.Core.Models.Employees;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -12,7 +11,7 @@ namespace HES.Web.Pages.Employees
         [Parameter] public Func<EmployeeFilter, Task> FilterChanged { get; set; }
 
         public EmployeeFilter Filter { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button ButtonSpinner { get; set; }
 
         protected override void OnInitialized()
         {

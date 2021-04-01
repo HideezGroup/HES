@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace HES.Core.Models.Web
+namespace HES.Web.Components
 {
     public class DataLoadingOptions<TFilter> where TFilter : class, new()
     {

@@ -1,142 +1,141 @@
 ﻿@page "/Settings/LicenseOrders"
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
-@inherits HESComponentBase
+@inherits HESPageBase
 
 @if (Initialized)
 {
-    <TableAction>
-        <FilterForm>
-            <LicenseOrderFilterComponent FilterChanged="MainTableService.FilterChangedAsync" />
-        </FilterForm>
-        <ActionButtons>
-            <button type="button" @onclick="CreateLicenseOrderAsync" class="btn btn-primary mx-1" title="New Order">
-                New Order
-            </button>
-            @if (MainTableService.SelectedEntity != null)
-            {
-                if (MainTableService.SelectedEntity.OrderStatus == LicenseOrderStatus.New)
-                {
-                    <button type="button" @onclick="SendLicenseOrderAsync" class="btn btn-light border mx-1" title="Send license order">
-                        <img class="icon-btn" src="/svg/icon-send.svg" />
-                        Send
+    <DataTableWrapper Loading="DataTableService.Loading">
+        <WrapperHeader>
+            <DataTableActions RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
+                <FilterForm>
+                    <LicenseOrderFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
+                </FilterForm>
+                <ActionButtons>
+                    <button type="button" @onclick="CreateLicenseOrderAsync" class="btn btn-primary mx-1" title="New Order">
+                        New Order
                     </button>
-                    <button type="button" @onclick="EditLicenseOrderAsync" class="btn btn-light border mx-1" title="Edit license order">
-                        <img class="icon-btn" src="/svg/icon-edit.svg" />
-                        Edit
-                    </button>
-                    <button type="button" @onclick="DeleteLicenseOrderAsync" class="btn btn-light border mx-1" title="Delete license order">
-                        <img class="icon-btn" src="/svg/icon-delete.svg" />
-                        Delete
-                    </button>
-                }
-                <button type="button" @onclick="LicenseOrderDetailsAsync" class="btn btn-light border mx-1" title="License order details">
-                    <img class="icon-btn" src="/svg/icon-details.svg" />
-                    Details
-                </button>
-            }
-        </ActionButtons>
-        <FilterButtons>
-            <TableFilter SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-        </FilterButtons>
-    </TableAction>
-    <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" Loading="MainTableService.Loading">
-        <TableHeader>
-            <MainTableHeader Title="Contact Email"
-                             TitleWidth="16"
-                             SortColumn="@nameof(LicenseOrder.ContactEmail)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Note"
-                             TitleWidth="20"
-                             SortColumn="@nameof(LicenseOrder.Note)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Prolong"
-                             TitleWidth="8"
-                             SortColumn="@nameof(LicenseOrder.ProlongExistingLicenses)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Start Date"
-                             TitleWidth="14"
-                             SortColumn="@nameof(LicenseOrder.StartDate)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="End Date"
-                             TitleWidth="14"
-                             SortColumn="@nameof(LicenseOrder.EndDate)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Created At"
-                             TitleWidth="14"
-                             SortColumn="@nameof(LicenseOrder.CreatedAt)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Order Status"
-                             TitleWidth="14"
-                             SortColumn="@nameof(LicenseOrder.OrderStatus)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-        </TableHeader>
-        <TableRow>
-            <td>
-                @context.ContactEmail
-            </td>
-            <td>
-                @context.Note
-            </td>
-            <td>
-                @if (context.ProlongExistingLicenses)
+                    @if (DataTableService.SelectedEntity != null)
                     {
-                    <span class="badge bg-success">Yes</span>
+                        if (DataTableService.SelectedEntity.OrderStatus == LicenseOrderStatus.New)
+                        {
+                            <button type="button" @onclick="SendLicenseOrderAsync" class="btn btn-light border mx-1" title="Send license order">
+                                <img class="icon-btn" src="/svg/icon-send.svg" />
+                                Send
+                            </button>
+                            <button type="button" @onclick="EditLicenseOrderAsync" class="btn btn-light border mx-1" title="Edit license order">
+                                <img class="icon-btn" src="/svg/icon-edit.svg" />
+                                Edit
+                            </button>
+                            <button type="button" @onclick="DeleteLicenseOrderAsync" class="btn btn-light border mx-1" title="Delete license order">
+                                <img class="icon-btn" src="/svg/icon-delete.svg" />
+                                Delete
+                            </button>
+                        }
+                        <button type="button" @onclick="LicenseOrderDetailsAsync" class="btn btn-light border mx-1" title="License order details">
+                            <img class="icon-btn" src="/svg/icon-details.svg" />
+                            Details
+                        </button>
                     }
-                    else
-                    {
-                    <span class="badge bg-secondary">No</span>
-                    }
-            </td>
-            <td>
-                @if (context.StartDate != null)
-                    {
-                    @context.StartDate.Value.ToShortDateString()
-                    }
-            </td>
-            <td>
-                @if (context.EndDate != null)
-                    {
-                    @context.EndDate.ToShortDateString()
-                    }
-            </td>
-            <td>
-                @if (context.CreatedAt != null)
-                    {
-                    @context.CreatedAt.ToLocalTime()
-                    }
-            </td>
-            <td>
-                @context.OrderStatus.ToString()
-            </td>
-        </TableRow>
-    </MainTable>
-    <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                TotalRecords="MainTableService.TotalRecords"
-                CurrentPage="MainTableService.CurrentPage"
-                DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />
+                </ActionButtons>
+            </DataTableActions>
+        </WrapperHeader>
+        <WrapperBody>
+            <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
+                <TableHeader>
+                    <DataTableHeaderItem Title="Contact Email"
+                                         TitleWidth="16"
+                                         SortColumn="@nameof(LicenseOrder.ContactEmail)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Note"
+                                         TitleWidth="20"
+                                         SortColumn="@nameof(LicenseOrder.Note)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Prolong"
+                                         TitleWidth="8"
+                                         SortColumn="@nameof(LicenseOrder.ProlongExistingLicenses)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Start Date"
+                                         TitleWidth="14"
+                                         SortColumn="@nameof(LicenseOrder.StartDate)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="End Date"
+                                         TitleWidth="14"
+                                         SortColumn="@nameof(LicenseOrder.EndDate)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Created At"
+                                         TitleWidth="14"
+                                         SortColumn="@nameof(LicenseOrder.CreatedAt)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Order Status"
+                                         TitleWidth="14"
+                                         SortColumn="@nameof(LicenseOrder.OrderStatus)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                </TableHeader>
+                <TableRow>
+                    <td>
+                        @context.ContactEmail
+                    </td>
+                    <td>
+                        @context.Note
+                    </td>
+                    <td>
+                        @if (context.ProlongExistingLicenses)
+                            {
+                            <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                            <span class="badge bg-secondary">No</span>
+                            }
+                    </td>
+                    <td>
+                        @if (context.StartDate != null)
+                            {
+                            @context.StartDate.Value.ToShortDateString()
+                            }
+                    </td>
+                    <td>
+                        @context.EndDate.ToShortDateString()
+                    </td>
+                    <td>
+                        @context.CreatedAt.ToLocalTime()
+                    </td>
+                    <td>
+                        @context.OrderStatus.ToString()
+                    </td>
+                </TableRow>
+            </DataTable>
+        </WrapperBody>
+        <WrapperFooter>
+            <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"
+                                 DisplayRowsChanged="DataTableService.DisplayRowsChangedAsync"
+                                 TotalRecords="DataTableService.TotalRecords"
+                                 CurrentPage="DataTableService.CurrentPage"
+                                 DisplayRows="DataTableService.DataLoadingOptions.Take"
+                                 DisplayRecords="DataTableService.Entities.Count" />
+        </WrapperFooter>
+    </DataTableWrapper>
 }
 else if (LoadFailed)
 {
