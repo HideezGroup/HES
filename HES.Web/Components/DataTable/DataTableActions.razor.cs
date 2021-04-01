@@ -1,15 +1,22 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 using System.Timers;
 
 namespace HES.Web.Components
 {
-    public partial class TableFilter : ComponentBase
+    public partial class DataTableActions : HESDomComponentBase
     {
+        [Inject] public IJSRuntime JSRuntime { get; set; }
+        [Parameter] public RenderFragment FilterForm { get; set; }
+        [Parameter] public RenderFragment ActionButtons { get; set; }
         [Parameter] public Func<string, Task> SearchTextChanged { get; set; }
-        [Parameter] public bool EnableFilterButton { get; set; } = true;
+        [Parameter] public bool ShowFilterButton { get; set; } = true;
+        [Parameter] public bool CollapseFilter { get; set; }
+        [Parameter] public string TooltipText { get; set; }
+        [Parameter] public Func<Task> RefreshTable { get; set; }
 
         public string SearchText { get; set; }
 
@@ -37,6 +44,14 @@ namespace HES.Web.Components
         {
             _timer.Stop();
             _timer.Start();
+        }
+
+        private async Task RefreshAsync()
+        {
+            if (RefreshTable == null)
+                return;
+
+            await RefreshTable.Invoke();
         }
     }
 }

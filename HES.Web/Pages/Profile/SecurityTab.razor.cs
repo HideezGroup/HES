@@ -17,14 +17,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile
 {
-    public partial class SecurityTab : HESComponentBase
+    public partial class SecurityTab : HESPageBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service FidoService { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
-        [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<SecurityTab> Logger { get; set; }
         [Inject] public HttpClient HttpClient { get; set; }
 
@@ -97,24 +94,35 @@ namespace HES.Web.Pages.Profile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(AddSecurityKey));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, LoadStoredCredentialsAsync));
+                builder.AddAttribute(1, nameof(AddSecurityKey.CurrentUser), CurrentUser);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Add new security key", body);
+            var instance = await ModalDialogService.ShowAsync("Add new security key", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadStoredCredentialsAsync();
+            }
         }
 
-        private async Task RemoveSecurityKeyAsync(string id)
+        private async Task DeleteSecurityKeyAsync(string id)
         {
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteSecurityKey));
                 builder.AddAttribute(1, nameof(DeleteSecurityKey.SecurityKeyId), id);
-                builder.AddAttribute(2, "Refresh", EventCallback.Factory.Create(this, LoadStoredCredentialsAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Remove security key", body);
+            var instance = await ModalDialogService.ShowAsync("Remove security key", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadStoredCredentialsAsync();
+            }
         }
 
         private async Task EditSecurityKeyAsync(string id)
@@ -123,11 +131,16 @@ namespace HES.Web.Pages.Profile
             {
                 builder.OpenComponent(0, typeof(EditSecurityKey));
                 builder.AddAttribute(1, nameof(EditSecurityKey.SecurityKeyId), id);
-                builder.AddAttribute(2, "Refresh", EventCallback.Factory.Create(this, LoadStoredCredentialsAsync));
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Change security key name", body);
+            var instance = await ModalDialogService.ShowAsync("Change security key name", body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadStoredCredentialsAsync();
+            }
         }
 
         #endregion
@@ -144,11 +157,16 @@ namespace HES.Web.Pages.Profile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EnableAuthenticator));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, GetTwoFactorInfoAsync));
                 builder.CloseComponent();
             };
+                   
+            var instance = await ModalDialogService.ShowAsync("Enable Authenticator", body, ModalDialogSize.Large);
+            var result = await instance.Result;
 
-            await ModalDialogService.ShowAsync("Enable Authenticator", body, ModalDialogSize.Large);
+            if (result.Succeeded)
+            {
+                await GetTwoFactorInfoAsync();
+            }
         }
 
         private async Task ResetAuthenticatorAsync()
@@ -156,11 +174,16 @@ namespace HES.Web.Pages.Profile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(ResetAuthenticator));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, GetTwoFactorInfoAsync));
                 builder.CloseComponent();
             };
+     
+            var instance = await ModalDialogService.ShowAsync("Reset Authenticator", body, ModalDialogSize.Large);
+            var result = await instance.Result;
 
-            await ModalDialogService.ShowAsync("Reset Authenticator", body, ModalDialogSize.Large);
+            if (result.Succeeded)
+            {
+                await GetTwoFactorInfoAsync();
+            }
         }
 
         private async Task Disable2FaAsync()
@@ -168,13 +191,18 @@ namespace HES.Web.Pages.Profile
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(Disable2fa));
-                builder.AddAttribute(1, "Refresh", EventCallback.Factory.Create(this, GetTwoFactorInfoAsync));
                 builder.CloseComponent();
             };
-
-            await ModalDialogService.ShowAsync("Disable two-factor authentication (2FA)", body, ModalDialogSize.Large);
-        }  
         
+            var instance = await ModalDialogService.ShowAsync("Disable two-factor authentication (2FA)", body, ModalDialogSize.Large);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await GetTwoFactorInfoAsync();
+            }
+        }
+
         private async Task GenerateRecoveryCodesAsync()
         {
             RenderFragment body = (builder) =>
@@ -183,7 +211,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Generate two-factor authentication (2FA) recovery codes", body, ModalDialogSize.Large);
+            await ModalDialogService.ShowAsync("Generate two-factor authentication (2FA) recovery codes", body, ModalDialogSize.Large);        
         }
 
         private async Task ForgetBrowserAsync()

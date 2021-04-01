@@ -1,6 +1,8 @@
-﻿@if (HardwareVaultTaskList == null)
+﻿@inherits HESModalBase
+
+@if (HardwareVaultTaskList == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
@@ -42,7 +44,7 @@ else
                                     <span class="badge bg-primary">Update</span>
                                     break;
                                 case TaskOperation.Delete:
-                                    <span class="badge bg-warning">Delete</span>
+                                    <span class="badge bg-warning text-dark">Delete</span>
                                     break;
                                 case TaskOperation.Primary:
                                     <span class="badge bg-primary">Primary</span>
@@ -72,6 +74,6 @@ else
         </table>
     </div>
     <div class="text-end mt-3">
-        <button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Close</button>
+        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Close</button>
     </div>
 }

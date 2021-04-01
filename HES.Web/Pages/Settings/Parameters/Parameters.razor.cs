@@ -10,12 +10,9 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.Parameters
 {
-    public partial class Parameters : HESComponentBase, IDisposable
+    public partial class Parameters : HESPageBase, IDisposable
     {
         public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<Parameters> Logger { get; set; }
 
         public LicensingSettings LicensingSettings { get; set; }
@@ -74,11 +71,17 @@ namespace HES.Web.Pages.Settings.Parameters
             {
                 builder.OpenComponent(0, typeof(LicenseSettingsDialog));
                 builder.AddAttribute(1, nameof(LicenseSettingsDialog.LicensingSettings), LicensingSettings);
-                builder.AddAttribute(2, nameof(LicenseSettingsDialog.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("License Settings", body);
+            var instance = await ModalDialogService.ShowAsync("License Settings", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadDataSettingsAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task<string> LoadDomainSettingsAsync()
@@ -93,11 +96,17 @@ namespace HES.Web.Pages.Settings.Parameters
             {
                 builder.OpenComponent(0, typeof(LdapSettingsDialog));
                 builder.AddAttribute(1, nameof(LdapSettingsDialog.Host), DomainHost);
-                builder.AddAttribute(2, nameof(LdapSettingsDialog.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Domain Settings", body);
+            var instance = await ModalDialogService.ShowAsync("Domain Settings", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadDataSettingsAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task OpenDialogDeleteLdapCredentialsAsync()
@@ -105,11 +114,18 @@ namespace HES.Web.Pages.Settings.Parameters
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteLdapCredentials));
-                builder.AddAttribute(1, nameof(DeleteLdapCredentials.ExceptPageId), PageId);
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Delete", body);
+
+            var instance = await ModalDialogService.ShowAsync("Delete", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadDataSettingsAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()

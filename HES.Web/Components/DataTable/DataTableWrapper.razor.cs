@@ -2,7 +2,7 @@
 
 namespace HES.Web.Components
 {
-    public partial class DataTableTableWrapper : HESDomComponentBase
+    public partial class DataTableWrapper : HESDomComponentBase
     {
         [Parameter] public RenderFragment WrapperHeader { get; set; }
         [Parameter] public RenderFragment WrapperBody { get; set; }

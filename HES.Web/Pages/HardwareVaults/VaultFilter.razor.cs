@@ -20,7 +20,7 @@ namespace HES.Web.Pages.HardwareVaults
         public HardwareVaultFilter Filter { get; set; }
         public SelectList VaultStatusList { get; set; }
         public SelectList LicenseStatusList { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button ButtonSpinner { get; set; }
 
         protected override void OnInitialized()
         {

@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.HardwareVaults;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -19,7 +20,7 @@ using System.Transactions;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class CreateEmployee : HESComponentBase
+    public partial class CreateEmployee : HESModalBase
     {
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
@@ -28,10 +29,7 @@ namespace HES.Web.Pages.Employees
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }
         [Inject] public ILogger<CreateEmployee> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IJSRuntime JsRuntime { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public List<HardwareVault> HardwareVaults { get; set; }
         public List<Company> Companies { get; set; }
@@ -81,9 +79,8 @@ namespace HES.Web.Pages.Employees
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -125,8 +122,7 @@ namespace HES.Web.Pages.Employees
                     if (SelectedHardwareVault == null)
                     {
                         await ToastService.ShowToastAsync("Employee created.", ToastType.Success);         
-                        await SynchronizationService.UpdateEmployees(ExceptPageId);
-                        await ModalDialogService.CloseAsync();
+                        await ModalDialogClose();
                         break;
                     }
                     Code = await HardwareVaultService.GetVaultActivationCodeAsync(SelectedHardwareVault.Id);
@@ -135,8 +131,7 @@ namespace HES.Web.Pages.Employees
                     break;
                 case WizardStep.Activation:
                     await ToastService.ShowToastAsync("Employee created.", ToastType.Success);
-                    await SynchronizationService.UpdateEmployees(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                     break;
             }
         }
@@ -260,7 +255,7 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
         }
 

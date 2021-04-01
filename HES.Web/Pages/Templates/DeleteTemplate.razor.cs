@@ -11,14 +11,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class DeleteTemplate : HESComponentBase, IDisposable
+    public partial class DeleteTemplate : HESModalBase, IDisposable
     {
         public ITemplateService TemplateService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteTemplate> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string TemplateId { get; set; }
 
         public Template Template { get; set; }
@@ -45,7 +42,7 @@ namespace HES.Web.Pages.Templates
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -55,14 +52,14 @@ namespace HES.Web.Pages.Templates
             {
                 await TemplateService.DeleteTemplateAsync(Template.Id);
                 await ToastService.ShowToastAsync("Template deleted.", ToastType.Success);
-                await SynchronizationService.UpdateTemplates(ExceptPageId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
+
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 

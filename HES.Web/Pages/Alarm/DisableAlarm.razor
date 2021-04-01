@@ -1,13 +1,13 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
-<div class="alert alert-warning rounded-0" role="alert" style="margin-left:-16px; margin-right:-16px">
+<div class="alert alert-warning" role="alert">
     <b>Are you sure you want to turn off the alarm and unlock all workstations?</b>
 </div>
 <div class="form-group">
     <label class="control-label text-gray">Please enter your password to confirm</label>
     <input type="password" @bind-value="UserConfirmPassword" @bind-value:event="oninput" class="form-control" />
 </div>
-<div class="text-end mt-2">
-    <button type="button" class="btn btn-secondary" @onclick="ModalDialogService.CancelAsync">Cancel</button>
-    <ButtonSpinner Text="Confirm" Class="btn btn-primary" Callback="DisableAlarmAsync" />
+<div class="form-footer">
+    <button type="button" class="btn btn-secondary" @onclick="ModalDialogClose">Cancel</button>
+    <Button Text="Confirm" OnClick="DisableAlarmAsync" class="btn btn-primary" />
 </div>

@@ -14,20 +14,17 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EditEmployee : HESComponentBase, IDisposable
+    public partial class EditEmployee : HESModalBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
         public IOrgStructureService OrgStructureService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<EditEmployee> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public Employee Employee { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button ButtonSpinner { get; set; }
         public List<Company> Companies { get; set; }
         public List<Department> Departments { get; set; }
         public List<Position> Positions { get; set; }
@@ -40,11 +37,9 @@ namespace HES.Web.Pages.Employees
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
 
-                ModalDialogService.OnCancel += ModalDialogService_OnCancel;
-
                 Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);
                 if (Employee == null)
-                    throw new Exception("Employee not found.");
+                    throw new HESException(HESCode.EmployeeNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Employee.Id, out object _);
                 if (!EntityBeingEdited)
@@ -68,9 +63,8 @@ namespace HES.Web.Pages.Employees
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -92,9 +86,8 @@ namespace HES.Web.Pages.Employees
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await EmployeeService.EditEmployeeAsync(Employee);
-                    await ToastService.ShowToastAsync("Employee updated.", ToastType.Success);           
-                    await SynchronizationService.UpdateEmployees(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ToastService.ShowToastAsync("Employee updated.", ToastType.Success);
+                    await ModalDialogClose();
                 });
             }
             catch (AlreadyExistException ex)
@@ -105,19 +98,18 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
 
-        private async Task ModalDialogService_OnCancel()
+        protected override async Task ModalDialogCancel()
         {
             await EmployeeService.UnchangedEmployeeAsync(Employee);
+            await base.ModalDialogCancel();
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= ModalDialogService_OnCancel;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Employee.Id);
         }

@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (Initialized)
 {
@@ -73,7 +73,7 @@
         </div>
     </div>
     <div class="text-center">
-        <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary mt-3">Close</button>
+        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary mt-3">Close</button>
     </div>
 }
 else

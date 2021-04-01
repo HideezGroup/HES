@@ -1,125 +1,122 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESPageBase
 @using HES.Core.Models.Web.Audit
 
 @if (Initialized)
 {
-    <TableAction>
-        <FilterForm>
-            <SummaryFilterComponent FilterChanged="MainTableService.FilterChangedAsync" TabName="@nameof(ByDaysAndEmployeesTab)" />
-        </FilterForm>
-        <ActionButtons>
-            <h2 class="text-navyblue mb-0">Summary</h2>
-        </ActionButtons>
-        <FilterButtons>
-            <TableFilter SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-        </FilterButtons>
-    </TableAction>
-    <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" Loading="MainTableService.Loading">
-        <TableHeader>
-            <MainTableHeader Title="Date"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(SummaryByDayAndEmployee.Date)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Employee"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(SummaryByDayAndEmployee.Employee)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Company"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(SummaryByDayAndEmployee.Company)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Department"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(SummaryByDayAndEmployee.Department)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Workstations Count"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(SummaryByDayAndEmployee.WorkstationsCount)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Avg Sessions Duration"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(SummaryByDayAndEmployee.AvgSessionsDuration)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Sessions Count"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(SummaryByDayAndEmployee.SessionsCount)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Total Sessions Duration"
-                             TitleWidth="12.5"
-                             SortColumn="@nameof(SummaryByDayAndEmployee.TotalSessionsDuration)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-        </TableHeader>
-        <TableRow>
-            <td>
-                @context.Date.ToShortDateString()
-            </td>
-            <td>
-                @context.Employee
-            </td>
-            <td>
-                @context.Company
-            </td>
-            <td>
-                @context.Department
-            </td>
-            <td>
-                @context.WorkstationsCount
-            </td>
-            <td>
-                @if (context.AvgSessionsDuration.Days != 0)
-                    {
-                    @context.AvgSessionsDuration.ToString("%d") <span>day(s)</span> @context.AvgSessionsDuration.ToString("hh\\:mm\\:ss")
-                    }
-                    else
-                    {
-                    @context.AvgSessionsDuration.ToString("hh\\:mm\\:ss")
-                    }
-            </td>
-            <td>
-                @context.SessionsCount
-            </td>
-            <td>
-                @if (context.TotalSessionsDuration.Days != 0)
-                    {
-                    @context.TotalSessionsDuration.ToString("%d") <span>day(s)</span> @context.TotalSessionsDuration.ToString("hh\\:mm\\:ss")
-                    }
-                    else
-                    {
-                    @context.TotalSessionsDuration.ToString("hh\\:mm\\:ss")
-                    }
-            </td>
-        </TableRow>
-    </MainTable>
-    <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                TotalRecords="MainTableService.TotalRecords"
-                CurrentPage="MainTableService.CurrentPage"
-                DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />
+    <DataTableWrapper Loading="DataTableService.Loading">
+        <WrapperHeader>
+            <DataTableActions RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
+                <FilterForm>
+                    <SummaryFilterComponent FilterChanged="DataTableService.FilterChangedAsync" TabName="@nameof(ByDaysAndEmployeesTab)" />
+                </FilterForm>
+                <ActionButtons>
+                    <h2 class="text-navyblue mb-0">Summary</h2>
+                </ActionButtons>
+            </DataTableActions>
+        </WrapperHeader>
+        <WrapperBody>
+            <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
+                <TableHeader>
+                    <DataTableHeaderItem Title="Date"
+                                         SortColumn="@nameof(SummaryByDayAndEmployee.Date)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Employee"
+                                         SortColumn="@nameof(SummaryByDayAndEmployee.Employee)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Company"
+                                         SortColumn="@nameof(SummaryByDayAndEmployee.Company)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Department"
+                                         SortColumn="@nameof(SummaryByDayAndEmployee.Department)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Workstations Count"
+                                         SortColumn="@nameof(SummaryByDayAndEmployee.WorkstationsCount)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Avg Sessions Duration"
+                                         SortColumn="@nameof(SummaryByDayAndEmployee.AvgSessionsDuration)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Sessions Count"
+                                         SortColumn="@nameof(SummaryByDayAndEmployee.SessionsCount)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Total Sessions Duration"
+                                         SortColumn="@nameof(SummaryByDayAndEmployee.TotalSessionsDuration)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                </TableHeader>
+                <TableRow>
+                    <td>
+                        @context.Date.ToShortDateString()
+                    </td>
+                    <td>
+                        @context.Employee
+                    </td>
+                    <td>
+                        @context.Company
+                    </td>
+                    <td>
+                        @context.Department
+                    </td>
+                    <td>
+                        @context.WorkstationsCount
+                    </td>
+                    <td>
+                        @if (context.AvgSessionsDuration.Days != 0)
+                            {
+                            @context.AvgSessionsDuration.ToString("%d") <span>day(s)</span> @context.AvgSessionsDuration.ToString("hh\\:mm\\:ss")
+                            }
+                            else
+                            {
+                            @context.AvgSessionsDuration.ToString("hh\\:mm\\:ss")
+                            }
+                    </td>
+                    <td>
+                        @context.SessionsCount
+                    </td>
+                    <td>
+                        @if (context.TotalSessionsDuration.Days != 0)
+                            {
+                            @context.TotalSessionsDuration.ToString("%d") <span>day(s)</span> @context.TotalSessionsDuration.ToString("hh\\:mm\\:ss")
+                            }
+                            else
+                            {
+                            @context.TotalSessionsDuration.ToString("hh\\:mm\\:ss")
+                            }
+                    </td>
+                </TableRow>
+            </DataTable>
+        </WrapperBody>
+        <WrapperFooter>
+            <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"
+                                 DisplayRowsChanged="DataTableService.DisplayRowsChangedAsync"
+                                 TotalRecords="DataTableService.TotalRecords"
+                                 CurrentPage="DataTableService.CurrentPage"
+                                 DisplayRows="DataTableService.DataLoadingOptions.Take"
+                                 DisplayRecords="DataTableService.Entities.Count" />
+        </WrapperFooter>
+    </DataTableWrapper>
 }
 else if (LoadFailed)
 {

@@ -1,4 +1,4 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (Initialized)
 {
@@ -12,9 +12,9 @@
             used in an authenticator app you should reset your authenticator keys.
         </p>
     </div>
-    <div class="text-end">
-        <button type="button" @onclick="@(async () => await ModalDialogService.CancelAsync())" class="btn btn-secondary">Cancel</button>
-        <button class="btn btn-danger" type="button" @onclick="DisableTwoFactorAsync">Disable</button>
+    <div class="form-footer">
+        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
+        <Button class="btn btn-danger" type="button" Text="Disable" OnClick="DisableTwoFactorAsync" />
     </div>
 }
 else

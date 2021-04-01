@@ -5,6 +5,7 @@ using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.SharedAccounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

@@ -5,6 +5,7 @@ using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API.HardwareVault;
 using HES.Core.Models.Web;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.HardwareVaults;
 using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Device;

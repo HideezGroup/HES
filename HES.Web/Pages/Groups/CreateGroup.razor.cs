@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Groups
 {
-    public partial class CreateGroup : HESComponentBase
+    public partial class CreateGroup : HESModalBase
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<CreateGroup> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
+        //[Inject] IToastService ToastService { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
         public Group Group = new Group();
@@ -36,8 +36,8 @@ namespace HES.Web.Pages.Groups
                 {
                     await GroupService.CreateGroupAsync(Group);
                     await ToastService.ShowToastAsync("Group created.", ToastType.Success);               
-                    await SynchronizationService.UpdateGroups(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    //await SynchronizationService.UpdateGroups(ExceptPageId);
+                    //await ModalDialogService.CloseAsync();
                 });
             }
             catch (AlreadyExistException ex)
@@ -48,7 +48,7 @@ namespace HES.Web.Pages.Groups
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                //await ModalDialogService.CancelAsync();
             }
         }
     }

@@ -1,184 +1,179 @@
 ﻿@page "/Workstations"
 @page "/Workstations/{DashboardFilter}"
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
-@inherits HESComponentBase
+@inherits HESPageBase
 
 @if (Initialized)
 {
-    <TableAction>
-        <FilterForm>
-            <WorkstationFilterComponent FilterChanged="MainTableService.FilterChangedAsync" />
-        </FilterForm>
-        <ActionButtons>
-            @if (MainTableService.SelectedEntity != null)
-            {
-                @if (!MainTableService.SelectedEntity.Approved)
-                {
-                    <button type="button" @onclick="ApproveWorkstationAsync" class="btn btn-light border mx-1" title="Approve workstation">
-                        <img class="icon-btn" src="/svg/icon-done.svg" />
-                        Approve
-                    </button>
-                }
-                else
-                {
-                    <button type="button" @onclick="UnapproveWorkstationAsync" class="btn btn-light border mx-1" title="Unapprove workstation">
-                        <img class="icon-btn" src="/svg/icon-unapprove.svg" />
-                        Unapprove
-                    </button>
-                }
-                <button type="button" @onclick="WorkstationDetailsAsync" class="btn btn-light border mx-1" title="Workstation details">
-                    <img class="icon-btn" src="/svg/icon-details.svg" />
-                    Details
-                </button>
-                <button type="button" @onclick="EditWorkstationAsync" class="btn btn-light border mx-1" title="Edit workstation">
-                    <img class="icon-btn" src="/svg/icon-edit.svg" />
-                    Edit
-                </button>
-                <button type="button" @onclick="DeleteWorkstationAsync" class="btn btn-light border mx-1" title="Delete workstation">
-                    <img class="icon-btn" src="/svg/icon-delete.svg" />
-                    Delete
-                </button>
-            }
-        </ActionButtons>
-        <FilterButtons>
-            <TableFilter SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-        </FilterButtons>
-    </TableAction>
-    <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" SelecedItemDblClick="WorkstationDetailsAsync" Loading="MainTableService.Loading">
-        <TableHeader>
-            <MainTableHeader Title="Name"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.Name)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Domain"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.Domain)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Client Version"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.ClientVersion)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Company"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.Department.Company)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Department"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.Department)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="OS"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.OS)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="IP"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.IP)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Last Seen"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.LastSeen)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="RFID"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.RFID)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Approved"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Workstation.Approved)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-        </TableHeader>
-        <TableRow>
-            <td>
-                @context.Name
-            </td>
-            <td>
-                @context.Domain
-            </td>
-            <td>
-                @context.ClientVersion
-            </td>
-            <td>
-                @context.Department?.Company?.Name
-            </td>
-            <td>
-                @context.Department?.Name
-            </td>
-            <td>
-                @context.OS
-            </td>
-            <td>
-                @context.IP
-            </td>
-            <td>
-                @if (context.IsOnline)
+    <DataTableWrapper Loading="DataTableService.Loading">
+        <WrapperHeader>
+            <DataTableActions RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
+                <FilterForm>
+                    <WorkstationFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
+                </FilterForm>
+                <ActionButtons>
+                    @if (DataTableService.SelectedEntity != null)
                     {
-                    <span class="badge bg-success" title="Workstation is online">
-                        Online
-                    </span>
+                        @if (!DataTableService.SelectedEntity.Approved)
+                        {
+                            <button type="button" @onclick="ApproveWorkstationAsync" class="btn btn-light border mx-1" title="Approve workstation">
+                                <img class="icon-btn" src="/svg/icon-done.svg" />
+                                Approve
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" @onclick="UnapproveWorkstationAsync" class="btn btn-light border mx-1" title="Unapprove workstation">
+                                <img class="icon-btn" src="/svg/icon-unapprove.svg" />
+                                Unapprove
+                            </button>
+                        }
+                        <button type="button" @onclick="WorkstationDetailsAsync" class="btn btn-light border mx-1" title="Workstation details">
+                            <img class="icon-btn" src="/svg/icon-details.svg" />
+                            Details
+                        </button>
+                        <button type="button" @onclick="EditWorkstationAsync" class="btn btn-light border mx-1" title="Edit workstation">
+                            <img class="icon-btn" src="/svg/icon-edit.svg" />
+                            Edit
+                        </button>
+                        <button type="button" @onclick="DeleteWorkstationAsync" class="btn btn-light border mx-1" title="Delete workstation">
+                            <img class="icon-btn" src="/svg/icon-delete.svg" />
+                            Delete
+                        </button>
                     }
-                    else
-                    {
-                    @context.LastSeen.ToLocalTime()
-                    }
-            </td>
-            <td>
-                @if (context.RFID)
-                    {
-                    <span class="badge bg-success">Yes</span>
-                    }
-                    else
-                    {
-                    <span class="badge bg-secondary">No</span>
-                    }
-            </td>
-            <td>
-                @if (context.Approved)
-                    {
-                    <span class="badge bg-success">Yes</span>
-                    }
-                    else
-                    {
-                    <span class="badge bg-danger">No</span>
-                    }
-            </td>
-        </TableRow>
-    </MainTable>
-    <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                TotalRecords="MainTableService.TotalRecords"
-                CurrentPage="MainTableService.CurrentPage"
-                DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />
+                </ActionButtons>
+            </DataTableActions>
+        </WrapperHeader>
+        <WrapperBody>
+            <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" SelecedItemDblClick="WorkstationDetailsAsync">
+                <TableHeader>
+                    <DataTableHeaderItem Title="Name"
+                                         SortColumn="@nameof(Workstation.Name)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Domain"
+                                         SortColumn="@nameof(Workstation.Domain)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Client Version"
+                                         SortColumn="@nameof(Workstation.ClientVersion)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Company"
+                                         SortColumn="@nameof(Workstation.Department.Company)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Department"
+                                         SortColumn="@nameof(Workstation.Department)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="OS"
+                                         SortColumn="@nameof(Workstation.OS)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="IP"
+                                         SortColumn="@nameof(Workstation.IP)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Last Seen"
+                                         SortColumn="@nameof(Workstation.LastSeen)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="RFID"
+                                         SortColumn="@nameof(Workstation.RFID)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Approved"
+                                         SortColumn="@nameof(Workstation.Approved)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                </TableHeader>
+                <TableRow>
+                    <td>
+                        @context.Name
+                    </td>
+                    <td>
+                        @context.Domain
+                    </td>
+                    <td>
+                        @context.ClientVersion
+                    </td>
+                    <td>
+                        @context.Department?.Company?.Name
+                    </td>
+                    <td>
+                        @context.Department?.Name
+                    </td>
+                    <td>
+                        @context.OS
+                    </td>
+                    <td>
+                        @context.IP
+                    </td>
+                    <td>
+                        @if (context.IsOnline)
+                            {
+                            <span class="badge bg-success" title="Workstation is online">
+                                Online
+                            </span>
+                            }
+                            else
+                            {
+                            @context.LastSeen.ToLocalTime()
+                            }
+                    </td>
+                    <td>
+                        @if (context.RFID)
+                            {
+                            <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                            <span class="badge bg-secondary">No</span>
+                            }
+                    </td>
+                    <td>
+                        @if (context.Approved)
+                            {
+                            <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                            <span class="badge bg-danger">No</span>
+                            }
+                    </td>
+                </TableRow>
+            </DataTable>
+        </WrapperBody>
+        <WrapperFooter>
+            <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"
+                                 DisplayRowsChanged="DataTableService.DisplayRowsChangedAsync"
+                                 TotalRecords="DataTableService.TotalRecords"
+                                 CurrentPage="DataTableService.CurrentPage"
+                                 DisplayRows="DataTableService.DataLoadingOptions.Take"
+                                 DisplayRecords="DataTableService.Entities.Count" />
+        </WrapperFooter>
+    </DataTableWrapper>
 }
 else if (LoadFailed)
 {

@@ -6,6 +6,7 @@ using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Infrastructure;
+using HES.Web.Components;
 using HES.Web.Extensions;
 using HES.Web.Providers;
 using IdentityServer4;
@@ -93,7 +94,7 @@ namespace HES.Web
         {
             // Add Services
             services.AddScoped(typeof(IAsyncRepository<>), typeof(Repository<>));
-            services.AddScoped(typeof(IMainTableService<,>), typeof(MainTableService<,>));
+            services.AddScoped(typeof(IDataTableService<,>), typeof(DataTableService<,>));
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IHardwareVaultService, HardwareVaultService>();

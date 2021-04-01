@@ -14,25 +14,21 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class CreatePersonalAccount : HESComponentBase
+    public partial class CreatePersonalAccount : HESModalBase
     {
         public IEmployeeService EmployeeService { get; set; }
         public ITemplateService TemplateService { get; set; }
         public ILdapService LdapService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreatePersonalAccount> Logger { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
         [Parameter] public string EmployeeId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public Employee Employee { get; set; }
         public AccountAddModel PersonalAccount { get; set; }
         public List<Template> Templates { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button ButtonSpinner { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -52,9 +48,8 @@ namespace HES.Web.Pages.Employees
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
-                SetLoadFailed(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -66,21 +61,19 @@ namespace HES.Web.Pages.Employees
                 {
                     await EmployeeService.CreatePersonalAccountAsync(PersonalAccount);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(EmployeeId));
-                    await Refresh.InvokeAsync(this);
                     await ToastService.ShowToastAsync("Account created.", ToastType.Success);
-                    await SynchronizationService.UpdateEmployeeDetails(ExceptPageId, EmployeeId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.AccountExist)
             {
                 ValidationErrorMessage.DisplayError(nameof(PersonalAccount.Name), ex.Message);
             }
-            catch (IncorrectUrlException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectUrl)
             {
                 ValidationErrorMessage.DisplayError(nameof(PersonalAccount.Urls), ex.Message);
             }
-            catch (IncorrectOtpException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectOtp)
             {
                 ValidationErrorMessage.DisplayError(nameof(PersonalAccount.OtpSecret), ex.Message);
             }
@@ -88,7 +81,7 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -101,11 +94,6 @@ namespace HES.Web.Pages.Employees
                 PersonalAccount.Urls = template.Urls;
                 PersonalAccount.Apps = template.Apps;
             }
-        }
-
-        private async Task CloseAsync()
-        {
-            await ModalDialogService.CloseAsync();
         }
     }
 }

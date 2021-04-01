@@ -1,12 +1,11 @@
-﻿using HES.Core.Interfaces;
+﻿using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Audit.WorkstationSummaries
 {
-    public partial class WorkstationSummaries : ComponentBase
+    public partial class WorkstationSummaries : HESPageBase
     {
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         public RenderFragment Tab { get; set; }
 
         protected override async Task OnInitializedAsync()

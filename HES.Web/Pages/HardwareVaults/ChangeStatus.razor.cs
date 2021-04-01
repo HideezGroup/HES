@@ -11,17 +11,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.HardwareVaults
 {
-    public partial class ChangeStatus : HESComponentBase, IDisposable
+    public partial class ChangeStatus : HESModalBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<ChangeStatus> Logger { get; set; }
-        [Parameter] public string HardwareVaultId { get; set; }
         [Parameter] public VaultStatus VaultStatus { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
+        [Parameter] public string HardwareVaultId { get; set; }
 
         public HardwareVault HardwareVault { get; set; }
         public string StatusDescription { get; set; }
@@ -49,7 +46,7 @@ namespace HES.Web.Pages.HardwareVaults
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -75,15 +72,14 @@ namespace HES.Web.Pages.HardwareVaults
                         break;
                 }
        
-                await SynchronizationService.UpdateHardwareVaults(ExceptPageId);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultStatus(HardwareVault.Id);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 

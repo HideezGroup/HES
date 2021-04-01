@@ -79,3 +79,13 @@ function getCookie() {
 function setFocus(elementId) {
     document.getElementById(elementId).focus();
 }
+
+function showModalDialog(dialogId) {
+    let modal = new bootstrap.Modal(document.getElementById(dialogId), { backdrop: 'static', keyboard: false });
+    modal.show();
+}
+
+function hideModalDialog(dialogId) {
+    var modal = bootstrap.Modal.getInstance(document.getElementById(dialogId));
+    modal.hide();
+}

@@ -12,19 +12,16 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class EditTemplate : HESComponentBase, IDisposable
+    public partial class EditTemplate : HESModalBase, IDisposable
     {
         public ITemplateService TemplateService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditTemplate> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string TemplateId { get; set; }
 
         public Template Template { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -38,8 +35,6 @@ namespace HES.Web.Pages.Templates
                 if (Template == null)
                     throw new Exception("Template not found.");
 
-                ModalDialogService.OnCancel += OnCancelAsync;
-
                 EntityBeingEdited = MemoryCache.TryGetValue(Template.Id, out object _);
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Template.Id, Template);
@@ -50,20 +45,25 @@ namespace HES.Web.Pages.Templates
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
+        }
+
+        protected override async Task ModalDialogCancel()
+        {
+            await TemplateService.UnchangedTemplateAsync(Template);
+            await base.ModalDialogCancel();
         }
 
         private async Task EditTemplateAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await TemplateService.EditTemplateAsync(Template);
                     await ToastService.ShowToastAsync("Template updated.", ToastType.Success);
-                    await SynchronizationService.UpdateTemplates(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (AlreadyExistException ex)
@@ -78,19 +78,12 @@ namespace HES.Web.Pages.Templates
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
-        }
-
-        private async Task OnCancelAsync()
-        {
-            await TemplateService.UnchangedTemplateAsync(Template);
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= OnCancelAsync;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Template.Id);
         }

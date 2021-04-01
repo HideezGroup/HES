@@ -6,6 +6,7 @@ using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.Identity;
 using HES.Core.Models.Web.Users;
 using Microsoft.AspNetCore.Identity;
@@ -113,7 +114,7 @@ namespace HES.Core.Services
             var userExist = await _userManager.FindByEmailAsync(email);
 
             if (userExist != null)
-                throw new AlreadyExistException($"User {email} already exists");
+                throw new HESException(HESCode.EmailAlreadyTaken);
 
             var user = new ApplicationUser { UserName = email, Email = email };
             var password = Guid.NewGuid().ToString();

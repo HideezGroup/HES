@@ -3,6 +3,7 @@ using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
 using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;

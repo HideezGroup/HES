@@ -1,21 +1,21 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (!Initialized)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="account" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="account" CloseAction="ModalDialogCancel" />
     }
     else
     {
         <h5 class="text-gray mb-4 ">Set this account as a primary account?</h5>
-        <div class="text-end">
-            <button type="button" class="btn btn-secondary me-1" @onclick="CloseAsync">Cancel</button>
-            <ButtonSpinner Text="Set" Class="btn btn-primary btn-min-w" Callback="SetAsWorkstationAccountAsync" />
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary me-1" @onclick="ModalDialogCancel">Cancel</button>
+            <Button Text="Set" type="submit" class="btn btn-primary btn-min-w" OnClick="SetAsWorkstationAccountAsync" />
         </div>
     }
 }

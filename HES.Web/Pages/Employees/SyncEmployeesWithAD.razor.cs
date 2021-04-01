@@ -10,14 +10,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class SyncEmployeesWithAD : HESComponentBase
+    public partial class SyncEmployeesWithAD : HESModalBase
     {
         public ILdapService LdapService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<SyncEmployeesWithAD> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public LdapSettings LdapSettings { get; set; }
         public bool CredentialsNotSet { get; set; }
@@ -41,7 +38,7 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -50,16 +47,15 @@ namespace HES.Web.Pages.Employees
             try
             {
                 await LdapService.SyncUsersAsync(LdapSettings);
-                await LdapService.ChangePasswordWhenExpiredAsync(LdapSettings);          
-                await SynchronizationService.UpdateEmployees(ExceptPageId);
+                await LdapService.ChangePasswordWhenExpiredAsync(LdapSettings);
                 await ToastService.ShowToastAsync("Users synced.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
     }

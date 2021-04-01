@@ -11,15 +11,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 {
-    public partial class DeleteProfile : HESComponentBase, IDisposable
+    public partial class DeleteProfile : HESModalBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteProfile> Logger { get; set; }
         [Parameter] public string HardwareVaultProfileId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public HardwareVaultProfile AccessProfile { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -42,7 +39,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -52,14 +49,13 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             {
                 await HardwareVaultService.DeleteProfileAsync(AccessProfile.Id);
                 await ToastService.ShowToastAsync("Hardware vault profile deleted.", ToastType.Success);
-                await SynchronizationService.UpdateHardwareVaultProfiles(ExceptPageId);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 

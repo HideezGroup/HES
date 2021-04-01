@@ -11,19 +11,16 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.HardwareVaults
 {
-    public partial class EditRfid : HESComponentBase, IDisposable
+    public partial class EditRfid : HESModalBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<EditRfid> Logger { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        public HardwareVault HardwareVault { get; set; }
 
+        public HardwareVault HardwareVault { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button ButtonSpinner { get; set; }
         public bool EntityBeingEdited { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -31,8 +28,6 @@ namespace HES.Web.Pages.HardwareVaults
             try
             {
                 HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-
-                ModalDialogService.OnCancel += ModalDialogService_OnCancel;
 
                 HardwareVault = await HardwareVaultService.GetVaultByIdAsync(HardwareVaultId);
                 if (HardwareVault == null)
@@ -46,7 +41,7 @@ namespace HES.Web.Pages.HardwareVaults
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -58,27 +53,25 @@ namespace HES.Web.Pages.HardwareVaults
                 {
                     await HardwareVaultService.UpdateRfidAsync(HardwareVault);
                     await ToastService.ShowToastAsync("RFID updated.", ToastType.Success);
-                    await SynchronizationService.UpdateHardwareVaults(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
-        private async Task ModalDialogService_OnCancel()
+        protected override async Task ModalDialogCancel()
         {
             await HardwareVaultService.UnchangedVaultAsync(HardwareVault);
+            await base.ModalDialogCancel();
         }
 
         public void Dispose()
         {
-            ModalDialogService.OnCancel -= ModalDialogService_OnCancel;
-
             if (!EntityBeingEdited)
                 MemoryCache.Remove(HardwareVault.Id);
         }

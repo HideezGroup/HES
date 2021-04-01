@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -11,17 +12,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class DeleteEmployee : HESComponentBase, IDisposable
+    public partial class DeleteEmployee : HESModalBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteEmployee> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        public Employee Employee { get; set; }
 
+        public Employee Employee { get; set; }
         public bool EmployeeHasVault { get; set; }
         public bool EntityBeingEdited { get; set; }
 
@@ -33,7 +31,7 @@ namespace HES.Web.Pages.Employees
 
                 Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);
                 if (Employee == null)
-                    throw new Exception("Employee not found.");
+                    throw new HESException(HESCode.EmployeeNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Employee.Id, out object _);
                 if (!EntityBeingEdited)
@@ -43,7 +41,7 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -57,15 +55,14 @@ namespace HES.Web.Pages.Employees
             try
             {
                 await EmployeeService.DeleteEmployeeAsync(Employee.Id);
-                await SynchronizationService.UpdateEmployees(ExceptPageId);
                 await ToastService.ShowToastAsync("Employee removed.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 

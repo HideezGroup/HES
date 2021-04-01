@@ -11,7 +11,7 @@ namespace HES.Web.Pages.SoftwareVaults
     public partial class SoftwareVaultsPage : ComponentBase
     {
         [Inject] public ILogger<SoftwareVaultsPage> Logger { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        //[Inject] public IModalDialogService ModalDialogService { get; set; }
         [Inject] IJSRuntime JSRuntime { get; set; }
 
         public RenderFragment TabBody { get; set; }

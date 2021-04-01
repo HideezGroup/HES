@@ -14,19 +14,16 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.SharedAccounts
 {
-    public partial class CreateSharedAccount : HESComponentBase
+    public partial class CreateSharedAccount : HESModalBase
     {
         public ISharedAccountService SharedAccountService { get; set; }
         public ITemplateService TemplateService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<CreateSharedAccount> Logger { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
 
         public SharedAccountAddModel SharedAccount { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
         public List<Template> Templates { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -44,7 +41,7 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -52,12 +49,11 @@ namespace HES.Web.Pages.SharedAccounts
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await SharedAccountService.CreateSharedAccountAsync(SharedAccount);
                     await ToastService.ShowToastAsync("Account created.", ToastType.Success);
-                    await SynchronizationService.UpdateSharedAccounts(ExceptPageId);
-                    await ModalDialogService.CloseAsync();
+                    await ModalDialogClose();
                 });
             }
             catch (AlreadyExistException ex)
@@ -76,7 +72,7 @@ namespace HES.Web.Pages.SharedAccounts
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogCancel();
             }
         }
 

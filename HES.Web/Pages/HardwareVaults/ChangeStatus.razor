@@ -1,30 +1,30 @@
-﻿@inherits HESComponentBase
+﻿@inherits HESModalBase
 
 @if (HardwareVault == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogService.CancelAsync" />
+        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogCancel" />
     }
     else
     {
         @switch (VaultStatus)
         {
             case VaultStatus.Active:
-                <div class="alert alert-success rounded-0" role="alert" style="margin-left:-16px; margin-right:-16px">
+                <div class="alert alert-success rounded-0" role="alert">
                     Are you sure you want to activate the vault <b>@HardwareVault.Id</b>?
                 </div>
                 <div class="d-flex justify-content-end mt-3">
-                    <button class="btn btn-secondary me-2" @onclick="ModalDialogService.CancelAsync">Cancel</button>
+                    <button class="btn btn-secondary me-2" @onclick="ModalDialogCancel">Cancel</button>
                     <ButtonSpinner Text="Activate" Class="btn btn-primary btn-min-w" Callback="ChangeStatusAsync" />
                 </div>
                 break;
             case VaultStatus.Suspended:
-                <div class="alert alert-warning rounded-0" style="margin-left:-16px; margin-right:-16px" role="alert">
+                <div class="alert alert-warning rounded-0" role="alert">
                     Are you sure you want to suspend the vault <b>@HardwareVault.Id</b>?
                 </div>
                 <div class="form-group">
@@ -32,12 +32,12 @@ else
                     <textarea @bind="StatusDescription" class="form-control" rows="2" />
                 </div>
                 <div class="d-flex justify-content-end mt-3">
-                    <button class="btn btn-secondary me-2" @onclick="ModalDialogService.CancelAsync">Cancel</button>
+                    <button class="btn btn-secondary me-2" @onclick="ModalDialogCancel">Cancel</button>
                     <ButtonSpinner Text="Suspend" Class="btn btn-primary btn-min-w" Callback="ChangeStatusAsync" />
                 </div>
                 break;
             case VaultStatus.Compromised:
-                <div class="alert alert-warning rounded-0" role="alert" style="margin-left:-16px; margin-right:-16px">
+                <div class="alert alert-warning rounded-0" role="alert">
                     Are you sure you want to set compromised vault <b>@HardwareVault.Id</b>?
                 </div>
                 <div class="form-group">
@@ -55,9 +55,9 @@ else
                     <label class="control-label text-gray">Please type <b>@HardwareVault.Id</b> to confirm.</label>
                     <input type="text" @bind-value="CompromisedConfirmText" @bind-value:event="oninput" @onkeyup="@CompromisedConfirm" class="form-control" />
                 </div>
-                <div class="text-end mt-4">
-                    <button class="btn btn-secondary me-2" @onclick="ModalDialogService.CancelAsync">Cancel</button>
-                    <ButtonSpinner Text="Compromised" Class="btn btn-danger btn-min-w" Callback="ChangeStatusAsync" Disabled="CompromisedIsDisabled" />
+                <div class="form-footer">
+                    <button class="btn btn-secondary me-2" @onclick="ModalDialogCancel">Cancel</button>
+                    <Button Text="Compromised" class="btn btn-danger btn-min-w" OnClick="ChangeStatusAsync" IsDisabled="CompromisedIsDisabled" />
                 </div>
                 break;
         }

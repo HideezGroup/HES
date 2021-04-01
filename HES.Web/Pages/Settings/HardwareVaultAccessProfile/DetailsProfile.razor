@@ -1,4 +1,6 @@
-﻿@if (AccessProfile == null)
+﻿@inherits HESModalBase
+
+@if (AccessProfile == null)
 {
     <LoadingText />
 }
@@ -148,7 +150,7 @@ else
             </li>
         </ul>
     </div>
-    <div class="text-end">
-        <button type="button" class="btn btn-secondary" @onclick="async () => await ModalDialogService.CancelAsync()">Close</button>
+    <div class="form-footer">
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Close</button>
     </div>
 }

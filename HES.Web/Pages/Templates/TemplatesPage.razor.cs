@@ -12,13 +12,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Templates
 {
-    public partial class TemplatesPage : HESComponentBase, IDisposable
+    public partial class TemplatesPage : HESPageBase, IDisposable
     {
         public ITemplateService TemplateService { get; set; }
-        public IMainTableService<Template, TemplateFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        public IDataTableService<Template, TemplateFilter> DataTableService { get; set; }
         [Inject] public ILogger<TemplatesPage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -26,12 +23,12 @@ namespace HES.Web.Pages.Templates
             try
             {
                 TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<Template, TemplateFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<Template, TemplateFilter>>();
 
                 SynchronizationService.UpdateTemplatesPage += UpdateTemplatesPage;
 
                 await BreadcrumbsService.SetTemplates();
-                await MainTableService.InitializeAsync(TemplateService.GetTemplatesAsync, TemplateService.GetTemplatesCountAsync, ModalDialogService, StateHasChanged, nameof(Template.Name), ListSortDirection.Ascending);
+                await DataTableService.InitializeAsync(TemplateService.GetTemplatesAsync, TemplateService.GetTemplatesCountAsync, StateHasChanged, nameof(Template.Name), ListSortDirection.Ascending);
 
                 SetInitialized();
             }
@@ -50,7 +47,7 @@ namespace HES.Web.Pages.Templates
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -61,12 +58,18 @@ namespace HES.Web.Pages.Templates
         {
             RenderFragment body = (builder) =>
             {
-                builder.OpenComponent(0, typeof(CreateTemplate));
-                builder.AddAttribute(1, nameof(CreateTemplate.ExceptPageId), PageId);
+                builder.OpenComponent(0, typeof(CreateTemplateModal));
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Create Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Create Template", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {              
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task EditTemplateAsync()
@@ -74,12 +77,18 @@ namespace HES.Web.Pages.Templates
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditTemplate));
-                builder.AddAttribute(1, nameof(EditTemplate.TemplateId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(EditTemplate.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(EditTemplate.TemplateId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Edit Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Edit Template", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         private async Task DeleteTemplateAsync()
@@ -87,18 +96,23 @@ namespace HES.Web.Pages.Templates
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteTemplate));
-                builder.AddAttribute(1, nameof(DeleteTemplate.TemplateId), MainTableService.SelectedEntity.Id);
-                builder.AddAttribute(2, nameof(DeleteTemplate.ExceptPageId), PageId);
+                builder.AddAttribute(1, nameof(DeleteTemplate.TemplateId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            await MainTableService.ShowModalAsync("Delete Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync("Delete Template", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await DataTableService.LoadTableDataAsync();
+                await SynchronizationService.UpdateTemplates(PageId);
+            }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateTemplatesPage -= UpdateTemplatesPage;
-            MainTableService.Dispose();
+            SynchronizationService.UpdateTemplatesPage -= UpdateTemplatesPage; 
         }
     }
 }

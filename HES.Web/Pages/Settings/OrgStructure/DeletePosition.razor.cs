@@ -11,16 +11,12 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Settings.OrgStructure
 {
-    public partial class DeletePosition : HESComponentBase, IDisposable
+    public partial class DeletePosition : HESModalBase, IDisposable
     {
         [Inject] public IOrgStructureService OrgStructureService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeletePosition> Logger { get; set; }
         [Parameter] public string PositionId { get; set; }
-        [Parameter] public string ExceptPageId { get; set; }
-        [Parameter] public EventCallback Refresh { get; set; }
 
         public Position Position { get; set; }
         public bool EntityBeingEdited { get; set; }
@@ -43,7 +39,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogService.CancelAsync();
+                await ModalDialogCancel();
             }
         }
 
@@ -52,16 +48,14 @@ namespace HES.Web.Pages.Settings.OrgStructure
             try
             {
                 await OrgStructureService.DeletePositionAsync(Position.Id);
-                await Refresh.InvokeAsync(this); 
-                await SynchronizationService.UpdateOrgSructurePositions(ExceptPageId);
                 await ToastService.ShowToastAsync("Position removed.", ToastType.Success);
-                await ModalDialogService.CloseAsync();
+                await ModalDialogClose();
             }
             catch (Exception ex)
             {
-                await ModalDialogService.CancelAsync();
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogCancel();
             }
         }
 

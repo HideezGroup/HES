@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Components
 {
-    public partial class MainTableHeader : ComponentBase
+    public partial class DataTableHeaderItem : HESDomComponentBase
     {
         [Parameter] public string Title { get; set; }
-        [Parameter] public double TitleWidth { get; set; }
+        [Parameter] public double TitleWidth { get; set; } = 1;
         [Parameter] public string SortColumn { get; set; }
         [Parameter] public string CurrentSortedColumn { get; set; }
         [Parameter] public ListSortDirection CurrentSortDirection { get; set; }
-        [Parameter] public Func<string,Task> SortedColumnChanged { get; set; }
+        [Parameter] public Func<string, Task> SortedColumnChanged { get; set; }
         [Parameter] public Func<ListSortDirection, Task> SortDirectionChanged { get; set; }
 
         private async Task SortTable()

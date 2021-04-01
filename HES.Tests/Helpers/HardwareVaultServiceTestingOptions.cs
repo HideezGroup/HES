@@ -2,6 +2,7 @@
 using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web;
+using HES.Core.Models.Web.DataTableComponent;
 using HES.Core.Models.Web.HardwareVaults;
 using System;
 using System.Collections.Generic;
