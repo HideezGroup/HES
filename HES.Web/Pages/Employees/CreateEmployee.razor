@@ -139,8 +139,8 @@ else
     <div class="wizard-tab @(WizardStep != WizardStep.HardwareVault ? "d-none" : null)">
         <div class="row justify-content-center">
             <div class="col col-sm-6">
-                <Alert Message="@WarningMessage" />
-                <TableFilter EnableFilterButton="false" SearchTextChanged="SearchTextChangedAsync" />
+                <Alert Message="@WarningMessage" />          
+                <SearchBox SearchTextChanged="SearchTextChangedAsync" />
                 <div class="list-group my-3 py-1 overflow-auto" style="max-height: 300px">
                     @foreach (var hardwareVault in HardwareVaults)
                     {

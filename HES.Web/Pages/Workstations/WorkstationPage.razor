@@ -45,78 +45,68 @@
             </DataTableActions>
         </WrapperHeader>
         <WrapperBody>
-            <MainTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" SelecedItemDblClick="WorkstationDetailsAsync" >
+            <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" SelecedItemDblClick="WorkstationDetailsAsync">
                 <TableHeader>
-                    <MainTableHeader Title="Name"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.Name)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Domain"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.Domain)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Client Version"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.ClientVersion)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Company"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.Department.Company)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Department"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.Department)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="OS"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.OS)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="IP"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.IP)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Last Seen"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.LastSeen)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="RFID"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.RFID)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Approved"
-                                     TitleWidth="10"
-                                     SortColumn="@nameof(Workstation.Approved)"
-                                     CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Name"
+                                         SortColumn="@nameof(Workstation.Name)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Domain"
+                                         SortColumn="@nameof(Workstation.Domain)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Client Version"
+                                         SortColumn="@nameof(Workstation.ClientVersion)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Company"
+                                         SortColumn="@nameof(Workstation.Department.Company)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Department"
+                                         SortColumn="@nameof(Workstation.Department)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="OS"
+                                         SortColumn="@nameof(Workstation.OS)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="IP"
+                                         SortColumn="@nameof(Workstation.IP)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Last Seen"
+                                         SortColumn="@nameof(Workstation.LastSeen)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="RFID"
+                                         SortColumn="@nameof(Workstation.RFID)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Approved"
+                                         SortColumn="@nameof(Workstation.Approved)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
                 </TableHeader>
                 <TableRow>
                     <td>
@@ -173,7 +163,7 @@
                             }
                     </td>
                 </TableRow>
-            </MainTable>
+            </DataTable>
         </WrapperBody>
         <WrapperFooter>
             <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"

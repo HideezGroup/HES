@@ -1,0 +1,3 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+<input type="text" @bind-value="SearchText" @bind-value:event="oninput" @onkeyup="@SearchBoxKeyUp" class="form-control input-search-icon" placeholder="Search">

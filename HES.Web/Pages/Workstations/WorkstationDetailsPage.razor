@@ -33,36 +33,32 @@
                     </DataTableActions>
                 </WrapperHeader>
                 <WrapperBody>
-                    <MainTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" Loading="DataTableService.Loading">
+                    <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" Loading="DataTableService.Loading">
                         <TableHeader>
-                            <MainTableHeader Title="Hardware Vault"
-                                             TitleWidth="25"
-                                             SortColumn="@nameof(WorkstationProximityVault.HardwareVault)"
-                                             CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                             CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                             SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                             SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <MainTableHeader Title="Employee"
-                                             TitleWidth="25"
-                                             SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee)"
-                                             CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                             CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                             SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                             SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <MainTableHeader Title="Company"
-                                             TitleWidth="25"
-                                             SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department.Company)"
-                                             CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                             CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                             SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                             SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <MainTableHeader Title="Department"
-                                             TitleWidth="25"
-                                             SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department)"
-                                             CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
-                                             CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
-                                             SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
-                                             SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Hardware Vault"
+                                                 SortColumn="@nameof(WorkstationProximityVault.HardwareVault)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Employee"
+                                                 SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Company"
+                                                 SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department.Company)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Department"
+                                                 SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
                         </TableHeader>
                         <TableRow>
                             <td>
@@ -78,7 +74,7 @@
                                 @context.HardwareVault.Employee?.Department?.Name
                             </td>
                         </TableRow>
-                    </MainTable>
+                    </DataTable>
                 </WrapperBody>
                 <WrapperFooter>
                     <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"

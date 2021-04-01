@@ -6,11 +6,9 @@ using System.Timers;
 
 namespace HES.Web.Components
 {
-    public partial class TableFilter : ComponentBase
+    public partial class SearchBox : HESDomComponentBase
     {
         [Parameter] public Func<string, Task> SearchTextChanged { get; set; }
-        [Parameter] public bool EnableFilterButton { get; set; } = true;
-
         public string SearchText { get; set; }
 
         private Timer _timer;
