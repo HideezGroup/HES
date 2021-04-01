@@ -138,172 +138,165 @@
             </div>
         </section>
     }
-    @if (MainTableService.Entities.Count > 0)
+    @if (DataTableService.Entities.Count > 0)
     {
         <section>
-            <TableAction>
-                <ActionButtons>
-                    <h4 class="text-navyblue me-2">Accounts</h4>
-                    @if (MainTableService.SelectedEntity != null)
-                    {
-                        @if (MainTableService.SelectedEntity.Employee.PrimaryAccountId != MainTableService.SelectedEntity.Id)
-                        {
-                            <button type="button" @onclick="OpenDialogSetAsWorkstationAccountAsync" class="btn btn-light border" title="Set as primary account">
-                                <img class="icon-btn" src="/svg/icon-star.svg" />
-                                Set as primary
-                            </button>
-                        }
-                        @if (MainTableService.SelectedEntity.AccountType == AccountType.Personal)
-                        {
-                            <button type="button" @onclick="OpenDialogEditPersonalAccountAsync" class="btn btn-light border mx-2" title="Edit personal account">
-                                <img class="icon-btn" src="/svg/icon-edit.svg" />
-                                Edit
-                            </button>
-                            <button type="button" @onclick="OpenDialogEditPersonalAccountPasswordAsync" class="btn btn-light border mx-2" title="Edit personal account password">
-                                <img class="icon-btn" src="/svg/icon-password.svg" />
-                                Edit password
-                            </button>
-                            <button type="button" @onclick="OpenDialogEditPersonalAccountOtpAsync" class="btn btn-light border mx-2" title="Edit personal account OTP">
-                                <img class="icon-btn" src="/svg/icon-otp.svg" />
-                                Edit OTP
-                            </button>
-                            @if (Employee.ActiveDirectoryGuid != null && MainTableService.SelectedEntity.Login.Split(@"\")[0].Contains(LdapHost ?? string.Empty, StringComparison.OrdinalIgnoreCase))
+            <DataTableWrapper Loading="DataTableService.Loading">
+                <WrapperHeader>
+                    <DataTableActions ShowFilterButton="false" RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
+                        <ActionButtons>
+                            <h4 class="text-navyblue me-2">Accounts</h4>
+                            @if (DataTableService.SelectedEntity != null)
                             {
-                                <button type="button" @onclick="OpenDialogGenerateAdPasswordAsync" class="btn btn-light border mx-2" title="Generate Active Directory Password">
-                                    <img class="icon-btn" src="/svg/icon_random.svg" />
-                                    Generate Password
+                                @if (DataTableService.SelectedEntity.Employee.PrimaryAccountId != DataTableService.SelectedEntity.Id)
+                                {
+                                    <button type="button" @onclick="OpenDialogSetAsWorkstationAccountAsync" class="btn btn-light border" title="Set as primary account">
+                                        <img class="icon-btn" src="/svg/icon-star.svg" />
+                                        Set as primary
+                                    </button>
+                                }
+                                @if (DataTableService.SelectedEntity.AccountType == AccountType.Personal)
+                                {
+                                    <button type="button" @onclick="OpenDialogEditPersonalAccountAsync" class="btn btn-light border mx-2" title="Edit personal account">
+                                        <img class="icon-btn" src="/svg/icon-edit.svg" />
+                                        Edit
+                                    </button>
+                                    <button type="button" @onclick="OpenDialogEditPersonalAccountPasswordAsync" class="btn btn-light border mx-2" title="Edit personal account password">
+                                        <img class="icon-btn" src="/svg/icon-password.svg" />
+                                        Edit password
+                                    </button>
+                                    <button type="button" @onclick="OpenDialogEditPersonalAccountOtpAsync" class="btn btn-light border mx-2" title="Edit personal account OTP">
+                                        <img class="icon-btn" src="/svg/icon-otp.svg" />
+                                        Edit OTP
+                                    </button>
+                                    @if (Employee.ActiveDirectoryGuid != null && DataTableService.SelectedEntity.Login.Split(@"\")[0].Contains(LdapHost ?? string.Empty, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <button type="button" @onclick="OpenDialogGenerateAdPasswordAsync" class="btn btn-light border mx-2" title="Generate Active Directory Password">
+                                            <img class="icon-btn" src="/svg/icon_random.svg" />
+                                            Generate Password
+                                        </button>
+                                    }
+                                }
+                                <button type="button" @onclick="OpenDialogDeleteAccountAsync" class="btn btn-light border mx-2" title="Delete account">
+                                    <img class="icon-btn" src="/svg/icon-delete.svg" />
+                                    Delete
                                 </button>
                             }
-                        }
-                        <button type="button" @onclick="OpenDialogDeleteAccountAsync" class="btn btn-light border mx-2" title="Delete account">
-                            <img class="icon-btn" src="/svg/icon-delete.svg" />
-                            Delete
-                        </button>
-                    }
-                </ActionButtons>
-                <FilterButtons>
-                    <TableFilter EnableFilterButton="false" SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-                </FilterButtons>
-            </TableAction>
-            <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" Loading="MainTableService.Loading">
-                <TableHeader>
-                    <MainTableHeader Title="Name"
-                                     TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.Name)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="URLs"
-                                     TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.Urls)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Apps"
-                                     TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.Apps)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Login"
-                                     TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.Login)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Type"
-                                     TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.AccountType)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Created"
-                                     TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.CreatedAt)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Updated"
-                                     TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.UpdatedAt)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Password Updated"
-                                     TitleWidth="7.1"
-                                     SortColumn="@nameof(Account.PasswordUpdatedAt)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="OTP Updated"
-                                     TitleWidth="7.1"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                </TableHeader>
-                <TableRow>
-                    <td style="vertical-align:middle">
-                        @if (context.Employee.PrimaryAccountId == context.Id)
-                                {
-                            <span class="badge @(MainTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-success") custom-badge" title="Primary account">
-                                @context.Name
-                            </span>
-                                }
-                                else
-                                {
-                            @context.Name
-                                }
-                    </td>
-                    <td>
-                        @context.Urls
-                    </td>
-                    <td>
-                        @context.Apps
-                    </td>
-                    <td>
-                        @context.Login
-                    </td>
-                    <td>
-                        @context.AccountType
-                    </td>
-                    <td>
-                        @if (context.CreatedAt != null)
-                                {
-                            @context.CreatedAt.ToLocalTime()
-                                }
-                    </td>
-                    <td>
-                        @if (context.UpdatedAt != null)
-                                {
-                            @context.UpdatedAt.Value.ToLocalTime()
-                                }
-                    </td>
-                    <td>
-                        @((DateTime.UtcNow.Date - context.PasswordUpdatedAt.Date).TotalDays) @((DateTime.UtcNow.Date - context.PasswordUpdatedAt.Date).TotalDays == 1 ? " day" : " days" )
-                    </td>
-                    <td>
-                        @if (context.OtpUpdatedAt != null)
-                                {
-                            @((DateTime.UtcNow.Date - context.OtpUpdatedAt.Value.Date).TotalDays) @((DateTime.UtcNow.Date - context.OtpUpdatedAt.Value.Date).TotalDays == 1 ? " day" : " days" )
-                                }
-                    </td>
-                </TableRow>
-            </MainTable>
-            <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                        DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                        TotalRecords="MainTableService.TotalRecords"
-                        CurrentPage="MainTableService.CurrentPage"
-                        DisplayRows="MainTableService.DataLoadingOptions.Take"
-                        DisplayRecords="MainTableService.Entities.Count" />
+                        </ActionButtons>
+                    </DataTableActions>
+                </WrapperHeader>
+                <WrapperBody>
+                    <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
+                        <TableHeader>
+                            <DataTableHeaderItem Title="Name"
+                                                 SortColumn="@nameof(Account.Name)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="URLs"
+                                                 SortColumn="@nameof(Account.Urls)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Apps"
+                                                 SortColumn="@nameof(Account.Apps)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Login"
+                                                 SortColumn="@nameof(Account.Login)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Type"
+                                                 SortColumn="@nameof(Account.AccountType)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Created"
+                                                 SortColumn="@nameof(Account.CreatedAt)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Updated"
+                                                 SortColumn="@nameof(Account.UpdatedAt)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="Password Updated"
+                                                 SortColumn="@nameof(Account.PasswordUpdatedAt)"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <DataTableHeaderItem Title="OTP Updated"
+                                                 CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                                 CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                                 SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                                 SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                        </TableHeader>
+                        <TableRow>
+                            <td style="vertical-align:middle">
+                                @if (context.Employee.PrimaryAccountId == context.Id)
+                                        {
+                                    <span class="badge @(DataTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-success") custom-badge" title="Primary account">
+                                        @context.Name
+                                    </span>
+                                        }
+                                        else
+                                        {
+                                    @context.Name
+                                        }
+                            </td>
+                            <td>
+                                @context.Urls
+                            </td>
+                            <td>
+                                @context.Apps
+                            </td>
+                            <td>
+                                @context.Login
+                            </td>
+                            <td>
+                                @context.AccountType
+                            </td>
+                            <td>
+                                @context.CreatedAt.ToLocalTime()
+                            </td>
+                            <td>
+                                @if (context.UpdatedAt != null)
+                                        {
+                                    @context.UpdatedAt.Value.ToLocalTime()
+                                        }
+                            </td>
+                            <td>
+                                @((DateTime.UtcNow.Date - context.PasswordUpdatedAt.Date).TotalDays) @((DateTime.UtcNow.Date - context.PasswordUpdatedAt.Date).TotalDays == 1 ? " day" : " days" )
+                            </td>
+                            <td>
+                                @if (context.OtpUpdatedAt != null)
+                                        {
+                                    @((DateTime.UtcNow.Date - context.OtpUpdatedAt.Value.Date).TotalDays) @((DateTime.UtcNow.Date - context.OtpUpdatedAt.Value.Date).TotalDays == 1 ? " day" : " days" )
+                                        }
+                            </td>
+                        </TableRow>
+                    </DataTable>
+                </WrapperBody>
+                <WrapperFooter>
+                    <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"
+                                         DisplayRowsChanged="DataTableService.DisplayRowsChangedAsync"
+                                         TotalRecords="DataTableService.TotalRecords"
+                                         CurrentPage="DataTableService.CurrentPage"
+                                         DisplayRows="DataTableService.DataLoadingOptions.Take"
+                                         DisplayRecords="DataTableService.Entities.Count" />
+                </WrapperFooter>
+            </DataTableWrapper>
         </section>
     }
 }

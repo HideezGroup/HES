@@ -14,8 +14,7 @@ namespace HES.Web.Pages.HardwareVaults
     public partial class HardwareVaultsPage : HESPageBase, IDisposable
     {
         public IHardwareVaultService HardwareVaultService { get; set; }
-        public IMainTableService<HardwareVault, HardwareVaultFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; } // todo remove
+        public IDataTableService<HardwareVault, HardwareVaultFilter> DataTableService { get; set; }
         [Inject] public ILogger<HardwareVaultsPage> Logger { get; set; }
         [Parameter] public string DashboardFilter { get; set; }
 
@@ -24,7 +23,7 @@ namespace HES.Web.Pages.HardwareVaults
             try
             {
                 HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<HardwareVault, HardwareVaultFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<HardwareVault, HardwareVaultFilter>>();
 
                 SynchronizationService.UpdateHardwareVaultsPage += UpdateHardwareVaultsPage;
                 SynchronizationService.UpdateHardwareVaultState += UpdateHardwareVaultState;
@@ -32,27 +31,27 @@ namespace HES.Web.Pages.HardwareVaults
                 switch (DashboardFilter)
                 {
                     case "LowBattery":
-                        MainTableService.DataLoadingOptions.Filter.Battery = "low";
+                        DataTableService.DataLoadingOptions.Filter.Battery = "low";
                         break;
                     case "VaultLocked":
-                        MainTableService.DataLoadingOptions.Filter.Status = VaultStatus.Locked;
+                        DataTableService.DataLoadingOptions.Filter.Status = VaultStatus.Locked;
                         break;
                     case "VaultReady":
-                        MainTableService.DataLoadingOptions.Filter.Status = VaultStatus.Ready;
+                        DataTableService.DataLoadingOptions.Filter.Status = VaultStatus.Ready;
                         break;
                     case "LicenseWarning":
-                        MainTableService.DataLoadingOptions.Filter.LicenseStatus = VaultLicenseStatus.Warning;
+                        DataTableService.DataLoadingOptions.Filter.LicenseStatus = VaultLicenseStatus.Warning;
                         break;
                     case "LicenseCritical":
-                        MainTableService.DataLoadingOptions.Filter.LicenseStatus = VaultLicenseStatus.Critical;
+                        DataTableService.DataLoadingOptions.Filter.LicenseStatus = VaultLicenseStatus.Critical;
                         break;
                     case "LicenseExpired":
-                        MainTableService.DataLoadingOptions.Filter.LicenseStatus = VaultLicenseStatus.Expired;
+                        DataTableService.DataLoadingOptions.Filter.LicenseStatus = VaultLicenseStatus.Expired;
                         break;
                 }
 
                 await BreadcrumbsService.SetHardwareVaults();
-                await MainTableService.InitializeAsync(HardwareVaultService.GetVaultsAsync, HardwareVaultService.GetVaultsCountAsync, ModalDialogService, StateHasChanged, nameof(HardwareVault.Id));
+                await DataTableService.InitializeAsync(HardwareVaultService.GetVaultsAsync, HardwareVaultService.GetVaultsCountAsync, StateHasChanged, nameof(HardwareVault.Id));
 
                 SetInitialized();
             }
@@ -71,7 +70,7 @@ namespace HES.Web.Pages.HardwareVaults
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -81,7 +80,7 @@ namespace HES.Web.Pages.HardwareVaults
         {
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Hardware Vault {hardwareVaultId} state changed.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -92,7 +91,7 @@ namespace HES.Web.Pages.HardwareVaults
             try
             {
                 await HardwareVaultService.ImportVaultsAsync();
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync("Vaults imported.", ToastType.Success);
             }
             catch (Exception ex)
@@ -107,7 +106,7 @@ namespace HES.Web.Pages.HardwareVaults
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditRfid));
-                builder.AddAttribute(1, nameof(EditRfid.HardwareVaultId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(EditRfid.HardwareVaultId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -116,7 +115,7 @@ namespace HES.Web.Pages.HardwareVaults
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateHardwareVaults(PageId);
             }
         }
@@ -126,7 +125,7 @@ namespace HES.Web.Pages.HardwareVaults
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(ChangeStatus));
-                builder.AddAttribute(1, nameof(ChangeStatus.HardwareVaultId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(ChangeStatus.HardwareVaultId), DataTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(ChangeStatus.VaultStatus), VaultStatus.Suspended);
                 builder.CloseComponent();
             };
@@ -136,7 +135,7 @@ namespace HES.Web.Pages.HardwareVaults
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateHardwareVaults(PageId);
             }
         }
@@ -146,7 +145,7 @@ namespace HES.Web.Pages.HardwareVaults
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(ChangeStatus));
-                builder.AddAttribute(1, nameof(ChangeStatus.HardwareVaultId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(ChangeStatus.HardwareVaultId), DataTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(ChangeStatus.VaultStatus), VaultStatus.Active);
                 builder.CloseComponent();
             };
@@ -156,7 +155,7 @@ namespace HES.Web.Pages.HardwareVaults
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateHardwareVaults(PageId);
             }
         }
@@ -166,7 +165,7 @@ namespace HES.Web.Pages.HardwareVaults
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(ChangeStatus));
-                builder.AddAttribute(1, nameof(ChangeStatus.HardwareVaultId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(ChangeStatus.HardwareVaultId), DataTableService.SelectedEntity.Id);
                 builder.AddAttribute(2, nameof(ChangeStatus.VaultStatus), VaultStatus.Compromised);
                 builder.CloseComponent();
             };
@@ -176,7 +175,7 @@ namespace HES.Web.Pages.HardwareVaults
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateHardwareVaults(PageId);
             }
         }
@@ -186,7 +185,7 @@ namespace HES.Web.Pages.HardwareVaults
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(ShowActivationCode));
-                builder.AddAttribute(1, nameof(ShowActivationCode.HardwareVaultId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(ShowActivationCode.HardwareVaultId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -198,7 +197,7 @@ namespace HES.Web.Pages.HardwareVaults
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(ChangeProfile));
-                builder.AddAttribute(1, nameof(ChangeProfile.HardwareVaultId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(ChangeProfile.HardwareVaultId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -207,7 +206,7 @@ namespace HES.Web.Pages.HardwareVaults
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateHardwareVaults(PageId);
             }
         }
@@ -216,7 +215,6 @@ namespace HES.Web.Pages.HardwareVaults
         {
             SynchronizationService.UpdateHardwareVaultsPage -= UpdateHardwareVaultsPage;
             SynchronizationService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
-            MainTableService.Dispose();
         }
     }
 }

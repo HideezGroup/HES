@@ -12,12 +12,10 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Audit.WorkstationSessions
 {
-    public partial class WorkstationSessionsPage : HESComponentBase, IDisposable
+    public partial class WorkstationSessionsPage : HESPageBase, IDisposable
     {
         public IWorkstationAuditService WorkstationAuditService { get; set; }
-        public IMainTableService<WorkstationSession, WorkstationSessionFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
+        public IDataTableService<WorkstationSession, WorkstationSessionFilter> DataTableService { get; set; }
         [Inject] public ILogger<WorkstationSessionsPage> Logger { get; set; }
         [Parameter] public string DashboardFilter { get; set; }
 
@@ -26,23 +24,23 @@ namespace HES.Web.Pages.Audit.WorkstationSessions
             try
             {
                 WorkstationAuditService = ScopedServices.GetRequiredService<IWorkstationAuditService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<WorkstationSession, WorkstationSessionFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<WorkstationSession, WorkstationSessionFilter>>();
 
                 switch (DashboardFilter)
                 {
                     case "NonHideezUnlock":
-                        MainTableService.DataLoadingOptions.Filter.UnlockedBy = Hideez.SDK.Communication.SessionSwitchSubject.NonHideez;
+                        DataTableService.DataLoadingOptions.Filter.UnlockedBy = Hideez.SDK.Communication.SessionSwitchSubject.NonHideez;
                         break;
                     case "LongOpenSession":
-                        MainTableService.DataLoadingOptions.Filter.Query = WorkstationAuditService.SessionQuery().Where(x => x.StartDate <= DateTime.UtcNow.AddHours(-12) && x.EndDate == null);
+                        DataTableService.DataLoadingOptions.Filter.Query = WorkstationAuditService.SessionQuery().Where(x => x.StartDate <= DateTime.UtcNow.AddHours(-12) && x.EndDate == null);
                         break;
                     case "OpenedSessions":
-                        MainTableService.DataLoadingOptions.Filter.Query = WorkstationAuditService.SessionQuery().Where(x => x.EndDate == null);
+                        DataTableService.DataLoadingOptions.Filter.Query = WorkstationAuditService.SessionQuery().Where(x => x.EndDate == null);
                         break;
                 }
 
                 await BreadcrumbsService.SetAuditWorkstationSessions();
-                await MainTableService.InitializeAsync(WorkstationAuditService.GetWorkstationSessionsAsync, WorkstationAuditService.GetWorkstationSessionsCountAsync, ModalDialogService, StateHasChanged, nameof(WorkstationSession.StartDate), ListSortDirection.Descending);
+                await DataTableService.InitializeAsync(WorkstationAuditService.GetWorkstationSessionsAsync, WorkstationAuditService.GetWorkstationSessionsCountAsync, StateHasChanged, nameof(WorkstationSession.StartDate), ListSortDirection.Descending);
 
                 SetInitialized();
             }
@@ -55,7 +53,7 @@ namespace HES.Web.Pages.Audit.WorkstationSessions
 
         public void Dispose()
         {
-            MainTableService.Dispose();
+
         }
     }
 }

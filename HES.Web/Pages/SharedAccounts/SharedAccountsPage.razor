@@ -4,116 +4,115 @@
 
 @if (Initialized)
 {
-    <TableAction>
-        <FilterForm>
-            <SharedAccountFilterComponent FilterChanged="MainTableService.FilterChangedAsync" />
-        </FilterForm>
-        <ActionButtons>
-            <button type="button" @onclick="CreateSharedAccountAsync" class="btn btn-primary me-1" title="Create shared account">
-                Create shared account
-            </button>
-            @if (MainTableService.SelectedEntity != null)
-            {
-                <button type="button" @onclick="EditSharedAccountAsync" class="btn btn-light border mx-1" title="Edit shared account password">
-                    <img class="icon-btn" src="/svg/icon-edit.svg" />
-                    Edit
-                </button>
-                <button type="button" @onclick="EditSharedAccountPasswordAsync" class="btn btn-light border mx-1" title="Edit shared account password">
-                    <img class="icon-btn" src="/svg/icon-password.svg" />
-                    Edit Password
-                </button>
-                <button type="button" @onclick="EditSharedAccountOTPAsync" class="btn btn-light border mx-1" title="Edit shared account OTP">
-                    <img class="icon-btn" src="/svg/icon-otp.svg" />
-                    Edit OTP
-                </button>
-                <button type="button" @onclick="DeleteSharedAccountAsync" class="btn btn-light border mx-1" title="Delete shared account">
-                    <img class="icon-btn" src="/svg/icon-delete.svg" />
-                    Delete
-                </button>
-            }
-        </ActionButtons>
-        <FilterButtons>
-            <TableFilter SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-        </FilterButtons>
-    </TableAction>
-    <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" Loading="MainTableService.Loading">
-        <TableHeader>
-            <MainTableHeader Title="@nameof(SharedAccount.Name)"
-                             TitleWidth="16"
-                             SortColumn="@nameof(SharedAccount.Name)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="@nameof(SharedAccount.Urls)"
-                             TitleWidth="16"
-                             SortColumn="@nameof(SharedAccount.Urls)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="@nameof(SharedAccount.Apps)"
-                             TitleWidth="16"
-                             SortColumn="@nameof(SharedAccount.Apps)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="@nameof(SharedAccount.Login)"
-                             TitleWidth="16"
-                             SortColumn="@nameof(SharedAccount.Login)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Password updated"
-                             TitleWidth="16"
-                             SortColumn="@nameof(SharedAccount.PasswordChangedAt)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="OTP updated"
-                             TitleWidth="16"
-                             SortColumn="@nameof(SharedAccount.OtpSecretChangedAt)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-        </TableHeader>
-        <TableRow>
-            <td>
-                @context.Name
-            </td>
-            <td>
-                @context.Urls
-            </td>
-            <td>
-                @context.Apps
-            </td>
-            <td>
-                @context.Login
-            </td>
-            <td>
-                @if (context.PasswordChangedAt != null)
+    <DataTableWrapper Loading="DataTableService.Loading">
+        <WrapperHeader>
+            <DataTableActions RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
+                <FilterForm>
+                    <SharedAccountFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
+                </FilterForm>
+                <ActionButtons>
+                    <button type="button" @onclick="CreateSharedAccountAsync" class="btn btn-primary me-1" title="Create shared account">
+                        Create shared account
+                    </button>
+                    @if (DataTableService.SelectedEntity != null)
                     {
-                    <span>@context.GetPasswordUpdated.Days day(s)</span>
+                        <button type="button" @onclick="EditSharedAccountAsync" class="btn btn-light border mx-1" title="Edit shared account password">
+                            <img class="icon-btn" src="/svg/icon-edit.svg" />
+                            Edit
+                        </button>
+                        <button type="button" @onclick="EditSharedAccountPasswordAsync" class="btn btn-light border mx-1" title="Edit shared account password">
+                            <img class="icon-btn" src="/svg/icon-password.svg" />
+                            Edit Password
+                        </button>
+                        <button type="button" @onclick="EditSharedAccountOTPAsync" class="btn btn-light border mx-1" title="Edit shared account OTP">
+                            <img class="icon-btn" src="/svg/icon-otp.svg" />
+                            Edit OTP
+                        </button>
+                        <button type="button" @onclick="DeleteSharedAccountAsync" class="btn btn-light border mx-1" title="Delete shared account">
+                            <img class="icon-btn" src="/svg/icon-delete.svg" />
+                            Delete
+                        </button>
                     }
-            </td>
-            <td>
-                @if (context.OtpSecretChangedAt != null)
-                    {
-                    <span>@context.GetOtpUpdated.Days day(s)</span>
-                    }
-            </td>
-        </TableRow>
-    </MainTable>
-    <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                TotalRecords="MainTableService.TotalRecords"
-                CurrentPage="MainTableService.CurrentPage"
-                DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />
+                </ActionButtons>
+            </DataTableActions>
+        </WrapperHeader>
+        <WrapperBody>
+            <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
+                <TableHeader>
+                    <DataTableHeaderItem Title="@nameof(SharedAccount.Name)"
+                                         SortColumn="@nameof(SharedAccount.Name)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="@nameof(SharedAccount.Urls)"
+                                         SortColumn="@nameof(SharedAccount.Urls)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="@nameof(SharedAccount.Apps)"
+                                         SortColumn="@nameof(SharedAccount.Apps)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="@nameof(SharedAccount.Login)"
+                                         SortColumn="@nameof(SharedAccount.Login)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Password updated"
+                                         SortColumn="@nameof(SharedAccount.PasswordChangedAt)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="OTP updated"
+                                         SortColumn="@nameof(SharedAccount.OtpSecretChangedAt)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                </TableHeader>
+                <TableRow>
+                    <td>
+                        @context.Name
+                    </td>
+                    <td>
+                        @context.Urls
+                    </td>
+                    <td>
+                        @context.Apps
+                    </td>
+                    <td>
+                        @context.Login
+                    </td>
+                    <td>
+                        @if (context.PasswordChangedAt != null)
+                            {
+                            <span>@context.GetPasswordUpdated.Days day(s)</span>
+                            }
+                    </td>
+                    <td>
+                        @if (context.OtpSecretChangedAt != null)
+                            {
+                            <span>@context.GetOtpUpdated.Days day(s)</span>
+                            }
+                    </td>
+                </TableRow>
+            </DataTable>
+        </WrapperBody>
+        <WrapperFooter>
+            <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"
+                                 DisplayRowsChanged="DataTableService.DisplayRowsChangedAsync"
+                                 TotalRecords="DataTableService.TotalRecords"
+                                 CurrentPage="DataTableService.CurrentPage"
+                                 DisplayRows="DataTableService.DataLoadingOptions.Take"
+                                 DisplayRecords="DataTableService.Entities.Count" />
+        </WrapperFooter>
+    </DataTableWrapper>
 }
 else if (LoadFailed)
 {

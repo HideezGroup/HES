@@ -9,80 +9,86 @@
             <h1 class="text-navyblue text-break m-0">@Workstation.Name</h1>
         </div>
         <div class="col-auto ps-1">
-            <ButtonSpinner Class="btn btn-primary" Text="Add Hardware Vault" Callback="OpenDialogAddHardwareVaultAsync" />
+            <button class="btn btn-primary" @onclick="OpenDialogAddHardwareVaultAsync">
+                Add Hardware Vault
+            </button>
         </div>
     </div>
     <section>
-        @if (MainTableService.Entities.Count > 0)
+        @if (DataTableService.Entities.Count > 0)
         {
-            <TableAction>
-                <ActionButtons>
-                    <h4 class="text-navyblue me-2">Proximity Vaults</h4>
-                    @if (MainTableService.SelectedEntity != null)
-                    {
-                        <button type="button" @onclick="OpenDialogDeleteHardwareVaultAsync" class="btn btn-light border mx-2" title="Delete hardware vault">
-                            <img class="icon-btn" src="/svg/icon-delete.svg" />
-                            Delete Hardware Vault
-                        </button>
-                    }
-                </ActionButtons>
-                <FilterButtons>
-                    <TableFilter EnableFilterButton="false" SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-                </FilterButtons>
-            </TableAction>
-
-            <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" Loading="MainTableService.Loading">
-                <TableHeader>
-                    <MainTableHeader Title="Hardware Vault"
-                                     TitleWidth="25"
-                                     SortColumn="@nameof(WorkstationProximityVault.HardwareVault)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Employee"
-                                     TitleWidth="25"
-                                     SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Company"
-                                     TitleWidth="25"
-                                     SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department.Company)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                    <MainTableHeader Title="Department"
-                                     TitleWidth="25"
-                                     SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department)"
-                                     CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                                     CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                                     SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                                     SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-                </TableHeader>
-                <TableRow>
-                    <td>
-                        @context.HardwareVaultId
-                    </td>
-                    <td>
-                        @context.HardwareVault.Employee?.FullName
-                    </td>
-                    <td>
-                        @context.HardwareVault.Employee?.Department?.Company?.Name
-                    </td>
-                    <td>
-                        @context.HardwareVault.Employee?.Department?.Name
-                    </td>
-                </TableRow>
-            </MainTable>
-            <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                        DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                        TotalRecords="MainTableService.TotalRecords"
-                        CurrentPage="MainTableService.CurrentPage"
-                        DisplayRows="MainTableService.DataLoadingOptions.Take"
-                        DisplayRecords="MainTableService.Entities.Count" />
+            <DataTableWrapper Loading="DataTableService.Loading">
+                <WrapperHeader>
+                    <DataTableActions ShowFilterButton="false" RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
+                        <ActionButtons>
+                            <h4 class="text-navyblue me-2">Proximity Vaults</h4>
+                            @if (DataTableService.SelectedEntity != null)
+                            {
+                                <button type="button" @onclick="OpenDialogDeleteHardwareVaultAsync" class="btn btn-light border mx-2" title="Delete hardware vault">
+                                    <img class="icon-btn" src="/svg/icon-delete.svg" />
+                                    Delete Hardware Vault
+                                </button>
+                            }
+                        </ActionButtons>
+                    </DataTableActions>
+                </WrapperHeader>
+                <WrapperBody>
+                    <MainTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" Loading="DataTableService.Loading">
+                        <TableHeader>
+                            <MainTableHeader Title="Hardware Vault"
+                                             TitleWidth="25"
+                                             SortColumn="@nameof(WorkstationProximityVault.HardwareVault)"
+                                             CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                             CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                             SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                             SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <MainTableHeader Title="Employee"
+                                             TitleWidth="25"
+                                             SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee)"
+                                             CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                             CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                             SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                             SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <MainTableHeader Title="Company"
+                                             TitleWidth="25"
+                                             SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department.Company)"
+                                             CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                             CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                             SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                             SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                            <MainTableHeader Title="Department"
+                                             TitleWidth="25"
+                                             SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department)"
+                                             CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                             CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                             SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                             SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                        </TableHeader>
+                        <TableRow>
+                            <td>
+                                @context.HardwareVaultId
+                            </td>
+                            <td>
+                                @context.HardwareVault.Employee?.FullName
+                            </td>
+                            <td>
+                                @context.HardwareVault.Employee?.Department?.Company?.Name
+                            </td>
+                            <td>
+                                @context.HardwareVault.Employee?.Department?.Name
+                            </td>
+                        </TableRow>
+                    </MainTable>
+                </WrapperBody>
+                <WrapperFooter>
+                    <DataTablePagination CurrentPageChanged="DataTableService.CurrentPageChangedAsync"
+                                         DisplayRowsChanged="DataTableService.DisplayRowsChangedAsync"
+                                         TotalRecords="DataTableService.TotalRecords"
+                                         CurrentPage="DataTableService.CurrentPage"
+                                         DisplayRows="DataTableService.DataLoadingOptions.Take"
+                                         DisplayRecords="DataTableService.Entities.Count" />
+                </WrapperFooter>
+            </DataTableWrapper>
         }
     </section>
 }

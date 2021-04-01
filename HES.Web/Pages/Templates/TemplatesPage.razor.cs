@@ -15,8 +15,7 @@ namespace HES.Web.Pages.Templates
     public partial class TemplatesPage : HESPageBase, IDisposable
     {
         public ITemplateService TemplateService { get; set; }
-        public IMainTableService<Template, TemplateFilter> MainTableService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; }
+        public IDataTableService<Template, TemplateFilter> DataTableService { get; set; }
         [Inject] public ILogger<TemplatesPage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -24,12 +23,12 @@ namespace HES.Web.Pages.Templates
             try
             {
                 TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<Template, TemplateFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<Template, TemplateFilter>>();
 
                 SynchronizationService.UpdateTemplatesPage += UpdateTemplatesPage;
 
                 await BreadcrumbsService.SetTemplates();
-                await MainTableService.InitializeAsync(TemplateService.GetTemplatesAsync, TemplateService.GetTemplatesCountAsync, ModalDialogService, StateHasChanged, nameof(Template.Name), ListSortDirection.Ascending);
+                await DataTableService.InitializeAsync(TemplateService.GetTemplatesAsync, TemplateService.GetTemplatesCountAsync, StateHasChanged, nameof(Template.Name), ListSortDirection.Ascending);
 
                 SetInitialized();
             }
@@ -48,7 +47,7 @@ namespace HES.Web.Pages.Templates
 
             await InvokeAsync(async () =>
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -68,7 +67,7 @@ namespace HES.Web.Pages.Templates
 
             if (result.Succeeded)
             {              
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -78,7 +77,7 @@ namespace HES.Web.Pages.Templates
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditTemplate));
-                builder.AddAttribute(1, nameof(EditTemplate.TemplateId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(EditTemplate.TemplateId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -87,7 +86,7 @@ namespace HES.Web.Pages.Templates
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
@@ -97,7 +96,7 @@ namespace HES.Web.Pages.Templates
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteTemplate));
-                builder.AddAttribute(1, nameof(DeleteTemplate.TemplateId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(DeleteTemplate.TemplateId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -106,15 +105,14 @@ namespace HES.Web.Pages.Templates
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateTemplates(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateTemplatesPage -= UpdateTemplatesPage;
-            MainTableService.Dispose();
+            SynchronizationService.UpdateTemplatesPage -= UpdateTemplatesPage; 
         }
     }
 }

@@ -19,9 +19,8 @@ namespace HES.Web.Pages.Employees
     {
         public IEmployeeService EmployeeService { get; set; }
         public IAppSettingsService AppSettingsService { get; set; }
-        public IMainTableService<Account, AccountFilter> MainTableService { get; set; }
+        public IDataTableService<Account, AccountFilter> DataTableService { get; set; }
         public ILdapService LdapService { get; set; }
-        [Inject] public IModalDialogService ModalDialogService { get; set; } // TODO remove
         [Inject] public ILogger<EmployeeDetailsPage> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }
 
@@ -36,7 +35,7 @@ namespace HES.Web.Pages.Employees
             {
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
-                MainTableService = ScopedServices.GetRequiredService<IMainTableService<Account, AccountFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<Account, AccountFilter>>();
                 LdapService = ScopedServices.GetRequiredService<ILdapService>();
 
                 SynchronizationService.UpdateEmployeeDetailsPage += UpdateEmployeeDetailsPage;
@@ -45,7 +44,7 @@ namespace HES.Web.Pages.Employees
                 await LoadEmployeeAsync();
                 await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
                 await LoadLdapSettingsAsync();
-                await MainTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, ModalDialogService, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
+                await DataTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
 
                 await LoadEmployeeSsoState();
 
@@ -68,7 +67,7 @@ namespace HES.Web.Pages.Employees
             await InvokeAsync(async () =>
             {
                 await LoadEmployeeAsync();
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
@@ -212,7 +211,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
@@ -234,7 +233,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeAsync();
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
@@ -246,7 +245,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(SetAsWorkstationAccount));
-                builder.AddAttribute(1, nameof(SetAsWorkstationAccount.AccountId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(SetAsWorkstationAccount.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -256,7 +255,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeAsync();
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
@@ -268,7 +267,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccount));
-                builder.AddAttribute(1, nameof(EditPersonalAccount.AccountId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(EditPersonalAccount.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -277,7 +276,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
@@ -289,7 +288,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountPwd));
-                builder.AddAttribute(1, nameof(EditPersonalAccountPwd.AccountId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(EditPersonalAccountPwd.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -298,7 +297,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
@@ -310,7 +309,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountOtp));
-                builder.AddAttribute(1, "AccountId", MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, "AccountId", DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -319,7 +318,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
@@ -331,7 +330,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(GenerateAdPassword));
-                builder.AddAttribute(1, nameof(GenerateAdPassword.AccountId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(GenerateAdPassword.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -340,7 +339,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
@@ -352,7 +351,7 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteAccount));
-                builder.AddAttribute(1, nameof(DeleteAccount.AccountId), MainTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(DeleteAccount.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
@@ -361,7 +360,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
-                await MainTableService.LoadTableDataAsync();
+                await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
@@ -486,8 +485,6 @@ namespace HES.Web.Pages.Employees
         {
             SynchronizationService.UpdateEmployeeDetailsPage -= UpdateEmployeeDetailsPage;
             SynchronizationService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
-
-            MainTableService.Dispose();
         }
     }
 }
