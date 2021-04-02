@@ -18,12 +18,12 @@ else
                 <h5 class="text-navyblue">@Account.Name</h5>
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => AccountPassword.Password)" class="text-gray" />
+                <Label For="@(() => AccountPassword.Password)" class="text-gray" />
                 <InputText @bind-Value="AccountPassword.Password" type="password" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => AccountPassword.Password)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => AccountPassword.ConfirmPassword)" class="text-gray" />
+                <Label For="@(() => AccountPassword.ConfirmPassword)" class="text-gray" />
                 <InputText @bind-Value="AccountPassword.ConfirmPassword" type="password" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => AccountPassword.ConfirmPassword)" class="text-danger" />
             </div>

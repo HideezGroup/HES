@@ -9,7 +9,7 @@ else
     <EditForm Model="CurrentPassword" OnValidSubmit="DisableDataProtectionAsync">
         <DataAnnotationsValidator />
         <div class="form-group">
-            <FormLabel For="@(() => CurrentPassword.Password)" class="text-gray" />
+            <Label For="@(() => CurrentPassword.Password)" class="text-gray" />
             <InputText @bind-Value="CurrentPassword.Password" type="password" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => CurrentPassword.Password)" class="text-danger" />
         </div>

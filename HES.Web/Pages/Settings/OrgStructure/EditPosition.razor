@@ -16,7 +16,7 @@ else
             <DataAnnotationsValidator />
             <ValidationErrorMessage @ref="ValidationErrorMessage" />
             <div class="form-group">
-                <FormLabel For="@(() => Position.Name)" class="text-gray" />
+                <Label For="@(() => Position.Name)" class="text-gray" />
                 <InputText @bind-Value="Position.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => Position.Name)" class="text-danger" />
             </div>

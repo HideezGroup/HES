@@ -15,7 +15,7 @@ else
         <EditForm Model="AccessProfile" OnValidSubmit="EditProfileAsync">
             <DataAnnotationsValidator />
             <div class="form-group">
-                <FormLabel For="@(() => AccessProfile.Name)" class="text-gray" />
+                <Label For="@(() => AccessProfile.Name)" class="text-gray" />
                 <InputText @bind-Value="AccessProfile.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => AccessProfile.Name)" class="text-danger" />
             </div>

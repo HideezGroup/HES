@@ -16,17 +16,17 @@ else
             <DataAnnotationsValidator />
             <ValidationErrorMessage @ref="ValidationErrorMessage" />
             <div class="form-group">
-                <FormLabel For="@(() => PersonalAccount.Name)" class="text-gray" />
+                <Label For="@(() => PersonalAccount.Name)" class="text-gray" />
                 <InputText @bind-Value="PersonalAccount.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => PersonalAccount.Name)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => PersonalAccount.Urls)" class="text-gray" />
+                <Label For="@(() => PersonalAccount.Urls)" class="text-gray" />
                 <textarea @bind="PersonalAccount.Urls" rows="3" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => PersonalAccount.Urls)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => PersonalAccount.Apps)" class="text-gray" />
+                <Label For="@(() => PersonalAccount.Apps)" class="text-gray" />
                 <textarea @bind="PersonalAccount.Apps" rows="3" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => PersonalAccount.Apps)" class="text-danger" />
             </div>
@@ -44,21 +44,21 @@ else
             {
                 case LoginType.WebApp:
                     <div class="form-group">
-                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                         <InputText @bind-Value="PersonalAccount.Login" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Local:
                     <div class="form-group">
-                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                         <InputText @bind-Value="PersonalAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Domain:
                     <div class="form-group">
-                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                         <div class="input-group">
                             <input type="text" @bind="PersonalAccount.Domain" placeholder="Domain" class="form-control" tabindex="4">
                             <input type="text" @bind="PersonalAccount.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
@@ -69,14 +69,14 @@ else
                     break;
                 case LoginType.AzureAD:
                     <div class="form-group">
-                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                         <InputText @bind-Value="PersonalAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Microsoft:
                     <div class="form-group">
-                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                         <InputText @bind-Value="PersonalAccount.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                     </div>

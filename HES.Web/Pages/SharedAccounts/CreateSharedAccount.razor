@@ -23,17 +23,17 @@ else
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <FormLabel For="@(() => SharedAccount.Name)" class="text-gray" />
+                    <Label For="@(() => SharedAccount.Name)" class="text-gray" />
                     <InputText @bind-Value="SharedAccount.Name" class="form-control text-navyblue" tabindex="1" />
                     <ValidationMessage For="@(() => SharedAccount.Name)" class="text-danger" />
                 </div>
                 <div class="form-group">
-                    <FormLabel For="@(() => SharedAccount.Urls)" class="text-gray" />
+                    <Label For="@(() => SharedAccount.Urls)" class="text-gray" />
                     <textarea @bind="SharedAccount.Urls" style="height:81px" class="form-control text-navyblue" tabindex="2" />
                     <ValidationMessage For="@(() => SharedAccount.Urls)" class="text-danger" />
                 </div>
                 <div class="form-group">
-                    <FormLabel For="@(() => SharedAccount.Apps)" class="text-gray" />
+                    <Label For="@(() => SharedAccount.Apps)" class="text-gray" />
                     <textarea @bind="SharedAccount.Apps" style="height:81px" class="form-control text-navyblue" tabindex="3" />
                     <ValidationMessage For="@(() => SharedAccount.Apps)" class="text-danger" />
                 </div>
@@ -53,21 +53,21 @@ else
                 {
                     case LoginType.WebApp:
                         <div class="form-group">
-                            <FormLabel For="@(() => SharedAccount.Login)" class="text-gray" />
+                            <Label For="@(() => SharedAccount.Login)" class="text-gray" />
                             <InputText @bind-Value="SharedAccount.Login" class="form-control text-navyblue" tabindex="4" />
                             <ValidationMessage For="@(() => SharedAccount.Login)" class="text-danger" />
                         </div>
                         break;
                     case LoginType.Local:
                         <div class="form-group">
-                            <FormLabel For="@(() => SharedAccount.Login)" class="text-gray" />
+                            <Label For="@(() => SharedAccount.Login)" class="text-gray" />
                             <InputText @bind-Value="SharedAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
                             <ValidationMessage For="@(() => SharedAccount.Login)" class="text-danger" />
                         </div>
                         break;
                     case LoginType.Domain:
                         <div class="form-group">
-                            <FormLabel For="@(() => SharedAccount.Login)" class="text-gray" />
+                            <Label For="@(() => SharedAccount.Login)" class="text-gray" />
                             <div class="input-group">
                                 <input type="text" @bind="SharedAccount.Domain" placeholder="Domain" class="form-control" tabindex="4">
                                 <input type="text" @bind="SharedAccount.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
@@ -78,26 +78,26 @@ else
                         break;
                     case LoginType.AzureAD:
                         <div class="form-group">
-                            <FormLabel For="@(() => SharedAccount.Login)" class="text-gray" />
+                            <Label For="@(() => SharedAccount.Login)" class="text-gray" />
                             <InputText @bind-Value="SharedAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
                             <ValidationMessage For="@(() => SharedAccount.Login)" class="text-danger" />
                         </div>
                         break;
                     case LoginType.Microsoft:
                         <div class="form-group">
-                            <FormLabel For="@(() => SharedAccount.Login)" class="text-gray" />
+                            <Label For="@(() => SharedAccount.Login)" class="text-gray" />
                             <InputText @bind-Value="SharedAccount.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
                             <ValidationMessage For="@(() => SharedAccount.Login)" class="text-danger" />
                         </div>
                         break;
                 }
                 <div class="form-group">
-                    <FormLabel For="@(() => SharedAccount.Password)" class="text-gray" />
+                    <Label For="@(() => SharedAccount.Password)" class="text-gray" />
                     <InputText @bind-Value="SharedAccount.Password" type="password" class="form-control text-navyblue" tabindex="6" />
                     <ValidationMessage For="@(() => SharedAccount.Password)" class="text-danger" />
                 </div>
                 <div class="form-group">
-                    <FormLabel For="@(() => SharedAccount.ConfirmPassword)" class="text-gray" />
+                    <Label For="@(() => SharedAccount.ConfirmPassword)" class="text-gray" />
                     <InputText @bind-Value="SharedAccount.ConfirmPassword" type="password" class="form-control text-navyblue" tabindex="7" />
                     <ValidationMessage For="@(() => SharedAccount.ConfirmPassword)" class="text-danger" />
                 </div>
@@ -106,7 +106,7 @@ else
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <FormLabel For="@(() => SharedAccount.OtpSecret)" class="text-gray" />
+                    <Label For="@(() => SharedAccount.OtpSecret)" class="text-gray" />
                     <InputText @bind-Value="SharedAccount.OtpSecret" class="form-control text-navyblue" tabindex="8" />
                     <ValidationMessage For="@(() => SharedAccount.OtpSecret)" class="text-danger" />
                 </div>

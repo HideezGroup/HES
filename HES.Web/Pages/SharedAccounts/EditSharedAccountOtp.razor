@@ -17,7 +17,7 @@ else
             <ValidationErrorMessage @ref="ValidationErrorMessage" />
             <h5 class="text-gray mb-4 text-break"><b>@Account.Name</b></h5>
             <div class="form-group">
-                <FormLabel For="@(() => AccountOtp.OtpSecret)" class="text-gray" />
+                <Label For="@(() => AccountOtp.OtpSecret)" class="text-gray" />
                 <InputText @bind-Value="AccountOtp.OtpSecret" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => AccountOtp.OtpSecret)" class="text-danger" />
             </div>

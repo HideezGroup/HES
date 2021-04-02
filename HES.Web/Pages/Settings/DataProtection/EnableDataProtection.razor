@@ -9,12 +9,12 @@ else
     <EditForm Model="NewPassword" OnValidSubmit="EnableDataProtectionAsync">
         <DataAnnotationsValidator />
         <div class="form-group">
-            <FormLabel For="@(() => NewPassword.Password)" class="text-gray" />
+            <Label For="@(() => NewPassword.Password)" class="text-gray" />
             <InputText @bind-Value="NewPassword.Password" type="password" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => NewPassword.Password)" class="text-danger" />
         </div>
         <div class="form-group">
-            <FormLabel For="@(() => NewPassword.ConfirmPassword)" class="text-gray" />
+            <Label For="@(() => NewPassword.ConfirmPassword)" class="text-gray" />
             <InputText @bind-Value="NewPassword.ConfirmPassword" type="password" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => NewPassword.ConfirmPassword)" class="text-danger" />
         </div>

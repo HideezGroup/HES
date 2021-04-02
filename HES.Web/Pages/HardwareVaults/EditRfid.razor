@@ -19,7 +19,7 @@ else
                 <h5 class="text-navyblue">@HardwareVault.Id</h5>
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => HardwareVault.RFID)" class="text-gray"/>
+                <Label For="@(() => HardwareVault.RFID)" class="text-gray"/>
                 <InputText @bind-Value="HardwareVault.RFID" class="form-control text-navyblue" />
                 <ValidationMessage For="() => HardwareVault.RFID" />
             </div>

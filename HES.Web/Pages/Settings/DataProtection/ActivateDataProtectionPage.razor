@@ -13,7 +13,7 @@
                 <ValidationErrorMessage @ref="ValidationErrorMessage" />
                 <h4 class="text-navyblue text-center my-4">Enter encryption password</h4>
                 <div class="form-group">
-                    <FormLabel For="@(() => Input.Password)" class="text-gray" />
+                    <Label For="@(() => Input.Password)" class="text-gray" />
                     <InputText @bind-Value="Input.Password" class="form-control" type="password" />
                     <ValidationMessage For="@(() => Input.Password)" class="text-danger" />
                 </div>

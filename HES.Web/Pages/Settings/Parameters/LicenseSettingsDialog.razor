@@ -9,11 +9,11 @@ else
     <EditForm Model="@LicensingSettings" OnValidSubmit="@UpdateLicensingSettingsAsync">
         <DataAnnotationsValidator />
         <div class="form-group">
-            <FormLabel For="@(() => LicensingSettings.ApiAddress)" class="text-gray" />
+            <Label For="@(() => LicensingSettings.ApiAddress)" class="text-gray" />
             <InputText @bind-Value="LicensingSettings.ApiAddress" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => LicensingSettings.ApiAddress)" class="text-danger" />
         </div>
-        <FormLabel For="@(() => LicensingSettings.ApiKey)" class="text-gray" />
+        <Label For="@(() => LicensingSettings.ApiKey)" class="text-gray" />
         <div class="input-group form-group">
             <InputText @bind-Value="LicensingSettings.ApiKey" class="form-control text-navyblue" type="@InputType" />
             <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
