@@ -23,7 +23,7 @@ namespace HES.Web.Pages.Identity
         SecurityKeyError
     }
 
-    public partial class Login : HESComponentBase
+    public partial class Login : HESPageBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service Fido2Service { get; set; }
@@ -31,6 +31,7 @@ namespace HES.Web.Pages.Identity
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<Login> Logger { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public AuthenticationStep AuthenticationStep { get; set; }
         public PasswordSignInModel PasswordSignInModel { get; set; } = new PasswordSignInModel();

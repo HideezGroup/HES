@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Audit.WorkstationSummaries
 {
-    public partial class ByEmployeesTab : HESComponentBase, IDisposable
+    public partial class ByEmployeesTab : HESPageBase, IDisposable
     {
         public IWorkstationAuditService WorkstationAuditService { get; set; }
         public IDataTableService<SummaryByEmployees, SummaryFilter> DataTableService { get; set; }
