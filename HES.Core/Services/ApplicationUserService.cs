@@ -140,20 +140,17 @@ namespace HES.Core.Services
                 throw new Exception(errors);
             }
 
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callbackUrl = $"{domain}Identity/Account/Invite?code={WebUtility.UrlEncode(code)}&Email={email}";
-
-            return HtmlEncoder.Default.Encode(callbackUrl);
+            return await GenerateInviteCallBackUrl(email, domain);   
         }
 
-        public async Task<string> GetCallBackUrl(string email, string domain)
+        public async Task<string> GenerateInviteCallBackUrl(string email, string domain)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new Exception($"User not found.");
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callbackUrl = $"{domain}Identity/Account/Invite?code={WebUtility.UrlEncode(code)}&Email={email}";
+            var callbackUrl = $"{domain.TrimEnd('/')}{Routes.Invite}?code={WebUtility.UrlEncode(code)}&Email={email}";
 
             return HtmlEncoder.Default.Encode(callbackUrl);
         }

@@ -157,7 +157,7 @@ namespace HES.Web
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromDays(14);
                 options.LoginPath = "/login";
-                options.LogoutPath = "/Account/Logout";
+                options.LogoutPath = "/logout";
                 options.Cookie = new CookieBuilder
                 {
                     IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy

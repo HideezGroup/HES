@@ -1,32 +1,28 @@
-﻿using HES.Core.Constants;
+using HES.Core.Constants;
 using HES.Core.Entities;
-using HES.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace HES.Web.Areas.Identity.Pages.Account
+namespace HES.Web.Pages.Identity
 {
     [AllowAnonymous]
     public class LoginWithRecoveryCodeModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
-        public LoginWithRecoveryCodeModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginWithRecoveryCodeModel> logger)
+        public LoginWithRecoveryCodeModel(SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
-            _logger = logger;
         }
 
+        [TempData]
+        public string ErrorMessage { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
-
         public string ReturnUrl { get; set; }
 
         public class InputModel
@@ -44,7 +40,8 @@ namespace HES.Web.Areas.Identity.Pages.Account
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                ErrorMessage = "Unable to load two-factor authentication user.";
+                return Page();
             }
 
             ReturnUrl = returnUrl;
@@ -62,11 +59,11 @@ namespace HES.Web.Areas.Identity.Pages.Account
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                ErrorMessage = "Unable to load two-factor authentication user.";
+                return Page();
             }
 
             var recoveryCode = Input.RecoveryCode.Replace(" ", string.Empty);
-
             var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
             if (result.Succeeded)
@@ -75,12 +72,10 @@ namespace HES.Web.Areas.Identity.Pages.Account
             }
             if (result.IsLockedOut)
             {
-                _logger.LogWarning($"User {user.Email} account locked out.");
                 return LocalRedirect(Routes.Lockout);
             }
             else
             {
-                _logger.LogWarning($"Invalid recovery code entered for user {user.Email}");
                 ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
                 return Page();
             }

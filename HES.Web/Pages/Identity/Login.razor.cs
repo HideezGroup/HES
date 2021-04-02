@@ -13,7 +13,7 @@ using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
-namespace HES.Web.Areas.Identity.Pages.Account
+namespace HES.Web.Pages.Identity
 {
     public enum AuthenticationStep
     {

@@ -90,7 +90,7 @@ namespace HES.Web.Pages.Settings.Administrators
         {
             try
             {
-                var callBakcUrl = await ApplicationUserService.GetCallBackUrl(DataTableService.SelectedEntity.Email, NavigationManager.BaseUri);
+                var callBakcUrl = await ApplicationUserService.GenerateInviteCallBackUrl(DataTableService.SelectedEntity.Email, NavigationManager.BaseUri);
                 await EmailSenderService.SendUserInvitationAsync(DataTableService.SelectedEntity.Email, callBakcUrl);
                 await ToastService.ShowToastAsync("Administrator invited.", ToastType.Success);
             }

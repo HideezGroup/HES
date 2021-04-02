@@ -1,34 +1,27 @@
 using HES.Core.Constants;
 using HES.Core.Entities;
-using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace HES.Web.Areas.Identity.Pages.Account
+namespace HES.Web.Pages.Identity
 {
     [AllowAnonymous]
-    public class InviteModel : PageModel
+    public class ResetPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ISynchronizationService _synchronizationService;
-        private readonly ILogger<InviteModel> _logger;
 
-        public InviteModel(UserManager<ApplicationUser> userManager,
-                           SignInManager<ApplicationUser> signInManager,
-                           ISynchronizationService synchronizationService,
-                           ILogger<InviteModel> logger)
+        public ResetPasswordModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
-            _synchronizationService = synchronizationService;
-            _logger = logger;
         }
+
+        [TempData]
+        public string ErrorMessage { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -56,7 +49,8 @@ namespace HES.Web.Areas.Identity.Pages.Account
         {
             if (code == null)
             {
-                return BadRequest("A code must be supplied for password reset.");
+                ErrorMessage = "A code must be supplied password reset.";
+                return Page();
             }
             else
             {
@@ -79,26 +73,17 @@ namespace HES.Web.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                return BadRequest("Email address does not exist.");
+                // Don't reveal that the user does not exist
+                return LocalRedirect(Routes.Login);
             }
 
             var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
             if (result.Succeeded)
             {
-                var login_result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: true);
-                if (login_result.Succeeded)
-                {
-                    user.EmailConfirmed = true;
-                    await _userManager.UpdateAsync(user);
-                    await _synchronizationService.UpdateAdministratorState();
-                    return LocalRedirect(Routes.Dashboard);
-                }
+                return LocalRedirect(Routes.Login);
             }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
+                  
+            ErrorMessage = string.Join(". ", result.Errors.Select(x => x.Description).ToArray());
             return Page();
         }
     }

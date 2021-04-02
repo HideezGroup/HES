@@ -4,13 +4,14 @@
     {
         public const string Login = "/login";
         public const string Logout = "/logout";
-        public const string LoginWith2Fa = "/Identity/Account/LoginWith2fa";
-        public const string LoginWithRecoveryCode = "/Identity/Account/LoginWithRecoveryCode";
-        public const string Lockout = "/Identity/Account/Lockout";
-        public const string ForgotPassword = "/Identity/Account/ForgotPassword";
-        public const string ForgotPasswordConfirmation = "/Identity/Account/ForgotPasswordConfirmation";
-        public const string ResetPassword = "/Identity/Account/ResetPassword";
-        public const string ResetPasswordConfirmation = "/Identity/Account/ResetPasswordConfirmation";
+        public const string Invite = "/invite";
+        public const string LoginWith2Fa = "/login-with-2fa";
+        public const string LoginWithRecoveryCode = "/login-with-recovery-code";
+        public const string Lockout = "/lockout";
+        public const string AccessDenied = "/access-denied";
+        public const string ForgotPassword = "/forgot-password";
+        public const string ForgotPasswordConfirmation = "/forgot-password-confirmation";
+        public const string ResetPassword = "/reset-password";   
 
         public const string Profile = "/profile";
 

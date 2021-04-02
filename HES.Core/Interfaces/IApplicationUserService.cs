@@ -21,7 +21,7 @@ namespace HES.Core.Interfaces
         Task<List<ApplicationUser>> GetAdministratorsAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions);
         Task<int> GetAdministratorsCountAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions);
         Task<string> InviteAdministratorAsync(string email, string domain);
-        Task<string> GetCallBackUrl(string email, string domain);
+        Task<string> GenerateInviteCallBackUrl(string email, string domain);
         Task<ApplicationUser> DeleteUserAsync(string id);
         Task<IList<ApplicationUser>> GetAllAdministratorsAsync();
         #endregion

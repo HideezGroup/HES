@@ -1,11 +1,11 @@
-﻿using HES.Core.Entities;
+using HES.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
-namespace HES.Web.Areas.Identity.Pages.Account
+namespace HES.Web.Pages.Identity
 {
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
@@ -19,7 +19,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
         }
 
         public void OnGet()
-        {    
+        {
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)

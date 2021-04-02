@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HES.Web.Areas.Identity.Pages.Account
+namespace HES.Web.Pages.Identity
 {
     [AllowAnonymous]
     public class LockoutModel : PageModel

@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HES.Web.Areas.Identity.Pages.Account
+namespace HES.Web.Pages.Identity
 {
     public class AccessDeniedModel : PageModel
     {
         public void OnGet()
         {
-
         }
     }
 }

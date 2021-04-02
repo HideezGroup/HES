@@ -1,31 +1,28 @@
-﻿using HES.Core.Constants;
+using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace HES.Web.Areas.Identity.Pages.Account
+namespace HES.Web.Pages.Identity
 {
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSenderService _emailSender;
-        private readonly IEmployeeService _employeeService;
 
         public ForgotPasswordModel(UserManager<ApplicationUser> userManager,
-                                   IEmailSenderService emailSender,
-                                   IEmployeeService employeeService)
+                                   IEmailSenderService emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
-            _employeeService = employeeService;
         }
 
         [BindProperty]
@@ -49,18 +46,8 @@ namespace HES.Web.Areas.Identity.Pages.Account
                     return LocalRedirect(Routes.ForgotPasswordConfirmation);
                 }
 
-                var employee = await _employeeService.EmployeeQuery().FirstOrDefaultAsync(e => e.Email == Input.Email);
-                var resetPasswordUrl = "/Account/ResetPassword";
-                var emailBody = $"Dear {Input.Email} <br/> Please reset your password by";
-
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var email = Input.Email;
-                var callbackUrl = Url.Page(
-                    resetPasswordUrl,
-                    pageHandler: null,
-                    values: new { code, email },
-                    protocol: Request.Scheme);
-
+                var callbackUrl = $"{Request.Scheme}://{Request.Host}{Routes.ResetPassword}?code={WebUtility.UrlEncode(code)}&Email={Input.Email}";
                 await _emailSender.SendUserResetPasswordAsync(Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
                 return LocalRedirect(Routes.ForgotPasswordConfirmation);
