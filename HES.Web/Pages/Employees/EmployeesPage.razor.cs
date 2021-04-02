@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Employees;
@@ -61,7 +62,7 @@ namespace HES.Web.Pages.Employees
         {
             await InvokeAsync(() =>
             {
-                NavigationManager.NavigateTo($"/Employees/Details/{DataTableService.SelectedEntity.Id}");
+                NavigationManager.NavigateTo($"{Routes.EmployeesDetails}{DataTableService.SelectedEntity.Id}");
             });
         }
 

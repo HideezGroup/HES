@@ -116,7 +116,7 @@ namespace HES.Core.Services
                 {
                     Message = "Non-hideez unlock (24h)",
                     Count = nonHideezUnlock,
-                    Page = "/Audit/WorkstationSessions/NonHideezUnlock"         
+                    Page = $"{Routes.WorkstationSessions}/NonHideezUnlock"
                 });
             }
 
@@ -131,7 +131,7 @@ namespace HES.Core.Services
                 {
                     Message = "Long open session (>12h)",
                     Count = longOpenSession,
-                    Page = "/Audit/WorkstationSessions/LongOpenSession"              
+                    Page = $"{Routes.WorkstationSessions}/LongOpenSession"
                 });
             }
 
@@ -149,7 +149,7 @@ namespace HES.Core.Services
                 LeftLink = "/Employees",
                 RightText = "Opened Sessions",
                 RightValue = $"{await GetEmployeesOpenedSessionsCountAsync()}",
-                RightLink = "/Audit/WorkstationSessions/OpenedSessions",
+                RightLink = $"{Routes.WorkstationSessions}/OpenedSessions",
                 Notifications = await GetEmployeesNotifyAsync()
             };
         }
@@ -183,7 +183,7 @@ namespace HES.Core.Services
                 {
                     Message = "Low battery",
                     Count = lowBattery,
-                    Page = "/HardwareVaults/LowBattery"
+                    Page = $"{Routes.HardwareVaults}/LowBattery"
                 });
             }
 
@@ -198,7 +198,7 @@ namespace HES.Core.Services
                 {
                     Message = "Vault locked",
                     Count = vaultLocked,
-                    Page = "/HardwareVaults/VaultLocked"       
+                    Page = $"{Routes.HardwareVaults}/VaultLocked"
                 });
             }
 
@@ -213,7 +213,7 @@ namespace HES.Core.Services
                 {
                     Message = "License warning",
                     Count = licenseWarning,
-                    Page = "/HardwareVaults/LicenseWarning"
+                    Page = $"{Routes.HardwareVaults}/LicenseWarning"
                 });
             }
 
@@ -228,7 +228,7 @@ namespace HES.Core.Services
                 {
                     Message = "License critical",
                     Count = licenseCritical,
-                    Page = "/HardwareVaults/LicenseCritical"          
+                    Page = $"{Routes.HardwareVaults}/LicenseCritical"
                 });
             }
 
@@ -243,7 +243,7 @@ namespace HES.Core.Services
                 {
                     Message = "License expired",
                     Count = licenseExpired,
-                    Page = "/HardwareVaults/LicenseExpired"
+                    Page = $"{Routes.HardwareVaults}/LicenseExpired"
                 });
             }
 
@@ -258,10 +258,10 @@ namespace HES.Core.Services
                 CardLogo = "/svg/logo-hardware-vaults.svg",
                 LeftText = "Registered",
                 LeftValue = $"{await GetHardwareVaultsCountAsync()}",
-                LeftLink = "/HardwareVaults",
+                LeftLink = Routes.HardwareVaults,
                 RightText = "Ready",
                 RightValue = $"{await GetReadyHardwareVaultsCountAsync()}",
-                RightLink = "/HardwareVaults/VaultReady",
+                RightLink = $"{Routes.HardwareVaults}/VaultReady",
                 Notifications = await GetHardwareVaultsNotifyAsync()
             };
         }
@@ -295,7 +295,7 @@ namespace HES.Core.Services
                 {
                     Message = "Waiting for approval",
                     Count = notApproved,
-                    Page = "/Workstations/NotApproved"             
+                    Page = $"{Routes.Workstations}/NotApproved"
                 });
             }
 
@@ -310,10 +310,10 @@ namespace HES.Core.Services
                 CardLogo = "/svg/logo-workstations.svg",
                 LeftText = "Registered",
                 LeftValue = $"{await GetWorkstationsCountAsync()}",
-                LeftLink = "/Workstations",
+                LeftLink = Routes.Workstations,
                 RightText = "Online",
                 RightValue = $"{await GetWorkstationsOnlineCountAsync()}",
-                RightLink = "/Workstations/Online",
+                RightLink = $"{Routes.Workstations}/Online",
                 Notifications = await GetWorkstationsNotifyAsync()
             };
         }

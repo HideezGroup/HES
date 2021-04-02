@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Workstations;
@@ -123,7 +124,7 @@ namespace HES.Web.Pages.Workstations
         {
             await InvokeAsync(() =>
             {
-                NavigationManager.NavigateTo($"/Workstations/Details/{DataTableService.SelectedEntity.Id}");
+                NavigationManager.NavigateTo($"{Routes.WorkstationsDetails}{DataTableService.SelectedEntity.Id}");
             });
         }
 
