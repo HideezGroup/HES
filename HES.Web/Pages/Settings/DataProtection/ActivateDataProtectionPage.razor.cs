@@ -1,4 +1,5 @@
-﻿using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Web.Components;
@@ -26,7 +27,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             var status = DataProtectionService.Status();
 
             if (status != ProtectionStatus.Activate)
-                NavigationManager.NavigateTo("");
+                NavigationManager.NavigateTo(Routes.Dashboard);
         }
 
         private async Task ActivateAsync()
@@ -41,7 +42,7 @@ namespace HES.Web.Pages.Settings.DataProtection
                         ValidationErrorMessage.DisplayError(nameof(InputModel.Password), "Invalid password");
                         return;
                     }
-                    NavigationManager.NavigateTo("");
+                    NavigationManager.NavigateTo(Routes.Dashboard);
                 });
 
             }

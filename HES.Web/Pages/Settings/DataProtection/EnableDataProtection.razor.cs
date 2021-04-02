@@ -51,11 +51,8 @@ namespace HES.Web.Pages.Settings.DataProtection
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-            }
-            finally
-            {
                 await ModalDialogCancel();
-            }
+            }       
         }
     }
 }

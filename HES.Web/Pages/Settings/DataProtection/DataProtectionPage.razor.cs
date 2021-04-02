@@ -12,7 +12,6 @@ namespace HES.Web.Pages.Settings.DataProtection
     public partial class DataProtectionPage : HESPageBase, IDisposable
     {
         [Inject] public IDataProtectionService DataProtectionService { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public ILogger<DataProtectionPage> Logger { get; set; }
 
         public ProtectionStatus Status { get; set; }
