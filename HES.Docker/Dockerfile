@@ -3,8 +3,8 @@ FROM alpine/git as base
 WORKDIR /app
 # Cloning Project
 RUN git clone https://github.com/HideezGroup/HES /app/HES
-# Use dotnet code sdk 3.1 image
-FROM mcr.microsoft.com/dotnet/core/sdk:5.0-focal as build
+# Use dotnet code sdk 5.0 image
+FROM mcr.microsoft.com/dotnet/sdk:5.0-focal as build
 WORKDIR /app
 COPY --from=base /app .
 WORKDIR /app/HES/HES.Web/

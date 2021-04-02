@@ -36,6 +36,7 @@ namespace HES.Web
     {
         public IConfiguration Configuration { get; }
         public bool Saml2pEnabled { get; set; }
+        public bool ReverseProxyHandleSSL { get; set; }
 
         public Startup(IConfiguration configuration)
         {
@@ -86,6 +87,8 @@ namespace HES.Web
                 Saml2pEnabled = true;
             }
 
+            ReverseProxyHandleSSL = configuration.GetValue<bool>("ServerSettings:ReverseProxyHandleSSL");
+
             Configuration = configuration;
         }
 
@@ -121,7 +124,6 @@ namespace HES.Web
             services.AddScoped<IFido2Service, Fido2Service>();
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();
 
-            services.AddScoped<HttpClient>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
@@ -132,6 +134,13 @@ namespace HES.Web
             services.AddHostedService<ActiveDirectoryHostedService>();
 
             services.AddHttpClient();
+            services.AddHttpClient("HES").ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler()
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+            });
             services.AddSignalR();
             services.AddMemoryCache();
 
@@ -314,7 +323,10 @@ namespace HES.Web
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                if (!ReverseProxyHandleSSL)
+                {
+                    app.UseHsts();
+                }
             }
 
             app.UseStatusCodePages();
@@ -330,7 +342,11 @@ namespace HES.Web
                 app.UseIdentityServerSamlPlugin();
             }
 
-            app.UseHttpsRedirection();
+            if (!ReverseProxyHandleSSL)
+            {
+                app.UseHttpsRedirection();
+            }
+
             app.UseAuthentication();
             app.UseAuthorization();
 

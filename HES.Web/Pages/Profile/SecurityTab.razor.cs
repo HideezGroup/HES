@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Helpers;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.AppUsers;
 using HES.Core.Models.Web.Identity;
@@ -22,8 +23,10 @@ namespace HES.Web.Pages.Profile
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service FidoService { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
+        [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<SecurityTab> Logger { get; set; }
-        [Inject] public HttpClient HttpClient { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public List<FidoStoredCredential> StoredCredentials { get; set; }
         public ApplicationUser CurrentUser { get; set; }
@@ -149,7 +152,8 @@ namespace HES.Web.Pages.Profile
 
         private async Task GetTwoFactorInfoAsync()
         {
-            TwoFactorInfo = await ApplicationUserService.GetTwoFactorInfoAsync(HttpClient);
+            var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
+            TwoFactorInfo = await ApplicationUserService.GetTwoFactorInfoAsync(client);
         }
 
         private async Task EnableAuthenticatorAsync()
@@ -218,7 +222,8 @@ namespace HES.Web.Pages.Profile
         {
             try
             {
-                await ApplicationUserService.ForgetBrowserAsync(HttpClient);
+                var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
+                await ApplicationUserService.ForgetBrowserAsync(client);
                 await ToastService.ShowToastAsync("The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.", ToastType.Success);
             }
             catch (Exception ex)

@@ -3,10 +3,13 @@ using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.Web.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -18,26 +21,33 @@ namespace HES.Core.Services
 {
     public class IdentityApiClient : IIdentityApiClient
     {
-        private readonly HttpClient _httpClient;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly NavigationManager _navigationManager;
         private readonly IJSRuntime _jsRuntime;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<IdentityApiClient> _logger;
 
-        public IdentityApiClient(HttpClient httpClient,
-                                 AuthenticationStateProvider authenticationStateProvider,
+        public IdentityApiClient(AuthenticationStateProvider authenticationStateProvider,
                                  SignInManager<ApplicationUser> signInManager,
-                                 IJSRuntime jsRuntime)
+                                 NavigationManager navigationManager,
+                                 IJSRuntime jsRuntime,
+                                 IHttpClientFactory httpClientFactory,
+                                 ILogger<IdentityApiClient> logger)
         {
-            _httpClient = httpClient;
             _authenticationStateProvider = authenticationStateProvider;
             _signInManager = signInManager;
+            _navigationManager = navigationManager;
             _jsRuntime = jsRuntime;
+            _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
 
         public async Task<AuthorizationResponse> LoginWithPasswordAsync(PasswordSignInModel parameters)
         {
+            var client = await CreateClientAsync();
             var stringContent = new StringContent(JsonConvert.SerializeObject(parameters), Encoding.UTF8, "application/json");
-            var httpResponse = await _httpClient.PostAsync("api/Identity/LoginWithPassword", stringContent);
+            var httpResponse = await client.PostAsync("api/Identity/LoginWithPassword", stringContent);
             var authorizationResponse = JsonConvert.DeserializeObject<AuthorizationResponse>(await httpResponse.Content.ReadAsStringAsync());
 
             await TrySetCookieAsync(httpResponse);
@@ -50,8 +60,9 @@ namespace HES.Core.Services
 
         public async Task<AuthorizationResponse> LoginWithFido2Async(SecurityKeySignInModel parameters)
         {
+            var client = await CreateClientAsync();
             var stringContent = new StringContent(JsonConvert.SerializeObject(parameters), Encoding.UTF8, "application/json");
-            var httpResponse = await _httpClient.PostAsync("api/Identity/LoginWithFido2", stringContent);
+            var httpResponse = await client.PostAsync("api/Identity/LoginWithFido2", stringContent);
             var authorizationResponse = JsonConvert.DeserializeObject<AuthorizationResponse>(await httpResponse.Content.ReadAsStringAsync());
 
             await TrySetCookieAsync(httpResponse);
@@ -64,17 +75,16 @@ namespace HES.Core.Services
 
         public async Task<AuthorizationResponse> LogoutAsync()
         {
-            List<string> cookies = null;
-            if (_httpClient.DefaultRequestHeaders.TryGetValues("Cookie", out IEnumerable<string> cookieEntries))
-                cookies = cookieEntries.ToList();
-
-            var httpResponse = await _httpClient.PostAsync("api/Identity/Logout", new StringContent(string.Empty));
+            var client = await CreateClientAsync();
+            var httpResponse = await client.PostAsync("api/Identity/Logout", new StringContent(string.Empty));
             var authorizationResponse = JsonConvert.DeserializeObject<AuthorizationResponse>(await httpResponse.Content.ReadAsStringAsync());
 
-            if (httpResponse.IsSuccessStatusCode && cookies != null && cookies.Any())
-            {
-                _httpClient.DefaultRequestHeaders.Remove("Cookie");
+            List<string> cookies = null;
+            if (client.DefaultRequestHeaders.TryGetValues("Cookie", out IEnumerable<string> cookieEntries))
+                cookies = cookieEntries.ToList();
 
+            if (httpResponse.IsSuccessStatusCode && cookies != null && cookies.Any())
+            {                
                 foreach (var cookie in cookies[0].Split(';'))
                 {
                     var cookieParts = cookie.Split('=');
@@ -91,7 +101,8 @@ namespace HES.Core.Services
 
         public async Task RefreshSignInAsync()
         {
-            var httpResponse = await _httpClient.PostAsync("api/Identity/RefreshSignIn", new StringContent(string.Empty));
+            var client = await CreateClientAsync();
+            var httpResponse = await client.PostAsync("api/Identity/RefreshSignIn", new StringContent(string.Empty));
             await TrySetCookieAsync(httpResponse);
         }
 
@@ -124,6 +135,29 @@ namespace HES.Core.Services
                 var provider = (IHostEnvironmentAuthenticationStateProvider)_authenticationStateProvider;
                 provider.SetAuthenticationState(Task.FromResult(new AuthenticationState(principal)));
             }
+        }
+
+        private async Task<HttpClient> CreateClientAsync()
+        {
+            string cookie = null;
+            try
+            {
+                cookie = await _jsRuntime.InvokeAsync<string>("getCookie");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+
+            var client = _httpClientFactory.CreateClient("HES");   
+            client.BaseAddress = new Uri(_navigationManager.BaseUri);
+
+            if (!string.IsNullOrWhiteSpace(cookie))
+            {
+                client.DefaultRequestHeaders.Add("Cookie", cookie);
+            }
+
+            return client;
         }
     }
 }

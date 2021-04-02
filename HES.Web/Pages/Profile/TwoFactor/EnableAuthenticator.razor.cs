@@ -1,4 +1,5 @@
 ﻿using HES.Core.Enums;
+using HES.Core.Helpers;
 using HES.Core.Models.Web.AppUsers;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -14,7 +15,8 @@ namespace HES.Web.Pages.Profile.TwoFactor
 {
     public partial class EnableAuthenticator : HESModalBase
     {
-        [Inject] public HttpClient HttpClient { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<EnableAuthenticator> Logger { get; set; }
 
@@ -47,7 +49,8 @@ namespace HES.Web.Pages.Profile.TwoFactor
 
         private async Task LoadSharedKeyAndQrCodeUriAsync()
         {
-            var response = HttpClient.GetAsync("api/Identity/LoadSharedKeyAndQrCodeUri").Result;
+            var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
+            var response = client.GetAsync("api/Identity/LoadSharedKeyAndQrCodeUri").Result;
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception(await response.Content.ReadAsStringAsync());
@@ -71,7 +74,8 @@ namespace HES.Web.Pages.Profile.TwoFactor
         {
             try
             {
-                var response = await HttpClient.PostAsync("api/Identity/VerifyTwoFactor", (new StringContent(JsonConvert.SerializeObject(VerificationCode), Encoding.UTF8, "application/json")));
+                var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
+                var response = await client.PostAsync("api/Identity/VerifyTwoFactor", (new StringContent(JsonConvert.SerializeObject(VerificationCode), Encoding.UTF8, "application/json")));
 
                 if (!response.IsSuccessStatusCode)
                     throw new Exception(await response.Content.ReadAsStringAsync());

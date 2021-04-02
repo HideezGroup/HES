@@ -3,7 +3,6 @@ using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Web.Identity;
-using HES.Infrastructure;
 using HES.Web.Components;
 using HES.Web.Extensions;
 using Microsoft.AspNetCore.Components;
@@ -41,6 +40,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
         public Button ButtonSpinner { get; set; }
         public bool HasSecurityKey { get; set; }
         public string ReturnUrl { get; set; }
+        public bool SetFocus { get; set; }
 
         protected override void OnInitialized()
         {
@@ -50,6 +50,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
                 Fido2Service = ScopedServices.GetRequiredService<IFido2Service>();
 
                 ReturnUrl = NavigationManager.GetQueryValue("returnUrl");
+                ChangeFocus();
 
                 SetInitialized();
             }
@@ -62,14 +63,19 @@ namespace HES.Web.Areas.Identity.Pages.Account
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            switch (AuthenticationStep)
+            if (SetFocus)
             {
-                case AuthenticationStep.EmailValidation:
-                    await JSRuntime.InvokeVoidAsync("setFocus", "email");
-                    break;
-                case AuthenticationStep.EnterPassword:
-                    await JSRuntime.InvokeVoidAsync("setFocus", "password");
-                    break;
+                switch (AuthenticationStep)
+                {
+                    case AuthenticationStep.EmailValidation:
+                        await JSRuntime.InvokeVoidAsync("setFocus", "email");
+                        ChangeFocus();
+                        break;
+                    case AuthenticationStep.EnterPassword:
+                        await JSRuntime.InvokeVoidAsync("setFocus", "password");
+                        ChangeFocus();
+                        break;
+                }
             }
         }
 
@@ -95,6 +101,7 @@ namespace HES.Web.Areas.Identity.Pages.Account
 
                     PasswordSignInModel.Email = UserEmailModel.Email;
                     HasSecurityKey = (await Fido2Service.GetCredentialsByUserEmail(UserEmailModel.Email)).Count > 0;
+                    ChangeFocus();
                     AuthenticationStep = AuthenticationStep.EnterPassword;
                 });
             }
@@ -176,6 +183,11 @@ namespace HES.Web.Areas.Identity.Pages.Account
         private void BackToEmailValidation()
         {
             AuthenticationStep = AuthenticationStep.EmailValidation;
+        }
+
+        private void ChangeFocus()
+        {
+            SetFocus = !SetFocus;
         }
     }
 }

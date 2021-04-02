@@ -17,30 +17,3 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
-
-@code
-{
-    [Inject] HttpClient HttpClient { get; set; }
-    [Inject] NavigationManager NavigationManager { get; set; }
-    [Inject] IHttpContextAccessor ContextAccessor { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        HttpClient.BaseAddress = new Uri(NavigationManager.BaseUri);
-
-        // Likely user refreshed page, we need to grab the cookies if they exist and pass it to the HttpClient for this request
-        if (ContextAccessor != null && ContextAccessor.HttpContext != null && ContextAccessor.HttpContext.Request.Cookies.Any())
-        {
-            var cks = new List<string>();
-
-            foreach (var cookie in ContextAccessor.HttpContext.Request.Cookies)
-            {
-                cks.Add($"{cookie.Key}={cookie.Value}");
-            }
-
-            HttpClient.DefaultRequestHeaders.Add("Cookie", String.Join(';', cks));
-        }
-    }
-}
