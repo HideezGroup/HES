@@ -1,7 +1,6 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.DataTableComponent;
+using HES.Core.Models.Accounts;
+using HES.Core.Models.DataTableComponent;
 using System;
 using System.Collections.Generic;
 using System.Linq;

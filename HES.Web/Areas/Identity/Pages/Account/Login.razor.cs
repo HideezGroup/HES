@@ -2,7 +2,7 @@
 using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Extensions;
 using Microsoft.AspNetCore.Components;

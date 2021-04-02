@@ -2,8 +2,8 @@
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.API.Identity;
-using HES.Core.Models.Web.AppUsers;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.AppUsers;
+using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

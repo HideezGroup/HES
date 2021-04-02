@@ -3,7 +3,7 @@ using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models;
-using HES.Core.Models.Web.Dashboard;
+using HES.Core.Models.Dashboard;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

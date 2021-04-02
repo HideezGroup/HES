@@ -1,7 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;

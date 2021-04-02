@@ -4,7 +4,7 @@ using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;

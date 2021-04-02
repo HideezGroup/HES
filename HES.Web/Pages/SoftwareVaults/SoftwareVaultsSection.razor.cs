@@ -1,6 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.SoftwareVault;
+using HES.Core.Models.SoftwareVault;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.ComponentModel;

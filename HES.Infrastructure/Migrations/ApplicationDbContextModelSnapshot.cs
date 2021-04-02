@@ -1003,7 +1003,7 @@ namespace HES.Infrastructure.Migrations
                     b.ToTable("WorkstationSessions");
                 });
 
-            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByDayAndEmployee", b =>
+            modelBuilder.Entity("HES.Core.Models.Audit.SummaryByDayAndEmployee", b =>
                 {
                     b.Property<TimeSpan>("AvgSessionsDuration")
                         .HasColumnType("time(6)");
@@ -1030,7 +1030,7 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("int");
                 });
 
-            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByDepartments", b =>
+            modelBuilder.Entity("HES.Core.Models.Audit.SummaryByDepartments", b =>
                 {
                     b.Property<TimeSpan>("AvgSessionsDuration")
                         .HasColumnType("time(6)");
@@ -1060,7 +1060,7 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("int");
                 });
 
-            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByEmployees", b =>
+            modelBuilder.Entity("HES.Core.Models.Audit.SummaryByEmployees", b =>
                 {
                     b.Property<decimal>("AvgSessionsCountPerDay")
                         .HasColumnType("decimal(65,30)");
@@ -1093,7 +1093,7 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("int");
                 });
 
-            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByWorkstations", b =>
+            modelBuilder.Entity("HES.Core.Models.Audit.SummaryByWorkstations", b =>
                 {
                     b.Property<TimeSpan>("AvgSessionsDuration")
                         .HasColumnType("time(6)");

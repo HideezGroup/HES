@@ -2,7 +2,7 @@
 using HES.Core.Crypto;
 using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppSettings;
+using HES.Core.Models.AppSettings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

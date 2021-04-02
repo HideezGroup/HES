@@ -1,7 +1,6 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.LicenseOrders;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.LicenseOrders;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

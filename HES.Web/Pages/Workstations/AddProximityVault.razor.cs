@@ -1,10 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.HardwareVaults;
-using HES.Core.Models.Web.Workstations;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.HardwareVaults;
+using HES.Core.Models.Workstations;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,6 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Models;
-using HES.Core.Models.Web.Dashboard;
+using HES.Core.Models.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

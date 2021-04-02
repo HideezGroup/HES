@@ -1,5 +1,5 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Models.Web.Audit;
+using HES.Core.Models.Audit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

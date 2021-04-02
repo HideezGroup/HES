@@ -1,5 +1,5 @@
 ﻿using HES.Core.Models.API;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces

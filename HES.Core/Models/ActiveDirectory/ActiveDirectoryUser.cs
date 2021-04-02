@@ -1,5 +1,5 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Accounts;
 using System.Collections.Generic;
 
 namespace HES.Core.Models.ActiveDirectory

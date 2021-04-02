@@ -1,6 +1,6 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Helpers;
-using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.AppUsers;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;

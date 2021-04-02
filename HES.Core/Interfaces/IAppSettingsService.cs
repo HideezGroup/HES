@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Web.AppSettings;
+﻿using HES.Core.Models.AppSettings;
 using System;
 using System.Threading.Tasks;
 

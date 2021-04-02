@@ -1,5 +1,5 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Models.Web.SoftwareVault;
+using HES.Core.Models.SoftwareVault;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;

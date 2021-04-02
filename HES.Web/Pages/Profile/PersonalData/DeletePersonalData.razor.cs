@@ -2,7 +2,7 @@
 using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Helpers;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;

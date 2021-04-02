@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Web.Breadcrumb;
+﻿using HES.Core.Models.Breadcrumb;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

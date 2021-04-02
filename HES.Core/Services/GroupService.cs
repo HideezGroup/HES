@@ -1,10 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.Group;
-using HES.Core.Models.Web.Groups;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Groups;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

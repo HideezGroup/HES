@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppSettings;
-using HES.Core.Models.Web.SoftwareVault;
+using HES.Core.Models.AppSettings;
+using HES.Core.Models.SoftwareVault;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

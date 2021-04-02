@@ -1,8 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppSettings;
-using HES.Core.Models.Web.SoftwareVault;
+using HES.Core.Models.AppSettings;
+using HES.Core.Models.SoftwareVault;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

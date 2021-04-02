@@ -1,5 +1,5 @@
 ﻿using HES.Core.Interfaces;
-using HES.Core.Models.Web.Audit;
+using HES.Core.Models.Audit;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Web.SharedAccounts;
+﻿using HES.Core.Models.SharedAccounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;

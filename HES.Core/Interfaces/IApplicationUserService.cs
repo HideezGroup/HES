@@ -1,11 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Models.API;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.AppUsers;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.Identity;
-using HES.Core.Models.Web.Users;
+using HES.Core.Models.AppUsers;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Identity;
+using HES.Core.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

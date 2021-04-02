@@ -1,6 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Models.ActiveDirectory;
-using HES.Core.Models.Web.AppSettings;
+using HES.Core.Models.AppSettings;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

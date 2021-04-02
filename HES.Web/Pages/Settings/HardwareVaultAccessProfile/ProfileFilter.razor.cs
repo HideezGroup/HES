@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Web.HardwareVaults;
+﻿using HES.Core.Models.HardwareVaults;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;

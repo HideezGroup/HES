@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.AppSettings;
+using HES.Core.Models.Accounts;
+using HES.Core.Models.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;

@@ -1,5 +1,5 @@
 ﻿using HES.Core.Interfaces;
-using HES.Core.Models.Web.Workstations;
+using HES.Core.Models.Workstations;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;

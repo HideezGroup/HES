@@ -1,5 +1,5 @@
 ﻿using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppSettings;
+using HES.Core.Models.AppSettings;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
 using Microsoft.Extensions.Logging;

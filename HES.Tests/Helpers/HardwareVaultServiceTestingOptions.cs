@@ -1,13 +1,10 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.HardwareVaults;
-using System;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.HardwareVaults;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace HES.Tests.Helpers
 {

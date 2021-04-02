@@ -1,7 +1,7 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppSettings;
+using HES.Core.Models.AppSettings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;

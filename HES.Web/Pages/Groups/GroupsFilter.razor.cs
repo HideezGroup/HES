@@ -1,5 +1,4 @@
-﻿using HES.Core.Models.Web.Group;
-using HES.Web.Components;
+﻿using HES.Core.Models.Groups;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;

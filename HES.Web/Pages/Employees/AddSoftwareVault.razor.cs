@@ -1,7 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppSettings;
+using HES.Core.Models.AppSettings;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System;

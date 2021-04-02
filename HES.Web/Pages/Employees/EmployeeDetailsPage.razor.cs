@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.Accounts;
+using HES.Core.Models.AppUsers;
 using HES.Web.Components;
 using LdapForNet;
 using Microsoft.AspNetCore.Components;

@@ -1,8 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.HardwareVaults;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.HardwareVaults;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using System;

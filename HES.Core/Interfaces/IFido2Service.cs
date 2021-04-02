@@ -1,7 +1,7 @@
 ﻿using Fido2NetLib;
 using HES.Core.Entities;
 using HES.Core.Models.API;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Threading.Tasks;
