@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace HES.Core.Constants
 {
@@ -6,6 +7,9 @@ namespace HES.Core.Constants
     {
         // Server Version
         public static string Version => Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+        public static string Copyright => $"© {DateTime.Today.Year} Hideez Group Inc.";
+
+        public const string ServerName = "Hideez Enterprise Server";
 
         // Hardware Vault default profile id
         public const string DefaulHardwareVaultProfileId = "default";
