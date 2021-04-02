@@ -21,7 +21,7 @@ namespace HES.Web.Pages.Groups
 
         public Group Group = new Group();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override void OnInitialized()
         {
@@ -32,7 +32,7 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     await GroupService.CreateGroupAsync(Group);
                     await ToastService.ShowToastAsync("Group created.", ToastType.Success);               

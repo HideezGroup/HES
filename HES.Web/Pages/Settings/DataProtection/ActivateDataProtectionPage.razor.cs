@@ -19,7 +19,7 @@ namespace HES.Web.Pages.Settings.DataProtection
 
         public InputModel Input { get; set; } = new InputModel();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override void OnInitialized()
         {
@@ -33,7 +33,7 @@ namespace HES.Web.Pages.Settings.DataProtection
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     var result = await DataProtectionService.ActivateProtectionAsync(Input.Password);
                     if (!result)

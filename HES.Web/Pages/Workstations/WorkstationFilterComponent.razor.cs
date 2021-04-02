@@ -13,7 +13,7 @@ namespace HES.Web.Pages.Workstations
         [Parameter] public Func<WorkstationFilter, Task> FilterChanged { get; set; }
 
         public WorkstationFilter Filter { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override void OnInitialized()
         {
@@ -22,7 +22,7 @@ namespace HES.Web.Pages.Workstations
 
         private async Task FilteredAsync()
         {
-            await ButtonSpinner.SpinAsync(async () =>
+            await Button.SpinAsync(async () =>
             {
                 await FilterChanged.Invoke(Filter);
             });

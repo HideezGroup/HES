@@ -341,7 +341,7 @@ else
                 <label class="control-label text-gray">You can send the code to the email</label>
                 <div class="input-group form-group">
                     <input type="text" class="form-control text-navyblue" @bind="Email" />
-                    <ButtonSpinner Class="btn btn-outline-primary" Text="Send email" Callback="SendEmailAsync" />
+                    <Button class="btn btn-outline-primary" Text="Send email" OnClick="SendEmailAsync" />
                 </div>
                 <label class="control-label text-gray">Activation code</label>
                 <div class="input-group form-group">

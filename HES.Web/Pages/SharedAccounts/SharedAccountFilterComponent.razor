@@ -23,8 +23,8 @@ else
                 <InputText class="form-control" @bind-Value="Filter.Login" />
             </div>
             <div class="col align-self-end text-end form-group">
-                <ButtonSpinner Text="Clear" Class="btn btn-secondary" Callback="ClearAsync"/>
-                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Filter" Class="btn btn-primary" />
+                <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync"/>
+                <Button @ref="Button" type="submit" Text="Filter" class="btn btn-primary" />
             </div>
         </div>
     </EditForm>

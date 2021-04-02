@@ -11,11 +11,11 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
         [Parameter] public Func<HardwareVaultProfileFilter, Task> FilterChanged { get; set; }
 
         public HardwareVaultProfileFilter Filter { get; set; } = new HardwareVaultProfileFilter();
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         private async Task FilteredAsync()
         {
-            await ButtonSpinner.SpinAsync(async () =>
+            await Button.SpinAsync(async () =>
             {
                 await FilterChanged.Invoke(Filter);
             });
