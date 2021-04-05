@@ -36,7 +36,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (PageId == exceptPageId)
                 return;
 
-            await InvokeAsync(async () =>
+            await InvokeAsync(() =>
             {
                 ProtectionStatus();
                 StateHasChanged();

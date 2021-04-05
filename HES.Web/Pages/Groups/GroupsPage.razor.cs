@@ -13,9 +13,7 @@ namespace HES.Web.Pages.Groups
     {
         public IGroupService GroupService { get; set; }
         //public IMainTableService<Group, GroupFilter> MainTableService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
         //[Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<GroupsPage> Logger { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -39,17 +37,17 @@ namespace HES.Web.Pages.Groups
             }
         }
 
-        private async Task UpdateGroupsPage(string exceptPageId)
-        {
-            //if (PageId == exceptPageId)
-            //    return;
+        //private async Task UpdateGroupsPage(string exceptPageId)
+        //{
+        //    //if (PageId == exceptPageId)
+        //    //    return;
 
-            await InvokeAsync(async () =>
-            {
-                //await MainTableService.LoadTableDataAsync();
-                StateHasChanged();
-            });
-        }
+        //    await InvokeAsync(async () =>
+        //    {
+        //        //await MainTableService.LoadTableDataAsync();
+        //        StateHasChanged();
+        //    });
+        //}
 
         private Task NavigateToGroupDetails()
         {
@@ -57,55 +55,55 @@ namespace HES.Web.Pages.Groups
             return Task.CompletedTask;
         }
 
-        private async Task OpenModalAddGroupAsync()
-        {
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(AddGroup));
-                //builder.AddAttribute(1, "ExceptPageId", PageId);
-                builder.CloseComponent();
-            };
+        //private async Task OpenModalAddGroupAsync()
+        //{
+        //    RenderFragment body = (builder) =>
+        //    {
+        //        builder.OpenComponent(0, typeof(AddGroup));
+        //        //builder.AddAttribute(1, "ExceptPageId", PageId);
+        //        builder.CloseComponent();
+        //    };
 
-            //await ModalDialogService.ShowAsync("Add group", body);
-        }
+        //    //await ModalDialogService.ShowAsync("Add group", body);
+        //}
 
-        private async Task OpenModalCreateGroupAsync()
-        {
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(CreateGroup));
-                //builder.AddAttribute(1, "ExceptPageId", PageId);
-                builder.CloseComponent();
-            };
+        //private async Task OpenModalCreateGroupAsync()
+        //{
+        //    RenderFragment body = (builder) =>
+        //    {
+        //        builder.OpenComponent(0, typeof(CreateGroup));
+        //        //builder.AddAttribute(1, "ExceptPageId", PageId);
+        //        builder.CloseComponent();
+        //    };
 
-            //await ModalDialogService.ShowAsync("Create group", body);
-        }
+        //    //await ModalDialogService.ShowAsync("Create group", body);
+        //}
 
-        private async Task OpenModalEditGroupAsync()
-        {
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(EditGroup));
-                //builder.AddAttribute(1, nameof(DeleteGroup.GroupId), MainTableService.SelectedEntity.Id);
-                //builder.AddAttribute(2, "ExceptPageId", PageId);
-                builder.CloseComponent();
-            };
+        //private async Task OpenModalEditGroupAsync()
+        //{
+        //    RenderFragment body = (builder) =>
+        //    {
+        //        builder.OpenComponent(0, typeof(EditGroup));
+        //        //builder.AddAttribute(1, nameof(DeleteGroup.GroupId), MainTableService.SelectedEntity.Id);
+        //        //builder.AddAttribute(2, "ExceptPageId", PageId);
+        //        builder.CloseComponent();
+        //    };
 
-            //await ModalDialogService.ShowAsync("Edit group", body);
-        }
+        //    //await ModalDialogService.ShowAsync("Edit group", body);
+        //}
 
-        private async Task OpenModalDeleteGroupAsync()
-        {
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(DeleteGroup));
-                //builder.AddAttribute(1, nameof(DeleteGroup.GroupId), MainTableService.SelectedEntity.Id);
-                //builder.AddAttribute(2, "ExceptPageId", PageId);
-                builder.CloseComponent();
-            };
+        //private async Task OpenModalDeleteGroupAsync()
+        //{
+        //    RenderFragment body = (builder) =>
+        //    {
+        //        builder.OpenComponent(0, typeof(DeleteGroup));
+        //        //builder.AddAttribute(1, nameof(DeleteGroup.GroupId), MainTableService.SelectedEntity.Id);
+        //        //builder.AddAttribute(2, "ExceptPageId", PageId);
+        //        builder.CloseComponent();
+        //    };
 
-            //await ModalDialogService.ShowAsync("Delete group", body);
-        }
+        //    //await ModalDialogService.ShowAsync("Delete group", body);
+        //}
 
         public void Dispose()
         {

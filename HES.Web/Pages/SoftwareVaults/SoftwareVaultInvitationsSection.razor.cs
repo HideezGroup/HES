@@ -36,11 +36,11 @@ namespace HES.Web.Pages.SoftwareVaults
 
         #endregion
 
-        protected override async Task OnInitializedAsync()
-        {
-            SoftwareVaultService = ScopedServices.GetRequiredService<ISoftwareVaultService>();
-            //await LoadTableDataAsync();   
-        }
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    SoftwareVaultService = ScopedServices.GetRequiredService<ISoftwareVaultService>();
+        //    //await LoadTableDataAsync();   
+        //}
 
         //private async Task OpenDialogResendInvitationAsync()
         //{            

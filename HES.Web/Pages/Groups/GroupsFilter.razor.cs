@@ -17,13 +17,13 @@ namespace HES.Web.Pages.Groups
             Initialized = true;
         }
 
-        private async Task FilterAsync()
-        {
-            //await ButtonSpinner.SpinAsync(async () =>
-            //{
-            //    await FilterChanged.Invoke(Filter);
-            //});
-        }
+        //private async Task FilterAsync()
+        //{
+        //    //await ButtonSpinner.SpinAsync(async () =>
+        //    //{
+        //    //    await FilterChanged.Invoke(Filter);
+        //    //});
+        //}
 
         private async Task ClearAsync()
         {

@@ -14,10 +14,6 @@ namespace HES.Web.Pages.Groups
     public partial class GroupDetails : HESPageBase, IDisposable
     {
         public IGroupService GroupService { get; set; }
-        //public IMainTableService<GroupMembership, GroupMembershipFilter> MainTableService { get; set; }
-        //[Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] public IBreadcrumbsService BreadcrumbsService { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
         [Inject] public ILogger<GroupDetails> Logger { get; set; }
         [Parameter] public string GroupId { get; set; }
 
@@ -45,17 +41,17 @@ namespace HES.Web.Pages.Groups
             }
         }
 
-        private async Task UpdateGroupDetailsPage(string exceptPageId, string groupId)
-        {
-            //if (Group.Id != groupId || PageId == exceptPageId)
-            //    return;
+        //private async Task UpdateGroupDetailsPage(string exceptPageId, string groupId)
+        //{
+        //    //if (Group.Id != groupId || PageId == exceptPageId)
+        //    //    return;
 
-            await InvokeAsync(async () =>
-            {      
-                //await MainTableService.LoadTableDataAsync();
-                StateHasChanged();
-            });
-        }
+        //    await InvokeAsync(async () =>
+        //    {      
+        //        //await MainTableService.LoadTableDataAsync();
+        //        StateHasChanged();
+        //    });
+        //}
 
         private async Task LoadGroupAsync()
         {
@@ -65,32 +61,32 @@ namespace HES.Web.Pages.Groups
             StateHasChanged();
         }
 
-        private async Task OpenModalAddEmployeesAsync()
-        {
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(AddEmployee));
-                //builder.AddAttribute(1, "ExceptPageId", PageId);
-                builder.AddAttribute(2, "GroupId", GroupId);
-                builder.CloseComponent();
-            };
+        //private async Task OpenModalAddEmployeesAsync()
+        //{
+        //    RenderFragment body = (builder) =>
+        //    {
+        //        builder.OpenComponent(0, typeof(AddEmployee));
+        //        //builder.AddAttribute(1, "ExceptPageId", PageId);
+        //        builder.AddAttribute(2, "GroupId", GroupId);
+        //        builder.CloseComponent();
+        //    };
 
-            //await ModalDialogService.ShowAsync("Add Employees", body, ModalDialogSize.Large);
-        }
+        //    //await ModalDialogService.ShowAsync("Add Employees", body, ModalDialogSize.Large);
+        //}
 
-        private async Task OpenModalDeleteEmployeeAsync()
-        {
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(RemoveEmployee));
-                //builder.AddAttribute(1, "ExceptPageId", PageId);
-                builder.AddAttribute(2, "GroupId", GroupId);
-                //builder.AddAttribute(3, "EmployeeId", MainTableService.SelectedEntity.EmployeeId);
-                builder.CloseComponent();
-            };
+        //private async Task OpenModalDeleteEmployeeAsync()
+        //{
+        //    RenderFragment body = (builder) =>
+        //    {
+        //        builder.OpenComponent(0, typeof(RemoveEmployee));
+        //        //builder.AddAttribute(1, "ExceptPageId", PageId);
+        //        builder.AddAttribute(2, "GroupId", GroupId);
+        //        //builder.AddAttribute(3, "EmployeeId", MainTableService.SelectedEntity.EmployeeId);
+        //        builder.CloseComponent();
+        //    };
 
-            //await ModalDialogService.ShowAsync("Delete Employee", body);
-        }
+        //    //await ModalDialogService.ShowAsync("Delete Employee", body);
+        //}
 
         public void Dispose()
         {

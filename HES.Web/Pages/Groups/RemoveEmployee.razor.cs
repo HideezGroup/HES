@@ -14,8 +14,6 @@ namespace HES.Web.Pages.Groups
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<RemoveEmployee> Logger { get; set; }
-        //[Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string GroupId { get; set; }
         [Parameter] public string EmployeeId { get; set; }

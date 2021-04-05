@@ -27,10 +27,10 @@ namespace HES.Web.Pages.SoftwareVaults
 
         #endregion
 
-        protected override async Task OnInitializedAsync()
-        {
-            //await LoadTableDataAsync();
-        }
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    //await LoadTableDataAsync();
+        //}
 
         #region MainTable
 

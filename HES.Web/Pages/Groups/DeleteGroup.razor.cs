@@ -15,8 +15,6 @@ namespace HES.Web.Pages.Groups
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<DeleteGroup> Logger { get; set; }
-        //[Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string GroupId { get; set; }
