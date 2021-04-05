@@ -39,7 +39,7 @@ namespace HES.Web.Pages.Templates
             }
         }
 
-        private async Task UpdateTemplatesPage(string exceptPageId, string userName)
+        private async Task UpdateTemplatesPage(string exceptPageId)
         {
 
             if (PageId == exceptPageId)
@@ -48,7 +48,6 @@ namespace HES.Web.Pages.Templates
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
 

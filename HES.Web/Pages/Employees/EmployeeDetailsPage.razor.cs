@@ -59,7 +59,7 @@ namespace HES.Web.Pages.Employees
 
         #region Page update
 
-        private async Task UpdateEmployeeDetailsPage(string exceptPageId, string employeeId, string userName)
+        private async Task UpdateEmployeeDetailsPage(string exceptPageId, string employeeId)
         {
             if (Employee.Id != employeeId || PageId == exceptPageId)
                 return;
@@ -68,7 +68,6 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }

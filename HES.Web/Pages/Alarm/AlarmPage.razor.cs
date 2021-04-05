@@ -46,7 +46,7 @@ namespace HES.Web.Pages.Alarm
             }
         }
 
-        private async Task UpdateAlarmPage(string exceptPageId, string userName)
+        private async Task UpdateAlarmPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -54,7 +54,6 @@ namespace HES.Web.Pages.Alarm
             await InvokeAsync(async () =>
             {
                 await GetAlarmStateAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }

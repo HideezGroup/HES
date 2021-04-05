@@ -1,5 +1,4 @@
-﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
+﻿using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -37,15 +36,12 @@ namespace HES.Web.Pages.Settings.Parameters
             }
         }
 
-        private async Task UpdateParametersPage(string exceptPageId, string userName)
+        private async Task UpdateParametersPage(string exceptPageId)
         {
             await InvokeAsync(async () =>
             {
                 await LoadDataSettingsAsync();
                 StateHasChanged();
-
-                if (PageId != exceptPageId)
-                    await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
             });
         }
 
@@ -80,7 +76,7 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateParameters(PageId);
             }
         }
 
@@ -105,7 +101,7 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateParameters(PageId);
             }
         }
 
@@ -124,7 +120,7 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateParameters(PageId);
             }
         }
 

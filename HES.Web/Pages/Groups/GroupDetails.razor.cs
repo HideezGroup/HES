@@ -45,7 +45,7 @@ namespace HES.Web.Pages.Groups
             }
         }
 
-        private async Task UpdateGroupDetailsPage(string exceptPageId, string groupId, string userName)
+        private async Task UpdateGroupDetailsPage(string exceptPageId, string groupId)
         {
             //if (Group.Id != groupId || PageId == exceptPageId)
             //    return;
@@ -53,7 +53,6 @@ namespace HES.Web.Pages.Groups
             await InvokeAsync(async () =>
             {      
                 //await MainTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }

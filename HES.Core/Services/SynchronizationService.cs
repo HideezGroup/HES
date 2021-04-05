@@ -1,5 +1,4 @@
 ﻿using HES.Core.Interfaces;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 
@@ -7,48 +6,39 @@ namespace HES.Core.Services
 {
     public class SynchronizationService : ISynchronizationService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public event Func<string, string, Task> UpdateAlarmPage;
-        public event Func<string, string, Task> UpdateEmployeePage;
-        public event Func<string, string, string, Task> UpdateEmployeeDetailsPage;
-        public event Func<string, string, Task> UpdateGroupsPage;
-        public event Func<string, string, string, Task> UpdateGroupDetailsPage;
-        public event Func<string, string, Task> UpdateHardwareVaultsPage;
+        public event Func<string, Task> UpdateAlarmPage;
+        public event Func<string, Task> UpdateEmployeePage;
+        public event Func<string, string, Task> UpdateEmployeeDetailsPage;
+        public event Func<string, Task> UpdateGroupsPage;
+        public event Func<string, string, Task> UpdateGroupDetailsPage;
+        public event Func<string, Task> UpdateHardwareVaultsPage;
         public event Func<string, Task> UpdateHardwareVaultState;
-        public event Func<string, string, Task> UpdateTemplatesPage;
-        public event Func<string, string, Task> UpdateSharedAccountsPage;
-        public event Func<string, string, Task> UpdateWorkstationsPage;
-        public event Func<string, string, string, Task> UpdateWorkstationDetailsPage;
-        public event Func<string, string, Task> UpdateDataProtectionPage;
-        public event Func<string, string, Task> UpdateAdministratorsPage;
+        public event Func<string, Task> UpdateTemplatesPage;
+        public event Func<string, Task> UpdateSharedAccountsPage;
+        public event Func<string, Task> UpdateWorkstationsPage;
+        public event Func<string, string, Task> UpdateWorkstationDetailsPage;
+        public event Func<string, Task> UpdateDataProtectionPage;
+        public event Func<string, Task> UpdateAdministratorsPage;
         public event Func<Task> UpdateAdministratorStatePage;
-        public event Func<string, string, Task> UpdateHardwareVaultProfilesPage;
-        public event Func<string, string, Task> UpdateLicensesPage;
-        public event Func<string, string, Task> UpdateParametersPage;
-        public event Func<string, string, Task> UpdateOrgSructureCompaniesPage;
-        public event Func<string, string, Task> UpdateOrgSructurePositionsPage;
-
-        public SynchronizationService(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        private async Task InvokeEventAsync(Func<string, string, Task> func, string exceptPageId)
+        public event Func<string, Task> UpdateHardwareVaultProfilesPage;
+        public event Func<string, Task> UpdateLicensesPage;
+        public event Func<string, Task> UpdateParametersPage;
+        public event Func<string, Task> UpdateOrgSructureCompaniesPage;
+        public event Func<string, Task> UpdateOrgSructurePositionsPage;
+              
+        private async Task InvokeEventAsync(Func<string, Task> func, string exceptPageId)
         {
             if (func != null)
             {
-                var userName = _httpContextAccessor.HttpContext.User.Identity.Name;
-                await func.Invoke(exceptPageId, userName);
+                await func.Invoke(exceptPageId);
             }
         }
 
-        private async Task InvokeEventAsync(Func<string, string, string, Task> func, string exceptPageId, string entityId)
+        private async Task InvokeEventAsync(Func<string, string, Task> func, string exceptPageId, string entityId)
         {
             if (func != null)
             {
-                var userName = _httpContextAccessor.HttpContext.User.Identity.Name;
-                await func.Invoke(exceptPageId, entityId, userName);
+                await func.Invoke(exceptPageId, entityId);
             }
         }
 

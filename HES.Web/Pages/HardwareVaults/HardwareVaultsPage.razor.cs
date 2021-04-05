@@ -63,7 +63,7 @@ namespace HES.Web.Pages.HardwareVaults
         }
 
 
-        private async Task UpdateHardwareVaultsPage(string exceptPageId, string userName)
+        private async Task UpdateHardwareVaultsPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -71,7 +71,6 @@ namespace HES.Web.Pages.HardwareVaults
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }

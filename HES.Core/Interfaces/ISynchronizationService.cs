@@ -5,25 +5,25 @@ namespace HES.Core.Interfaces
 {
     public interface ISynchronizationService
     {
-        event Func<string, string, Task> UpdateAlarmPage;
-        event Func<string, string, Task> UpdateEmployeePage;
-        event Func<string, string, string, Task> UpdateEmployeeDetailsPage;
-        event Func<string, string, Task> UpdateGroupsPage;
-        event Func<string, string, string, Task> UpdateGroupDetailsPage;
-        event Func<string, string, Task> UpdateHardwareVaultsPage;
+        event Func<string, Task> UpdateAlarmPage;
+        event Func<string, Task> UpdateEmployeePage;
+        event Func<string, string, Task> UpdateEmployeeDetailsPage;
+        event Func<string, Task> UpdateGroupsPage;
+        event Func<string, string, Task> UpdateGroupDetailsPage;
+        event Func<string, Task> UpdateHardwareVaultsPage;
         event Func<string, Task> UpdateHardwareVaultState;
-        event Func<string, string, Task> UpdateTemplatesPage; 
-        event Func<string, string, Task> UpdateSharedAccountsPage;
-        event Func<string, string, Task> UpdateWorkstationsPage;
-        event Func<string, string, string, Task> UpdateWorkstationDetailsPage;
-        event Func<string, string, Task> UpdateDataProtectionPage;
-        event Func<string, string, Task> UpdateAdministratorsPage;
+        event Func<string, Task> UpdateTemplatesPage; 
+        event Func<string, Task> UpdateSharedAccountsPage;
+        event Func<string, Task> UpdateWorkstationsPage;
+        event Func<string, string, Task> UpdateWorkstationDetailsPage;
+        event Func<string, Task> UpdateDataProtectionPage;
+        event Func<string, Task> UpdateAdministratorsPage;
         event Func<Task> UpdateAdministratorStatePage;
-        event Func<string, string, Task> UpdateHardwareVaultProfilesPage;
-        event Func<string, string, Task> UpdateLicensesPage;
-        event Func<string, string, Task> UpdateParametersPage;
-        event Func<string, string, Task> UpdateOrgSructureCompaniesPage;
-        event Func<string, string, Task> UpdateOrgSructurePositionsPage;
+        event Func<string, Task> UpdateHardwareVaultProfilesPage;
+        event Func<string, Task> UpdateLicensesPage;
+        event Func<string, Task> UpdateParametersPage;
+        event Func<string, Task> UpdateOrgSructureCompaniesPage;
+        event Func<string, Task> UpdateOrgSructurePositionsPage;
 
         Task UpdateAlarm(string exceptPageId);
         Task UpdateEmployees(string exceptPageId);

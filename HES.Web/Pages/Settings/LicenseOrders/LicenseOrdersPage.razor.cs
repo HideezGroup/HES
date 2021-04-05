@@ -1,5 +1,4 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.LicenseOrders;
 using HES.Web.Components;
@@ -39,7 +38,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             }
         }
 
-        private async Task UpdateLicensesPage(string exceptPageId, string userName)
+        private async Task UpdateLicensesPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -47,7 +46,6 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -66,7 +64,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateLicenses(PageId);
             }
         }
 
@@ -85,7 +83,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateLicenses(PageId);
             }
         }
 
@@ -104,7 +102,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateLicenses(PageId);
             }
         }
 
@@ -123,7 +121,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateLicenses(PageId);
             }
         }
 
@@ -142,7 +140,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateLicenses(PageId);
             }
         }
 

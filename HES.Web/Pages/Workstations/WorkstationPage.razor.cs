@@ -1,6 +1,5 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
-using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Workstations;
 using HES.Web.Components;
@@ -50,7 +49,7 @@ namespace HES.Web.Pages.Workstations
             }
         }
 
-        private async Task UpdateWorkstationsPage(string exceptPageId, string userName)
+        private async Task UpdateWorkstationsPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -58,7 +57,6 @@ namespace HES.Web.Pages.Workstations
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -78,7 +76,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateWorkstations(PageId);
             }
         }
 
@@ -97,7 +95,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateWorkstations(PageId);
             }
         }
 
@@ -116,7 +114,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateWorkstations(PageId);
             }
         }
 
@@ -143,7 +141,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateWorkstations(PageId);
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.Workstations;
 using HES.Web.Components;
@@ -18,7 +17,7 @@ namespace HES.Web.Pages.Workstations
         [Inject] public ILogger<WorkstationDetailsPage> Logger { get; set; }
         [Parameter] public string WorkstationId { get; set; }
 
-        public Workstation Workstation { get; set; }   
+        public Workstation Workstation { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -39,15 +38,14 @@ namespace HES.Web.Pages.Workstations
             }
         }
 
-        private async Task UpdateWorkstationDetailsPage(string exceptPageId, string workstationId, string userName)
+        private async Task UpdateWorkstationDetailsPage(string exceptPageId, string workstationId)
         {
             if (Workstation.Id != workstationId || PageId == exceptPageId)
                 return;
 
             await InvokeAsync(async () =>
-            {     
+            {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -74,7 +72,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateWorkstationDetails(PageId, WorkstationId);
             }
         }
 
@@ -94,7 +92,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateWorkstationDetails(PageId, WorkstationId);
             }
         }
 

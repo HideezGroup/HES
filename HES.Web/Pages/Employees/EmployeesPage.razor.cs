@@ -122,7 +122,7 @@ namespace HES.Web.Pages.Employees
             }
         }
 
-        private async Task UpdateEmployeePage(string exceptPageId, string userName)
+        private async Task UpdateEmployeePage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -130,7 +130,6 @@ namespace HES.Web.Pages.Employees
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }

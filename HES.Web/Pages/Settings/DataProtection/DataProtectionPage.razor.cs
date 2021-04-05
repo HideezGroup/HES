@@ -1,5 +1,4 @@
-﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
+﻿using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -32,7 +31,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             }
         }
 
-        private async Task UpdateDataProtectionPage(string exceptPageId, string userName)
+        private async Task UpdateDataProtectionPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -40,7 +39,6 @@ namespace HES.Web.Pages.Settings.DataProtection
             await InvokeAsync(async () =>
             {
                 ProtectionStatus();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -65,7 +63,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateDataProtection(PageId);
             }
         }
 
@@ -83,7 +81,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateDataProtection(PageId);
             }
         }
 
@@ -101,7 +99,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await SynchronizationService.UpdateDataProtection(PageId);
             }
         }
 
