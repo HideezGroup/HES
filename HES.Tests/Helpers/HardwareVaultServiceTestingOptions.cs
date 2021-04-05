@@ -1,8 +1,10 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.HardwareVaults;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -62,7 +64,9 @@ namespace HES.Tests.Helpers
                     Model = "ST102",
                     RFID = $"{i}{i}{i}",
                     Firmware = "3.5.2",
-                    HardwareVaultProfileId = ServerConstants.DefaulHardwareVaultProfileId
+                    HardwareVaultProfileId = ServerConstants.DefaulHardwareVaultProfileId,
+                    Status = VaultStatus.Ready,
+                    ImportedAt = DateTime.Now
                 };
 
                 TestingHardwareVaults.Add(hardwareVault);
