@@ -1,4 +1,5 @@
 ﻿using HES.Core.Entities;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.LicenseOrders;
 using HES.Web.Components;
@@ -48,6 +49,22 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 await DataTableService.LoadTableDataAsync();
                 StateHasChanged();
             });
+        }
+
+        private async Task UpdateLicenseInfoAsync()
+        {
+            try
+            {
+                await LicenseService.UpdateLicenseOrdersAsync();
+                await LicenseService.UpdateHardwareVaultsLicenseStatusAsync();
+                await DataTableService.LoadTableDataAsync();
+                await ToastService.ShowToastAsync("License info updated.", ToastType.Success);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+            }
         }
 
         private async Task CreateLicenseOrderAsync()
