@@ -19,9 +19,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Rsk.Saml.Configuration;
@@ -95,7 +93,8 @@ namespace HES.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add Services
+            #region Services
+
             services.AddScoped(typeof(IAsyncRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IDataTableService<,>), typeof(DataTableService<,>));
             services.AddScoped<IDashboardService, DashboardService>();
@@ -125,7 +124,6 @@ namespace HES.Web
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
             services.AddSingleton<ISynchronizationService, SynchronizationService>();
 
@@ -144,7 +142,16 @@ namespace HES.Web
             services.AddSignalR();
             services.AddMemoryCache();
 
-            // Cookie
+            #endregion
+
+            #region Configuration
+
+            services.Configure<Fido2Configuration>(Configuration.GetSection("Fido2"));
+
+            #endregion
+
+            #region Cookie
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -163,74 +170,6 @@ namespace HES.Web
                     IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
                 };
             });
-
-            // Dismiss strong password
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 3;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequireNonAlphanumeric = false;
-
-                // Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.AllowedForNewUsers = true;
-            });
-
-            services.Configure<Fido2Configuration>(Configuration.GetSection("Fido2"));
-
-            // Database
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
-                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
-
-            // Identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders()
-                .AddTokenProvider<RegisterSecurityKeyTokenProvider<ApplicationUser>>(RegisterSecurityKeyTokenConstants.TokenName);
-
-            // IDP
-            if (Saml2pEnabled)
-            {
-                services.AddIdentityServer(options =>
-                {
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.UserInteraction.LoginUrl = "/sso";
-                    options.UserInteraction.LogoutUrl = "/slo";
-                })
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddInMemoryIdentityResources(SamlConfig.GetIdentityResources())
-                .AddInMemoryApiResources(SamlConfig.GetApis())
-                .AddInMemoryClients(SamlConfig.GetClients(Configuration))
-                .AddSigningCredential(SamlConfig.GetCertificate(Configuration))
-                .AddSamlPlugin(options =>
-                {
-                    options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
-                    options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
-                    options.WantAuthenticationRequestsSigned = false;
-                    options.UseLegacyRsaEncryption = false;
-                })
-                .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
-                .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
-            }
-
-            // Auth policy
-            services.AddAuthorization(config =>
-                        {
-                            config.AddPolicy("RequireAdministratorRole",
-                                policy => policy.RequireRole("Administrator"));
-                            config.AddPolicy("RequireUserRole",
-                                policy => policy.RequireRole("User"));
-                        });
 
             // Override OnRedirectToLogin via API
             services.ConfigureApplicationCookie(config =>
@@ -265,14 +204,74 @@ namespace HES.Web
                 };
             });
 
-            // Mvc
-            services.AddMvc()
-                .AddRazorPagesOptions(options =>
-                {
-                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage", "RequireAdministratorRole");
-                })
-                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            #endregion
 
+            #region Database
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
+
+            #endregion
+
+            #region Identity
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<RegisterSecurityKeyTokenProvider<ApplicationUser>>(RegisterSecurityKeyTokenConstants.TokenName);
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireNonAlphanumeric = false;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+            });
+
+            #endregion
+
+            #region SAML
+
+            if (Saml2pEnabled)
+            {
+                services.AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.UserInteraction.LoginUrl = "/sso";
+                    options.UserInteraction.LogoutUrl = "/slo";
+                })
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddInMemoryIdentityResources(SamlConfig.GetIdentityResources())
+                .AddInMemoryApiResources(SamlConfig.GetApis())
+                .AddInMemoryClients(SamlConfig.GetClients(Configuration))
+                .AddSigningCredential(SamlConfig.GetCertificate(Configuration))
+                .AddSamlPlugin(options =>
+                {
+                    options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
+                    options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
+                    options.WantAuthenticationRequestsSigned = false;
+                    options.UseLegacyRsaEncryption = false;
+                })
+                .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
+                .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
+            }
+
+            #endregion
+
+            services.AddMvc().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
             services.AddRazorPages();
             services.AddServerSideBlazor();
