@@ -148,7 +148,7 @@ namespace HES.Web.Pages.Identity
 
                     if (response.Succeeded)
                     {
-                        NavigationManager.NavigateTo(Routes.Dashboard, true);
+                        NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard, true);
                         return;
                     }
 
