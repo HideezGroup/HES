@@ -1,79 +1,81 @@
 ﻿@*@page "/groups/details/{GroupId}"*@
+@layout MainLayout
 @inherits HESPageBase
+@attribute [Authorize(Roles = ApplicationRoles.Admin)]
 
 @if (Initialized)
 {
     @*<div class="d-flex justify-content-between align-items-center details-card mb-2">
-        <h1 class="text-navyblue text-break m-0 px-3">@Group.Name</h1>
-    </div>
-    <div class="d-flex flex-column details-card mb-3">
-        <div class="ps-3"><span class="fw-bold">Email: </span>@Group.Email</div>
-        <div class="ps-3"><span class="fw-bold">Description: </span>@Group.Description</div>
-        <div class="ps-3">
-            <span class="fw-bold">Auto AD password change: </span>
-            @if (Group.ChangePasswordWhenExpired)
-            {
-                <span class="badge bg-success custom-badge">
-                    Enabled
-                </span>
-            }
-            else
-            {
-                <span class="badge bg-secondary custom-badge">
-                    Disabled
-                </span>
-            }
+            <h1 class="text-navyblue text-break m-0 px-3">@Group.Name</h1>
         </div>
-    </div>*@
+        <div class="d-flex flex-column details-card mb-3">
+            <div class="ps-3"><span class="fw-bold">Email: </span>@Group.Email</div>
+            <div class="ps-3"><span class="fw-bold">Description: </span>@Group.Description</div>
+            <div class="ps-3">
+                <span class="fw-bold">Auto AD password change: </span>
+                @if (Group.ChangePasswordWhenExpired)
+                {
+                    <span class="badge bg-success custom-badge">
+                        Enabled
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary custom-badge">
+                        Disabled
+                    </span>
+                }
+            </div>
+        </div>*@
     @*<TableAction>
-        <ActionButtons>
-            <button type="button" class="btn btn-primary my-1 me-2 text-nowrap" @onclick="OpenModalAddEmployeesAsync">
-                Add Employee
-            </button>
-            @if (MainTableService.SelectedEntity != null)
-            {
-                <button type="button" class="btn btn-light border my-1 me-2" title="Delete Group" @onclick="OpenModalDeleteEmployeeAsync">
-                    <img class="icon-btn" src="/svg/icon-delete.svg" />
-                    Delete
+            <ActionButtons>
+                <button type="button" class="btn btn-primary my-1 me-2 text-nowrap" @onclick="OpenModalAddEmployeesAsync">
+                    Add Employee
                 </button>
-            }
-        </ActionButtons>
-        <FilterButtons>
-            <TableFilter EnableFilterButton="false" SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-        </FilterButtons>
-    </TableAction>
-    <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" Loading="MainTableService.Loading">
-        <TableHeader>
-            <MainTableHeader Title="Employee"
-                             TitleWidth="50"
-                             SortColumn="@nameof(Group.Name)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Email"
-                             TitleWidth="50"
-                             SortColumn="@nameof(Group.Email)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-        </TableHeader>
-        <TableRow>
-            <td>
-                @context.Employee.FullName
-            </td>
-            <td>
-                @context.Employee.Email
-            </td>
-        </TableRow>
-    </MainTable>
-    <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                TotalRecords="MainTableService.TotalRecords"
-                CurrentPage="MainTableService.CurrentPage"
-                DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />*@
+                @if (MainTableService.SelectedEntity != null)
+                {
+                    <button type="button" class="btn btn-light border my-1 me-2" title="Delete Group" @onclick="OpenModalDeleteEmployeeAsync">
+                        <img class="icon-btn" src="/svg/icon-delete.svg" />
+                        Delete
+                    </button>
+                }
+            </ActionButtons>
+            <FilterButtons>
+                <TableFilter EnableFilterButton="false" SearchTextChanged="MainTableService.SearchTextChangedAsync" />
+            </FilterButtons>
+        </TableAction>
+        <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" Loading="MainTableService.Loading">
+            <TableHeader>
+                <MainTableHeader Title="Employee"
+                                 TitleWidth="50"
+                                 SortColumn="@nameof(Group.Name)"
+                                 CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
+                                 CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
+                                 SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
+                                 SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
+                <MainTableHeader Title="Email"
+                                 TitleWidth="50"
+                                 SortColumn="@nameof(Group.Email)"
+                                 CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
+                                 CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
+                                 SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
+                                 SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
+            </TableHeader>
+            <TableRow>
+                <td>
+                    @context.Employee.FullName
+                </td>
+                <td>
+                    @context.Employee.Email
+                </td>
+            </TableRow>
+        </MainTable>
+        <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
+                    DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
+                    TotalRecords="MainTableService.TotalRecords"
+                    CurrentPage="MainTableService.CurrentPage"
+                    DisplayRows="MainTableService.DataLoadingOptions.Take"
+                    DisplayRecords="MainTableService.Entities.Count" />*@
 }
 else if (LoadFailed)
 {

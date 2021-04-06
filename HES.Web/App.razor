@@ -1,12 +1,13 @@
 ﻿<CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
         <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(BlankLayout)">
                 <Authorizing>
                     <Loader AbsoluteCenter="true" />
-                </Authorizing>
+                </Authorizing>                
                 <NotAuthorized>
                     <RedirectToLogin />
+                    <Loader AbsoluteCenter="true" />
                 </NotAuthorized>
             </AuthorizeRouteView>
         </Found>
