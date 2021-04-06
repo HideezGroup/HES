@@ -93,8 +93,18 @@ namespace HES.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Database
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
+
+            #endregion
+
             #region Services
 
+            services.AddScoped<IApplicationDbContext>(x => x.GetService<ApplicationDbContext>());
             services.AddScoped(typeof(IAsyncRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IDataTableService<,>), typeof(DataTableService<,>));
             services.AddScoped<IDashboardService, DashboardService>();
@@ -203,15 +213,6 @@ namespace HES.Web
                     }
                 };
             });
-
-            #endregion
-
-            #region Database
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
-                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
 
             #endregion
 

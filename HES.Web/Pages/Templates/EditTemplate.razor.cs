@@ -51,7 +51,7 @@ namespace HES.Web.Pages.Templates
 
         protected override async Task ModalDialogCancel()
         {
-            await TemplateService.UnchangedTemplateAsync(Template);
+            TemplateService.UnchangedTemplate(Template);
             await base.ModalDialogCancel();
         }
 

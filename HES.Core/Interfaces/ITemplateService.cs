@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface ITemplateService : IDisposable
+    public interface ITemplateService/* : IDisposable*/
     {
-        IQueryable<Template> Query();
         Task<Template> GetByIdAsync(string id);
         Task<List<Template>> GetTemplatesAsync();
         Task<List<Template>> GetTemplatesAsync(DataLoadingOptions<TemplateFilter> dataLoadingOptions);
-        Task UnchangedTemplateAsync(Template template);
+        void UnchangedTemplate(Template template);
         Task<int> GetTemplatesCountAsync(DataLoadingOptions<TemplateFilter> dataLoadingOptions);
         Task<Template> CreateTmplateAsync(Template entity);
         Task EditTemplateAsync(Template template);
         Task DeleteTemplateAsync(string id);
-        Task<bool> ExistAsync(Expression<Func<Template, bool>> predicate);
+        //Task<bool> ExistAsync(Expression<Func<Template, bool>> predicate);
     }
 }

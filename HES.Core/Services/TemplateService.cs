@@ -14,28 +14,23 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class TemplateService : ITemplateService, IDisposable
+    public class TemplateService : ITemplateService
     {
-        private readonly IAsyncRepository<Template> _templateRepository;
+        private readonly IApplicationDbContext _applicationDbContext;
 
-        public TemplateService(IAsyncRepository<Template> repository)
+        public TemplateService(IApplicationDbContext applicationDbContext)
         {
-            _templateRepository = repository;
-        }
-
-        public IQueryable<Template> Query()
-        {
-            return _templateRepository.Query();
+            _applicationDbContext = applicationDbContext;
         }
 
         public async Task<Template> GetByIdAsync(string id)
         {
-            return await _templateRepository.GetByIdAsync(id);
+            return await _applicationDbContext.Templates.FindAsync(id);
         }
 
         public async Task<List<Template>> GetTemplatesAsync(DataLoadingOptions<TemplateFilter> dataLoadingOptions)
         {
-            var query = _templateRepository.Query();
+            var query = _applicationDbContext.Templates.AsQueryable();
 
             // Filter
             if (dataLoadingOptions.Filter != null)
@@ -83,7 +78,7 @@ namespace HES.Core.Services
 
         public async Task<int> GetTemplatesCountAsync(DataLoadingOptions<TemplateFilter> dataLoadingOptions)
         {
-            var query = _templateRepository.Query();
+            var query = _applicationDbContext.Templates.AsQueryable();
 
             // Filter
             if (dataLoadingOptions.Filter != null)
@@ -117,7 +112,7 @@ namespace HES.Core.Services
 
         public async Task<List<Template>> GetTemplatesAsync()
         {
-            return await _templateRepository.Query().ToListAsync();
+            return await _applicationDbContext.Templates.ToListAsync();
         }
 
         public async Task<Template> CreateTmplateAsync(Template template)
@@ -125,22 +120,30 @@ namespace HES.Core.Services
             if (template == null)
                 throw new ArgumentNullException(nameof(template));
 
-            var accountExist = await _templateRepository
-              .Query()
-              .Where(x => x.Name == template.Name && x.Id != template.Id)
-              .AnyAsync();
+            var accountExist = await _applicationDbContext.Templates
+                .AsQueryable()
+                .Where(x => x.Name == template.Name && x.Id != template.Id)
+                .AnyAsync();
 
             if (accountExist)
                 throw new AlreadyExistException("Template with current name already exists.");
 
             template.Urls = Validation.VerifyUrls(template.Urls);
 
-            return await _templateRepository.AddAsync(template);
+            var result = _applicationDbContext.Templates.Add(template);
+            await _applicationDbContext.SaveChangesAsync();
+
+            return result.Entity;
         }
 
-        public async Task UnchangedTemplateAsync(Template template)
+        public void UnchangedTemplate(Template template)
         {
-            await _templateRepository.UnchangedAsync(template);
+            if (template == null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
+
+            _applicationDbContext.Unchanged(template);
         }
 
         public async Task EditTemplateAsync(Template template)
@@ -148,8 +151,7 @@ namespace HES.Core.Services
             if (template == null)
                 throw new ArgumentNullException(nameof(template));
 
-            var accountExist = await _templateRepository
-               .Query()
+            var accountExist = await _applicationDbContext.Templates
                .Where(x => x.Name == template.Name && x.Id != template.Id)
                .AnyAsync();
 
@@ -158,7 +160,8 @@ namespace HES.Core.Services
 
             template.Urls = Validation.VerifyUrls(template.Urls);
 
-            await _templateRepository.UpdateAsync(template);
+            _applicationDbContext.Templates.Update(template);
+            await _applicationDbContext.SaveChangesAsync();
         }
 
         public async Task DeleteTemplateAsync(string id)
@@ -172,17 +175,9 @@ namespace HES.Core.Services
             {
                 throw new Exception("Template does not exist.");
             }
-            await _templateRepository.DeleteAsync(template);
-        }
 
-        public async Task<bool> ExistAsync(Expression<Func<Template, bool>> predicate)
-        {
-            return await _templateRepository.ExistAsync(predicate);
-        }
-
-        public void Dispose()
-        {
-            _templateRepository.Dispose();
+            _applicationDbContext.Templates.Remove(template);
+            await _applicationDbContext.SaveChangesAsync();
         }
     }
 }
