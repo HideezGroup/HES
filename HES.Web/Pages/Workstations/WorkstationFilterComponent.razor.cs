@@ -1,5 +1,4 @@
-﻿using HES.Core.Interfaces;
-using HES.Core.Models.Workstations;
+﻿using HES.Core.Models.Workstations;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -9,9 +8,7 @@ namespace HES.Web.Pages.Workstations
 {
     public partial class WorkstationFilterComponent : ComponentBase
     {
-        [Inject] public IWorkstationService WorkstationService { get; set; }
         [Parameter] public Func<WorkstationFilter, Task> FilterChanged { get; set; }
-
         public WorkstationFilter Filter { get; set; }
         public Button Button { get; set; }
 
@@ -71,6 +68,26 @@ namespace HES.Web.Pages.Workstations
             else
             {
                 Filter.Approved = false;
+            }
+        }
+
+        private void OnChangeOnline(ChangeEventArgs args)
+        {
+            var value = (string)args.Value;
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                Filter.Online = null;
+                return;
+            }
+
+            if (value == "Yes")
+            {
+                Filter.Online = true;
+            }
+            else
+            {
+                Filter.Online = false;
             }
         }
     }

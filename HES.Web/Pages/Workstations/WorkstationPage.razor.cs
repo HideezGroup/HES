@@ -33,7 +33,7 @@ namespace HES.Web.Pages.Workstations
                         DataTableService.DataLoadingOptions.Filter.Approved = false;
                         break;
                     case "Online":
-                        //TODO
+                        DataTableService.DataLoadingOptions.Filter.Online = true;
                         break;
                 }
 

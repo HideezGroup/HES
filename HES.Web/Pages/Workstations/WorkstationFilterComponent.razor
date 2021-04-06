@@ -59,9 +59,17 @@ else
                     <option value="No">No</option>
                 </select>
             </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
+                <label class="mb-0 text-gray">Online</label>
+                <select @onchange="OnChangeOnline" class="form-select">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
             <div class="col align-self-end text-end form-group">
                 <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync" />
-                <Button @ref="Button" type="submit" Text="Filter" сlass="btn btn-primary" />
+                <Button @ref="Button" Text="Filter" type="submit" class="btn btn-primary" />
             </div>
         </div>
     </EditForm>

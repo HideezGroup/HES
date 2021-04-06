@@ -42,6 +42,18 @@ namespace HES.Core.Services
 
         public async Task<List<Workstation>> GetWorkstationsAsync(DataLoadingOptions<WorkstationFilter> dataLoadingOptions)
         {
+            var query = WorkstationQuery(dataLoadingOptions);
+            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetWorkstationsCountAsync(DataLoadingOptions<WorkstationFilter> dataLoadingOptions)
+        {
+            var query = WorkstationQuery(dataLoadingOptions);
+            return await query.CountAsync();
+        }
+
+        private IQueryable<Workstation> WorkstationQuery(DataLoadingOptions<WorkstationFilter> dataLoadingOptions)
+        {
             var query = _workstationRepository
                 .Query()
                 .Include(x => x.Department.Company)
@@ -95,6 +107,19 @@ namespace HES.Core.Services
                 {
                     query = query.Where(x => x.Approved == dataLoadingOptions.Filter.Approved);
                 }
+                if (dataLoadingOptions.Filter.Online != null)
+                {
+                    var workstationIds = RemoteWorkstationConnectionsService.WorkstationsOnlineIds();
+
+                    if (dataLoadingOptions.Filter.Online.Value == true)
+                    {
+                        query = query.Where(x => workstationIds.Contains(x.Id));
+                    }
+                    else
+                    {
+                        query = query.Where(x => !workstationIds.Contains(x.Id));
+                    }
+                }
             }
 
             // Search
@@ -146,81 +171,7 @@ namespace HES.Core.Services
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
-        }
-
-        public async Task<int> GetWorkstationsCountAsync(DataLoadingOptions<WorkstationFilter> dataLoadingOptions)
-        {
-            var query = _workstationRepository
-               .Query()
-               .Include(x => x.Department.Company)
-               .Include(x => x.WorkstationProximityVaults)
-               .AsQueryable();
-
-            // Filter
-            if (dataLoadingOptions.Filter != null)
-            {
-                if (dataLoadingOptions.Filter.Name != null)
-                {
-                    query = query.Where(w => w.Name.Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Domain != null)
-                {
-                    query = query.Where(w => w.Domain.Contains(dataLoadingOptions.Filter.Domain, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.ClientVersion != null)
-                {
-                    query = query.Where(w => w.ClientVersion.Contains(dataLoadingOptions.Filter.ClientVersion, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Company != null)
-                {
-                    query = query.Where(x => x.Department.Company.Name.Contains(dataLoadingOptions.Filter.Company, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Department != null)
-                {
-                    query = query.Where(x => x.Department.Name.Contains(dataLoadingOptions.Filter.Department, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.OS != null)
-                {
-                    query = query.Where(w => w.OS.Contains(dataLoadingOptions.Filter.OS, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.IP != null)
-                {
-                    query = query.Where(w => w.IP.Contains(dataLoadingOptions.Filter.IP, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.LastSeenStartDate != null)
-                {
-                    query = query.Where(w => w.LastSeen >= dataLoadingOptions.Filter.LastSeenStartDate);
-                }
-                if (dataLoadingOptions.Filter.LastSeenEndDate != null)
-                {
-                    query = query.Where(x => x.LastSeen <= dataLoadingOptions.Filter.LastSeenEndDate);
-                }
-                if (dataLoadingOptions.Filter.RFID != null)
-                {
-                    query = query.Where(x => x.RFID == dataLoadingOptions.Filter.RFID);
-                }
-                if (dataLoadingOptions.Filter.Approved != null)
-                {
-                    query = query.Where(x => x.Approved == dataLoadingOptions.Filter.Approved);
-                }
-            }
-
-            // Search
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
-            {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Domain.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.ClientVersion.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Company.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.OS.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.IP.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return await query.CountAsync();
+            return query;
         }
 
         public async Task<bool> ExistAsync(Expression<Func<Workstation, bool>> predicate)
