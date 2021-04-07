@@ -15,5 +15,6 @@ namespace HES.Core.Models.Workstations
         public DateTime? LastSeenEndDate { get; set; }
         public bool? RFID { get; set; }
         public bool? Approved { get; set; }
+        public bool? Online { get; set; }
     }
 }

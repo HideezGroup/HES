@@ -25,9 +25,8 @@ namespace HES.Web.Pages.Employees
         [Parameter] public string EmployeeId { get; set; }
 
         public Employee Employee { get; set; }
-        public string LdapHost { get; set; }
-        public bool AdUserNotFound { get; set; }
         public UserSsoInfo UserSsoInfo { get; set; }
+        public string LdapHost { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -42,11 +41,10 @@ namespace HES.Web.Pages.Employees
                 SynchronizationService.UpdateHardwareVaultState += UpdateHardwareVaultState;
 
                 await LoadEmployeeAsync();
+                await LoadEmployeeSsoState();
                 await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
                 await LoadLdapSettingsAsync();
                 await DataTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
-
-                await LoadEmployeeSsoState();
 
                 SetInitialized();
             }
@@ -89,7 +87,7 @@ namespace HES.Web.Pages.Employees
         {
             Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId, asNoTracking: true);
             if (Employee == null)
-                throw new Exception("Employee not found.");
+                throw new HESException(HESCode.EmployeeNotFound);
 
             StateHasChanged();
         }

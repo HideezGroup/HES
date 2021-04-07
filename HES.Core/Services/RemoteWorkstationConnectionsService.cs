@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HES.Core.Services
@@ -31,9 +32,9 @@ namespace HES.Core.Services
                       IEmployeeService employeeService,
                       IAccountService accountService,
                       IWorkstationService workstationService,
-                      IHardwareVaultService hardwareVaultService,                 
+                      IHardwareVaultService hardwareVaultService,
                       IWorkstationAuditService workstationAuditService,
-                      ILogger<RemoteWorkstationConnectionsService> logger,              
+                      ILogger<RemoteWorkstationConnectionsService> logger,
                       IAppSettingsService appSettingsService)
         {
             _remoteTaskService = remoteTaskService;
@@ -132,6 +133,11 @@ namespace HES.Core.Services
         public static int WorkstationsOnlineCount()
         {
             return _workstationConnections.Count;
+        }
+
+        public static List<string> WorkstationsOnlineIds()
+        {
+            return _workstationConnections.Select(s => s.Key).ToList();
         }
 
         public async Task UpdateProximitySettingsAsync(string workstationId, IReadOnlyList<HwVaultProximitySettingsDto> proximitySettings)
