@@ -38,7 +38,7 @@ namespace HES.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Template>> GetTemplateById(string id)
         {
-            var template = await _templateService.GetByIdAsync(id);
+            var template = await _templateService.GetTemplateByIdAsync(id);
 
             if (template == null)
             {
@@ -110,7 +110,7 @@ namespace HES.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Template>> DeleteTemplate(string id)
         {
-            var template = await _templateService.GetByIdAsync(id);
+            var template = await _templateService.GetTemplateByIdAsync(id);
             if (template == null)
             {
                 return NotFound();

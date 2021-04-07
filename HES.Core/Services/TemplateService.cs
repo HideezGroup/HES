@@ -9,28 +9,42 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
     public class TemplateService : ITemplateService
     {
-        private readonly IApplicationDbContext _applicationDbContext;
+        private readonly IApplicationDbContext _dbContext;
 
-        public TemplateService(IApplicationDbContext applicationDbContext)
+        public TemplateService(IApplicationDbContext dbContext)
         {
-            _applicationDbContext = applicationDbContext;
+            _dbContext = dbContext;
         }
 
-        public async Task<Template> GetByIdAsync(string id)
+        public async Task<Template> GetTemplateByIdAsync(string templateId)
         {
-            return await _applicationDbContext.Templates.FindAsync(id);
+            return await _dbContext.Templates.FindAsync(templateId);
+        }
+
+        public async Task<List<Template>> GetTemplatesAsync()
+        {
+            return await _dbContext.Templates.ToListAsync();
         }
 
         public async Task<List<Template>> GetTemplatesAsync(DataLoadingOptions<TemplateFilter> dataLoadingOptions)
         {
-            var query = _applicationDbContext.Templates.AsQueryable();
+            return await TemplateQuery(dataLoadingOptions).Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetTemplatesCountAsync(DataLoadingOptions<TemplateFilter> dataLoadingOptions)
+        {
+            return await TemplateQuery(dataLoadingOptions).CountAsync();
+        }
+
+        private IQueryable<Template> TemplateQuery(DataLoadingOptions<TemplateFilter> dataLoadingOptions)
+        {
+            var query = _dbContext.Templates.AsQueryable();
 
             // Filter
             if (dataLoadingOptions.Filter != null)
@@ -73,67 +87,7 @@ namespace HES.Core.Services
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
-        }
-
-        public async Task<int> GetTemplatesCountAsync(DataLoadingOptions<TemplateFilter> dataLoadingOptions)
-        {
-            var query = _applicationDbContext.Templates.AsQueryable();
-
-            // Filter
-            if (dataLoadingOptions.Filter != null)
-            {
-                if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Name))
-                {
-                    query = query.Where(x => x.Name.Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
-                }
-                if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Urls))
-                {
-                    query = query.Where(x => x.Urls.Contains(dataLoadingOptions.Filter.Urls, StringComparison.OrdinalIgnoreCase));
-                }
-                if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Apps))
-                {
-                    query = query.Where(x => x.Apps.Contains(dataLoadingOptions.Filter.Apps, StringComparison.OrdinalIgnoreCase));
-                }
-            }
-
-            // Search
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
-            {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Urls.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Apps.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return await query.CountAsync();
-        }
-
-        public async Task<List<Template>> GetTemplatesAsync()
-        {
-            return await _applicationDbContext.Templates.ToListAsync();
-        }
-
-        public async Task<Template> CreateTmplateAsync(Template template)
-        {
-            if (template == null)
-                throw new ArgumentNullException(nameof(template));
-
-            var accountExist = await _applicationDbContext.Templates
-                .AsQueryable()
-                .Where(x => x.Name == template.Name && x.Id != template.Id)
-                .AnyAsync();
-
-            if (accountExist)
-                throw new AlreadyExistException("Template with current name already exists.");
-
-            template.Urls = Validation.VerifyUrls(template.Urls);
-
-            var result = _applicationDbContext.Templates.Add(template);
-            await _applicationDbContext.SaveChangesAsync();
-
-            return result.Entity;
+            return query;
         }
 
         public void UnchangedTemplate(Template template)
@@ -143,41 +97,65 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(template));
             }
 
-            _applicationDbContext.Unchanged(template);
+            _dbContext.Unchanged(template);
+        }
+
+        public async Task<Template> CreateTmplateAsync(Template template)
+        {
+            if (template == null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
+
+            await ThrowIfTemplateExistAsync(template);
+
+            template.Urls = Validation.VerifyUrls(template.Urls);
+
+            var result = _dbContext.Templates.Add(template);
+            await _dbContext.SaveChangesAsync();
+
+            return result.Entity;
         }
 
         public async Task EditTemplateAsync(Template template)
         {
             if (template == null)
+            {
                 throw new ArgumentNullException(nameof(template));
+            }
 
-            var accountExist = await _applicationDbContext.Templates
-               .Where(x => x.Name == template.Name && x.Id != template.Id)
-               .AnyAsync();
-
-            if (accountExist)
-                throw new AlreadyExistException("Template with current name already exists.");
+            await ThrowIfTemplateExistAsync(template);
 
             template.Urls = Validation.VerifyUrls(template.Urls);
 
-            _applicationDbContext.Templates.Update(template);
-            await _applicationDbContext.SaveChangesAsync();
+            _dbContext.Templates.Update(template);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteTemplateAsync(string id)
+        public async Task DeleteTemplateAsync(string templateId)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(templateId))
             {
-                throw new ArgumentNullException(nameof(id));
-            }
-            var template = await GetByIdAsync(id);
-            if (template == null)
-            {
-                throw new Exception("Template does not exist.");
+                throw new ArgumentNullException(nameof(templateId));
             }
 
-            _applicationDbContext.Templates.Remove(template);
-            await _applicationDbContext.SaveChangesAsync();
+            var template = await GetTemplateByIdAsync(templateId);
+            if (template == null)
+            {
+                throw new HESException(HESCode.TemplateNotFound);
+            }
+
+            _dbContext.Templates.Remove(template);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task ThrowIfTemplateExistAsync(Template template)
+        {
+            var templateExist = await _dbContext.ExistAsync<Template>(x => x.Name == template.Name && x.Id != template.Id);
+            if (templateExist)
+            {
+                throw new HESException(HESCode.TemplateExist);
+            }
         }
     }
 }

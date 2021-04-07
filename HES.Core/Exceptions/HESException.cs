@@ -34,6 +34,10 @@ namespace HES.Core.Exceptions
         IncorrectUrl,
         IncorrectOtp,
 
+        //Templates
+        TemplateNotFound,
+        TemplateExist,
+
         // SharedAccounts
         SharedAccountNotFound,
         SharedAccountExist,
@@ -65,6 +69,9 @@ namespace HES.Core.Exceptions
             { HESCode.AccountExist,  "Account with the same name and login exist." },
             { HESCode.IncorrectUrl,  "Incorrect URL address." },
             { HESCode.IncorrectOtp,  "Incorrect OTP secret." },
+
+            { HESCode.TemplateNotFound,  "Template not found." },
+            { HESCode.TemplateExist,  "Template with current name already exists." },
 
             { HESCode.SharedAccountNotFound,  "Shared Account not found." },
             { HESCode.SharedAccountExist,  "Shared Account with the same name and login exist." },
