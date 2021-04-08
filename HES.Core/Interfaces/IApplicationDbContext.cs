@@ -22,7 +22,7 @@ namespace HES.Core.Interfaces
         DbSet<SharedAccount> SharedAccounts { get; set; }
         DbSet<Template> Templates { get; set; }
         DbSet<Workstation> Workstations { get; set; }
-        DbSet<WorkstationProximityVault> WorkstationProximityVaults { get; set; }
+        DbSet<WorkstationHardwareVaultPair> WorkstationHardwareVaultPairs { get; set; }
         DbSet<WorkstationEvent> WorkstationEvents { get; set; }
         DbSet<WorkstationSession> WorkstationSessions { get; set; }
         DbSet<Company> Companies { get; set; }

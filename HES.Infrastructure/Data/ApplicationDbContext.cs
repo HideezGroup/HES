@@ -99,7 +99,7 @@ namespace HES.Infrastructure
         public DbSet<SharedAccount> SharedAccounts { get; set; }
         public DbSet<Template> Templates { get; set; }
         public DbSet<Workstation> Workstations { get; set; }
-        public DbSet<WorkstationProximityVault> WorkstationProximityVaults { get; set; }
+        public DbSet<WorkstationHardwareVaultPair> WorkstationHardwareVaultPairs { get; set; }
         public DbSet<WorkstationEvent> WorkstationEvents { get; set; }
         public DbSet<WorkstationSession> WorkstationSessions { get; set; }
         public DbSet<Company> Companies { get; set; }

@@ -13,7 +13,7 @@ namespace HES.Web.Pages.Workstations
     public partial class WorkstationDetailsPage : HESPageBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
-        public IDataTableService<WorkstationProximityVault, WorkstationDetailsFilter> DataTableService { get; set; }
+        public IDataTableService<WorkstationHardwareVaultPair, WorkstationDetailsFilter> DataTableService { get; set; }
         [Inject] public ILogger<WorkstationDetailsPage> Logger { get; set; }
         [Parameter] public string WorkstationId { get; set; }
 
@@ -24,11 +24,11 @@ namespace HES.Web.Pages.Workstations
             try
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
-                DataTableService = ScopedServices.GetRequiredService<IDataTableService<WorkstationProximityVault, WorkstationDetailsFilter>>();
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<WorkstationHardwareVaultPair, WorkstationDetailsFilter>>();
                 SynchronizationService.UpdateWorkstationDetailsPage += UpdateWorkstationDetailsPage;
                 await LoadWorkstationAsync();
                 await BreadcrumbsService.SetWorkstationDetails(Workstation.Name);
-                await DataTableService.InitializeAsync(WorkstationService.GetProximityVaultsAsync, WorkstationService.GetProximityVaultsCountAsync, StateHasChanged, nameof(WorkstationProximityVault.HardwareVaultId), entityId: WorkstationId);
+                await DataTableService.InitializeAsync(WorkstationService.GetWorkstationHardwareVaultPairsAsync, WorkstationService.GetWorkstationHardwareVaultPairsCountAsync, StateHasChanged, nameof(WorkstationHardwareVaultPair.HardwareVaultId), entityId: WorkstationId);
                 SetInitialized();
             }
             catch (Exception ex)

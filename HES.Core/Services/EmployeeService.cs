@@ -585,7 +585,7 @@ namespace HES.Core.Services
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await _hardwareVaultTaskService.DeleteTasksByVaultIdAsync(vaultId);
-                await _workstationService.DeleteProximityByVaultIdAsync(vaultId);
+                await _workstationService.DeleteWorkstationHardwareVaultPairsByVaultIdAsync(vaultId);
 
                 if (vault.Status == VaultStatus.Reserved && !vault.IsStatusApplied)
                 {
@@ -1081,7 +1081,6 @@ namespace HES.Core.Services
             _softwareVaultService.Dispose();
             _accountService.Dispose();
             _sharedAccountService.Dispose();
-            _workstationService.Dispose();
         }
     }
 }

@@ -2,37 +2,33 @@
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Workstations;
 using Hideez.SDK.Communication.HES.DTO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IWorkstationService : IDisposable
+    public interface IWorkstationService
     {
-        IQueryable<Workstation> WorkstationQuery();
-        Task<Workstation> GetWorkstationByIdAsync(string id);
+        Task<Workstation> GetWorkstationByIdAsync(string workstationId);
         Task<List<Workstation>> GetWorkstationsAsync(DataLoadingOptions<WorkstationFilter> dataLoadingOptions);
+        Task<int> GetWorkstationsNotApproveCountAsync();
         Task<int> GetWorkstationsCountAsync(DataLoadingOptions<WorkstationFilter> dataLoadingOptions);
-        Task<bool> ExistAsync(Expression<Func<Workstation, bool>> predicate);
+        Task<int> GetWorkstationsCountAsync();
         Task AddWorkstationAsync(WorkstationInfoDto workstationInfoDto);
-        Task UpdateWorkstationInfoAsync(WorkstationInfoDto workstationInfoDto);
+        Task EditWorkstationInfoAsync(WorkstationInfoDto workstationInfoDto);
         Task EditWorkstationAsync(Workstation workstation);
         Task ApproveWorkstationAsync(Workstation workstation);
         Task UnapproveWorkstationAsync(string workstationId);
         Task DeleteWorkstationAsync(string workstationId);
-        Task<bool> GetRfidStateAsync(string workstationId);
+        Task<bool> CheckIsRFIDEnabledAsync(string workstationId);
         Task<bool> CheckIsApprovedAsync(string workstationId);
-        Task UnchangedWorkstationAsync(Workstation workstation);
-        IQueryable<WorkstationProximityVault> ProximityVaultQuery();
-        Task<WorkstationProximityVault> GetProximityVaultByIdAsync(string id);
-        Task<List<WorkstationProximityVault>> GetProximityVaultsAsync(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions);
-        Task<int> GetProximityVaultsCountAsync(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions);
-        Task<WorkstationProximityVault> AddProximityVaultAsync(string workstationId, string vaultId);
-        Task DeleteProximityVaultAsync(string proximityVaultId);
-        Task DeleteProximityByVaultIdAsync(string vaultId);
-        Task<IReadOnlyList<HwVaultProximitySettingsDto>> GetProximitySettingsAsync(string workstationId);
+        void UnchangedWorkstation(Workstation workstation);
+        Task<WorkstationHardwareVaultPair> GetWorkstationHardwareVaultPairByIdAsync(string pairId);
+        Task<List<WorkstationHardwareVaultPair>> GetWorkstationHardwareVaultPairsAsync(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions);
+        Task<int> GetWorkstationHardwareVaultPairsCountAsync(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions);
+        Task<WorkstationHardwareVaultPair> CreateWorkstationHardwareVaultPairAsync(string workstationId, string vaultId);
+        Task DeleteWorkstationHardwareVaultPairAsync(string pairId);
+        Task DeleteWorkstationHardwareVaultPairsByVaultIdAsync(string vaultId);
+        Task<IReadOnlyList<HwVaultProximitySettingsDto>> GetWorkstationHardwareVaultPairSettingsAsync(string workstationId);
     }
 }

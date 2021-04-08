@@ -14,7 +14,7 @@ namespace HES.Web.Pages.Workstations
     {
         IWorkstationService WorkstationService { get; set; }
         [Inject] ILogger<DeleteProximityVault> Logger { get; set; }
-        [Parameter] public WorkstationProximityVault WorkstationProximityVault { get; set; }
+        [Parameter] public WorkstationHardwareVaultPair WorkstationProximityVault { get; set; }
         [Parameter] public string WorkstationId { get; set; }
 
         protected override void OnInitialized()
@@ -26,7 +26,7 @@ namespace HES.Web.Pages.Workstations
         {
             try
             {
-                await WorkstationService.DeleteProximityVaultAsync(WorkstationProximityVault.Id);
+                await WorkstationService.DeleteWorkstationHardwareVaultPairAsync(WorkstationProximityVault.Id);
                 await ToastService.ShowToastAsync("Vault deleted.", ToastType.Success);
                 await ModalDialogClose();
             }

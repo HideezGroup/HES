@@ -24,6 +24,12 @@ namespace HES.Core.Exceptions
 
         // Hardware Vault
         HardwareVaultNotFound,
+        HardwareVaultAlreadyAdded,
+
+        // Workstations
+        WorkstationNotFound,
+        WorkstationHardwareVaultPairNotFound,
+        WorkstationHardwareVaultPairAlreadyExist,
 
         // Settings
         LdapSettingsNotSet,
@@ -62,7 +68,13 @@ namespace HES.Core.Exceptions
             { HESCode.RequiresTwoFactor, "Requires two factor." },
             { HESCode.EmployeeNotFound,  "Employee not found." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
+
             { HESCode.HardwareVaultNotFound,  "Hardware Vault not found." },
+
+            { HESCode.WorkstationNotFound,  "Workstation not found." },
+            { HESCode.WorkstationHardwareVaultPairNotFound,  "Workstation and Hardware Vault pair not found." },
+            { HESCode.WorkstationHardwareVaultPairAlreadyExist,  "Hardware Vault already added to workstation." },
+
             { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
 
             { HESCode.AccountNotFound,  "Account not found." },

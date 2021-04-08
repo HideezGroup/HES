@@ -272,7 +272,7 @@ namespace HES.Core.Services
 
         public async Task<int> GetWorkstationsCountAsync()
         {
-            return await _workstationService.WorkstationQuery().CountAsync();
+            return await _workstationService.GetWorkstationsCountAsync();
         }
 
         public async Task<int> GetWorkstationsOnlineCountAsync()
@@ -284,17 +284,14 @@ namespace HES.Core.Services
         {
             var list = new List<DashboardNotify>();
 
-            var notApproved = await _workstationService
-                .WorkstationQuery()
-                .Where(w => w.Approved == false)
-                .CountAsync();
+            var notApproveCount = await _workstationService.GetWorkstationsNotApproveCountAsync();
 
-            if (notApproved > 0)
+            if (notApproveCount > 0)
             {
                 list.Add(new DashboardNotify()
                 {
                     Message = "Waiting for approval",
-                    Count = notApproved,
+                    Count = notApproveCount,
                     Page = $"{Routes.Workstations}/NotApproved"
                 });
             }
@@ -325,7 +322,6 @@ namespace HES.Core.Services
             _employeeService.Dispose();
             _workstationAuditService.Dispose();
             _hardwareVaultTaskService.Dispose();
-            _workstationService.Dispose();
             _hardwareVaultService.Dispose();
         }
     }

@@ -58,10 +58,11 @@ namespace HES.Core.Services
                 return remoteAppConnection;
             });
 
-            if (await _workstationService.ExistAsync(w => w.Id == workstationInfoDto.Id))
+            var workstationExist = await _workstationService.GetWorkstationByIdAsync(workstationInfoDto.Id);
+            if (workstationExist != null)
             {
                 // Workstation exists, update information
-                await _workstationService.UpdateWorkstationInfoAsync(workstationInfoDto);
+                await _workstationService.EditWorkstationInfoAsync(workstationInfoDto);
             }
             else
             {
@@ -70,8 +71,8 @@ namespace HES.Core.Services
                 _logger.LogInformation($"New workstation {workstationInfoDto.MachineName} was added.");
             }
 
-            await UpdateProximitySettingsAsync(workstationInfoDto.Id, await _workstationService.GetProximitySettingsAsync(workstationInfoDto.Id));
-            await UpdateRfidStateAsync(workstationInfoDto.Id, await _workstationService.GetRfidStateAsync(workstationInfoDto.Id));
+            await UpdateProximitySettingsAsync(workstationInfoDto.Id, await _workstationService.GetWorkstationHardwareVaultPairSettingsAsync(workstationInfoDto.Id));
+            await UpdateRfidStateAsync(workstationInfoDto.Id, await _workstationService.CheckIsRFIDEnabledAsync(workstationInfoDto.Id));
         }
 
         public async Task OnAppHubDisconnectedAsync(string workstationId)
@@ -180,7 +181,6 @@ namespace HES.Core.Services
             _remoteDeviceConnectionsService.Dispose();
             _employeeService.Dispose();
             _accountService.Dispose();
-            _workstationService.Dispose();
             _hardwareVaultService.Dispose();
             _workstationAuditService.Dispose();
             _appSettingsService.Dispose();

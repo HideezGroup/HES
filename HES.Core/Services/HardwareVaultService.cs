@@ -778,7 +778,7 @@ namespace HES.Core.Services
                 if (employeeId != null)
                     await _accountService.DeleteAccountsByEmployeeIdAsync(employeeId);
 
-                await _workstationService.DeleteProximityByVaultIdAsync(vaultId);
+                await _workstationService.DeleteWorkstationHardwareVaultPairsByVaultIdAsync(vaultId);
 
                 transactionScope.Complete();
             }
@@ -1079,7 +1079,6 @@ namespace HES.Core.Services
             _licenseService.Dispose();
             _hardwareVaultTaskService.Dispose();
             _accountService.Dispose();
-            _workstationService.Dispose();
             _appSettingsService.Dispose();
         }
     }
