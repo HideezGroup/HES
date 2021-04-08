@@ -2,7 +2,7 @@
 using System.Timers;
 using System.Threading.Tasks;
 
-namespace HES.Web.Components.Toasts
+namespace HES.Web.Components
 {
     public class CountdownTimer : IDisposable
     {

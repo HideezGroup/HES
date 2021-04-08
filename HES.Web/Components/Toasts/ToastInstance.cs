@@ -2,7 +2,7 @@
 using HES.Core.Enums;
 using Microsoft.AspNetCore.Components;
 
-namespace HES.Web.Components.Toasts
+namespace HES.Web.Components
 {
     public class ToastInstance
     {

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace HES.Web.Components.Toasts
+namespace HES.Web.Components
 {
     public partial class ToastItem : ComponentBase, IDisposable
     {

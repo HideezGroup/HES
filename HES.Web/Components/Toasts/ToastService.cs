@@ -4,7 +4,7 @@ using HES.Core.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace HES.Core.Services
+namespace HES.Web.Components
 {
     public class ToastService : IToastService
     {
