@@ -90,7 +90,7 @@ namespace HES.Core.Services
 
         public async Task<int> GetEmployeesCountAsync()
         {
-            return await _employeeService.EmployeeQuery().CountAsync();
+            return await _employeeService.GetEmployeesCountAsync();
         }
 
         public async Task<int> GetEmployeesOpenedSessionsCountAsync()
@@ -319,7 +319,6 @@ namespace HES.Core.Services
 
         public void Dispose()
         {
-            _employeeService.Dispose();
             _workstationAuditService.Dispose();
             _hardwareVaultTaskService.Dispose();
             _hardwareVaultService.Dispose();

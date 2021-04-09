@@ -179,7 +179,6 @@ namespace HES.Core.Services
         {
             _remoteTaskService.Dispose();
             _remoteDeviceConnectionsService.Dispose();
-            _employeeService.Dispose();
             _accountService.Dispose();
             _hardwareVaultService.Dispose();
             _workstationAuditService.Dispose();

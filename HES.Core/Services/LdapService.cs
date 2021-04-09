@@ -454,7 +454,7 @@ namespace HES.Core.Services
                     var positionName = TryGetAttribute(member, "title");
                     var whenChanged = TryGetDateTimeAttribute(member, "whenChanged");
 
-                    var employee = await _employeeService.EmployeeQuery().FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
+                    var employee = await _employeeService.GetEmployeeByNameAsync(firstName, lastName);
                     var position = await _orgStructureService.TryAddAndGetPositionAsync(positionName);
                     var department = await _orgStructureService.TryAddAndGetDepartmentWithCompanyAsync(companyName, departmentName);
 
@@ -494,7 +494,7 @@ namespace HES.Core.Services
 
                 // Sync users 
                 var membersAdGuids = members.Select(x => GetAttributeGUID(x)).ToList();
-                var employeesWithAdGuids = await _employeeService.EmployeeQuery().Where(x => x.ActiveDirectoryGuid != null).ToListAsync();
+                var employeesWithAdGuids = await _employeeService.GetEmployeesADAsync();
 
                 // Employees whose access to hardware was taken away in the active dirictory
                 var employeeRemovedFromGroup = employeesWithAdGuids.Where(x => !membersAdGuids.Contains(x.ActiveDirectoryGuid)).ToList();
@@ -1169,7 +1169,6 @@ namespace HES.Core.Services
 
         public void Dispose()
         {
-            _employeeService.Dispose();
             _groupService.Dispose();   
         }
     }

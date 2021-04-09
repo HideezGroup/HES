@@ -9,6 +9,7 @@ namespace HES.Core.Interfaces
 {
     public interface IApplicationDbContext
     {
+        DbSet<ApplicationUser> Users { get; set; }
         DbSet<Employee> Employees { get; set; }
         DbSet<Account> Accounts { get; set; }
         DbSet<HardwareVault> HardwareVaults { get; set; }

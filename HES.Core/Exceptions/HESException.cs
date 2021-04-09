@@ -21,10 +21,14 @@ namespace HES.Core.Exceptions
         // Employees
         EmployeeNotFound,
         ActiveDirectoryUserNotFound,
+        EmployeeAlreadyExist,
 
         // Hardware Vault
         HardwareVaultNotFound,
-        HardwareVaultAlreadyAdded,
+        OneHardwareVaultConstraint,
+        HardwareVaultCannotReserve,
+        HardwareVaultUntieBeforeRemove,
+        HardwareVaultВoesNotAllowToRemove,
 
         // Workstations
         WorkstationNotFound,
@@ -66,10 +70,16 @@ namespace HES.Core.Exceptions
             { HESCode.RequiresRelogin,"Requires relogin." },
 
             { HESCode.RequiresTwoFactor, "Requires two factor." },
+
             { HESCode.EmployeeNotFound,  "Employee not found." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
+            { HESCode.EmployeeAlreadyExist,  "Employee with current name already exists." },
 
             { HESCode.HardwareVaultNotFound,  "Hardware Vault not found." },
+            { HESCode.OneHardwareVaultConstraint,  "Cannot add more than one hardware vault." },
+            { HESCode.HardwareVaultCannotReserve,  "Vault in a status that does not allow to reserve." },
+            { HESCode.HardwareVaultUntieBeforeRemove,  "First untie the hardware vault before removing." },
+            { HESCode.HardwareVaultВoesNotAllowToRemove,  "Vault in a status that does not allow to remove." },
 
             { HESCode.WorkstationNotFound,  "Workstation not found." },
             { HESCode.WorkstationHardwareVaultPairNotFound,  "Workstation and Hardware Vault pair not found." },

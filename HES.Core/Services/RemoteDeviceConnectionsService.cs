@@ -469,7 +469,6 @@ namespace HES.Core.Services
         {
             _hardwareVaultService.Dispose();
             _remoteTaskService.Dispose();
-            _employeeService.Dispose();
         }
     }
 }

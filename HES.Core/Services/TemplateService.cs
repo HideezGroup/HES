@@ -113,7 +113,6 @@ namespace HES.Core.Services
 
             var result = _dbContext.Templates.Add(template);
             await _dbContext.SaveChangesAsync();
-
             return result.Entity;
         }
 
