@@ -1,6 +1,5 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
-using HES.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,31 +9,26 @@ using System.Threading.Tasks;
 
 namespace HES.Infrastructure.Data
 {
-    public static class InitializationManager
+    public static class ApplicationDbContextSeed
     {
-        public static IHost MigrateDatabase(this IHost host)
+        public static async Task MigrateDatabaseAsync(IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {
                 using (var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
-                    context.Database.Migrate();
+                    await context.Database.MigrateAsync();
                 }
             }
-
-            return host;
         }
 
-        public static IHost SeedDatabase(this IHost host)
+        public static async Task SeedDatabaseAsync(IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {
-                InitializeRoleAndAdmin(scope).Wait();
-                InitializeHardwareVaultProfile(scope).Wait();
-                InitializeDataProtection(scope).Wait();
+                await InitializeRoleAndAdmin(scope);
+                await InitializeHardwareVaultProfile(scope);
             }
-
-            return host;
         }
 
         private static async Task InitializeRoleAndAdmin(IServiceScope scope)
@@ -99,12 +93,6 @@ namespace HES.Infrastructure.Data
             }
 
             await context.SaveChangesAsync();
-        }
-
-        private static async Task InitializeDataProtection(IServiceScope scope)
-        {
-            var dataProtection = scope.ServiceProvider.GetRequiredService<IDataProtectionService>();
-            await dataProtection.InitializeAsync();
         }
     }
 }

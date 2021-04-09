@@ -367,14 +367,9 @@ namespace HES.Web
 
             app.UseCookiePolicy();
 
-            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var logger = scope.ServiceProvider.GetService<ILogger<Startup>>();
-                logger.LogInformation($"Server started {ServerConstants.Version}");
-
-                var appSettingsService = scope.ServiceProvider.GetService<IAppSettingsService>();
-                appSettingsService.GetAlarmStateAsync().Wait();
-            }
+            using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var logger = scope.ServiceProvider.GetService<ILogger<Startup>>();
+            logger.LogInformation($"Server started {ServerConstants.Version}");
         }
     }
 }

@@ -63,10 +63,10 @@ namespace HES.Infrastructure
             // Position
             modelBuilder.Entity<Position>().HasMany(x => x.Employees).WithOne(p => p.Position).HasForeignKey(p => p.PositionId).OnDelete(DeleteBehavior.SetNull);
             // Summary
-            modelBuilder.Entity<SummaryByDayAndEmployee>().HasNoKey().ToView(null);
-            modelBuilder.Entity<SummaryByEmployees>().HasNoKey().ToView(null);
-            modelBuilder.Entity<SummaryByDepartments>().HasNoKey().ToView(null);
-            modelBuilder.Entity<SummaryByWorkstations>().HasNoKey().ToView(null);
+            modelBuilder.Entity<SummaryByDayAndEmployee>().HasNoKey();
+            modelBuilder.Entity<SummaryByEmployees>().HasNoKey();
+            modelBuilder.Entity<SummaryByDepartments>().HasNoKey();
+            modelBuilder.Entity<SummaryByWorkstations>().HasNoKey();
         }
 
         public void Unchanged<T>(T entity)
