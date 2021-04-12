@@ -5,8 +5,8 @@ using HES.Core.Models.AppSettings;
 using HES.Core.Models.SoftwareVault;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using QRCoder;
 using System;
 using System.Collections.Generic;
@@ -24,31 +24,48 @@ namespace HES.Core.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
-        private readonly IHostingEnvironment _env;
-        private readonly IConfiguration _config;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IOptions<EmailSettings> _emailSettings;
+        private readonly IOptions<ServerSettings> _serverSettings;
         private readonly ILogger<EmailSenderService> _logger;
         private readonly string _baseAddress;
 
-        public EmailSenderService(IHostingEnvironment env,
-                                  IConfiguration config,
+        public EmailSenderService(IHostingEnvironment hostingEnvironment,
+                                  IOptions<EmailSettings> emailSettings,
+                                  IOptions<ServerSettings> serverSettings,
                                   IHttpContextAccessor httpContextAccessor,
                                   ILogger<EmailSenderService> logger)
         {
-            _env = env;
-            _config = config;
+            _hostingEnvironment = hostingEnvironment;
+            _emailSettings = emailSettings;
+            _serverSettings = serverSettings;
             _logger = logger;
             _baseAddress = $"{httpContextAccessor?.HttpContext?.Request?.Scheme}://{httpContextAccessor?.HttpContext?.Request?.Host}{httpContextAccessor?.HttpContext?.Request?.PathBase}";
 
         }
 
-        private async Task SendAsync(MailMessage mailMessage, EmailSettings settings)
+        private async Task SendAsync(string mailTo, string htmlMessage, string subject, params AlternateView[] alternateViews)
         {
             try
             {
-                using var client = new SmtpClient(settings.Host, settings.Port)
+                var mailMessage = new MailMessage(_emailSettings.Value.UserName, mailTo);
+                var htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
+                htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
+                mailMessage.AlternateViews.Add(htmlView);
+                if(alternateViews != null & alternateViews.Length > 0)
                 {
-                    Credentials = new NetworkCredential(settings.UserName, settings.Password),
-                    EnableSsl = settings.EnableSSL
+                    foreach (var item in alternateViews)
+                    {
+                        mailMessage.AlternateViews.Add(item);
+                    }
+                }
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Subject = $"{subject} - {_serverSettings.Value.Name}";
+
+                using var client = new SmtpClient(_emailSettings.Value.Host, _emailSettings.Value.Port)
+                {
+                    Credentials = new NetworkCredential(_emailSettings.Value.UserName, _emailSettings.Value.Password),
+                    EnableSsl = _emailSettings.Value.EnableSSL
                 };
 
                 await client.SendMailAsync(mailMessage);
@@ -61,33 +78,24 @@ namespace HES.Core.Services
 
         public async Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status, IList<ApplicationUser> administrators)
         {
-            EmailSettings emailSettings = await GetEmailSettingsAsync();
-            ServerSettings serverSettings = await GetServerSettingsAsync();
+            var htmlTemplate = await GetTemplateAsync("mail-license-order-status");
+            var replacement = new Dictionary<string, string>
+                {
+                    {"{{createdAt}}", createdAt.ToString() },
+                    {"{{status}}", status.ToString() },
+                };
 
-            var htmlMessage = GetTemplate("mail-license-order-status");
-
-            htmlMessage = htmlMessage.Replace("{{createdAt}}", createdAt.ToString()).Replace("{{status}}", status.ToString());
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
 
             foreach (var admin in administrators)
             {
-                MailMessage mailMessage = new MailMessage(emailSettings.UserName, admin.Email);
-                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-                htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-                mailMessage.AlternateViews.Add(htmlView);
-                mailMessage.IsBodyHtml = true;
-                mailMessage.Subject = $"Hideez License Order Status Update - {serverSettings.Name}";
-
-                await SendAsync(mailMessage, emailSettings);
+                await SendAsync(admin.Email, htmlMessage, "Hideez License Order Status Update");
             }
         }
 
         public async Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults, IList<ApplicationUser> administrators)
         {
-            EmailSettings emailSettings = await GetEmailSettingsAsync();
-            ServerSettings serverSettings = await GetServerSettingsAsync();
-
-            var htmlMessage = GetTemplate("mail-vault-license-status");
-
+            var htmlMessage = await GetTemplateAsync ("mail-vault-license-status");
             var message = new StringBuilder();
 
             var valid = vaults.Where(d => d.LicenseStatus == VaultLicenseStatus.Valid).OrderBy(d => d.Id).ToList();
@@ -118,270 +126,189 @@ namespace HES.Core.Services
 
             foreach (var admin in administrators)
             {
-                MailMessage mailMessage = new MailMessage(emailSettings.UserName, admin.Email);
-                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-                htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-                mailMessage.AlternateViews.Add(htmlView);
-                mailMessage.IsBodyHtml = true;
-                mailMessage.Subject = $"Hideez License Status Update - {serverSettings.Name}";
-
-                await SendAsync(mailMessage, emailSettings);
+                await SendAsync(admin.Email, htmlMessage, "Hideez License Status Update");
             }
         }
 
         public async Task SendActivateDataProtectionAsync(IList<ApplicationUser> administrators)
         {
-            EmailSettings emailSettings = await GetEmailSettingsAsync();
-            ServerSettings serverSettings = await GetServerSettingsAsync();
-
-            var htmlMessage = GetTemplate("mail-activate-data-protection");
-            htmlMessage = htmlMessage.Replace("{{callbackUrl}}", $"{serverSettings.Url}");
+            var htmlMessage = await GetTemplateAsync("mail-activate-data-protection");
+            htmlMessage = htmlMessage.Replace("{{callbackUrl}}", _serverSettings.Value.Url);
 
             foreach (var admin in administrators)
             {
-                MailMessage mailMessage = new MailMessage(emailSettings.UserName, admin.Email);
-                AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-                htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-                mailMessage.AlternateViews.Add(htmlView);
-                mailMessage.IsBodyHtml = true;
-                mailMessage.Subject = $"Action required - Hideez Enterprise Server Status Update - {serverSettings.Name}";
-
-                await SendAsync(mailMessage, emailSettings);
+                await SendAsync(admin.Email, htmlMessage, "Action required - Hideez Enterprise Server Status Update");
             }
         }
 
         public async Task SendUserInvitationAsync(string email, string callbackUrl)
         {
-            var emailSettings = await GetEmailSettingsAsync();
-            var serverSettings = await GetServerSettingsAsync();
-
-            var htmlMessage = GetTemplate("mail-user-invitation");
+            var htmlMessage = await GetTemplateAsync("mail-user-invitation");
             htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
 
-            MailMessage mailMessage = new MailMessage(emailSettings.UserName, email);
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-            mailMessage.AlternateViews.Add(htmlView);
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Subject = $"Action required - Invitation to Hideez Enterprise Server - {serverSettings.Name}";
-
-            await SendAsync(mailMessage, emailSettings);
+            await SendAsync(email, htmlMessage, "Action required - Invitation to Hideez Enterprise Server");
         }
 
         public async Task SendEmployeeEnableSsoAsync(string email, string callbackUrl)
         {
-            var emailSettings = await GetEmailSettingsAsync();
-            var serverSettings = await GetServerSettingsAsync();
-
-            var htmlMessage = GetTemplate("mail-employee-enable-sso");
+            var htmlMessage = await GetTemplateAsync ("mail-employee-enable-sso");
             htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
 
-            MailMessage mailMessage = new MailMessage(emailSettings.UserName, email);
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-            mailMessage.AlternateViews.Add(htmlView);
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Subject = $"Action required - SSO Enabled to Hideez Enterprise Server - {serverSettings.Name}";
-
-            await SendAsync(mailMessage, emailSettings);
+            await SendAsync(email, htmlMessage, "Action required - SSO Enabled to Hideez Enterprise Server");
         }
 
         public async Task SendEmployeeDisableSsoAsync(string email)
         {
-            var emailSettings = await GetEmailSettingsAsync();
-            var serverSettings = await GetServerSettingsAsync();
+            var htmlMessage = await GetTemplateAsync ("mail-employee-disable-sso");
 
-            var htmlMessage = GetTemplate("mail-employee-disable-sso");
-
-            MailMessage mailMessage = new MailMessage(emailSettings.UserName, email);
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-            mailMessage.AlternateViews.Add(htmlView);
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Subject = $"Action required - SSO Disabled to Hideez Enterprise Server - {serverSettings.Name}";
-
-            await SendAsync(mailMessage, emailSettings);
+            await SendAsync(email, htmlMessage, "Action required - SSO Disabled to Hideez Enterprise Server");
         }
 
         public async Task SendUserResetPasswordAsync(string email, string callbackUrl)
         {
-            var emailSettings = await GetEmailSettingsAsync();
-            var serverSettings = await GetServerSettingsAsync();
-
-            var htmlMessage = GetTemplate("mail-user-reset-password");
+            var htmlMessage = await GetTemplateAsync("mail-user-reset-password");
             htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
 
-            MailMessage mailMessage = new MailMessage(emailSettings.UserName, email);
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-            mailMessage.AlternateViews.Add(htmlView);
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Subject = $"Action required - Password Reset to Hideez Enterprise Server - {serverSettings.Name}";
-
-            await SendAsync(mailMessage, emailSettings);
+            await SendAsync(email, htmlMessage, "Action required - Password Reset to Hideez Enterprise Server");
         }
 
         public async Task SendUserConfirmEmailAsync(string userId, string email, string code)
         {
-            var emailSettings = await GetEmailSettingsAsync();
-            var serverSettings = await GetServerSettingsAsync();
-
             var callbackUrl = HtmlEncoder.Default.Encode($"{_baseAddress}/confirm-email-change?userId={userId}&code={code}&email={email}");
 
-            var htmlMessage = GetTemplate("mail-user-confirm-email");
+            var htmlMessage = await GetTemplateAsync("mail-user-confirm-email");
             htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
 
-            MailMessage mailMessage = new MailMessage(emailSettings.UserName, email);
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-            mailMessage.AlternateViews.Add(htmlView);
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Subject = $"Action required - Confirm your email to Hideez Enterprise Server - {serverSettings.Name}";
-
-            await SendAsync(mailMessage, emailSettings);
+            await SendAsync(email, htmlMessage, "Action required - Confirm your email to Hideez Enterprise Server");
         }
 
         public async Task SendSoftwareVaultInvitationAsync(Employee employee, SoftwareVaultActivation activation, DateTime validTo)
         {
-            if (employee.Email == null)
-                throw new ArgumentNullException(nameof(employee.Email));
+            if (string.IsNullOrWhiteSpace(employee?.Email))
+            {
+                return;
+            }
 
-            var emailSettings = await GetEmailSettingsAsync();
+            var htmlTemplate = await GetTemplateAsync("mail-software-vault-invitation");
+            var replacement = new Dictionary<string, string>
+                {
+                    {"{{employeeName}}", employee.FirstName },
+                    {"{{validTo}}", validTo.Date.ToShortDateString() },
+                    {"{{serverAddress}}", activation.ServerAddress },
+                    {"{{activationId}}", activation.ActivationId },
+                    {"{{activationCode}}", activation.ActivationCode.ToString() },
+                };
 
-            var htmlMessage = GetTemplate("mail-software-vault-invitation");
-            htmlMessage = htmlMessage.Replace("{{employeeName}}", employee.FirstName)
-                .Replace("{{validTo}}", validTo.Date.ToShortDateString())
-                .Replace("{{serverAddress}}", activation.ServerAddress)
-                .Replace("{{activationId}}", activation.ActivationId)
-                .Replace("{{activationCode}}", activation.ActivationCode.ToString());
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
 
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(
-                                                         htmlMessage,
-                                                         Encoding.UTF8,
-                                                         MediaTypeNames.Text.Html);
+            var htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
 
             var code = $"{activation.ServerAddress}\n{activation.ActivationId}\n{activation.ActivationCode}";
             var qrCode = GetQRCode(code);
 
-            string mediaType = MediaTypeNames.Image.Jpeg;
-            LinkedResource img = new LinkedResource(qrCode, mediaType);
-            img.ContentId = "QRCode";
-            img.ContentType.MediaType = mediaType;
-            img.TransferEncoding = TransferEncoding.Base64;
+            var img = new LinkedResource(qrCode)
+            {
+                ContentId = "QRCode",
+                TransferEncoding = TransferEncoding.Base64
+            };
+            img.ContentType.MediaType = MediaTypeNames.Image.Jpeg;
             img.ContentType.Name = img.ContentId;
             img.ContentLink = new Uri("cid:" + img.ContentId);
 
             htmlView.LinkedResources.Add(img);
 
-            MailMessage mailMessage = new MailMessage(emailSettings.UserName, employee.Email);
-            mailMessage.AlternateViews.Add(htmlView);
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Subject = "Hideez Software Vault application";
-
-            await SendAsync(mailMessage, emailSettings);
+            await SendAsync(employee.Email, htmlMessage, "Hideez Software Vault application", htmlView);
         }
 
         public async Task SendHardwareVaultActivationCodeAsync(Employee employee, string code)
         {
-            var emailSettings = await GetEmailSettingsAsync();
-            var serverSettings = await GetServerSettingsAsync();
+            if (string.IsNullOrWhiteSpace(employee?.Email))
+            {
+                return;
+            }
 
-            var htmlMessage = GetTemplate("mail-hardware-vault-activation-code");
-            htmlMessage = htmlMessage.Replace("{{employee}}", employee.FullName).Replace("{{code}}", code);
+            var htmlTemplate = await GetTemplateAsync("mail-hardware-vault-activation-code");
+            var replacement = new Dictionary<string, string>
+                {
+                    {"{{employeeName}}", employee.FullName },
+                    {"{{code}}", code },
+                };
 
-            MailMessage mailMessage = new MailMessage(emailSettings.UserName, employee.Email);
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-            mailMessage.AlternateViews.Add(htmlView);
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Subject = $"Activate Hardware Vault - Hideez Enterprise Server - {serverSettings.Name}";
-
-            await SendAsync(mailMessage, emailSettings);
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+            await SendAsync(employee.Email, htmlMessage, "Activate Hardware Vault - Hideez Enterprise Server");
         }
 
         public async Task NotifyWhenPasswordAutoChangedAsync(Employee employee, string accountName)
         {
             if (string.IsNullOrWhiteSpace(employee?.Email))
+            {
                 return;
-
-            var emailSettings = await GetEmailSettingsAsync();
-            var serverSettings = await GetServerSettingsAsync();
+            }
 
             var employeeVaults = string.Join(",", employee.HardwareVaults.Select(x => x.Id).ToList());
-            var htmlMessage = GetTemplate("mail-password-auto-changed");
-            htmlMessage = htmlMessage.Replace("{{employeeName}}", employee.FullName)
-                .Replace("{{employeeVaults}}", employeeVaults)
-                .Replace("{{accountName}}", accountName);
 
-            MailMessage mailMessage = new MailMessage(emailSettings.UserName, employee.Email);
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-            htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
-            mailMessage.AlternateViews.Add(htmlView);
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Subject = $"Password Auto Changed - Hideez Enterprise Server - {serverSettings.Name}";
+            var htmlTemplate = await GetTemplateAsync("mail-password-auto-changed");
+            var replacement = new Dictionary<string, string>
+                {
+                    {"{{employeeName}}", employee.FullName },
+                    {"{{employeeVaults}}", employeeVaults },
+                    {"{{accountName}}", accountName },
+                };
 
-            await SendAsync(mailMessage, emailSettings);
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+            await SendAsync(employee.Email, htmlMessage, "Password Auto Changed - Hideez Enterprise Server ");
         }
 
-        private Task<EmailSettings> GetEmailSettingsAsync()
+        private async Task<string> GetTemplateAsync(string name)
         {
-            var settings = new EmailSettings()
+            var path = Path.Combine(_hostingEnvironment.WebRootPath, "templates", $"{name}.html");
+            using var reader = File.OpenText(path);
             {
-                Host = _config.GetValue<string>("EmailSender:Host"),
-                Port = _config.GetValue<int>("EmailSender:Port"),
-                EnableSSL = _config.GetValue<bool>("EmailSender:EnableSSL"),
-                UserName = _config.GetValue<string>("EmailSender:UserName"),
-                Password = _config.GetValue<string>("EmailSender:Password")
-            };
-
-            return Task.FromResult(settings);
+                return await reader.ReadToEndAsync();
+            }
         }
 
-        private Task<ServerSettings> GetServerSettingsAsync()
+        private static string AddDataToTemplate(string htmlTemplate, Dictionary<string, string> replacements)
         {
-            var settings = new ServerSettings()
+            foreach (var item in replacements)
             {
-                Name = _config.GetValue<string>("ServerSettings:Name"),
-                Url = _config.GetValue<string>("ServerSettings:Url")
-            };
+                htmlTemplate = htmlTemplate.Replace(item.Key, item.Value);
+            }
 
-            return Task.FromResult(settings);
-        }
-
-        private string GetTemplate(string name)
-        {
-            var path = Path.Combine(_env.WebRootPath, "templates", $"{name}.html");
-            using StreamReader reader = File.OpenText(path);
-            return reader.ReadToEnd();
+            return htmlTemplate;
         }
 
         private LinkedResource CreateImageResource(string name)
         {
-            string mediaType = MediaTypeNames.Image.Jpeg;
-            var img = new LinkedResource(Path.Combine(_env.WebRootPath, "templates", $"{name}.png"));
-            img.ContentId = name;
-            img.ContentType.MediaType = mediaType;
-            img.TransferEncoding = TransferEncoding.Base64;
+            var img = new LinkedResource(Path.Combine(_hostingEnvironment.WebRootPath, "templates", $"{name}.png"))
+            {
+                ContentId = name,
+                TransferEncoding = TransferEncoding.Base64
+
+            };
+            img.ContentType.MediaType = MediaTypeNames.Image.Jpeg;
             img.ContentType.Name = img.ContentId;
             img.ContentLink = new Uri("cid:" + img.ContentId);
             return img;
         }
 
-        private MemoryStream GetQRCode(string text)
+        private static MemoryStream GetQRCode(string text)
         {
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-            QRCode qrCode = new QRCode(qrCodeData);
-            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            var qrGenerator = new QRCodeGenerator();
+            var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+            var qrCode = new QRCode(qrCodeData);
+            var qrCodeImage = qrCode.GetGraphic(20);
             var qrCodeImageData = BitmapToBytes(qrCodeImage);
             return new MemoryStream(qrCodeImageData);
         }
 
-        private byte[] BitmapToBytes(Bitmap img)
+        private static byte[] BitmapToBytes(Bitmap img)
         {
-            using MemoryStream stream = new MemoryStream();
-            img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-            return stream.ToArray();
+            using var stream = new MemoryStream();
+            {
+                img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using HES.Core.Entities;
 using HES.Core.HostedServices;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using HES.Core.Services;
 using HES.Infrastructure;
 using HES.Web.Components;
@@ -157,6 +158,8 @@ namespace HES.Web
             #region Configuration
 
             services.Configure<Fido2Configuration>(Configuration.GetSection("Fido2"));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSender"));
+            services.Configure<ServerSettings>(Configuration.GetSection("ServerSettings"));
 
             #endregion
 
