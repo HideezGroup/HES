@@ -16,6 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using static LdapForNet.Native.Native;
+using HES.Core.Constants;
 
 namespace HES.Core.Services
 {
@@ -708,7 +709,7 @@ namespace HES.Core.Services
             if (employee.ActiveDirectoryGuid == null)
                 return;
 
-            var ldapSettings = await _appSettingsService.GetLdapSettingsAsync();
+            var ldapSettings = await _appSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
             if (ldapSettings == null)
                 throw new HESException(HESCode.LdapSettingsNotSet);
 

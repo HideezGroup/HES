@@ -1,8 +1,10 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Accounts;
+using HES.Core.Models.AppSettings;
 using HES.Core.Models.AppUsers;
 using HES.Web.Components;
 using LdapForNet;
@@ -100,7 +102,7 @@ namespace HES.Web.Pages.Employees
 
         private async Task LoadLdapSettingsAsync()
         {
-            var ldapSettings = await AppSettingsService.GetLdapSettingsAsync();
+            var ldapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
 
             if (ldapSettings?.Password != null)
             {

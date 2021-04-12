@@ -1,8 +1,10 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.PasswordManager;
 using Hideez.SDK.Communication.Utils;
@@ -110,7 +112,7 @@ namespace HES.Core.Services
                 case TaskOperation.Create:
                     if (task.Account.UpdateInActiveDirectory)
                     {
-                        var ldapSettings = await _appSettingsService.GetLdapSettingsAsync();
+                        var ldapSettings = await _appSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
                         if (ldapSettings?.Password == null)
                             throw new Exception("Active Directory Credentials Required"); // TODO use Communication.dll ex
                         await _ldapService.SetUserPasswordAsync(task.HardwareVault.EmployeeId, task.Password, ldapSettings);
@@ -218,7 +220,6 @@ namespace HES.Core.Services
             _hardwareVaultTaskService.Dispose();
             _accountService.Dispose();
             _ldapService.Dispose();
-            _appSettingsService.Dispose();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
@@ -48,7 +49,7 @@ namespace HES.Web.Pages.Employees
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Account.Id, Account);
 
-                LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
+                LdapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
 
                 SetInitialized();
             }

@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.ActiveDirectory;
@@ -40,7 +41,7 @@ namespace HES.Web.Pages.Groups
                 LdapService = ScopedServices.GetRequiredService<ILdapService>();
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
 
-                LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
+                LdapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
 
                 if (LdapSettings == null)
                 {

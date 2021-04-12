@@ -1,4 +1,5 @@
-﻿using HES.Core.Interfaces;
+﻿using HES.Core.Constants;
+using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -53,7 +54,7 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task<LicensingSettings> LoadLicensingSettingsAsync()
         {
-            var license = await AppSettingsService.GetLicensingSettingsAsync();
+            var license = await AppSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
 
             if (license == null)
                 return new LicensingSettings();
@@ -82,7 +83,7 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task<string> LoadDomainSettingsAsync()
         {
-            var domainSettings = await AppSettingsService.GetLdapSettingsAsync();
+            var domainSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
             return domainSettings?.Host;
         }
 

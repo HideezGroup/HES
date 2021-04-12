@@ -4,6 +4,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API.HardwareVault;
+using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.HardwareVaults;
 using Hideez.SDK.Communication;
@@ -341,7 +342,7 @@ namespace HES.Core.Services
 
         public async Task ImportVaultsAsync()
         {
-            var licensing = await _appSettingsService.GetLicensingSettingsAsync();
+            var licensing = await _appSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
 
             if (licensing == null)
                 throw new Exception("Api Key is empty.");
@@ -1079,7 +1080,6 @@ namespace HES.Core.Services
             _licenseService.Dispose();
             _hardwareVaultTaskService.Dispose();
             _accountService.Dispose();
-            _appSettingsService.Dispose();
         }
     }
 }

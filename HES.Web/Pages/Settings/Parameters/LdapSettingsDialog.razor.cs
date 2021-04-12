@@ -1,4 +1,5 @@
-﻿using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
@@ -23,7 +24,7 @@ namespace HES.Web.Pages.Settings.Parameters
 
         protected override async Task OnInitializedAsync()
         {
-            var setting = await AppSettingsService.GetLdapSettingsAsync();
+            var setting = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
 
             if (setting == null)
                 LdapSettings = new LdapSettings() { Host = Host };
@@ -47,7 +48,7 @@ namespace HES.Web.Pages.Settings.Parameters
                     return;
 
                 await LdapService.ValidateCredentialsAsync(LdapSettings);
-                await AppSettingsService.SetLdapSettingsAsync(LdapSettings);
+                await AppSettingsService.SetSettingsAsync(LdapSettings, ServerConstants.Domain);
                 await ToastService.ShowToastAsync("Domain settings updated.", ToastType.Success);    
                 await ModalDialogClose();
             }

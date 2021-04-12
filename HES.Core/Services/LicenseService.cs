@@ -1,7 +1,9 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.API.License;
+using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.LicenseOrders;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +52,7 @@ namespace HES.Core.Services
 
         private async Task<HttpClient> CreateHttpClient()
         {
-            var licensing = await _appSettingsService.GetLicensingSettingsAsync();
+            var licensing = await _appSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
 
             if (licensing == null)
                 throw new Exception("Api Key is empty.");
@@ -310,7 +312,7 @@ namespace HES.Core.Services
             if (vaultLicenses == null)
                 throw new Exception("Hardware vault licenses not found.");
 
-            var licensing = await _appSettingsService.GetLicensingSettingsAsync();
+            var licensing = await _appSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
 
             if (licensing == null)
                 throw new Exception("Api Key is empty.");
@@ -583,7 +585,6 @@ namespace HES.Core.Services
             _licenseOrderRepository.Dispose();
             _hardwareVaultLicenseRepository.Dispose();
             _hardwareVaultRepository.Dispose();
-            _appSettingsService.Dispose();
         }
     }
 }

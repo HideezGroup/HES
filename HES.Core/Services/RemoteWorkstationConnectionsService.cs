@@ -1,4 +1,5 @@
-﻿using HES.Core.Interfaces;
+﻿using HES.Core.Constants;
+using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
@@ -126,7 +127,6 @@ namespace HES.Core.Services
 
             await _appSettingsService.SetAlarmStateAsync(alarmState);
 
-
             foreach (var workstationConnection in _workstationConnections)
                 await workstationConnection.Value.SetAlarmState(false);
         }
@@ -182,7 +182,6 @@ namespace HES.Core.Services
             _accountService.Dispose();
             _hardwareVaultService.Dispose();
             _workstationAuditService.Dispose();
-            _appSettingsService.Dispose();
         }
     }
 }

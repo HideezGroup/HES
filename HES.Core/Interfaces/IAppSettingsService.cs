@@ -1,21 +1,13 @@
 ﻿using HES.Core.Models.AppSettings;
-using System;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IAppSettingsService : IDisposable
+    public interface IAppSettingsService
     {
-        Task<LicensingSettings> GetLicensingSettingsAsync();
-        Task SetLicensingSettingsAsync(LicensingSettings licensing);
-        Task<EmailSettings> GetEmailSettingsAsync();
-        Task SetEmailSettingsAsync(EmailSettings email);
-        Task SetAlarmStateAsync(AlarmState alarmState);
+        Task<T> GetSettingsAsync<T>(string settingsKey);
+        Task SetSettingsAsync<T>(T settings, string settingsKey);
         Task<AlarmState> GetAlarmStateAsync();
-        Task<bool> GetAlarmEnabledAsync();
-        Task<ServerSettings> GetServerSettingsAsync();
-        Task SetServerSettingsAsync(ServerSettings server);
-        Task<LdapSettings> GetLdapSettingsAsync();
-        Task SetLdapSettingsAsync(LdapSettings ldapSettings);
+        Task SetAlarmStateAsync(AlarmState alarmState);
     }
 }

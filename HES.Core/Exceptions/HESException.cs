@@ -37,6 +37,7 @@ namespace HES.Core.Exceptions
 
         // Settings
         LdapSettingsNotSet,
+        AppSettingsNotFound,
 
         // Accounts
         AccountNotFound,
@@ -86,6 +87,7 @@ namespace HES.Core.Exceptions
             { HESCode.WorkstationHardwareVaultPairAlreadyExist,  "Hardware Vault already added to workstation." },
 
             { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
+            { HESCode.AppSettingsNotFound,  "Application settings not found." },
 
             { HESCode.AccountNotFound,  "Account not found." },
             { HESCode.AccountExist,  "Account with the same name and login exist." },
