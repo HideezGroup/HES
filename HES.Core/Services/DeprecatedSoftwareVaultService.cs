@@ -13,13 +13,14 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class SoftwareVaultService : ISoftwareVaultService, IDisposable
+    [Obsolete]
+    public class DeprecatedSoftwareVaultService : ISoftwareVaultService, IDisposable
     {
         private readonly IAsyncRepository<SoftwareVault> _softwareVaultRepository;
         private readonly IAsyncRepository<SoftwareVaultInvitation> _softwareVaultInvitationRepository;
         private readonly IEmailSenderService _emailSenderService;
 
-        public SoftwareVaultService(IAsyncRepository<SoftwareVault> softwareVaultRepository,
+        public DeprecatedSoftwareVaultService(IAsyncRepository<SoftwareVault> softwareVaultRepository,
                                     IAsyncRepository<SoftwareVaultInvitation> softwareVaultInvitationRepository,
                                     IEmailSenderService emailSenderService)
         {

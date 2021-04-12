@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
+    [Obsolete]
     public interface ISoftwareVaultService: IDisposable
     {
         IQueryable<SoftwareVault> SoftwareVaultQuery();

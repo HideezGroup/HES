@@ -13,13 +13,14 @@ using System.Transactions;
 
 namespace HES.Core.Services
 {
-    public class GroupService : IGroupService, IDisposable
+    [Obsolete]
+    public class DeprecatedGroupService : IGroupService, IDisposable
     {
         private readonly IAsyncRepository<Group> _groupRepository;
         private readonly IAsyncRepository<GroupMembership> _groupMembershipRepository;
         private readonly IAsyncRepository<Employee> _employeeRepository;
 
-        public GroupService(IAsyncRepository<Group> groupRepository,
+        public DeprecatedGroupService(IAsyncRepository<Group> groupRepository,
                             IAsyncRepository<GroupMembership> groupMembershipRepository,
                             IAsyncRepository<Employee> employeeRepository)
         {

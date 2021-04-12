@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
+    [Obsolete]
     public interface IGroupService : IDisposable
     {
         IQueryable<Group> Query();
