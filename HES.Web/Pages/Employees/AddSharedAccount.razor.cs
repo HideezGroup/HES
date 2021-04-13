@@ -28,18 +28,27 @@ namespace HES.Web.Pages.Employees
 
         protected override async Task OnInitializedAsync()
         {
-            SheredAccountSevice = ScopedServices.GetRequiredService<ISharedAccountService>();
-            EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
-            RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
-
-            var count = await SheredAccountSevice.GetSharedAccountsCountAsync(new DataLoadingOptions<SharedAccountsFilter>());
-            SharedAccounts = await SheredAccountSevice.GetSharedAccountsAsync(new DataLoadingOptions<SharedAccountsFilter>
+            try
             {
-                Take = count,
-                SortedColumn = nameof(Employee.FullName),
-                SortDirection = ListSortDirection.Ascending
-            });
-            SelectedSharedAccount = SharedAccounts.FirstOrDefault();
+                SheredAccountSevice = ScopedServices.GetRequiredService<ISharedAccountService>();
+                EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
+                RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
+
+                var count = await SheredAccountSevice.GetSharedAccountsCountAsync(new DataLoadingOptions<SharedAccountsFilter>());
+                SharedAccounts = await SheredAccountSevice.GetSharedAccountsAsync(new DataLoadingOptions<SharedAccountsFilter>
+                {
+                    Take = count,
+                    SortedColumn = nameof(Employee.FullName),
+                    SortDirection = ListSortDirection.Ascending
+                });
+                SelectedSharedAccount = SharedAccounts.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+                await ModalDialogCancel();
+            }
         }
 
         private async Task AddSharedAccoountAsync()

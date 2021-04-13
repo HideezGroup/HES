@@ -44,8 +44,8 @@ namespace HES.Web.Pages.Employees
 
                 await LoadEmployeeAsync();
                 await LoadEmployeeSsoState();
-                await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
                 await LoadLdapSettingsAsync();
+                await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
                 await DataTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
 
                 SetInitialized();
@@ -210,6 +210,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
@@ -275,6 +276,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
@@ -296,6 +298,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
@@ -317,6 +320,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
@@ -338,6 +342,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
@@ -359,6 +364,7 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
                 await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
@@ -398,14 +404,14 @@ namespace HES.Web.Pages.Employees
         {
             if (!await VerifyAdUserAsync()) return;
 
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(SoftwareVaultDetails));
-                builder.AddAttribute(1, nameof(SoftwareVaultDetails.SoftwareVault), softwareVault);
-                builder.CloseComponent();
-            };
+            //RenderFragment body = (builder) =>
+            //{
+            //    builder.OpenComponent(0, typeof(SoftwareVaultDetails));
+            //    builder.AddAttribute(1, nameof(SoftwareVaultDetails.SoftwareVault), softwareVault);
+            //    builder.CloseComponent();
+            //};
 
-            await ModalDialogService.ShowAsync("Software vault details", body);
+            //await ModalDialogService.ShowAsync("Software vault details", body);
         }
 
         private async Task OpenDialogHardwareVaultDetailsAsync(HardwareVault hardwareVault)

@@ -20,7 +20,6 @@ namespace HES.Web.Pages.Employees
         public ITemplateService TemplateService { get; set; }
         public ILdapService LdapService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<CreatePersonalAccount> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }
 

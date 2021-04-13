@@ -89,7 +89,7 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogClose();
+                await ModalDialogCancel();
             }
         }
 
