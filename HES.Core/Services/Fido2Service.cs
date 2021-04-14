@@ -24,10 +24,13 @@ namespace HES.Core.Services
     {
         // possible values: none, direct, indirect
         private const AttestationConveyancePreference AttestationType = AttestationConveyancePreference.None;
+
         // possible values: <empty>, platform, cross-platform
         private const AuthenticatorAttachment Attachment = AuthenticatorAttachment.CrossPlatform;
+
         // possible values: preferred, required, discouraged
         private const UserVerificationRequirement UserVerification = UserVerificationRequirement.Preferred;
+
         // possible values: true, false
         private const bool RequireResidentKey = false;
 
@@ -35,7 +38,7 @@ namespace HES.Core.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAsyncRepository<FidoStoredCredential> _fidoCredentialsRepository;
         private readonly IAsyncRepository<ApplicationUser> _applicationUserRepository;
-        private readonly Fido2 _lib;
+        private readonly Fido2 _fidoManager;
         private readonly IOptions<Fido2Configuration> _fido2Configuration;
         private readonly IMemoryCache _memoryCache;
 
@@ -52,7 +55,7 @@ namespace HES.Core.Services
             _applicationUserRepository = applicationUserRepository;
             _fido2Configuration = fido2Configuration;
             _memoryCache = memoryCache;
-            _lib = new Fido2(new Fido2Configuration()
+            _fidoManager = new Fido2(new Fido2Configuration()
             {
                 ServerDomain = _fido2Configuration.Value.ServerDomain,
                 ServerName = _fido2Configuration.Value.ServerName,
@@ -66,10 +69,14 @@ namespace HES.Core.Services
         public async Task<FidoStoredCredential> AddSecurityKeyAsync(string userEmail, IJSRuntime jsRuntime)
         {
             if (string.IsNullOrWhiteSpace(userEmail))
+            {
                 throw new ArgumentNullException(nameof(userEmail));
+            }
 
             if (jsRuntime == null)
+            {
                 throw new ArgumentNullException(nameof(jsRuntime));
+            }
 
             var fidoUser = new Fido2User
             {
@@ -100,7 +107,7 @@ namespace HES.Core.Services
 
             var credentials = await GetCredentialsByUserEmail(userEmail);
 
-            var options = _lib.RequestNewCredential(fidoUser, credentials.Select(x => x.Descriptor).ToList(), authenticatorSelection, AttestationType, exts);
+            var options = _fidoManager.RequestNewCredential(fidoUser, credentials.Select(x => x.Descriptor).ToList(), authenticatorSelection, AttestationType, exts);
 
             var attestationResponseJson = await jsRuntime.InvokeAsync<string>("createCredentials", TimeSpan.FromMinutes(3), JsonConvert.SerializeObject(options, new JsonSerializerSettings { Converters = new List<JsonConverter> { new StringEnumConverter() } }));
 
@@ -110,14 +117,11 @@ namespace HES.Core.Services
             IsCredentialIdUniqueToUserAsyncDelegate callback = async (IsCredentialIdUniqueToUserParams args) =>
             {
                 var users = await GetUsersByCredentialIdAsync(args.CredentialId);
-                if (users.Count > 0)
-                    return false;
-
-                return true;
+                return users.Count <= 0;
             };
 
             // Verify and make the credentials
-            var success = await _lib.MakeNewCredentialAsync(attestationResponse, options, callback);
+            var success = await _fidoManager.MakeNewCredentialAsync(attestationResponse, options, callback);
 
             // Store the credentials in db
             return await _fidoCredentialsRepository.AddAsync(new FidoStoredCredential
@@ -137,28 +141,51 @@ namespace HES.Core.Services
 
         public async Task RemoveSecurityKeyAsync(string credentialId)
         {
-            var fido2Key = await _fidoCredentialsRepository.GetByIdAsync(credentialId);
-            if (fido2Key == null)
-                throw new HESException(HESCode.SecurityKeyNotFound);
-
-            await _fidoCredentialsRepository.DeleteAsync(fido2Key);
+            var credential = await GetCredentialById(credentialId);
+            await _fidoCredentialsRepository.DeleteAsync(credential);
         }
 
         public async Task UpdateSecurityKeyNameAsync(string securityKeyId, string name)
         {
             if (string.IsNullOrWhiteSpace(securityKeyId))
+            {
                 throw new ArgumentNullException(nameof(securityKeyId));
+            }
 
             if (string.IsNullOrWhiteSpace(name))
+            {
                 name = "Security Key";
+            }
 
-            var credential = await _fidoCredentialsRepository.GetByIdAsync(securityKeyId);
-            if (credential == null)
-                throw new HESException(HESCode.SecurityKeyNotFound);
-
+            var credential = await GetCredentialById(securityKeyId);
             credential.SecurityKeyName = name;
 
             await _fidoCredentialsRepository.UpdateAsync(credential);
+        }
+
+        public async Task RemoveCredentialsByUsername(string username)
+        {
+            var items = await _fidoCredentialsRepository.Query().Where(c => c.Username == username).ToListAsync();
+            if (items != null)
+            {
+                await _fidoCredentialsRepository.DeleteRangeAsync(items);
+            }
+        }
+
+        public async Task<List<FidoStoredCredential>> GetCredentialsByUserEmail(string userEmail)
+        {
+            return await _fidoCredentialsRepository.Query().Where(c => c.Username == userEmail).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<FidoStoredCredential> GetCredentialById(string credentialId)
+        {
+            var credential = await _fidoCredentialsRepository.GetByIdAsync(credentialId);
+            if (credential == null)
+            {
+                throw new HESException(HESCode.SecurityKeyNotFound);
+            }
+
+            return credential;
         }
 
         #endregion
@@ -168,14 +195,20 @@ namespace HES.Core.Services
         public async Task<AuthenticatorAssertionRawResponse> MakeAssertionRawResponse(string userEmail, IJSRuntime jsRuntime)
         {
             if (string.IsNullOrWhiteSpace(userEmail))
+            {
                 throw new ArgumentNullException(nameof(userEmail));
+            }
 
             if (jsRuntime == null)
+            {
                 throw new ArgumentNullException(nameof(jsRuntime));
+            }
 
             var identityUser = await _userManager.FindByEmailAsync(userEmail);
             if (identityUser == null)
+            {
                 throw new HESException(HESCode.UserNotFound);
+            }
 
             var user = new Fido2User
             {
@@ -188,10 +221,21 @@ namespace HES.Core.Services
             var items = await GetCredentialsByUserEmail(identityUser.UserName);
             var existingCredentials = items.Select(c => c.Descriptor).ToList();
 
-            var exts = new AuthenticationExtensionsClientInputs() { SimpleTransactionAuthorization = "FIDO", GenericTransactionAuthorization = new TxAuthGenericArg { ContentType = "text/plain", Content = new byte[] { 0x46, 0x49, 0x44, 0x4F } }, UserVerificationIndex = true, Location = true, UserVerificationMethod = true };
+            var exts = new AuthenticationExtensionsClientInputs() 
+            { 
+                SimpleTransactionAuthorization = "FIDO", 
+                GenericTransactionAuthorization = new TxAuthGenericArg 
+                { 
+                    ContentType = "text/plain", 
+                    Content = new byte[] { 0x46, 0x49, 0x44, 0x4F } 
+                }, 
+                UserVerificationIndex = true, 
+                Location = true, 
+                UserVerificationMethod = true 
+            };
 
             // Create options
-            var options = _lib.GetAssertionOptions(existingCredentials, UserVerification, exts);
+            var options = _fidoManager.GetAssertionOptions(existingCredentials, UserVerification, exts);
 
             var optionsJson = JsonConvert.SerializeObject(options, new JsonSerializerSettings { Converters = new List<JsonConverter> { new StringEnumConverter() } });
 
@@ -215,13 +259,10 @@ namespace HES.Core.Services
             var options = AssertionOptions.FromJson(jsonOptions);
 
             // Get registered credential from database
-            var creds = await GetCredentialById(assertionRawResponse.Id);
-
-            if (creds == null)
-                throw new Exception("Unknown credentials");
+            var credential = await GetCredentialById(assertionRawResponse.Id);
 
             // Get credential counter from database
-            var storedCounter = creds.SignatureCounter;
+            var storedCounter = credential.SignatureCounter;
 
             // Create callback to check if userhandle owns the credentialId
             IsUserHandleOwnerOfCredentialIdAsync callback = async (args) =>
@@ -231,7 +272,7 @@ namespace HES.Core.Services
             };
 
             // Make the assertion
-            var res = await _lib.MakeAssertionAsync(assertionRawResponse, options, creds.PublicKey, storedCounter, callback);
+            var res = await _fidoManager.MakeAssertionAsync(assertionRawResponse, options, credential.PublicKey, storedCounter, callback);
 
             // Store the updated counter
             await UpdateCounter(res.CredentialId, res.Counter);
@@ -241,9 +282,11 @@ namespace HES.Core.Services
 
             if (authData.UserPresent && authData.UserVerified)
             {
-                var user = await _userManager.FindByNameAsync(creds.Username);
+                var user = await _userManager.FindByNameAsync(credential.Username);
                 if (user == null)
+                {
                     throw new HESException(HESCode.UserNotFound);
+                }
 
                 await _signInManager.SignInAsync(user, parameters.RememberMe);
 
@@ -257,68 +300,45 @@ namespace HES.Core.Services
 
         #region Helpers
 
-        public async Task<FidoStoredCredential> GetCredentialsById(string credentialId)
+        private async Task<FidoStoredCredential> GetCredentialById(byte[] credentialId)
         {
-            var credential = await _fidoCredentialsRepository.GetByIdAsync(credentialId);
+            var credentialIdString = Base64Url.Encode(credentialId);
+
+            var credential = await _fidoCredentialsRepository.Query().Where(c => c.DescriptorJson.Contains(credentialIdString)).FirstOrDefaultAsync();
             if (credential == null)
+            {
                 throw new HESException(HESCode.SecurityKeyNotFound);
+            }
 
             return credential;
         }
 
-        public async Task<List<FidoStoredCredential>> GetCredentialsByUserEmail(string userEmail)
+        private async Task<List<FidoStoredCredential>> GetCredentialsByUserHandleAsync(byte[] userHandle)
         {
-            return await _fidoCredentialsRepository.Query().Where(c => c.Username == userEmail).AsNoTracking().ToListAsync();
-        }
-
-        public async Task RemoveCredentialsByUsername(string username)
-        {
-            var items = await _fidoCredentialsRepository.Query().Where(c => c.Username == username).ToListAsync();
-            if (items != null)
-                await _fidoCredentialsRepository.DeleteRangeAsync(items);
-        }
-
-        public async Task<FidoStoredCredential> GetCredentialById(byte[] id)
-        {
-            var credentialIdString = Base64Url.Encode(id);
-            //byte[] credentialIdStringByte = Base64Url.Decode(credentialIdString);
-
-            var cred = await _fidoCredentialsRepository.Query().Where(c => c.DescriptorJson.Contains(credentialIdString)).FirstOrDefaultAsync();
-
-            return cred;
-        }
-
-        public async Task<List<FidoStoredCredential>> GetCredentialsByUserHandleAsync(byte[] userHandle)
-        {
-            return await _fidoCredentialsRepository.Query().Where(c => c.UserHandle.SequenceEqual(userHandle)).AsNoTracking().ToListAsync();
-        }
-
-        public async Task UpdateCounter(byte[] credentialId, uint counter)
-        {
-            var credentialIdString = Base64Url.Encode(credentialId);
-            //byte[] credentialIdStringByte = Base64Url.Decode(credentialIdString);
-
-            var cred = await _fidoCredentialsRepository.Query().Where(c => c.DescriptorJson.Contains(credentialIdString)).FirstOrDefaultAsync();
-
-            cred.SignatureCounter = counter;
-            await _fidoCredentialsRepository.UpdateAsync(cred);
-        }
-
-        public async Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId)
-        {
-            var credentialIdString = Base64Url.Encode(credentialId);
-            //byte[] credentialIdStringByte = Base64Url.Decode(credentialIdString);
-
-            var cred = await _fidoCredentialsRepository.Query().Where(c => c.DescriptorJson.Contains(credentialIdString)).FirstOrDefaultAsync();
-
-            if (cred == null)
+            var credential = await _fidoCredentialsRepository.Query().Where(c => c.UserHandle.SequenceEqual(userHandle)).AsNoTracking().ToListAsync();
+            if (credential == null)
             {
-                return new List<Fido2User>();
+                throw new HESException(HESCode.SecurityKeyNotFound);
             }
+
+            return credential;
+        }
+
+        private async Task UpdateCounter(byte[] credentialId, uint counter)
+        {
+            var credential = await GetCredentialById(credentialId);
+
+            credential.SignatureCounter = counter;
+            await _fidoCredentialsRepository.UpdateAsync(credential);
+        }
+
+        private async Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId)
+        {
+            var credential = await GetCredentialById(credentialId);
 
             return await _applicationUserRepository.Query()
                     .Where(u => Encoding.UTF8.GetBytes(u.UserName)
-                    .SequenceEqual(cred.UserId))
+                    .SequenceEqual(credential.UserId))
                     .Select(u => new Fido2User
                     {
                         DisplayName = u.UserName,
