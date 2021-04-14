@@ -19,8 +19,6 @@ namespace HES.Core.Services
 
         private readonly IRemoteTaskService _remoteTaskService;
         private readonly IRemoteDeviceConnectionsService _remoteDeviceConnectionsService;
-        private readonly IEmployeeService _employeeService;
-        private readonly IAccountService _accountService;
         private readonly IWorkstationService _workstationService;
         private readonly IHardwareVaultService _hardwareVaultService;
         private readonly IWorkstationAuditService _workstationAuditService;
@@ -30,8 +28,6 @@ namespace HES.Core.Services
 
         public RemoteWorkstationConnectionsService(IRemoteTaskService remoteTaskService,
                       IRemoteDeviceConnectionsService remoteDeviceConnectionsService,
-                      IEmployeeService employeeService,
-                      IAccountService accountService,
                       IWorkstationService workstationService,
                       IHardwareVaultService hardwareVaultService,
                       IWorkstationAuditService workstationAuditService,
@@ -40,8 +36,6 @@ namespace HES.Core.Services
         {
             _remoteTaskService = remoteTaskService;
             _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
-            _employeeService = employeeService;
-            _accountService = accountService;
             _workstationService = workstationService;
             _hardwareVaultService = hardwareVaultService;
             _workstationAuditService = workstationAuditService;
@@ -179,7 +173,6 @@ namespace HES.Core.Services
         {
             _remoteTaskService.Dispose();
             _remoteDeviceConnectionsService.Dispose();
-            _accountService.Dispose();
             _hardwareVaultService.Dispose();
             _workstationAuditService.Dispose();
         }

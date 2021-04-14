@@ -50,16 +50,20 @@ namespace HES.Core.Interfaces
         Task<List<Account>> GetAccountsAsync(DataLoadingOptions<AccountFilter> dataLoadingOptions);
         Task<int> GetAccountsCountAsync(DataLoadingOptions<AccountFilter> dataLoadingOptions);
         Task<List<Account>> GetAccountsByEmployeeIdAsync(string employeeId);
+        Task<List<Account>> GetAccountsBySharedAccountIdAsync(string sharedAccountId);
         Task SetAsPrimaryAccountAsync(string employeeId, string accountId);
-        Task<Account> GetAccountByIdAsync(string accountId);
+        Task<Account> GetAccountByIdAsync(string accountId, bool asNoTracking = false);
         Task<Account> CreatePersonalAccountAsync(AccountAddModel personalAccount);
         Task EditPersonalAccountAsync(AccountEditModel personalAccount);
         Task EditPersonalAccountPwdAsync(Account account, AccountPassword accountPassword);
         Task EditPersonalAccountOtpAsync(Account account, AccountOtp accountOtp);
         Task<Account> AddSharedAccountAsync(string employeeId, string sharedAccountId);
-        Task UnchangedPersonalAccountAsync(Account account);
+        Task UpdateAfterAccountCreateAsync(Account account, uint timestamp);
+        Task UpdateAfterAccountModifyAsync(Account account, uint timestamp);
+        Task UpdateAccountsAsync(params Account[] accounts);
+        void UnchangedPersonalAccount(Account account);
         Task<Account> DeleteAccountAsync(string accountId);
-
+        Task DeleteAccountsByEmployeeIdAsync(string employeeId);
         #endregion
     }
 }

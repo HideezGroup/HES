@@ -20,7 +20,7 @@ namespace HES.Core.Services
     {
         private readonly IHardwareVaultService _hardwareVaultService;
         private readonly IHardwareVaultTaskService _hardwareVaultTaskService;
-        private readonly IAccountService _accountService;
+        private readonly IEmployeeService _employeeService;
         private readonly IDataProtectionService _dataProtectionService;
         private readonly ILdapService _ldapService;
         private readonly IAppSettingsService _appSettingsService;
@@ -28,7 +28,7 @@ namespace HES.Core.Services
 
         public RemoteTaskService(IHardwareVaultService hardwareVaultService,
                                  IHardwareVaultTaskService hardwareVaultTaskService,
-                                 IAccountService accountService,
+                                 IEmployeeService employeeService,
                                  IDataProtectionService dataProtectionService,
                                  ILdapService ldapService,
                                  IAppSettingsService appSettingsService,
@@ -36,7 +36,7 @@ namespace HES.Core.Services
         {
             _hardwareVaultService = hardwareVaultService;
             _hardwareVaultTaskService = hardwareVaultTaskService;
-            _accountService = accountService;
+            _employeeService = employeeService;
             _dataProtectionService = dataProtectionService;
             _ldapService = ldapService;
             _appSettingsService = appSettingsService;
@@ -53,12 +53,12 @@ namespace HES.Core.Services
             switch (task.Operation)
             {
                 case TaskOperation.Create:
-                    await _accountService.UpdateAfterAccountCreateAsync(task.Account, task.Timestamp);
+                    await _employeeService.UpdateAfterAccountCreateAsync(task.Account, task.Timestamp);
                     break;
                 case TaskOperation.Update:
                 case TaskOperation.Delete:
                 case TaskOperation.Primary:
-                    await _accountService.UpdateAfterAccountModifyAsync(task.Account, task.Timestamp);
+                    await _employeeService.UpdateAfterAccountModifyAsync(task.Account, task.Timestamp);
                     break;
             }
 
@@ -136,7 +136,7 @@ namespace HES.Core.Services
 
         private async Task AddAccountAsync(Device remoteDevice, HardwareVaultTask task)
         {
-            var account = await _accountService.GetAccountByIdNoTrackingAsync(task.AccountId);
+            var account = await _employeeService.GetAccountByIdAsync(task.AccountId, true);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
 
             var pm = new DevicePasswordManager(remoteDevice, null);
@@ -145,7 +145,7 @@ namespace HES.Core.Services
 
         private async Task UpdateAccountAsync(Device remoteDevice, HardwareVaultTask task)
         {
-            var account = await _accountService.GetAccountByIdNoTrackingAsync(task.AccountId);
+            var account = await _employeeService.GetAccountByIdAsync(task.AccountId, true);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
 
             var storageId = new StorageId(account.StorageId);
@@ -155,7 +155,7 @@ namespace HES.Core.Services
 
         private async Task SetAccountAsPrimaryAsync(Device remoteDevice, HardwareVaultTask task)
         {
-            var account = await _accountService.GetAccountByIdNoTrackingAsync(task.AccountId);
+            var account = await _employeeService.GetAccountByIdAsync(task.AccountId, true);
 
             var storageId = new StorageId(account.StorageId);
             var pm = new DevicePasswordManager(remoteDevice, null);
@@ -164,7 +164,7 @@ namespace HES.Core.Services
 
         private async Task DeleteAccountAsync(Device remoteDevice, HardwareVaultTask task)
         {
-            var account = await _accountService.GetAccountByIdNoTrackingAsync(task.AccountId);
+            var account = await _employeeService.GetAccountByIdAsync(task.AccountId, true);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
 
             var storageId = new StorageId(account.StorageId);
@@ -218,7 +218,6 @@ namespace HES.Core.Services
         {
             _hardwareVaultService.Dispose();
             _hardwareVaultTaskService.Dispose();
-            _accountService.Dispose();
             _ldapService.Dispose();
         }
     }

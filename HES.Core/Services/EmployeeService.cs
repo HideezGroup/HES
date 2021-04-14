@@ -28,7 +28,6 @@ namespace HES.Core.Services
     {
         private readonly IHardwareVaultService _hardwareVaultService;
         private readonly IHardwareVaultTaskService _hardwareVaultTaskService;
-        private readonly IAccountService _accountService;
         private readonly ISharedAccountService _sharedAccountService;
         private readonly IWorkstationService _workstationService;
         private readonly IDataProtectionService _dataProtectionService;
@@ -41,7 +40,6 @@ namespace HES.Core.Services
         public EmployeeService(
                                IHardwareVaultService hardwareVaultService,
                                IHardwareVaultTaskService hardwareVaultTaskService,
-                               IAccountService accountService,
                                ISharedAccountService sharedAccountService,
                                IWorkstationService workstationService,
                                IDataProtectionService dataProtectionService,
@@ -52,7 +50,6 @@ namespace HES.Core.Services
         {
             _hardwareVaultService = hardwareVaultService;
             _hardwareVaultTaskService = hardwareVaultTaskService;
-            _accountService = accountService;
             _sharedAccountService = sharedAccountService;
             _workstationService = workstationService;
             _dataProtectionService = dataProtectionService;
@@ -587,7 +584,7 @@ namespace HES.Core.Services
                     if (employeeVaultsCount == 1)
                     {
                         await RemovePrimaryAccountIdAsync(vault.EmployeeId);
-                        await _accountService.DeleteAccountsByEmployeeIdAsync(vault.EmployeeId);
+                        await DeleteAccountsByEmployeeIdAsync(vault.EmployeeId);
                     }
 
                     vault.StatusReason = reason;
@@ -602,12 +599,20 @@ namespace HES.Core.Services
 
         #region Accounts
 
-        public async Task<Account> GetAccountByIdAsync(string accountId)
+        public async Task<Account> GetAccountByIdAsync(string accountId, bool asNoTracking = false)
         {
-            return await _dbContext.Accounts
-                .Include(x => x.Employee.HardwareVaults)
+            var query = _dbContext.Accounts
+                .Include(x => x.Employee)
+                .ThenInclude(x => x.HardwareVaults)
                 .Include(x => x.SharedAccount)
-                .FirstOrDefaultAsync(x => x.Id == accountId);
+                .AsQueryable();
+
+            if (asNoTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            return await query.FirstOrDefaultAsync(x => x.Id == accountId);
         }
 
         public async Task<List<Account>> GetAccountsAsync(DataLoadingOptions<AccountFilter> dataLoadingOptions)
@@ -681,6 +686,15 @@ namespace HES.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<List<Account>> GetAccountsBySharedAccountIdAsync(string sharedAccountId)
+        {
+            return await _dbContext.Accounts
+                .Include(x => x.Employee.HardwareVaults)
+                .Where(x => x.SharedAccountId == sharedAccountId && x.Deleted == false)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
         public async Task<Account> CreatePersonalAccountAsync(AccountAddModel personalAccount)
         {
             if (personalAccount == null)
@@ -719,7 +733,8 @@ namespace HES.Core.Services
 
             using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _accountService.AddAsync(account);
+                _dbContext.Accounts.Add(account);
+                await _dbContext.SaveChangesAsync();
                 await SetAsPrimaryAccountIfEmptyAsync(account.EmployeeId, account.Id);
 
                 if (tasks.Count > 0)
@@ -843,7 +858,7 @@ namespace HES.Core.Services
 
             using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _accountService.UpdateOnlyPropAsync(account, new string[] { nameof(Account.Name), nameof(Account.Login), nameof(Account.Urls), nameof(Account.Apps), nameof(Account.UpdatedAt) });
+                await UpdateAccountsAsync(account);
 
                 if (tasks.Count > 0)
                 {
@@ -889,7 +904,7 @@ namespace HES.Core.Services
 
             using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _accountService.UpdateOnlyPropAsync(account, new string[] { nameof(Account.UpdatedAt), nameof(Account.PasswordUpdatedAt), nameof(Account.Password) });
+                await UpdateAccountsAsync(account);
 
                 if (tasks.Count > 0)
                 {
@@ -933,7 +948,7 @@ namespace HES.Core.Services
 
             using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _accountService.UpdateOnlyPropAsync(account, new string[] { nameof(Account.UpdatedAt), nameof(Account.OtpUpdatedAt), nameof(Account.OtpSecret) });
+                await UpdateAccountsAsync(account);
 
                 if (tasks.Count > 0)
                 {
@@ -945,9 +960,32 @@ namespace HES.Core.Services
             }
         }
 
-        public Task UnchangedPersonalAccountAsync(Account account)
+        public async Task UpdateAfterAccountCreateAsync(Account account, uint timestamp)
         {
-            return _accountService.UnchangedAsync(account);
+            account.Timestamp = timestamp;
+            account.Password = null;
+            account.OtpSecret = null;
+            account.UpdateInActiveDirectory = false;
+            _dbContext.Accounts.Update(account);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAfterAccountModifyAsync(Account account, uint timestamp)
+        {
+            account.Timestamp = timestamp;
+            _dbContext.Accounts.Update(account);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAccountsAsync(params Account[] accounts)
+        {
+            _dbContext.Accounts.UpdateRange(accounts);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public void UnchangedPersonalAccount(Account account)
+        {
+            _dbContext.Unchanged(account);
         }
 
         public async Task<Account> AddSharedAccountAsync(string employeeId, string sharedAccountId)
@@ -970,7 +1008,7 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.SharedAccountNotFound);
             }
 
-            var accountExist = await _accountService.ExistAsync(x => x.EmployeeId == employeeId &&
+            var accountExist = await _dbContext.ExistAsync<Account>(x => x.EmployeeId == employeeId &&
                                                          x.Name == sharedAccount.Name &&
                                                          x.Login == sharedAccount.Login &&
                                                          x.Deleted == false);
@@ -1008,7 +1046,8 @@ namespace HES.Core.Services
 
             using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _accountService.AddAsync(account);
+                _dbContext.Accounts.Add(account);
+                await _dbContext.SaveChangesAsync();
                 await SetAsPrimaryAccountIfEmptyAsync(account.EmployeeId, account.Id);
 
                 if (tasks.Count > 0)
@@ -1064,7 +1103,7 @@ namespace HES.Core.Services
                     await UpdateEmployeeInDatabase(employee);
                 }
 
-                await _accountService.UpdateOnlyPropAsync(account, new string[] { nameof(Account.Deleted), nameof(Account.UpdatedAt), nameof(Account.Password), nameof(Account.OtpSecret) });
+                await UpdateAccountsAsync(account);
                 await _hardwareVaultTaskService.AddRangeTasksAsync(tasks);
                 await _hardwareVaultService.UpdateNeedSyncAsync(employee.HardwareVaults, true);
 
@@ -1072,6 +1111,21 @@ namespace HES.Core.Services
             }
 
             return account;
+        }
+
+        public async Task DeleteAccountsByEmployeeIdAsync(string employeeId)
+        {
+            var accounts = await _dbContext.Accounts
+                   .Where(x => x.EmployeeId == employeeId && x.Deleted == false)
+                   .ToListAsync();
+
+            foreach (var account in accounts)
+            {
+                account.Deleted = true;
+            }
+
+            _dbContext.Accounts.UpdateRange(accounts);
+            await _dbContext.SaveChangesAsync();
         }
 
         private string GenerateMasterPassword()

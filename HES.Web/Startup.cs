@@ -112,7 +112,6 @@ namespace HES.Web
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IHardwareVaultService, HardwareVaultService>();
             services.AddScoped<IHardwareVaultTaskService, HardwareVaultTaskService>();
-            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IWorkstationService, WorkstationService>();
             services.AddScoped<IWorkstationAuditService, WorkstationAuditService>();
             services.AddScoped<ISharedAccountService, SharedAccountService>();

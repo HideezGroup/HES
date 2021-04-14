@@ -30,8 +30,8 @@ namespace HES.Core.Services
         private readonly IAsyncRepository<HardwareVaultProfile> _hardwareVaultProfileRepository;
         private readonly ILicenseService _licenseService;
         private readonly IHardwareVaultTaskService _hardwareVaultTaskService;
-        private readonly IAccountService _accountService;
         private readonly IWorkstationService _workstationService;
+        private readonly IApplicationDbContext _dbContext;
         private readonly IAppSettingsService _appSettingsService;
         private readonly IDataProtectionService _dataProtectionService;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -41,7 +41,7 @@ namespace HES.Core.Services
                                     IAsyncRepository<HardwareVaultProfile> hardwareVaultProfileRepository,
                                     ILicenseService licenseService,
                                     IHardwareVaultTaskService hardwareVaultTaskService,
-                                    IAccountService accountService,
+                                    IApplicationDbContext dbContext,
                                     IWorkstationService workstationService,
                                     IAppSettingsService appSettingsService,
                                     IDataProtectionService dataProtectionService,
@@ -52,7 +52,7 @@ namespace HES.Core.Services
             _hardwareVaultProfileRepository = hardwareVaultProfileRepository;
             _licenseService = licenseService;
             _hardwareVaultTaskService = hardwareVaultTaskService;
-            _accountService = accountService;
+            _dbContext = dbContext;
             _workstationService = workstationService;
             _appSettingsService = appSettingsService;
             _dataProtectionService = dataProtectionService;
@@ -777,7 +777,19 @@ namespace HES.Core.Services
                 await _hardwareVaultTaskService.DeleteTasksByVaultIdAsync(vaultId);
 
                 if (employeeId != null)
-                    await _accountService.DeleteAccountsByEmployeeIdAsync(employeeId);
+                {
+                    var accounts = await _dbContext.Accounts
+                   .Where(x => x.EmployeeId == employeeId && x.Deleted == false)
+                   .ToListAsync();
+
+                    foreach (var account in accounts)
+                    {
+                        account.Deleted = true;
+                    }
+
+                    _dbContext.Accounts.UpdateRange(accounts);
+                    await _dbContext.SaveChangesAsync();
+                }    
 
                 await _workstationService.DeleteWorkstationHardwareVaultPairsByVaultIdAsync(vaultId);
 
@@ -1079,7 +1091,6 @@ namespace HES.Core.Services
             _hardwareVaultProfileRepository.Dispose();
             _licenseService.Dispose();
             _hardwareVaultTaskService.Dispose();
-            _accountService.Dispose();
         }
     }
 }

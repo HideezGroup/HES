@@ -241,7 +241,7 @@ namespace HES.Tests.Services
 
             account.Name = "test";
 
-            await _employeeService.UnchangedPersonalAccountAsync(account);
+            _employeeService.UnchangedPersonalAccount(account);
 
             Assert.True(account.Name == _testingOptions.PersonalAccount.Name);
         }
