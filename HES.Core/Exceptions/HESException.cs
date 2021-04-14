@@ -55,7 +55,15 @@ namespace HES.Core.Exceptions
 
         // Fido2
         SecurityKeyNotFound,
-        AuthenticatorNotFIDO2
+        AuthenticatorNotFIDO2,
+
+        //Companies
+        CompanyNameAlreadyInUse,
+        CompanyNotFound,
+        DepartmentNameAlreadyInUse,
+        DepartmentNotFound,
+        PositionNameAlreadyInUse,
+        PositionNotFound,
     }
 
     public class HESException : Exception
@@ -101,6 +109,13 @@ namespace HES.Core.Exceptions
             { HESCode.SharedAccountExist,  "Shared Account with the same name and login exist." },
             { HESCode.SecurityKeyNotFound,  "Security key not found." },
             { HESCode.AuthenticatorNotFIDO2,  "Authenticator not FIDO2." },
+
+            { HESCode.CompanyNameAlreadyInUse,  "Company name already in use." },
+            { HESCode.CompanyNotFound,  "Company not found." },
+            { HESCode.DepartmentNameAlreadyInUse,  "Department name already in use" },
+            { HESCode.DepartmentNotFound,  "Department not found" },
+            { HESCode.PositionNameAlreadyInUse,  "Position name already in use." },
+            { HESCode.PositionNotFound,  "Position not found" },
         };
 
         public HESCode Code { get; set; }

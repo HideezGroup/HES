@@ -9,229 +9,257 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class OrgStructureService : IOrgStructureService, IDisposable
+    public class OrgStructureService : IOrgStructureService
     {
-        private readonly IAsyncRepository<Company> _companyRepository;
-        private readonly IAsyncRepository<Department> _departmentRepository;
-        private readonly IAsyncRepository<Position> _positionRepository;
+        private readonly IApplicationDbContext _dbContext;
 
-        public OrgStructureService(IAsyncRepository<Company> companyRepository,
-                                   IAsyncRepository<Department> departmentRepository,
-                                   IAsyncRepository<Position> positionRepository)
+        public OrgStructureService(IApplicationDbContext dbContext)
         {
-            _companyRepository = companyRepository;
-            _departmentRepository = departmentRepository;
-            _positionRepository = positionRepository;
+            _dbContext = dbContext;
         }
 
         #region Company
 
-        public IQueryable<Company> CompanyQuery()
+        public async Task<Company> GetCompanyByIdAsync(string companyId)
         {
-            return _companyRepository.Query();
-        }
-
-        public async Task<Company> GetCompanyByIdAsync(string id)
-        {
-            return await _companyRepository.GetByIdAsync(id);
+            return await _dbContext.Companies.FindAsync(companyId);
         }
 
         public async Task<List<Company>> GetCompaniesAsync()
         {
-            return await _companyRepository.Query().Include(x => x.Departments).OrderBy(c => c.Name).AsNoTracking().ToListAsync();
+            return await _dbContext.Companies.Include(x => x.Departments).OrderBy(c => c.Name).AsNoTracking().ToListAsync();
         }
 
         public async Task<Company> CreateCompanyAsync(Company company)
         {
             if (company == null)
+            {
                 throw new ArgumentNullException(nameof(company));
+            }
 
-            var exist = await _companyRepository.Query().AsNoTracking().AnyAsync(x => x.Name == company.Name);
+            var exist = await _dbContext.Companies.AsNoTracking().AnyAsync(x => x.Name == company.Name);
             if (exist)
-                throw new AlreadyExistException("Already in use.");
+            {
+                throw new HESException(HESCode.CompanyNameAlreadyInUse);
+            }
 
-            return await _companyRepository.AddAsync(company);
+            var result = _dbContext.Companies.Add(company);
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
         }
 
         public async Task EditCompanyAsync(Company company)
         {
             if (company == null)
-                throw new ArgumentNullException(nameof(company));
-
-            var exist = await _companyRepository.Query().AsNoTracking().AnyAsync(x => x.Name == company.Name && x.Id != company.Id);
-            if (exist)
-                throw new AlreadyExistException("Already in use.");
-
-            await _companyRepository.UpdateAsync(company);
-        }
-
-        public async Task UnchangedCompanyAsync(Company company)
-        {
-            await _companyRepository.UnchangedAsync(company);
-        }
-
-        public async Task DeleteCompanyAsync(string id)
-        {
-            if (id == null)
             {
-                throw new ArgumentNullException(nameof(id));
+                throw new ArgumentNullException(nameof(company));
             }
 
-            var company = await _companyRepository.GetByIdAsync(id);
+            var exist = await _dbContext.Companies.AsNoTracking().AnyAsync(x => x.Name == company.Name && x.Id != company.Id);
+            if (exist)
+            {
+                throw new HESException(HESCode.CompanyNameAlreadyInUse);
+            }
+
+            _dbContext.Companies.Update(company);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public void UnchangedCompany(Company company)
+        {
+            _dbContext.Unchanged(company);
+        }
+
+        public async Task DeleteCompanyAsync(string companyId)
+        {
+            if (companyId == null)
+            {
+                throw new ArgumentNullException(nameof(companyId));
+            }
+
+            var company = await _dbContext.Companies.FindAsync(companyId);
             if (company == null)
             {
-                throw new Exception("Company does not exist.");
+                throw new HESException(HESCode.CompanyNotFound);
             }
-            await _companyRepository.DeleteAsync(company);
+            
+            _dbContext.Companies.Remove(company);
+            await _dbContext.SaveChangesAsync();
         }
 
         #endregion
 
         #region Department
 
-        public IQueryable<Department> DepartmentQuery()
-        {
-            return _departmentRepository.Query();
-        }
-
         public async Task<List<Department>> GetDepartmentsAsync()
         {
-            return await _departmentRepository
-                .Query()
+            return await _dbContext.Departments
                 .Include(d => d.Company)
                 .OrderBy(c => c.Name)
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<List<Department>> GetDepartmentsByCompanyIdAsync(string id)
+        public async Task<List<Department>> GetDepartmentsByCompanyIdAsync(string companyId)
         {
-            return await _departmentRepository
-                .Query()
+            return await _dbContext.Departments
                 .Include(d => d.Company)
-                .Where(d => d.CompanyId == id)
+                .Where(d => d.CompanyId == companyId)
                 .OrderBy(c => c.Name)
                 .ToListAsync();
         }
 
-        public async Task<Department> GetDepartmentByIdAsync(string id)
+        public async Task<Department> GetDepartmentByIdAsync(string departmentId)
         {
-            return await _departmentRepository
-                .Query()
+            return await _dbContext.Departments
                 .Include(d => d.Company)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == departmentId);
         }
 
         public async Task<Department> CreateDepartmentAsync(Department department)
         {
             if (department == null)
+            {
                 throw new ArgumentNullException(nameof(department));
+            }
 
-            var exist = await _departmentRepository.Query().AsNoTracking().AnyAsync(x => x.Name == department.Name);
+            var exist = await _dbContext.Departments.AsNoTracking().AnyAsync(x => x.Name == department.Name);
             if (exist)
-                throw new AlreadyExistException("Already in use.");
+            {
+                throw new HESException(HESCode.DepartmentNameAlreadyInUse);
+            }
 
-            return await _departmentRepository.AddAsync(department);
+            var result = _dbContext.Departments.Add(department);
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
         }
 
         public async Task<Department> TryAddAndGetDepartmentWithCompanyAsync(string companyName, string departmentName)
         {
-            if (string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(departmentName))
-                return null;
+            if (string.IsNullOrWhiteSpace(companyName))
+            {
+                throw new ArgumentNullException(nameof(companyName));
+            }
 
-            var department = await _departmentRepository
-                .Query()
+            if (string.IsNullOrWhiteSpace(departmentName))
+            {
+                throw new ArgumentNullException(nameof(departmentName));
+            }
+
+            var department = await _dbContext.Departments
                 .Include(x => x.Company)
                 .FirstOrDefaultAsync(x => x.Name == departmentName && x.Company.Name == companyName);
 
             if (department != null)
+            {
                 return department;
+            }
 
-            var company = await _companyRepository
-                .Query()
+            var company = await _dbContext.Companies
                 .FirstOrDefaultAsync(x => x.Name == companyName);
 
             if (company == null)
-                company = await _companyRepository.AddAsync(new Company() { Name = companyName });
+            {
+                var companyResult = _dbContext.Companies.Add(new Company() { Name = companyName });
+                await _dbContext.SaveChangesAsync();
+                company = companyResult.Entity;
+            }
 
-            return await _departmentRepository.AddAsync(new Department() { Name = departmentName, CompanyId = company.Id });
+            var result = _dbContext.Departments.Add(new Department() { Name = departmentName, CompanyId = company.Id });
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
         }
 
         public async Task EditDepartmentAsync(Department department)
         {
             if (department == null)
+            {
                 throw new ArgumentNullException(nameof(department));
+            }
 
-            var exist = await _departmentRepository.Query().AsNoTracking().AnyAsync(x => x.Name == department.Name && x.Id != department.Id);
+            var exist = await _dbContext.Departments.AsNoTracking().AnyAsync(x => x.Name == department.Name && x.Id != department.Id);
             if (exist)
-                throw new AlreadyExistException("Already in use.");
+            {
+                throw new HESException(HESCode.DepartmentNameAlreadyInUse);
+            }
 
-            await _departmentRepository.UpdateAsync(department);
+            _dbContext.Departments.Update(department);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UnchangedDepartmentAsync(Department department)
+        public void UnchangedDepartment(Department department)
         {
-            await _departmentRepository.UnchangedAsync(department);
+            _dbContext.Unchanged(department);
         }
 
-        public async Task DeleteDepartmentAsync(string id)
+        public async Task DeleteDepartmentAsync(string departmentId)
         {
-            if (id == null)
-                throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(departmentId))
+            {
+                throw new ArgumentNullException(nameof(departmentId));
+            }
 
-            var department = await _departmentRepository.GetByIdAsync(id);
+            var department = await GetDepartmentByIdAsync(departmentId);
             if (department == null)
-                throw new Exception("Department does not exist.");
+            {
+                throw new HESException(HESCode.DepartmentNotFound);
+            }
 
-            await _departmentRepository.DeleteAsync(department);
+            _dbContext.Departments.Remove(department);
+            await _dbContext.SaveChangesAsync();
         }
 
         #endregion
 
         #region Position
 
-        public IQueryable<Position> PositionQuery()
-        {
-            return _positionRepository.Query();
-        }
-
         public async Task<List<Position>> GetPositionsAsync()
         {
-            return await _positionRepository
-                .Query()
+            return await _dbContext.Positions
                 .OrderBy(p => p.Name)
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<Position> GetPositionByIdAsync(string id)
+        public async Task<Position> GetPositionByIdAsync(string positionId)
         {
-            return await _positionRepository.GetByIdAsync(id);
+            return await _dbContext.Positions.FindAsync(positionId);
         }
 
         public async Task<Position> CreatePositionAsync(Position position)
         {
             if (position == null)
+            {
                 throw new ArgumentNullException(nameof(position));
+            }
 
-            var exist = await _positionRepository.Query().AsNoTracking().AnyAsync(x => x.Name == position.Name);
+            var exist = await _dbContext.Positions.AsNoTracking().AnyAsync(x => x.Name == position.Name);
             if (exist)
-                throw new AlreadyExistException("Already in use.");
+            {
+                throw new HESException(HESCode.PositionNameAlreadyInUse);
+            }
 
-            return await _positionRepository.AddAsync(position);
+            var result = _dbContext.Positions.Add(position);
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
         }
 
-        public async Task<Position> TryAddAndGetPositionAsync(string name)
+        public async Task<Position> TryAddAndGetPositionAsync(string positionName)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                return null;
+            if (string.IsNullOrWhiteSpace(positionName))
+            {
+                throw new ArgumentNullException(nameof(positionName));
+            }
 
-            var position = await _positionRepository.Query().FirstOrDefaultAsync(x => x.Name == name);
-
+            var position = await _dbContext.Positions.FirstOrDefaultAsync(x => x.Name == positionName);
             if (position != null)
+            {
                 return position;
+            }
 
-            return await _positionRepository.AddAsync(new Position() { Name = name });
+            var result = _dbContext.Positions.Add(new Position() { Name = positionName });
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
         }
 
         public async Task EditPositionAsync(Position position)
@@ -241,37 +269,38 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(position));
             }
 
-            var exist = await _positionRepository.Query().AsNoTracking().AnyAsync(x => x.Name == position.Name && x.Id != position.Id);
+            var exist = await _dbContext.Positions.AsNoTracking().AnyAsync(x => x.Name == position.Name && x.Id != position.Id);
             if (exist)
-                throw new AlreadyExistException("Already in use.");
+            {
+                throw new HESException(HESCode.PositionNameAlreadyInUse);
+            }
 
-            await _positionRepository.UpdateAsync(position);
+            _dbContext.Positions.Update(position);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UnchangedPositionAsync(Position position)
+        public void UnchangedPosition(Position position)
         {
-            await _positionRepository.UnchangedAsync(position);
+            _dbContext.Unchanged(position);
         }
 
-        public async Task DeletePositionAsync(string id)
+        public async Task DeletePositionAsync(string positionId)
         {
-            if (id == null)
-                throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(positionId))
+            {
+                throw new ArgumentNullException(nameof(positionId));
+            }
 
-            var position = await _positionRepository.GetByIdAsync(id);
+            var position = await _dbContext.Positions.FindAsync(positionId);
             if (position == null)
-                throw new Exception("Position does not exist.");
+            {
+                throw new HESException(HESCode.PositionNotFound);
+            }
 
-            await _positionRepository.DeleteAsync(position);
+            _dbContext.Positions.Remove(position);
+            await _dbContext.SaveChangesAsync();
         }
 
         #endregion
-
-        public void Dispose()
-        {
-            _companyRepository.Dispose();
-            _departmentRepository.Dispose();
-            _positionRepository.Dispose();
-        }
     }
 }

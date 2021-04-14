@@ -47,7 +47,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
 
         protected override async Task ModalDialogCancel()
         {
-            await OrgStructureService.UnchangedCompanyAsync(Company);
+            OrgStructureService.UnchangedCompany(Company);
             await base.ModalDialogCancel();
         }
 
