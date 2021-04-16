@@ -100,7 +100,6 @@ namespace HES.Core.Services
                     using var scope = Services.CreateScope();
                     var scopedApplicationUserService = scope.ServiceProvider.GetRequiredService<IApplicationUserService>();
                     await scopedApplicationUserService.SendActivateDataProtectionAsync();
-                    scopedApplicationUserService.Dispose();
                 }
             }
         }
