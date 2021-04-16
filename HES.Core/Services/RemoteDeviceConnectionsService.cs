@@ -176,17 +176,15 @@ namespace HES.Core.Services
         public async Task UpdateHardwareVaultStatusAsync(string vaultId, string workstationId)
         {
             var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
-
-            await remoteDevice.RefreshDeviceInfo();
-
             if (remoteDevice == null)
                 throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
 
-            var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
+            await remoteDevice.RefreshDeviceInfo();
 
+            var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
             if (vault == null)
                 throw new HideezException(HideezErrorCode.HesDeviceNotFound);
-      
+
             switch (vault.Status)
             {
                 case VaultStatus.Ready:
@@ -291,15 +289,18 @@ namespace HES.Core.Services
         public async Task CheckPassphraseAsync(string vaultId, string workstationId)
         {
             var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
-
-            await remoteDevice.RefreshDeviceInfo();
-
             if (remoteDevice == null)
                 throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
 
+            await remoteDevice.RefreshDeviceInfo();
+
+            await ExecutePassphraseAsync(vaultId, remoteDevice); 
+        }
+
+        private async  Task ExecutePassphraseAsync(string vaultId, Device remoteDevice)
+        {
             var vault = await ValidateAndGetHardwareVaultAsync(vaultId, remoteDevice.AccessLevel.IsLinkRequired);
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
-
             await remoteDevice.CheckPassphrase(key);
         }
 
@@ -409,6 +410,12 @@ namespace HES.Core.Services
                 var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
                 if (remoteDevice == null)
                     throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
+
+                if (!remoteDevice.IsAuthorized)
+                {    
+                    await ExecutePassphraseAsync(vaultId, remoteDevice);
+                    await remoteDevice.RefreshDeviceInfo();
+                }
 
                 await _remoteTaskService.ExecuteRemoteTasks(vaultId, remoteDevice, onlyOsAccounts);
 
