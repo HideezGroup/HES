@@ -7,10 +7,10 @@ using HES.Core.Models.Accounts;
 using HES.Core.Models.AppSettings;
 using HES.Core.Models.AppUsers;
 using HES.Web.Components;
-using LdapForNet;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Novell.Directory.Ldap;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -124,7 +124,7 @@ namespace HES.Web.Pages.Employees
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Notify);
                 return false;
             }
-            catch (LdapException ex) when (ex.ResultCode == (LdapForNet.Native.Native.ResultCode)81)
+            catch (LdapException ex) when (ex.ResultCode == LdapException.ServerDown)
             {
                 await ToastService.ShowToastAsync("The LDAP server is unavailable.", ToastType.Error);
                 return false;

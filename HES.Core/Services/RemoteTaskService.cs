@@ -215,8 +215,7 @@ namespace HES.Core.Services
         public void Dispose()
         {
             _hardwareVaultService.Dispose();
-            _hardwareVaultTaskService.Dispose();
-            _ldapService.Dispose();
+            _hardwareVaultTaskService.Dispose();   
         }
     }
 }

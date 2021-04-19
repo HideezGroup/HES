@@ -136,14 +136,10 @@ namespace HES.Core.Services
 
         public async Task<Department> TryAddAndGetDepartmentWithCompanyAsync(string companyName, string departmentName)
         {
-            if (string.IsNullOrWhiteSpace(companyName))
+            // Special logic to add and get if name is empty or null
+            if (string.IsNullOrWhiteSpace(companyName) || string.IsNullOrWhiteSpace(departmentName))
             {
-                throw new ArgumentNullException(nameof(companyName));
-            }
-
-            if (string.IsNullOrWhiteSpace(departmentName))
-            {
-                throw new ArgumentNullException(nameof(departmentName));
+                return null;
             }
 
             var department = await _dbContext.Departments
@@ -246,9 +242,10 @@ namespace HES.Core.Services
 
         public async Task<Position> TryAddAndGetPositionAsync(string positionName)
         {
+            // Special logic to add and get if name is empty or null
             if (string.IsNullOrWhiteSpace(positionName))
             {
-                throw new ArgumentNullException(nameof(positionName));
+                return null;           
             }
 
             var position = await _dbContext.Positions.FirstOrDefaultAsync(x => x.Name == positionName);

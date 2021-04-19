@@ -2,7 +2,6 @@
 using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.ActiveDirectory;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -25,7 +24,7 @@ namespace HES.Web.Pages.Groups
         //[Inject] IToastService ToastService { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
 
-        public List<ActiveDirectoryGroup> Groups { get; set; }
+        //public List<ActiveDirectoryGroup> Groups { get; set; }
         public LdapSettings LdapSettings { get; set; }
         public ActiveDirectoryInitialization ActiveDirectoryInitialization { get; set; }
         public string WarningMessage { get; set; }
@@ -71,7 +70,7 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                Groups = await LdapService.GetGroupsAsync(settings);
+                //Groups = await LdapService.GetGroupsAsync(settings);
                 ActiveDirectoryInitialization = ActiveDirectoryInitialization.Loaded;
                 StateHasChanged();
             }
@@ -85,25 +84,25 @@ namespace HES.Web.Pages.Groups
 
         private async Task AddAsync()
         {
-            try
-            {
-                if (!Groups.Any(x => x.Checked))
-                {
-                    WarningMessage = "Please select at least one group.";
-                    return;
-                }
+            //try
+            //{
+            //    if (!Groups.Any(x => x.Checked))
+            //    {
+            //        WarningMessage = "Please select at least one group.";
+            //        return;
+            //    }
 
-                await LdapService.AddGroupsAsync(Groups.Where(x => x.Checked).ToList(), CreateEmployees);
-                await ToastService.ShowToastAsync("Groups added.", ToastType.Success);
-                //await SynchronizationService.UpdateGroups(ExceptPageId);
-                //await ModalDialogService.CloseAsync();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
-                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                //await ModalDialogService.CancelAsync();
-            }
+            //    //await LdapService.AddGroupsAsync(Groups.Where(x => x.Checked).ToList(), CreateEmployees);
+            //    await ToastService.ShowToastAsync("Groups added.", ToastType.Success);
+            //    //await SynchronizationService.UpdateGroups(ExceptPageId);
+            //    //await ModalDialogService.CloseAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.LogError(ex.Message);
+            //    await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+            //    //await ModalDialogService.CancelAsync();
+            //}
         }
 
         private string GetSortIcon(string columnName)
@@ -124,25 +123,25 @@ namespace HES.Web.Pages.Groups
 
         private void SortTable(string columnName)
         {
-            if (columnName != CurrentSortColumn)
-            {
-                Groups = Groups.OrderBy(x => x.Group.GetType().GetProperty(columnName).GetValue(x.Group, null)).ToList();
-                CurrentSortColumn = columnName;
-                IsSortedAscending = true;
-            }
-            else
-            {
-                if (IsSortedAscending)
-                {
-                    Groups = Groups.OrderByDescending(x => x.Group.GetType().GetProperty(columnName).GetValue(x.Group, null)).ToList();
-                }
-                else
-                {
-                    Groups = Groups.OrderBy(x => x.Group.GetType().GetProperty(columnName).GetValue(x.Group, null)).ToList();
-                }
+            //if (columnName != CurrentSortColumn)
+            //{
+            //    Groups = Groups.OrderBy(x => x.Group.GetType().GetProperty(columnName).GetValue(x.Group, null)).ToList();
+            //    CurrentSortColumn = columnName;
+            //    IsSortedAscending = true;
+            //}
+            //else
+            //{
+            //    if (IsSortedAscending)
+            //    {
+            //        Groups = Groups.OrderByDescending(x => x.Group.GetType().GetProperty(columnName).GetValue(x.Group, null)).ToList();
+            //    }
+            //    else
+            //    {
+            //        Groups = Groups.OrderBy(x => x.Group.GetType().GetProperty(columnName).GetValue(x.Group, null)).ToList();
+            //    }
 
-                IsSortedAscending = !IsSortedAscending;
-            }
+            //    IsSortedAscending = !IsSortedAscending;
+            //}
         }
     }
 }
