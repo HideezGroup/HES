@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class DashboardService : IDashboardService, IDisposable
+    public class DashboardService : IDashboardService
     {
         private readonly IEmployeeService _employeeService;
         private readonly IWorkstationAuditService _workstationAuditService;
@@ -316,12 +316,5 @@ namespace HES.Core.Services
         }
 
         #endregion
-
-        public void Dispose()
-        {
-            _workstationAuditService.Dispose();
-            _hardwareVaultTaskService.Dispose();
-            _hardwareVaultService.Dispose();
-        }
     }
 }
