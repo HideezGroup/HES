@@ -475,7 +475,6 @@ namespace HES.Core.Services
         public void Dispose()
         {
             _hardwareVaultService.Dispose();
-            _remoteTaskService.Dispose();
         }
     }
 }
