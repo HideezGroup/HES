@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Audit;
 using HES.Core.Models.DataTableComponent;
@@ -15,56 +16,32 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class WorkstationAuditService : IWorkstationAuditService, IDisposable
+    public class WorkstationAuditService : IWorkstationAuditService
     {
-        private readonly IAsyncRepository<WorkstationEvent> _workstationEventRepository;
-        private readonly IAsyncRepository<WorkstationSession> _workstationSessionRepository;
-        private readonly IAsyncRepository<Workstation> _workstationRepository;
-        private readonly IAsyncRepository<HardwareVault> _hardwareVaultRepository;
-        private readonly IAsyncRepository<Employee> _employeeRepository;
-        private readonly IAsyncRepository<Account> _accountRepository;
-        private readonly IAsyncRepository<SummaryByDayAndEmployee> _summaryByDayAndEmployeeRepository;
-        private readonly IAsyncRepository<SummaryByEmployees> _summaryByEmployeesRepository;
-        private readonly IAsyncRepository<SummaryByDepartments> _summaryByDepartmentsRepository;
-        private readonly IAsyncRepository<SummaryByWorkstations> _summaryByWorkstationsRepository;
+        private readonly IApplicationDbContext _dbContext;
         private readonly ILogger<WorkstationAuditService> _logger;
 
-        public WorkstationAuditService(IAsyncRepository<WorkstationEvent> workstationEventRepository,
-                                       IAsyncRepository<WorkstationSession> workstationSessionRepository,
-                                       IAsyncRepository<Workstation> workstationRepository,
-                                       IAsyncRepository<HardwareVault> hardwareVaultRepository,
-                                       IAsyncRepository<Employee> employeeRepository,
-                                       IAsyncRepository<Account> accountRepository,
-                                       IAsyncRepository<SummaryByDayAndEmployee> summaryByDayAndEmployeeRepository,
-                                       IAsyncRepository<SummaryByEmployees> summaryByEmployeesRepository,
-                                       IAsyncRepository<SummaryByDepartments> summaryByDepartmentsRepository,
-                                       IAsyncRepository<SummaryByWorkstations> summaryByWorkstationsRepository,
-                                       ILogger<WorkstationAuditService> logger)
+        public WorkstationAuditService(IApplicationDbContext dbContext, ILogger<WorkstationAuditService> logger)
         {
-            _workstationEventRepository = workstationEventRepository;
-            _workstationSessionRepository = workstationSessionRepository;
-            _workstationRepository = workstationRepository;
-            _hardwareVaultRepository = hardwareVaultRepository;
-            _employeeRepository = employeeRepository;
-            _accountRepository = accountRepository;
-            _summaryByDayAndEmployeeRepository = summaryByDayAndEmployeeRepository;
-            _summaryByEmployeesRepository = summaryByEmployeesRepository;
-            _summaryByDepartmentsRepository = summaryByDepartmentsRepository;
-            _summaryByWorkstationsRepository = summaryByWorkstationsRepository;
+            _dbContext = dbContext;
             _logger = logger;
         }
 
         #region Event
 
-        public IQueryable<WorkstationEvent> EventQuery()
-        {
-            return _workstationEventRepository.Query();
-        }
-
         public async Task<List<WorkstationEvent>> GetWorkstationEventsAsync(DataLoadingOptions<WorkstationEventFilter> dataLoadingOptions)
         {
-            var query = _workstationEventRepository
-                .Query()
+            return await WorkstationEventsQuery(dataLoadingOptions).Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetWorkstationEventsCountAsync(DataLoadingOptions<WorkstationEventFilter> dataLoadingOptions)
+        {
+            return await WorkstationEventsQuery(dataLoadingOptions).CountAsync();
+        }
+
+        private IQueryable<WorkstationEvent> WorkstationEventsQuery(DataLoadingOptions<WorkstationEventFilter> dataLoadingOptions)
+        {
+            var query = _dbContext.WorkstationEvents
                 .Include(w => w.Workstation)
                 .Include(w => w.HardwareVault)
                 .Include(w => w.Employee)
@@ -185,93 +162,7 @@ namespace HES.Core.Services
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
-        }
-
-        public async Task<int> GetWorkstationEventsCountAsync(DataLoadingOptions<WorkstationEventFilter> dataLoadingOptions)
-        {
-            var query = _workstationEventRepository
-                .Query()
-                .Include(w => w.Workstation)
-                .Include(w => w.HardwareVault)
-                .Include(w => w.Employee)
-                .Include(w => w.Department.Company)
-                .Include(w => w.Account)
-                .AsQueryable();
-
-            // Filter
-            if (dataLoadingOptions.Filter != null)
-            {
-                if (dataLoadingOptions.Filter.StartDate != null)
-                {
-                    query = query.Where(w => w.Date >= dataLoadingOptions.Filter.StartDate);
-                }
-                if (dataLoadingOptions.Filter.EndDate != null)
-                {
-                    query = query.Where(x => x.Date <= dataLoadingOptions.Filter.EndDate);
-                }
-                if (dataLoadingOptions.Filter.Event != null)
-                {
-                    query = query.Where(w => w.EventId == (WorkstationEventType)dataLoadingOptions.Filter.Event);
-                }
-                if (dataLoadingOptions.Filter.Severity != null)
-                {
-                    query = query.Where(w => w.SeverityId == (WorkstationEventSeverity)dataLoadingOptions.Filter.Severity);
-                }
-                if (dataLoadingOptions.Filter.Note != null)
-                {
-                    query = query.Where(w => w.Note.Contains(dataLoadingOptions.Filter.Note, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Workstation != null)
-                {
-                    query = query.Where(w => w.Workstation.Name.Contains(dataLoadingOptions.Filter.Workstation, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.UserSession != null)
-                {
-                    query = query.Where(w => w.UserSession.Contains(dataLoadingOptions.Filter.UserSession, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.HardwareVault != null)
-                {
-                    query = query.Where(w => w.HardwareVault.Id.Contains(dataLoadingOptions.Filter.HardwareVault, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Employee != null)
-                {
-                    query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.Filter.Employee, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Company != null)
-                {
-                    query = query.Where(w => w.Department.Company.Name.Contains(dataLoadingOptions.Filter.Company, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Department != null)
-                {
-                    query = query.Where(w => w.Department.Name.Contains(dataLoadingOptions.Filter.Department, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Account != null)
-                {
-                    query = query.Where(w => w.Account.Name.Contains(dataLoadingOptions.Filter.Account, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.AccountType != null)
-                {
-                    query = query.Where(w => w.Account.AccountType == (AccountType)dataLoadingOptions.Filter.AccountType);
-                }
-            }
-
-            // Search
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
-            {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.Note.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Workstation.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.UserSession.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.HardwareVault.Id.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Company.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Account.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return await query.CountAsync();
+            return query;
         }
 
         public async Task AddEventDtoAsync(WorkstationEventDto workstationEventDto)
@@ -281,17 +172,17 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(workstationEventDto));
             }
 
-            var exist = await _workstationEventRepository.Query().AsNoTracking().AnyAsync(d => d.Id == workstationEventDto.Id);
+            var exist = await _dbContext.WorkstationEvents.AsNoTracking().AnyAsync(d => d.Id == workstationEventDto.Id);
             if (exist)
             {
                 _logger.LogWarning($"[DUPLICATE EVENT][{workstationEventDto.WorkstationId}] EventId:{workstationEventDto.Id}, Session:{workstationEventDto.UserSession}, Event:{workstationEventDto.EventId}");
                 return;
             }
 
-            var workstation = await _workstationRepository.GetByIdAsync(workstationEventDto.WorkstationId);
+            var workstation = await _dbContext.Workstations.FindAsync(workstationEventDto.WorkstationId);
             if (workstation == null)
             {
-                throw new Exception($"Workstation not found, ID:{workstationEventDto.WorkstationId}");
+                throw new HESException(HESCode.WorkstationNotFound, new string[] { workstationEventDto.WorkstationId });
             }
 
             Employee employee = null;
@@ -299,13 +190,12 @@ namespace HES.Core.Services
 
             if (workstationEventDto.DeviceId != null)
             {
-                var hardwareVault = await _hardwareVaultRepository.GetByIdAsync(workstationEventDto.DeviceId);
+                var hardwareVault = await _dbContext.HardwareVaults.FindAsync(workstationEventDto.DeviceId);
                 if (hardwareVault != null)
                 {
-                    employee = await _employeeRepository.GetByIdAsync(hardwareVault.EmployeeId);
+                    employee = await _dbContext.Employees.FindAsync(hardwareVault.EmployeeId);
 
-                    account = await _accountRepository
-                        .Query()
+                    account = await _dbContext.Accounts
                         .Where(d => d.Name == workstationEventDto.AccountName &&
                                     d.Login == workstationEventDto.AccountLogin &&
                                     d.EmployeeId == hardwareVault.EmployeeId)
@@ -329,7 +219,8 @@ namespace HES.Core.Services
                 AccountId = account?.Id,
             };
 
-            await _workstationEventRepository.AddAsync(workstationEvent);
+            await _dbContext.WorkstationEvents.AddAsync(workstationEvent);
+            await _dbContext.SaveChangesAsync();
         }
 
         #endregion
@@ -338,13 +229,22 @@ namespace HES.Core.Services
 
         public IQueryable<WorkstationSession> SessionQuery()
         {
-            return _workstationSessionRepository.Query();
+            return _dbContext.WorkstationSessions.AsQueryable();
         }
 
         public async Task<List<WorkstationSession>> GetWorkstationSessionsAsync(DataLoadingOptions<WorkstationSessionFilter> dataLoadingOptions)
         {
-            var query = _workstationSessionRepository
-                .Query()
+            return await WorkstationSessionsQuery(dataLoadingOptions).Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetWorkstationSessionsCountAsync(DataLoadingOptions<WorkstationSessionFilter> dataLoadingOptions)
+        {
+            return await WorkstationSessionsQuery(dataLoadingOptions).CountAsync();
+        }
+
+        private IQueryable<WorkstationSession> WorkstationSessionsQuery(DataLoadingOptions<WorkstationSessionFilter> dataLoadingOptions)
+        {
+            var query = _dbContext.WorkstationSessions
                 .Include(w => w.Workstation)
                 .Include(w => w.HardwareVault)
                 .Include(w => w.Employee)
@@ -457,88 +357,7 @@ namespace HES.Core.Services
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
-        }
-
-        public async Task<int> GetWorkstationSessionsCountAsync(DataLoadingOptions<WorkstationSessionFilter> dataLoadingOptions)
-        {
-            var query = _workstationSessionRepository
-              .Query()
-              .Include(w => w.Workstation)
-              .Include(w => w.HardwareVault)
-              .Include(w => w.Employee)
-              .Include(w => w.Department.Company)
-              .Include(w => w.Account)
-              .AsQueryable();
-
-            // Filter
-            if (dataLoadingOptions.Filter != null)
-            {
-                if (dataLoadingOptions.Filter.StartDate != null)
-                {
-                    query = query.Where(w => w.StartDate >= dataLoadingOptions.Filter.StartDate);
-                }
-                if (dataLoadingOptions.Filter.EndDate != null)
-                {
-                    query = query.Where(x => x.EndDate <= dataLoadingOptions.Filter.EndDate);
-                }
-                if (dataLoadingOptions.Filter.UnlockedBy != null)
-                {
-                    query = query.Where(w => w.UnlockedBy == (SessionSwitchSubject)dataLoadingOptions.Filter.UnlockedBy);
-                }
-                if (dataLoadingOptions.Filter.Workstation != null)
-                {
-                    query = query.Where(w => w.Workstation.Name.Contains(dataLoadingOptions.Filter.Workstation, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.UserSession != null)
-                {
-                    query = query.Where(w => w.UserSession.Contains(dataLoadingOptions.Filter.UserSession, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.HardwareVault != null)
-                {
-                    query = query.Where(w => w.HardwareVault.Id.Contains(dataLoadingOptions.Filter.HardwareVault, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Employee != null)
-                {
-                    query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.Filter.Employee, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Company != null)
-                {
-                    query = query.Where(w => w.Department.Company.Name.Contains(dataLoadingOptions.Filter.Company, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Department != null)
-                {
-                    query = query.Where(w => w.Department.Name.Contains(dataLoadingOptions.Filter.Department, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Account != null)
-                {
-                    query = query.Where(w => w.Account.Name.Contains(dataLoadingOptions.Filter.Account, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.AccountType != null)
-                {
-                    query = query.Where(w => w.Account.AccountType == (AccountType)dataLoadingOptions.Filter.AccountType);
-                }
-                if (dataLoadingOptions.Filter.Query != null)
-                {
-                    query = dataLoadingOptions.Filter.Query;
-                }
-            }
-
-            // Search
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
-            {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.Workstation.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.UserSession.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.HardwareVault.Id.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Company.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Account.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return await query.CountAsync();
+            return query;
         }
 
         public async Task AddOrUpdateWorkstationSession(WorkstationEventDto workstationEventDto)
@@ -555,8 +374,7 @@ namespace HES.Core.Services
                  workstationEventDto.EventId == WorkstationEventType.ComputerLogon) &&
                  workstationEventDto.WorkstationSessionId != null)
             {
-                var session = await _workstationSessionRepository.Query()
-                    .FirstOrDefaultAsync(w => w.Id == workstationEventDto.WorkstationSessionId);
+                var session = await _dbContext.WorkstationSessions.FirstOrDefaultAsync(w => w.Id == workstationEventDto.WorkstationSessionId);
 
                 if (session == null)
                 {
@@ -583,8 +401,7 @@ namespace HES.Core.Services
 
         public async Task CloseSessionAsync(string workstationId)
         {
-            var sessions = await _workstationSessionRepository
-                .Query()
+            var sessions = await _dbContext.WorkstationSessions
                 .Where(w => w.WorkstationId == workstationId && w.EndDate == null)
                 .ToListAsync();
 
@@ -611,10 +428,10 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(workstationEventDto));
             }
 
-            var workstation = await _workstationRepository.GetByIdAsync(workstationEventDto.WorkstationId);
+            var workstation = await _dbContext.Workstations.FindAsync(workstationEventDto.WorkstationId);
             if (workstation == null)
             {
-                throw new Exception($"Workstation not found, ID:{workstationEventDto.WorkstationId}");
+                throw new HESException(HESCode.WorkstationNotFoundWithParam, new string[] { workstationEventDto.WorkstationId });
             }
 
             Enum.TryParse(typeof(SessionSwitchSubject), workstationEventDto.Note, out object unlockMethod);
@@ -625,13 +442,11 @@ namespace HES.Core.Services
 
             if (workstationEventDto.DeviceId != null)
             {
-                var hardwareVault = await _hardwareVaultRepository.GetByIdAsync(workstationEventDto.DeviceId);
+                var hardwareVault = await _dbContext.HardwareVaults.FindAsync(workstationEventDto.DeviceId);
                 if (hardwareVault != null)
                 {
-                    employee = await _employeeRepository.GetByIdAsync(hardwareVault.EmployeeId);
-
-                    account = await _accountRepository
-                        .Query()
+                    employee = await _dbContext.Employees.FindAsync(hardwareVault.EmployeeId);
+                    account = await _dbContext.Accounts
                         .Where(d => d.Name == workstationEventDto.AccountName &&
                                     d.Login == workstationEventDto.AccountLogin &&
                                     d.EmployeeId == hardwareVault.EmployeeId)
@@ -654,15 +469,19 @@ namespace HES.Core.Services
                 AccountId = account?.Id,
             };
 
-            await _workstationSessionRepository.AddAsync(workstationSession);
+            await _dbContext.WorkstationSessions.AddAsync(workstationSession);
+            await _dbContext.SaveChangesAsync();
         }
 
         private async Task UpdateSessionAsync(WorkstationSession workstationSession)
         {
             if (workstationSession == null)
+            {
                 throw new ArgumentNullException(nameof(workstationSession));
+            }
 
-            await _workstationSessionRepository.UpdateOnlyPropAsync(workstationSession, new string[] { "EndDate" });
+            _dbContext.WorkstationSessions.Update(workstationSession);
+            await _dbContext.SaveChangesAsync();
         }
 
         #endregion
@@ -751,7 +570,7 @@ namespace HES.Core.Services
                 having = $"HAVING ({filter}) AND ({searchParameter})";
             }
 
-            return await _summaryByDayAndEmployeeRepository.SqlQuery
+            return await _dbContext.SummaryByDayAndEmployee.FromSqlRaw
                 ($@"SELECT
 	                    DATE(WorkstationSessions.StartDate) AS Date,
 	                    Employees.Id AS EmployeeId,
@@ -830,7 +649,7 @@ namespace HES.Core.Services
                 having = $"HAVING ({filter}) AND ({searchParameter})";
             }
 
-            return await _summaryByDayAndEmployeeRepository.SqlQuery
+            return await _dbContext.SummaryByDayAndEmployee.FromSqlRaw
                 ($@"SELECT
 	                    DATE(WorkstationSessions.StartDate) AS Date,
 	                    Employees.Id AS EmployeeId,
@@ -855,7 +674,7 @@ namespace HES.Core.Services
 	                    DATE(WorkstationSessions.StartDate) DESC, Employee ASC")
                 .CountAsync();
         }
-
+              
         public async Task<List<SummaryByEmployees>> GetSummaryByEmployeesAsync(DataLoadingOptions<SummaryFilter> dataLoadingOptions)
         {
             var having = string.Empty;
@@ -936,7 +755,7 @@ namespace HES.Core.Services
                 having = $"HAVING ({filter}) AND ({searchParameter})";
             }
 
-            return await _summaryByEmployeesRepository.SqlQuery
+            return await _dbContext.SummaryByEmployees.FromSqlRaw
                  ($@"SELECT
 	                    Employees.Id AS EmployeeId,
 	                    IFNULL(CONCAT(Employees.FirstName,' ',Employees.LastName), 'N/A') AS Employee,
@@ -1008,7 +827,7 @@ namespace HES.Core.Services
                 having = $"HAVING ({filter}) AND ({searchParameter})";
             }
 
-            return await _summaryByEmployeesRepository.SqlQuery
+            return await _dbContext.SummaryByEmployees.FromSqlRaw
                  ($@"SELECT
 	                    Employees.Id AS EmployeeId,
 	                    IFNULL(CONCAT(Employees.FirstName,' ',Employees.LastName), 'N/A') AS Employee,
@@ -1105,7 +924,7 @@ namespace HES.Core.Services
                 var filter = string.Join(" AND ", filterParameters);
                 having = $"HAVING ({filter}) AND ({searchParameter})";
             }
-            return await _summaryByDepartmentsRepository.SqlQuery
+            return await _dbContext.SummaryByDepartments.FromSqlRaw
                 ($@"SELECT
 	                    Companies.Id AS CompanyId,
 	                    IFNULL(Companies.Name, 'N/A') AS Company,
@@ -1170,7 +989,7 @@ namespace HES.Core.Services
                 var filter = string.Join(" AND ", filterParameters);
                 having = $"HAVING ({filter}) AND ({searchParameter})";
             }
-            return await _summaryByDepartmentsRepository.SqlQuery
+            return await _dbContext.SummaryByDepartments.FromSqlRaw
                 ($@"SELECT
 	                    Companies.Id AS CompanyId,
 	                    IFNULL(Companies.Name, 'N/A') AS Company,
@@ -1206,15 +1025,7 @@ namespace HES.Core.Services
                 if (dataLoadingOptions.Filter.Employee != null)
                 {
                     filterParameters.Add($"Workstation LIKE '%{dataLoadingOptions.Filter.Workstation}%'");
-                }
-                //if (dataLoadingOptions.Filter.Company != null)
-                //{
-                //    filterParameters.Add($"Company LIKE '%{dataLoadingOptions.Filter.Company}%'");
-                //}
-                //if (dataLoadingOptions.Filter.Department != null)
-                //{
-                //    filterParameters.Add($"Department LIKE '%{dataLoadingOptions.Filter.Department}%'");
-                //}
+                }  
             }
 
             // Search
@@ -1229,13 +1040,7 @@ namespace HES.Core.Services
             {
                 case nameof(SummaryByWorkstations.Workstation):
                     orderby = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? "ORDER BY Workstation ASC" : "ORDER BY Workstation DESC";
-                    break;
-                //case nameof(SummaryByWorkstations.Company):
-                //    orderby = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? "ORDER BY Company ASC" : "ORDER BY Company DESC";
-                //    break;
-                //case nameof(SummaryByWorkstations.Department):
-                //    orderby = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? "ORDER BY Department ASC" : "ORDER BY Department DESC";
-                //    break;
+                    break; 
                 case nameof(SummaryByWorkstations.EmployeesCount):
                     orderby = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? "ORDER BY EmployeesCount ASC" : "ORDER BY EmployeesCount DESC";
                     break;
@@ -1270,7 +1075,7 @@ namespace HES.Core.Services
                 having = $"HAVING ({filter}) AND ({searchParameter})";
             }
 
-            return await _summaryByWorkstationsRepository.SqlQuery
+            return await _dbContext.SummaryByWorkstations.FromSqlRaw
                 ($@"SELECT
 	                    Workstations.Name AS Workstation,
 	                    COUNT(DISTINCT IFNULL(Companies.Id, 'N/A')) AS CompaniesCount,
@@ -1307,15 +1112,7 @@ namespace HES.Core.Services
                 if (dataLoadingOptions.Filter.Employee != null)
                 {
                     filterParameters.Add($"Workstation LIKE '%{dataLoadingOptions.Filter.Workstation}%'");
-                }
-                //if (dataLoadingOptions.Filter.Company != null)
-                //{
-                //    filterParameters.Add($"Company LIKE '%{dataLoadingOptions.Filter.Company}%'");
-                //}
-                //if (dataLoadingOptions.Filter.Department != null)
-                //{
-                //    filterParameters.Add($"Department LIKE '%{dataLoadingOptions.Filter.Department}%'");
-                //}
+                }               
             }
 
             // Search
@@ -1339,7 +1136,7 @@ namespace HES.Core.Services
                 having = $"HAVING ({filter}) AND ({searchParameter})";
             }
 
-            return await _summaryByWorkstationsRepository.SqlQuery
+            return await _dbContext.SummaryByWorkstations.FromSqlRaw
                 ($@"SELECT
 	                    Workstations.Name AS Workstation,
 	                    COUNT(DISTINCT IFNULL(Companies.Id, 'N/A')) AS CompaniesCount,
@@ -1362,20 +1159,6 @@ namespace HES.Core.Services
         }
 
 
-        #endregion
-
-        public void Dispose()
-        {
-            _workstationEventRepository.Dispose();
-            _workstationSessionRepository.Dispose();
-            _workstationRepository.Dispose();
-            _hardwareVaultRepository.Dispose();
-            _employeeRepository.Dispose();
-            _accountRepository.Dispose();
-            _summaryByDayAndEmployeeRepository.Dispose();
-            _summaryByEmployeesRepository.Dispose();
-            _summaryByDepartmentsRepository.Dispose();
-            _summaryByWorkstationsRepository.Dispose();
-        }
+        #endregion       
     }
 }

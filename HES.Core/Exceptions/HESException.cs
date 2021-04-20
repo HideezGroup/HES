@@ -33,6 +33,7 @@ namespace HES.Core.Exceptions
 
         // Workstations
         WorkstationNotFound,
+        WorkstationNotFoundWithParam,
         WorkstationHardwareVaultPairNotFound,
         WorkstationHardwareVaultPairAlreadyExist,
 
@@ -100,6 +101,7 @@ namespace HES.Core.Exceptions
             { HESCode.HardwareVaultВoesNotAllowToRemove,  "Vault in a status that does not allow to remove." },
 
             { HESCode.WorkstationNotFound,  "Workstation not found." },
+            { HESCode.WorkstationNotFoundWithParam,  "Workstation {0} not found." },
             { HESCode.WorkstationHardwareVaultPairNotFound,  "Workstation and Hardware Vault pair not found." },
             { HESCode.WorkstationHardwareVaultPairAlreadyExist,  "Hardware Vault already added to workstation." },
 
