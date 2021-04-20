@@ -6,6 +6,7 @@ using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
+using Novell.Directory.Ldap;
 using System;
 using System.Threading.Tasks;
 
@@ -49,10 +50,10 @@ namespace HES.Web.Pages.Settings.Parameters
 
                 await LdapService.ValidateCredentialsAsync(LdapSettings);
                 await AppSettingsService.SetSettingsAsync(LdapSettings, ServerConstants.Domain);
-                await ToastService.ShowToastAsync("Domain settings updated.", ToastType.Success);    
+                await ToastService.ShowToastAsync("Domain settings updated.", ToastType.Success);
                 await ModalDialogClose();
             }
-            catch (LdapForNet.LdapInvalidCredentialsException)
+            catch (LdapException ex) when (ex.ResultCode == LdapException.InvalidCredentials)
             {
                 ValidationErrorMessage.DisplayError(nameof(LdapSettings.Password), "Invalid password");
             }
