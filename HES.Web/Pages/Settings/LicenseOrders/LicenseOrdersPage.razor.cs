@@ -151,7 +151,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete License Order", body, ModalDialogSize.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync("Delete License Order", body);
             var result = await instance.Result;
 
             if (result.Succeeded)

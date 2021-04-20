@@ -25,6 +25,7 @@ namespace HES.Core.Exceptions
 
         // Hardware Vault
         HardwareVaultNotFound,
+        HardwareVaultNotFoundWithParam,
         OneHardwareVaultConstraint,
         HardwareVaultCannotReserve,
         HardwareVaultUntieBeforeRemove,
@@ -64,6 +65,13 @@ namespace HES.Core.Exceptions
         DepartmentNotFound,
         PositionNameAlreadyInUse,
         PositionNotFound,
+
+        // License Orders
+        LicenseOrderNotFound,
+        LicenseForHardwareVaultNotFound,
+
+        // API
+        ApiKeyEmpty
     }
 
     public class HESException : Exception
@@ -85,6 +93,7 @@ namespace HES.Core.Exceptions
             { HESCode.EmployeeAlreadyExist,  "Employee with current name already exists." },
 
             { HESCode.HardwareVaultNotFound,  "Hardware Vault not found." },
+            { HESCode.HardwareVaultNotFoundWithParam,  "Hardware Vault {0} not found." },
             { HESCode.OneHardwareVaultConstraint,  "Cannot add more than one hardware vault." },
             { HESCode.HardwareVaultCannotReserve,  "Vault in a status that does not allow to reserve." },
             { HESCode.HardwareVaultUntieBeforeRemove,  "First untie the hardware vault before removing." },
@@ -113,9 +122,14 @@ namespace HES.Core.Exceptions
             { HESCode.CompanyNameAlreadyInUse,  "Company name already in use." },
             { HESCode.CompanyNotFound,  "Company not found." },
             { HESCode.DepartmentNameAlreadyInUse,  "Department name already in use" },
-            { HESCode.DepartmentNotFound,  "Department not found" },
+            { HESCode.DepartmentNotFound,  "Department not found." },
             { HESCode.PositionNameAlreadyInUse,  "Position name already in use." },
-            { HESCode.PositionNotFound,  "Position not found" },
+            { HESCode.PositionNotFound,  "Position not found." },
+
+            { HESCode.LicenseOrderNotFound,  "License Order not found." },
+            { HESCode.LicenseForHardwareVaultNotFound,  "Hardware vault licenses not found." },
+
+            { HESCode.ApiKeyEmpty,  "Api Key is empty." },
         };
 
         public HESCode Code { get; set; }
@@ -123,6 +137,11 @@ namespace HES.Core.Exceptions
         public HESException(HESCode code) : base(Errors[code])
         {
             Code = code;
+        }
+
+        public HESException(HESCode code, string[] parameters) : base(string.Format(Errors[code], parameters))
+        {
+            Code = code;       
         }
 
         public static string GetMessage(HESCode code)

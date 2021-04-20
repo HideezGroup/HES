@@ -1089,7 +1089,6 @@ namespace HES.Core.Services
             _hardwareVaultRepository.Dispose();
             _hardwareVaultActivationRepository.Dispose();
             _hardwareVaultProfileRepository.Dispose();
-            _licenseService.Dispose();
             _hardwareVaultTaskService.Dispose();
         }
     }
