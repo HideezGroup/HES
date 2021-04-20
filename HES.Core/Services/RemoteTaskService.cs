@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class RemoteTaskService : IRemoteTaskService, IDisposable
+    public class RemoteTaskService : IRemoteTaskService
     {
         private readonly IHardwareVaultService _hardwareVaultService;
         private readonly IHardwareVaultTaskService _hardwareVaultTaskService;
@@ -41,50 +41,29 @@ namespace HES.Core.Services
             _synchronizationService = synchronizationService;
         }
 
-        private async Task TaskCompleted(string taskId)
-        {
-            var task = await _hardwareVaultTaskService.GetTaskByIdAsync(taskId);
-
-            if (task == null)
-                throw new Exception($"Task {taskId} not found");
-
-            switch (task.Operation)
-            {
-                case TaskOperation.Create:
-                    await _employeeService.UpdateAfterAccountCreateAsync(task.Account, task.Timestamp);
-                    break;
-                case TaskOperation.Update:
-                case TaskOperation.Delete:
-                case TaskOperation.Primary:
-                    await _employeeService.UpdateAfterAccountModifyAsync(task.Account, task.Timestamp);
-                    break;
-            }
-
-            // Delete task
-            await _hardwareVaultTaskService.DeleteTaskAsync(task);
-        }
-
         public async Task ExecuteRemoteTasks(string vaultId, Device remoteDevice, bool primaryAccountOnly)
         {
             _dataProtectionService.Validate();
 
             var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
             if (vault == null)
+            {
                 throw new HESException(HESCode.HardwareVaultNotFound);
-
-            // Tasks query 
-            var query = _hardwareVaultTaskService
+            }
+    
+            var tasksQuery = _hardwareVaultTaskService
                 .TaskQuery()
                 .Include(t => t.HardwareVault)
                 .Include(t => t.Account)
                 .Where(t => t.HardwareVaultId == vaultId);
 
             if (primaryAccountOnly)
-                query = query.Where(x => x.AccountId == vault.Employee.PrimaryAccountId || x.Operation == TaskOperation.Primary);
+            {
+                tasksQuery = tasksQuery.Where(x => x.AccountId == vault.Employee.PrimaryAccountId || x.Operation == TaskOperation.Primary);
+            }
 
-            query = query.OrderBy(x => x.CreatedAt).AsNoTracking();
-
-            var tasks = await query.ToListAsync();
+            tasksQuery = tasksQuery.OrderBy(x => x.CreatedAt).AsNoTracking();
+            var tasks = await tasksQuery.ToListAsync();
 
             while (tasks.Any())
             {
@@ -96,7 +75,7 @@ namespace HES.Core.Services
                     await TaskCompleted(task.Id);
                 }
 
-                tasks = await query.ToListAsync();
+                tasks = await tasksQuery.ToListAsync();
             }
 
             await _hardwareVaultService.UpdateNeedSyncAsync(vault, false);
@@ -112,7 +91,9 @@ namespace HES.Core.Services
                     {
                         var ldapSettings = await _appSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
                         if (ldapSettings?.Password == null)
-                            throw new Exception("Active Directory Credentials Required"); // TODO use Communication.dll ex
+                        {
+                            throw new Exception("Active Directory required credentials");
+                        }
                         await _ldapService.SetUserPasswordAsync(task.HardwareVault.EmployeeId, task.Password, ldapSettings);
                     }
                     await AddAccountAsync(remoteDevice, task);
@@ -132,11 +113,33 @@ namespace HES.Core.Services
             }
         }
 
+        private async Task TaskCompleted(string taskId)
+        {
+            var task = await _hardwareVaultTaskService.GetTaskByIdAsync(taskId);
+            if (task == null)
+            {
+                throw new Exception($"Task {taskId} not found");
+            }
+
+            switch (task.Operation)
+            {
+                case TaskOperation.Create:
+                    await _employeeService.UpdateAfterAccountCreateAsync(task.Account, task.Timestamp);
+                    break;
+                case TaskOperation.Update:
+                case TaskOperation.Delete:
+                case TaskOperation.Primary:
+                    await _employeeService.UpdateAfterAccountModifyAsync(task.Account, task.Timestamp);
+                    break;
+            }
+
+            await _hardwareVaultTaskService.DeleteTaskAsync(task);
+        }
+
         private async Task AddAccountAsync(Device remoteDevice, HardwareVaultTask task)
         {
             var account = await _employeeService.GetAccountByIdAsync(task.AccountId, true);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
-
             var pm = new DevicePasswordManager(remoteDevice, null);
             await pm.SaveOrUpdateAccount(new StorageId(account.StorageId), task.Timestamp, account.Name, task.Password, account.Login, task.OtpSecret, account.Apps, account.Urls, isPrimary, new AccountFlagsOptions() { IsReadOnly = true });
         }
@@ -145,7 +148,6 @@ namespace HES.Core.Services
         {
             var account = await _employeeService.GetAccountByIdAsync(task.AccountId, true);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
-
             var storageId = new StorageId(account.StorageId);
             var pm = new DevicePasswordManager(remoteDevice, null);
             await pm.SaveOrUpdateAccount(storageId, task.Timestamp, account.Name, task.Password, account.Login, task.OtpSecret, account.Apps, account.Urls, isPrimary, new AccountFlagsOptions() { IsReadOnly = true });
@@ -154,7 +156,6 @@ namespace HES.Core.Services
         private async Task SetAccountAsPrimaryAsync(Device remoteDevice, HardwareVaultTask task)
         {
             var account = await _employeeService.GetAccountByIdAsync(task.AccountId, true);
-
             var storageId = new StorageId(account.StorageId);
             var pm = new DevicePasswordManager(remoteDevice, null);
             await pm.SaveOrUpdateAccount(storageId, task.Timestamp, null, null, null, null, null, null, true, new AccountFlagsOptions() { IsReadOnly = true });
@@ -164,7 +165,6 @@ namespace HES.Core.Services
         {
             var account = await _employeeService.GetAccountByIdAsync(task.AccountId, true);
             bool isPrimary = account.Employee.PrimaryAccountId == task.AccountId;
-
             var storageId = new StorageId(account.StorageId);
             var pm = new DevicePasswordManager(remoteDevice, null);
             await pm.DeleteAccount(storageId, isPrimary);
@@ -187,7 +187,9 @@ namespace HES.Core.Services
         public async Task LinkVaultAsync(Device remoteDevice, HardwareVault vault)
         {
             if (!remoteDevice.AccessLevel.IsLinkRequired)
+            {
                 return;
+            }
 
             var code = Encoding.UTF8.GetBytes(await _hardwareVaultService.GetVaultActivationCodeAsync(vault.Id));
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
@@ -198,7 +200,9 @@ namespace HES.Core.Services
         public async Task SuspendVaultAsync(Device remoteDevice, HardwareVault vault)
         {
             if (vault.IsStatusApplied)
+            {
                 return;
+            }
 
             var code = Encoding.UTF8.GetBytes(await _hardwareVaultService.GetVaultActivationCodeAsync(vault.Id));
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
@@ -209,13 +213,9 @@ namespace HES.Core.Services
         public async Task WipeVaultAsync(Device remoteDevice, HardwareVault vault)
         {
             if (!remoteDevice.AccessLevel.IsLinkRequired)
+            {
                 await remoteDevice.Wipe(ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword)));
-        }
-
-        public void Dispose()
-        {
-            _hardwareVaultService.Dispose();
-            _hardwareVaultTaskService.Dispose();   
+            }
         }
     }
 }

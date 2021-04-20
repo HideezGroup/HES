@@ -110,7 +110,7 @@ namespace HES.Core.Services
                 }
                 if (dataLoadingOptions.Filter.Online != null)
                 {
-                    var workstationIds = RemoteWorkstationConnectionsService.WorkstationsOnlineIds();
+                    var workstationIds = RemoteWorkstationConnectionsService.GetWorkstationsOnlineIds();
 
                     if (dataLoadingOptions.Filter.Online.Value == true)
                     {

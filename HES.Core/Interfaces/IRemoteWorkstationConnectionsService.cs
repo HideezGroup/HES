@@ -1,12 +1,11 @@
 ﻿using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IRemoteWorkstationConnectionsService : IDisposable
+    public interface IRemoteWorkstationConnectionsService
     {
         Task LockAllWorkstationsAsync(string userEmail);
         Task UnlockAllWorkstationsAsync(string userEmail);

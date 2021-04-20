@@ -277,7 +277,7 @@ namespace HES.Core.Services
 
         public async Task<int> GetWorkstationsOnlineCountAsync()
         {
-            return await Task.FromResult(RemoteWorkstationConnectionsService.WorkstationsOnlineCount());
+            return await Task.FromResult(RemoteWorkstationConnectionsService.GetWorkstationsOnlineCount());
         }
 
         public async Task<List<DashboardNotify>> GetWorkstationsNotifyAsync()

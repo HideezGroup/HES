@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using HES.Core.RemoteDeviceConnection;
+﻿using HES.Core.RemoteDeviceConnection;
 using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IRemoteDeviceConnectionsService : IDisposable
+    public interface IRemoteDeviceConnectionsService
     {
         void OnDeviceHubConnected(string deviceId, string workstationId, IRemoteCommands caller);
         void OnDeviceHubDisconnected(string deviceId, string workstationId);
-
         void OnAppHubConnected(string workstationId, IRemoteAppConnection appConnection);
         void OnAppHubDisconnected(string workstationId);
-
         // Received via AppHub
         void OnDeviceConnected(string deviceId, string workstationId, IRemoteAppConnection appConnection);
         void OnDeviceDisconnected(string deviceId, string workstationId);
-
         Task<Device> ConnectDevice(string deviceId, string workstationId);
         DeviceConnectionContainer FindConnectionContainer(string deviceId, string workstationId);
-
         Task<bool> CheckIsNeedUpdateHwVaultStatusAsync(HwVaultInfoFromClientDto dto);
         Task UpdateHardwareVaultStatusAsync(string vaultId, string workstationId);
         void StartUpdateHardwareVaultStatus(string vaultId);

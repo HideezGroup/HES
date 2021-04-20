@@ -35,7 +35,7 @@ namespace HES.Web.Pages.Alarm
 
                 await BreadcrumbsService.SetAlarm();
                 await GetAlarmStateAsync();
-                WorkstationOnline = RemoteWorkstationConnectionsService.WorkstationsOnlineCount();
+                WorkstationOnline = RemoteWorkstationConnectionsService.GetWorkstationsOnlineCount();
                 WorkstationCount = await WorkstationService.GetWorkstationsCountAsync(new DataLoadingOptions<WorkstationFilter>());
                 CurrentUserEmail = await GetCurrentUserEmailAsync();
                 SetInitialized();

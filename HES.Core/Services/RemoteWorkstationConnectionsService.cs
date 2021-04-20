@@ -1,5 +1,4 @@
-﻿using HES.Core.Constants;
-using HES.Core.Interfaces;
+﻿using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Remote;
@@ -12,41 +11,31 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class RemoteWorkstationConnectionsService : IRemoteWorkstationConnectionsService, IDisposable
+    public class RemoteWorkstationConnectionsService : IRemoteWorkstationConnectionsService
     {
-        static readonly ConcurrentDictionary<string, IRemoteAppConnection> _workstationConnections
-                    = new ConcurrentDictionary<string, IRemoteAppConnection>();
-
-        private readonly IRemoteTaskService _remoteTaskService;
-        private readonly IRemoteDeviceConnectionsService _remoteDeviceConnectionsService;
+        private static readonly ConcurrentDictionary<string, IRemoteAppConnection> _workstationConnections = new();
         private readonly IWorkstationService _workstationService;
-        private readonly IHardwareVaultService _hardwareVaultService;
         private readonly IWorkstationAuditService _workstationAuditService;
-        private readonly ILogger<RemoteWorkstationConnectionsService> _logger;
         private readonly IAppSettingsService _appSettingsService;
+        private readonly ILogger<RemoteWorkstationConnectionsService> _logger;
 
-
-        public RemoteWorkstationConnectionsService(IRemoteTaskService remoteTaskService,
-                      IRemoteDeviceConnectionsService remoteDeviceConnectionsService,
-                      IWorkstationService workstationService,
-                      IHardwareVaultService hardwareVaultService,
+        public RemoteWorkstationConnectionsService(IWorkstationService workstationService,
                       IWorkstationAuditService workstationAuditService,
-                      ILogger<RemoteWorkstationConnectionsService> logger,
-                      IAppSettingsService appSettingsService)
+                      IAppSettingsService appSettingsService,
+                      ILogger<RemoteWorkstationConnectionsService> logger)
         {
-            _remoteTaskService = remoteTaskService;
-            _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
             _workstationService = workstationService;
-            _hardwareVaultService = hardwareVaultService;
             _workstationAuditService = workstationAuditService;
-            _logger = logger;
             _appSettingsService = appSettingsService;
+            _logger = logger;
         }
 
         public async Task RegisterWorkstationInfoAsync(IRemoteAppConnection remoteAppConnection, WorkstationInfoDto workstationInfoDto)
         {
             if (workstationInfoDto == null)
+            {
                 throw new ArgumentNullException(nameof(workstationInfoDto));
+            }
 
             _workstationConnections.AddOrUpdate(workstationInfoDto.Id, remoteAppConnection, (id, oldConnection) =>
             {
@@ -83,15 +72,12 @@ namespace HES.Core.Services
             return workstation;
         }
 
-        public static bool IsWorkstationConnected(string workstationId)
-        {
-            return _workstationConnections.ContainsKey(workstationId);
-        }
-
         public async Task LockAllWorkstationsAsync(string userEmail)
         {
             foreach (var workstationConnection in _workstationConnections)
+            {
                 await workstationConnection.Value.SetAlarmState(true);
+            }
 
             var alarmState = new AlarmState
             {
@@ -107,15 +93,14 @@ namespace HES.Core.Services
         {
             var state = await _appSettingsService.GetAlarmStateAsync();
             if (state != null && !state.IsAlarm)
+            {
                 return;
-
-            if (string.IsNullOrWhiteSpace(userEmail))
-                throw new ArgumentNullException(nameof(userEmail));
+            }
 
             var alarmState = new AlarmState
             {
                 IsAlarm = false,
-                AdminName = userEmail,
+                AdminName = userEmail ?? "undefined",
                 Date = DateTime.UtcNow
             };
 
@@ -125,12 +110,17 @@ namespace HES.Core.Services
                 await workstationConnection.Value.SetAlarmState(false);
         }
 
-        public static int WorkstationsOnlineCount()
+        public static bool IsWorkstationConnected(string workstationId)
+        {
+            return _workstationConnections.ContainsKey(workstationId);
+        }
+
+        public static int GetWorkstationsOnlineCount()
         {
             return _workstationConnections.Count;
         }
 
-        public static List<string> WorkstationsOnlineIds()
+        public static List<string> GetWorkstationsOnlineIds()
         {
             return _workstationConnections.Select(s => s.Key).ToList();
         }
@@ -139,7 +129,9 @@ namespace HES.Core.Services
         {
             var remoteAppConnection = FindWorkstationConnection(workstationId);
             if (remoteAppConnection == null)
+            {
                 return;
+            }
 
             await remoteAppConnection.UpdateProximitySettings(proximitySettings);
         }
@@ -148,7 +140,9 @@ namespace HES.Core.Services
         {
             var remoteAppConnection = FindWorkstationConnection(workstationId);
             if (remoteAppConnection == null)
+            {
                 return;
+            }
 
             await remoteAppConnection.UpdateRFIDIndicatorState(isEnabled);
         }
@@ -157,7 +151,9 @@ namespace HES.Core.Services
         {
             var remoteAppConnection = FindWorkstationConnection(workstationId);
             if (remoteAppConnection == null)
+            {
                 return;
+            }
 
             if (isApproved)
             {
@@ -167,14 +163,6 @@ namespace HES.Core.Services
             {
                 await remoteAppConnection.WorkstationUnapproved();
             }
-        }
-
-        public void Dispose()
-        {
-            _remoteTaskService.Dispose();
-            _remoteDeviceConnectionsService.Dispose();
-            _hardwareVaultService.Dispose();
-            _workstationAuditService.Dispose();
         }
     }
 }

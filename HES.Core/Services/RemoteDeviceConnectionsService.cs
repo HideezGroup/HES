@@ -18,13 +18,10 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class RemoteDeviceConnectionsService : IRemoteDeviceConnectionsService, IDisposable
+    public class RemoteDeviceConnectionsService : IRemoteDeviceConnectionsService
     {
-        private static readonly ConcurrentDictionary<string, DeviceRemoteConnections> _deviceRemoteConnectionsList
-            = new ConcurrentDictionary<string, DeviceRemoteConnections>();
-        private static readonly ConcurrentDictionary<string, TaskCompletionSource<bool>> _devicesInProgress
-            = new ConcurrentDictionary<string, TaskCompletionSource<bool>>();
-
+        private static readonly ConcurrentDictionary<string, DeviceRemoteConnections> _deviceRemoteConnectionsList = new();
+        private static readonly ConcurrentDictionary<string, TaskCompletionSource<bool>> _devicesInProgress = new();
         private readonly IServiceProvider _services;
         private readonly IHardwareVaultService _hardwareVaultService;
         private readonly IRemoteTaskService _remoteTaskService;
@@ -82,6 +79,7 @@ namespace HES.Core.Services
         // AppHub connected
         public void OnAppHubConnected(string workstationId, IRemoteAppConnection appConnection)
         {
+
         }
 
         // AppHub disconnected
@@ -102,7 +100,9 @@ namespace HES.Core.Services
         {
             _deviceRemoteConnectionsList.TryGetValue(deviceId, out DeviceRemoteConnections deviceRemoteConnections);
             if (deviceRemoteConnections == null || !deviceRemoteConnections.IsDeviceConnectedToHost)
+            {
                 throw new HideezException(HideezErrorCode.DeviceNotConnectedToAnyHost);
+            }
 
             return deviceRemoteConnections.ConnectDevice(workstationId);
         }
@@ -162,13 +162,19 @@ namespace HES.Core.Services
             var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
 
             if (vault == null)
+            {
                 throw new HideezException(HideezErrorCode.HesDeviceNotFound);
+            }
 
             if (!isLinkRequired && vault.MasterPassword == null)
+            {
                 throw new HideezException(HideezErrorCode.HesDeviceLinkedToAnotherServer);
+            }
 
             if (isLinkRequired && vault.MasterPassword != null && vault.Status != VaultStatus.Reserved && vault.Status != VaultStatus.Deactivated)
+            {
                 throw new HideezException(HideezErrorCode.HesVaultWasManuallyWiped);
+            }
 
             return vault;
         }
@@ -177,13 +183,17 @@ namespace HES.Core.Services
         {
             var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
             if (remoteDevice == null)
+            {
                 throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
+            }
 
             await remoteDevice.RefreshDeviceInfo();
 
             var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
             if (vault == null)
+            {
                 throw new HideezException(HideezErrorCode.HesDeviceNotFound);
+            }
 
             switch (vault.Status)
             {
@@ -257,10 +267,14 @@ namespace HES.Core.Services
         public void StartUpdateHardwareVaultStatus(string vaultId)
         {
             if (vaultId == null)
+            {
                 throw new ArgumentNullException(nameof(vaultId));
+            }
 
             if (!IsDeviceConnectedToHost(vaultId))
+            {
                 return;
+            }
 
             var scope = _services.CreateScope();
 
@@ -290,14 +304,15 @@ namespace HES.Core.Services
         {
             var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
             if (remoteDevice == null)
+            {
                 throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
+            }
 
             await remoteDevice.RefreshDeviceInfo();
-
-            await ExecutePassphraseAsync(vaultId, remoteDevice); 
+            await ExecutePassphraseAsync(vaultId, remoteDevice);
         }
 
-        private async  Task ExecutePassphraseAsync(string vaultId, Device remoteDevice)
+        private async Task ExecutePassphraseAsync(string vaultId, Device remoteDevice)
         {
             var vault = await ValidateAndGetHardwareVaultAsync(vaultId, remoteDevice.AccessLevel.IsLinkRequired);
             var key = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
@@ -311,27 +326,33 @@ namespace HES.Core.Services
                 var vault = await _hardwareVaultService.GetVaultByIdAsync(vaultId);
 
                 if (vault.Status != VaultStatus.Active || vault.NeedSync || vault.EmployeeId == null)
+                {
                     return;
+                }
 
                 var employee = await _employeeService.GetEmployeeByIdAsync(vault.EmployeeId);
 
                 var employeeVaults = employee.HardwareVaults.Where(x => x.Id != vaultId && x.IsOnline && x.Timestamp != vault.Timestamp && x.Status == VaultStatus.Active && !x.NeedSync).ToList();
                 foreach (var employeeVault in employeeVaults)
                 {
-                    var currentVaultSync = vault.Timestamp < employeeVault.Timestamp ? true : false;
+                    var currentVaultSync = vault.Timestamp < employeeVault.Timestamp;
 
                     var firstWorkstationId = GetDeviceRemoteConnections(vault.Id).GetFirstOrDefaultWorkstation();
                     var secondWorkstationId = GetDeviceRemoteConnections(employeeVault.Id).GetFirstOrDefaultWorkstation();
 
                     if (firstWorkstationId == null || secondWorkstationId == null)
+                    {
                         return;
+                    }
 
                     var firstRemoteDeviceTask = ConnectDevice(vault.Id, firstWorkstationId).TimeoutAfter(30_000);
                     var secondRemoteDeviceTask = ConnectDevice(employeeVault.Id, secondWorkstationId).TimeoutAfter(30_000);
                     await Task.WhenAll(firstRemoteDeviceTask, secondRemoteDeviceTask);
 
                     if (firstRemoteDeviceTask.Result == null || secondRemoteDeviceTask.Result == null)
+                    {
                         return;
+                    }
 
                     var firstVaultKey = ConvertUtils.HexStringToBytes(_dataProtectionService.Decrypt(vault.MasterPassword));
                     await firstRemoteDeviceTask.Result.CheckPassphrase(firstVaultKey);
@@ -362,6 +383,7 @@ namespace HES.Core.Services
                     }
 
                     await appConnection.LockHwVaultStorage(lockedVaultStorage);
+
                     try
                     {
                         await new DeviceStorageReplicator(firstRemoteDeviceTask.Result, secondRemoteDeviceTask.Result, null).Start();
@@ -383,14 +405,16 @@ namespace HES.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Sync Hardware Vaults - {ex.Message}");
+                _logger.LogError($"Error Sync Hardware Vaults - {ex.Message}");
             }
         }
 
         public async Task UpdateHardwareVaultAccountsAsync(string vaultId, string workstationId, bool onlyOsAccounts)
         {
             if (vaultId == null)
+            {
                 throw new ArgumentNullException(nameof(vaultId));
+            }
 
             var isNew = false;
             var tcs = _devicesInProgress.GetOrAdd(vaultId, (x) =>
@@ -409,10 +433,12 @@ namespace HES.Core.Services
             {
                 var remoteDevice = await ConnectDevice(vaultId, workstationId).TimeoutAfter(30_000);
                 if (remoteDevice == null)
+                {
                     throw new HideezException(HideezErrorCode.HesFailedEstablishRemoteDeviceConnection);
+                }
 
                 if (!remoteDevice.IsAuthorized)
-                {    
+                {
                     await ExecutePassphraseAsync(vaultId, remoteDevice);
                     await remoteDevice.RefreshDeviceInfo();
                 }
@@ -443,10 +469,14 @@ namespace HES.Core.Services
         public void StartUpdateHardwareVaultAccounts(string vaultId, bool onlyOsAccounts = false)
         {
             if (vaultId == null)
+            {
                 throw new ArgumentNullException(nameof(vaultId));
+            }
 
             if (!IsDeviceConnectedToHost(vaultId))
+            {
                 return;
+            }
 
             var scope = _services.CreateScope();
 
@@ -470,12 +500,6 @@ namespace HES.Core.Services
                     scope.Dispose();
                 }
             });
-        }
-
-        public void Dispose()
-        {
-            _hardwareVaultService.Dispose();
-            _remoteTaskService.Dispose();
         }
     }
 }
