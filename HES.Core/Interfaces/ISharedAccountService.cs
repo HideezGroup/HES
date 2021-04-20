@@ -2,17 +2,15 @@
 using HES.Core.Models.Accounts;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.SharedAccounts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface ISharedAccountService : IDisposable
+    public interface ISharedAccountService
     {
-        IQueryable<SharedAccount> Query();
-        Task UnchangedAsync(SharedAccount account);
+        void Unchanged(SharedAccount account);
         Task<SharedAccount> GetSharedAccountByIdAsync(string id);
         Task<List<SharedAccount>> GetSharedAccountsAsync(DataLoadingOptions<SharedAccountsFilter> dataLoadingOptions);
         Task<int> GetSharedAccountsCountAsync(DataLoadingOptions<SharedAccountsFilter> dataLoadingOptions);

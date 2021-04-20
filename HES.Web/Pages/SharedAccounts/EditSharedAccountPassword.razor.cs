@@ -53,7 +53,7 @@ namespace HES.Web.Pages.SharedAccounts
 
         protected override async Task ModalDialogCancel()
         {
-            await SharedAccountService.UnchangedAsync(Account);
+            SharedAccountService.Unchanged(Account);
             await base.ModalDialogCancel();
         }
 
