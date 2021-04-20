@@ -24,7 +24,7 @@ namespace HES.Web.Pages.Settings.Parameters
             try
             {
                 AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
-                SynchronizationService.UpdateParametersPage += UpdateParametersPage;
+                PageSyncService.UpdateParametersPage += UpdateParametersPage;
 
                 await BreadcrumbsService.SetParameters();
                 await LoadDataSettingsAsync();
@@ -84,7 +84,7 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateParameters(PageId);
+                await PageSyncService.UpdateParameters(PageId);
             }
         }
 
@@ -119,7 +119,7 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateParameters(PageId);
+                await PageSyncService.UpdateParameters(PageId);
             }
         }
 
@@ -138,13 +138,13 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateParameters(PageId);
+                await PageSyncService.UpdateParameters(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateParametersPage -= UpdateParametersPage;
+            PageSyncService.UpdateParametersPage -= UpdateParametersPage;
         }
     }
 }

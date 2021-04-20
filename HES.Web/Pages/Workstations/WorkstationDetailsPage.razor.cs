@@ -25,7 +25,7 @@ namespace HES.Web.Pages.Workstations
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<WorkstationHardwareVaultPair, WorkstationDetailsFilter>>();
-                SynchronizationService.UpdateWorkstationDetailsPage += UpdateWorkstationDetailsPage;
+                PageSyncService.UpdateWorkstationDetailsPage += UpdateWorkstationDetailsPage;
                 await LoadWorkstationAsync();
                 await BreadcrumbsService.SetWorkstationDetails(Workstation.Name);
                 await DataTableService.InitializeAsync(WorkstationService.GetWorkstationHardwareVaultPairsAsync, WorkstationService.GetWorkstationHardwareVaultPairsCountAsync, StateHasChanged, nameof(WorkstationHardwareVaultPair.HardwareVaultId), entityId: WorkstationId);
@@ -72,7 +72,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateWorkstationDetails(PageId, WorkstationId);
+                await PageSyncService.UpdateWorkstationDetails(PageId, WorkstationId);
             }
         }
 
@@ -92,13 +92,13 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateWorkstationDetails(PageId, WorkstationId);
+                await PageSyncService.UpdateWorkstationDetails(PageId, WorkstationId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateWorkstationDetailsPage -= UpdateWorkstationDetailsPage;
+            PageSyncService.UpdateWorkstationDetailsPage -= UpdateWorkstationDetailsPage;
         }
     }
 }

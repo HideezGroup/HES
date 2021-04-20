@@ -22,7 +22,7 @@ namespace HES.Web.Pages.Employees
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
         public ILdapService LdapService { get; set; }
-        [Inject] public ISynchronizationService SynchronizationService { get; set; }
+        [Inject] public IPageSyncService SynchronizationService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddHardwareVault> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }

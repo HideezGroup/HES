@@ -22,7 +22,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             try
             {
                 OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
-                SynchronizationService.UpdateOrgSructureCompaniesPage += UpdateOrgSructureCompaniesPage;
+                PageSyncService.UpdateOrgSructureCompaniesPage += UpdateOrgSructureCompaniesPage;
                 await BreadcrumbsService.SetOrgStructure();
                 await LoadCompaniesAsync();
 
@@ -69,7 +69,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateOrgSructureCompanies(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -88,7 +88,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateOrgSructureCompanies(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -107,7 +107,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateOrgSructureCompanies(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -126,7 +126,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateOrgSructureCompanies(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -145,7 +145,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateOrgSructureCompanies(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -164,13 +164,13 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateOrgSructureCompanies(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateOrgSructureCompaniesPage -= UpdateOrgSructureCompaniesPage;
+            PageSyncService.UpdateOrgSructureCompaniesPage -= UpdateOrgSructureCompaniesPage;
         }
     }
 }

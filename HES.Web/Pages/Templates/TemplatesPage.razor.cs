@@ -25,7 +25,7 @@ namespace HES.Web.Pages.Templates
                 TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<Template, TemplateFilter>>();
 
-                SynchronizationService.UpdateTemplatesPage += UpdateTemplatesPage;
+                PageSyncService.UpdateTemplatesPage += UpdateTemplatesPage;
 
                 await BreadcrumbsService.SetTemplates();
                 await DataTableService.InitializeAsync(TemplateService.GetTemplatesAsync, TemplateService.GetTemplatesCountAsync, StateHasChanged, nameof(Template.Name), ListSortDirection.Ascending);
@@ -67,7 +67,7 @@ namespace HES.Web.Pages.Templates
             if (result.Succeeded)
             {              
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateTemplates(PageId);
             }
         }
 
@@ -86,7 +86,7 @@ namespace HES.Web.Pages.Templates
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateTemplates(PageId);
             }
         }
 
@@ -105,13 +105,13 @@ namespace HES.Web.Pages.Templates
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateTemplates(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateTemplatesPage -= UpdateTemplatesPage; 
+            PageSyncService.UpdateTemplatesPage -= UpdateTemplatesPage; 
         }
     }
 }

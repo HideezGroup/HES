@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class SynchronizationService : ISynchronizationService
+    public class PageSyncService : IPageSyncService
     {
         public event Func<string, Task> UpdateAlarmPage;
         public event Func<string, Task> UpdateEmployeePage;

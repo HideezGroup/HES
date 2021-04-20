@@ -9,7 +9,7 @@ namespace HES.Web.Components
     public class HESPageBase : HESBase
     {
         [Inject] protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
-        [Inject] protected ISynchronizationService SynchronizationService { get; set; }
+        [Inject] protected IPageSyncService PageSyncService { get; set; }
         [Inject] protected IModalDialogService ModalDialogService { get; set; }
         [Inject] protected IBreadcrumbsService BreadcrumbsService { get; set; }
 

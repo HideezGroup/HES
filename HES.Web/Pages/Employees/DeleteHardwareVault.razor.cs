@@ -17,7 +17,7 @@ namespace HES.Web.Pages.Employees
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public ISynchronizationService SynchronizationService { get; set; }
+        [Inject] public IPageSyncService SynchronizationService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
         [Inject] public ILogger<DeleteHardwareVault> Logger { get; set; }
         [Parameter] public string HardwareVaultId { get; set; }

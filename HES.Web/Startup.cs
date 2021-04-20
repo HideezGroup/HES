@@ -135,7 +135,7 @@ namespace HES.Web
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
-            services.AddSingleton<ISynchronizationService, SynchronizationService>();
+            services.AddSingleton<IPageSyncService, PageSyncService>();
 
             services.AddHostedService<RemoveLogsHostedService>();
             services.AddHostedService<LicenseHostedService>();

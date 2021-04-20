@@ -22,7 +22,7 @@ namespace HES.Core.Services
         private readonly IDataProtectionService _dataProtectionService;
         private readonly ILdapService _ldapService;
         private readonly IAppSettingsService _appSettingsService;
-        private readonly ISynchronizationService _synchronizationService;
+        private readonly IPageSyncService _synchronizationService;
 
         public RemoteTaskService(IHardwareVaultService hardwareVaultService,
                                  IHardwareVaultTaskService hardwareVaultTaskService,
@@ -30,7 +30,7 @@ namespace HES.Core.Services
                                  IDataProtectionService dataProtectionService,
                                  ILdapService ldapService,
                                  IAppSettingsService appSettingsService,
-                                 ISynchronizationService synchronizationService)
+                                 IPageSyncService synchronizationService)
         {
             _hardwareVaultService = hardwareVaultService;
             _hardwareVaultTaskService = hardwareVaultTaskService;

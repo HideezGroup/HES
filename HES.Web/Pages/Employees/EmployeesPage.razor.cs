@@ -26,7 +26,7 @@ namespace HES.Web.Pages.Employees
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<Employee, EmployeeFilter>>();
 
-                SynchronizationService.UpdateEmployeePage += UpdateEmployeePage;
+                PageSyncService.UpdateEmployeePage += UpdateEmployeePage;
 
                 await BreadcrumbsService.SetEmployees();
                 await DataTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, StateHasChanged, nameof(Employee.FullName));
@@ -54,7 +54,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployees(PageId);
+                await PageSyncService.UpdateEmployees(PageId);
             }
         }
 
@@ -80,7 +80,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployees(PageId);
+                await PageSyncService.UpdateEmployees(PageId);
             }
         }
 
@@ -99,7 +99,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployees(PageId);
+                await PageSyncService.UpdateEmployees(PageId);
             }
         }
 
@@ -118,7 +118,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployees(PageId);
+                await PageSyncService.UpdateEmployees(PageId);
             }
         }
 
@@ -136,7 +136,7 @@ namespace HES.Web.Pages.Employees
 
         public void Dispose()
         {
-            SynchronizationService.UpdateEmployeePage -= UpdateEmployeePage;
+            PageSyncService.UpdateEmployeePage -= UpdateEmployeePage;
         }
     }
 }

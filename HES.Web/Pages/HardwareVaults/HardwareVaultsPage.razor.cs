@@ -25,8 +25,8 @@ namespace HES.Web.Pages.HardwareVaults
                 HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<HardwareVault, HardwareVaultFilter>>();
 
-                SynchronizationService.UpdateHardwareVaultsPage += UpdateHardwareVaultsPage;
-                SynchronizationService.UpdateHardwareVaultState += UpdateHardwareVaultState;
+                PageSyncService.UpdateHardwareVaultsPage += UpdateHardwareVaultsPage;
+                PageSyncService.UpdateHardwareVaultState += UpdateHardwareVaultState;
 
                 switch (DashboardFilter)
                 {
@@ -115,7 +115,7 @@ namespace HES.Web.Pages.HardwareVaults
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateHardwareVaults(PageId);
+                await PageSyncService.UpdateHardwareVaults(PageId);
             }
         }
 
@@ -135,7 +135,7 @@ namespace HES.Web.Pages.HardwareVaults
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateHardwareVaults(PageId);
+                await PageSyncService.UpdateHardwareVaults(PageId);
             }
         }
 
@@ -155,7 +155,7 @@ namespace HES.Web.Pages.HardwareVaults
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateHardwareVaults(PageId);
+                await PageSyncService.UpdateHardwareVaults(PageId);
             }
         }
 
@@ -175,7 +175,7 @@ namespace HES.Web.Pages.HardwareVaults
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateHardwareVaults(PageId);
+                await PageSyncService.UpdateHardwareVaults(PageId);
             }
         }
 
@@ -206,14 +206,14 @@ namespace HES.Web.Pages.HardwareVaults
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateHardwareVaults(PageId);
+                await PageSyncService.UpdateHardwareVaults(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateHardwareVaultsPage -= UpdateHardwareVaultsPage;
-            SynchronizationService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
+            PageSyncService.UpdateHardwareVaultsPage -= UpdateHardwareVaultsPage;
+            PageSyncService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
         }
     }
 }

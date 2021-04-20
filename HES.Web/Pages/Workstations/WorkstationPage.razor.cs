@@ -25,7 +25,7 @@ namespace HES.Web.Pages.Workstations
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<Workstation, WorkstationFilter>>();
-                SynchronizationService.UpdateWorkstationsPage += UpdateWorkstationsPage;
+                PageSyncService.UpdateWorkstationsPage += UpdateWorkstationsPage;
 
                 switch (DashboardFilter)
                 {
@@ -76,7 +76,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateWorkstations(PageId);
+                await PageSyncService.UpdateWorkstations(PageId);
             }
         }
 
@@ -95,7 +95,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateWorkstations(PageId);
+                await PageSyncService.UpdateWorkstations(PageId);
             }
         }
 
@@ -114,7 +114,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateWorkstations(PageId);
+                await PageSyncService.UpdateWorkstations(PageId);
             }
         }
 
@@ -141,13 +141,13 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateWorkstations(PageId);
+                await PageSyncService.UpdateWorkstations(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateWorkstationsPage -= UpdateWorkstationsPage;
+            PageSyncService.UpdateWorkstationsPage -= UpdateWorkstationsPage;
         }
     }
 }

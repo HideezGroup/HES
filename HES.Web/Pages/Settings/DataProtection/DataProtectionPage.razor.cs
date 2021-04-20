@@ -19,7 +19,7 @@ namespace HES.Web.Pages.Settings.DataProtection
         {
             try
             {
-                SynchronizationService.UpdateDataProtectionPage += UpdateDataProtectionPage;
+                PageSyncService.UpdateDataProtectionPage += UpdateDataProtectionPage;
                 ProtectionStatus();
                 await BreadcrumbsService.SetDataProtection();
                 SetInitialized();
@@ -63,7 +63,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateDataProtection(PageId);
+                await PageSyncService.UpdateDataProtection(PageId);
             }
         }
 
@@ -81,7 +81,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateDataProtection(PageId);
+                await PageSyncService.UpdateDataProtection(PageId);
             }
         }
 
@@ -99,13 +99,13 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateDataProtection(PageId);
+                await PageSyncService.UpdateDataProtection(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateDataProtectionPage -= UpdateDataProtectionPage;
+            PageSyncService.UpdateDataProtectionPage -= UpdateDataProtectionPage;
         }
     }
 }

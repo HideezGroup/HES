@@ -39,8 +39,8 @@ namespace HES.Web.Pages.Employees
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<Account, AccountFilter>>();
                 LdapService = ScopedServices.GetRequiredService<ILdapService>();
 
-                SynchronizationService.UpdateEmployeeDetailsPage += UpdateEmployeeDetailsPage;
-                SynchronizationService.UpdateHardwareVaultState += UpdateHardwareVaultState;
+                PageSyncService.UpdateEmployeeDetailsPage += UpdateEmployeeDetailsPage;
+                PageSyncService.UpdateHardwareVaultState += UpdateHardwareVaultState;
 
                 await LoadEmployeeAsync();
                 await LoadEmployeeSsoState();
@@ -155,7 +155,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -176,7 +176,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -212,7 +212,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -234,7 +234,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -256,7 +256,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -278,7 +278,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -300,7 +300,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -322,7 +322,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -344,7 +344,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -366,7 +366,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -459,7 +459,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeSsoState();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -480,7 +480,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeSsoState();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -488,8 +488,8 @@ namespace HES.Web.Pages.Employees
 
         public void Dispose()
         {
-            SynchronizationService.UpdateEmployeeDetailsPage -= UpdateEmployeeDetailsPage;
-            SynchronizationService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
+            PageSyncService.UpdateEmployeeDetailsPage -= UpdateEmployeeDetailsPage;
+            PageSyncService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
         }
     }
 }

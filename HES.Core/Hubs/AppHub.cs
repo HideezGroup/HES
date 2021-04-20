@@ -27,7 +27,7 @@ namespace HES.Core.Hubs
         private readonly IEmployeeService _employeeService;
         private readonly ILicenseService _licenseService;
         private readonly IAppSettingsService _appSettingsService;
-        private readonly ISynchronizationService _synchronizationService;
+        private readonly IPageSyncService _synchronizationService;
         private readonly ILogger<AppHub> _logger;
 
         public AppHub(IRemoteDeviceConnectionsService remoteDeviceConnectionsService,
@@ -38,7 +38,7 @@ namespace HES.Core.Hubs
                       IEmployeeService employeeService,
                       ILicenseService licenseService,
                       IAppSettingsService appSettingsService,                    
-                      ISynchronizationService synchronizationService,
+                      IPageSyncService synchronizationService,
                       ILogger<AppHub> logger)
         {
             _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
