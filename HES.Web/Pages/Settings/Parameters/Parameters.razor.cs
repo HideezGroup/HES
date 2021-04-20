@@ -1,4 +1,5 @@
 ﻿using HES.Core.Constants;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
@@ -54,12 +55,18 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task<LicensingSettings> LoadLicensingSettingsAsync()
         {
-            var license = await AppSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
+            LicensingSettings settings = new();
 
-            if (license == null)
-                return new LicensingSettings();
+            try
+            {
+                settings = await AppSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
+            }
+            catch (HESException ex) when (ex.Code == HESCode.AppSettingsNotFound) 
+            {
+                settings = new LicensingSettings();
+            }
 
-            return license;
+            return settings;
         }
 
         private async Task OpenDialogLicensingSettingsAsync()
@@ -83,8 +90,18 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task<string> LoadDomainSettingsAsync()
         {
-            var domainSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
-            return domainSettings?.Host;
+            LdapSettings settings = new();
+
+            try
+            {
+                settings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
+            }
+            catch (HESException ex) when (ex.Code == HESCode.AppSettingsNotFound)
+            {
+                settings = new LdapSettings();
+            }
+
+            return settings?.Host;
         }
 
         private async Task OpenDialogLdapSettingsAsync()
