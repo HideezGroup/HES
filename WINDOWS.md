@@ -339,10 +339,23 @@ To change the data protection password login to HES and go to
 **Solution:**
 Typically, this problem is due to the fact that IIS stops your HES server if the application doesn't receive any request in the specified time period (default for 20 minutes)
 
-To disable the time-out period: 
+Step 1 Cancel Idle Time-out:
+
 - Go into the IIS Manager
 - Click on Application Pools (on the left)
-- Right-click on your application pool
+- Right click on your application pool
 - Select `Advanced Settings`
-- In the `Process Model` section, locate `Idle Time-out (minutes)` and  Change the value from 20 to 0
+- Change the value of `Idle Time-out (minutes)` from 20 to 0
 - Click "OK"
+
+Step 2 Cancel IIS Recycling :
+
+- Go into the IIS Manager
+- Click on Application Pools (on the left)
+- Right click on your application pool
+- Select `Recycling...`
+- Uncheck "Regular time intervals (in minutes)" 
+- Click "Next"
+- Click "Finish"
+
+Step 3 Restart the IIS
