@@ -72,7 +72,13 @@ namespace HES.Core.Exceptions
         LicenseForHardwareVaultNotFound,
 
         // API
-        ApiKeyEmpty
+        ApiKeyEmpty,
+
+        //Profiles
+        VaultProfileNotFound,
+        CannotDeleteDefaultProfile,
+        ProfileNameAlreadyInUse,
+        ActivationCodeNotFound,
     }
 
     public class HESException : Exception
@@ -132,6 +138,11 @@ namespace HES.Core.Exceptions
             { HESCode.LicenseForHardwareVaultNotFound,  "Hardware vault licenses not found." },
 
             { HESCode.ApiKeyEmpty,  "Api Key is empty." },
+
+            { HESCode.VaultProfileNotFound,  "Vault profile not found" },
+            { HESCode.CannotDeleteDefaultProfile,  "Cannot delete default profile" },
+            { HESCode.ProfileNameAlreadyInUse,  "Profile name already in use" },
+            { HESCode.ActivationCodeNotFound,  "Activation code not found" },
         };
 
         public HESCode Code { get; set; }

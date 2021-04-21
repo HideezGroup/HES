@@ -53,7 +53,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
         }
         protected override async Task ModalDialogCancel()
         {
-            await HardwareVaultService.UnchangedProfileAsync(AccessProfile);
+            HardwareVaultService.UnchangedProfile(AccessProfile);
             await base.ModalDialogCancel();
         }
 

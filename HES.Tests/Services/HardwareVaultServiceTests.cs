@@ -71,7 +71,7 @@ namespace HES.Tests.Services
 
             hardwareVault.MAC = "testMac";
 
-           await _hardwareVaultService.UnchangedVaultAsync(hardwareVault);
+           _hardwareVaultService.UnchangedVault(hardwareVault);
 
             Assert.Equal(_testingOptions.HardwareVault.MAC, hardwareVault.MAC);
         }
