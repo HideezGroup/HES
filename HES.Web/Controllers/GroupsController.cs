@@ -4,7 +4,6 @@ using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API.Group;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Models.Groups;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

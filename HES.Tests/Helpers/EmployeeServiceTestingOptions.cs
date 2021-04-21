@@ -2,7 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Models.Accounts;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Models.Employees;
+using HES.Core.Models.Filters;
 using System.Collections.Generic;
 using System.ComponentModel;
 

@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Groups;
+﻿using HES.Core.Models.Filters;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;

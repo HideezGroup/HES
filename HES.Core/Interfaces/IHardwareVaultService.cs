@@ -1,10 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Models.HardwareVaults;
+using HES.Core.Models.Filters;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

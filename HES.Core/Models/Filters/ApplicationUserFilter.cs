@@ -1,4 +1,4 @@
-﻿namespace HES.Core.Models.Users
+﻿namespace HES.Core.Models.Filters
 {
     public class ApplicationUserFilter
     {

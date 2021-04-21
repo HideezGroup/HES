@@ -1,5 +1,6 @@
 ﻿using HES.Core.Interfaces;
 using HES.Core.Models.Audit;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;

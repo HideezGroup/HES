@@ -2,6 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using HES.Core.Models.SharedAccounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;

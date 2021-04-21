@@ -3,6 +3,7 @@ using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.Audit;
 using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -6,7 +6,7 @@ using HES.Core.Interfaces;
 using HES.Core.Models.API.License;
 using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Models.LicenseOrders;
+using HES.Core.Models.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;

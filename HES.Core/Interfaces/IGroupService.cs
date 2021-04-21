@@ -1,6 +1,5 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Models.Groups;
 using System;
 using System.Collections.Generic;
 using System.Linq;

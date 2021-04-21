@@ -1,4 +1,4 @@
-﻿namespace HES.Core.Models.Accounts
+﻿namespace HES.Core.Models.Filters
 {
     public class AccountFilter
     {

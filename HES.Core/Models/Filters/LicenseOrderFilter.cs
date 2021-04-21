@@ -1,7 +1,7 @@
 ﻿using System;
 using HES.Core.Enums;
 
-namespace HES.Core.Models.LicenseOrders
+namespace HES.Core.Models.Filters
 {
     public class LicenseOrderFilter
     {

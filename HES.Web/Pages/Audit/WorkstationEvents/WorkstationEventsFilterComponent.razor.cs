@@ -1,5 +1,5 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Models.Audit;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Hideez.SDK.Communication;
 using Microsoft.AspNetCore.Components;

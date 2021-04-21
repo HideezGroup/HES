@@ -1,4 +1,4 @@
-﻿namespace HES.Core.Models.SharedAccounts
+﻿namespace HES.Core.Models.Filters
 {
     public class SharedAccountsFilter
     {

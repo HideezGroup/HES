@@ -1,6 +1,6 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Models.Accounts;
 using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

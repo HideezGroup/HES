@@ -4,7 +4,7 @@ using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Models.HardwareVaults;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;

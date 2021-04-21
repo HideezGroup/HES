@@ -1,4 +1,4 @@
-﻿namespace HES.Core.Models.Groups
+﻿namespace HES.Core.Models.Filters
 {
     public class GroupMembershipFilter
     {

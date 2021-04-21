@@ -2,7 +2,7 @@
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Models.Workstations;
+using HES.Core.Models.Filters;
 using Hideez.SDK.Communication.HES.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;

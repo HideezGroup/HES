@@ -2,7 +2,7 @@
 using Hideez.SDK.Communication;
 using System;
 
-namespace HES.Core.Models.Audit
+namespace HES.Core.Models.Filters
 {
     public class WorkstationEventFilter
     {

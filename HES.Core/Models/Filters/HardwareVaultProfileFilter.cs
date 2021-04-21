@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HES.Core.Models.HardwareVaults
+namespace HES.Core.Models.Filters
 {
     public class HardwareVaultProfileFilter
     {

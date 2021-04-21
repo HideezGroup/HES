@@ -2,6 +2,7 @@
 using HES.Core.Interfaces;
 using HES.Core.Models.Accounts;
 using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using HES.Tests.Helpers;
 using HES.Web;
 using System.Linq;

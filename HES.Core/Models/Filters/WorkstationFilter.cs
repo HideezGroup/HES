@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HES.Core.Models.Workstations
+namespace HES.Core.Models.Filters
 {
     public class WorkstationFilter
     {

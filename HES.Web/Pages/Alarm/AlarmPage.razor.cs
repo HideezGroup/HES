@@ -1,8 +1,7 @@
-﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
+﻿using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Models.Workstations;
+using HES.Core.Models.Filters;
 using HES.Core.Services;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;

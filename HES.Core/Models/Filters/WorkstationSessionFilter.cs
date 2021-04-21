@@ -4,7 +4,7 @@ using Hideez.SDK.Communication;
 using System;
 using System.Linq;
 
-namespace HES.Core.Models.Audit
+namespace HES.Core.Models.Filters
 {
     public class WorkstationSessionFilter
     {

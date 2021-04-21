@@ -1,9 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Models.Accounts;
 using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using HES.Core.Models.SharedAccounts;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces

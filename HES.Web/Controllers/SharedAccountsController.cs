@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using HES.Core.Models.Filters;
 
 namespace HES.Web.Controllers
 {

@@ -3,7 +3,6 @@ using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Employees;
 using HES.Core.Models.Accounts;
 using HES.Core.Models.AppUsers;
 using HES.Core.Models.DataTableComponent;
@@ -21,6 +20,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Linq.Expressions;
+using HES.Core.Models.Filters;
 
 namespace HES.Core.Services
 {

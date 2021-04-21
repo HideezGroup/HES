@@ -4,7 +4,6 @@ using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.API.Employee;
-using HES.Core.Models.Employees;
 using HES.Core.Models.Accounts;
 using HES.Core.Models.DataTableComponent;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using HES.Core.Models.Filters;
 
 namespace HES.Web.Controllers
 {
