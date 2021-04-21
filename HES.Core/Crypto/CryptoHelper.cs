@@ -83,7 +83,7 @@ namespace HES.Core.Crypto
             // KEY ID
             var storedKeyId = BitConverter.ToInt32(cipherTextBuffer, 0);
             if (storedKeyId != keyId)
-                throw new WrongCryptoKeyIdException("Trying to decrypt with a wrong key ID");
+                throw new DataProtectionWrongCryptoKeyIdException("Trying to decrypt with a wrong key ID");
 
             // IV
             var ivLength = BitConverter.ToInt32(cipherTextBuffer, sizeof(int));
