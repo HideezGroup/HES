@@ -1,6 +1,5 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
-using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using Microsoft.EntityFrameworkCore;
@@ -15,16 +14,14 @@ namespace HES.Core.Services
 {
     public class AppSettingsService : IAppSettingsService
     {
-        private readonly IApplicationDbContext _applicationDbContext;
-
+        private readonly IApplicationDbContext _dbContext;
         private readonly IDataProtectionService _dataProtectionService;
         private readonly IMemoryCache _memoryCache;
         private readonly ILogger<AppSettingsService> _logger;
 
         public AppSettingsService(IApplicationDbContext applicationDbContext, IDataProtectionService dataProtectionService, IMemoryCache memoryCache, ILogger<AppSettingsService> logger)
         {
-            _applicationDbContext = applicationDbContext;
-
+            _dbContext = applicationDbContext;
             _dataProtectionService = dataProtectionService;
             _memoryCache = memoryCache;
             _logger = logger;
@@ -37,10 +34,10 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(settingsKey));
             }
 
-            var appSettings = await _applicationDbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == settingsKey);
+            var appSettings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == settingsKey);
             if (appSettings == null)
             {
-                throw new HESException(HESCode.AppSettingsNotFound);
+                return default;
             }
 
             var value = _dataProtectionService.Decrypt(appSettings.Value);
@@ -62,7 +59,7 @@ namespace HES.Core.Services
             var json = JsonSerializer.Serialize(settings);
             var encryptedJson = _dataProtectionService.Encrypt(json);
 
-            var appSettings = await _applicationDbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == settingsKey);
+            var appSettings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == settingsKey);
             if (appSettings == null)
             {
                 appSettings = new AppSettings
@@ -71,15 +68,15 @@ namespace HES.Core.Services
                     Value = encryptedJson
                 };
 
-                _applicationDbContext.AppSettings.Add(appSettings);
-                await _applicationDbContext.SaveChangesAsync();
+                _dbContext.AppSettings.Add(appSettings);
             }
             else
             {
                 appSettings.Value = encryptedJson;
-                _applicationDbContext.AppSettings.Update(appSettings);
-                await _applicationDbContext.SaveChangesAsync();
+                _dbContext.AppSettings.Update(appSettings);
             }
+
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<AlarmState> GetAlarmStateAsync()
