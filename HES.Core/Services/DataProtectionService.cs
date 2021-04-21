@@ -605,11 +605,9 @@ namespace HES.Core.Services
         private async Task<DataProtection> ReadDataProtectionEntity()
         {
             using var scope = Services.CreateScope();
-            var scopedDataProtectionRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<DataProtection>>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
-            var list = await scopedDataProtectionRepository
-                .Query()
-                .ToListAsync();
+            var list = await dbContext.DataProtection.ToListAsync();
 
             if (list.Count == 0)
                 return null;
@@ -629,29 +627,33 @@ namespace HES.Core.Services
         private async Task<DataProtection> SaveDataProtectionEntity(DataProtectionParams prms)
         {
             using var scope = Services.CreateScope();
-            var scopedDataProtectionRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<DataProtection>>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
-            var entity = await scopedDataProtectionRepository.AddAsync(new DataProtection()
+            var data = dbContext.DataProtection.Add(new DataProtection()
             {
                 Value = JsonConvert.SerializeObject(prms),
                 Params = prms
             });
 
-            return entity;
+            await dbContext.SaveChangesAsync();
+
+            return data.Entity;
         }
 
         private async Task DeleteDataProtectionEntity(int id)
         {
             using var scope = Services.CreateScope();
-            var scopedDataProtectionRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<DataProtection>>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
-            var entity = await scopedDataProtectionRepository
-                .Query()
+            var entity = await dbContext.DataProtection
                 .Where(v => v.Id == id)
                 .FirstOrDefaultAsync();
 
             if (entity != null)
-                await scopedDataProtectionRepository.DeleteAsync(entity);
+            {
+                dbContext.DataProtection.Remove(entity);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         #endregion

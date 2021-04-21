@@ -4,7 +4,6 @@ using HES.Core.Models.Accounts;
 using HES.Core.Models.DataTableComponent;
 using HES.Tests.Helpers;
 using HES.Web;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;

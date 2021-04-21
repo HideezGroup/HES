@@ -105,8 +105,7 @@ namespace HES.Web
 
             #region Services
 
-            services.AddScoped<IApplicationDbContext>(x => x.GetService<ApplicationDbContext>());
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(Repository<>));
+            services.AddScoped<IApplicationDbContext>(x => x.GetService<ApplicationDbContext>());   
             services.AddScoped(typeof(IDataTableService<,>), typeof(DataTableService<,>));
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
