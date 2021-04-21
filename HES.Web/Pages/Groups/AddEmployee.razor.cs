@@ -32,8 +32,8 @@ namespace HES.Web.Pages.Groups
             {
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
 
-                var employees = await GroupService.GetEmployeesSkipExistingInGroupAsync(GroupId);
-                Employees = employees.ToDictionary(k => k, v => false);
+                //var employees = await GroupService.GetEmployeesSkipExistingInGroupAsync(GroupId);
+                //Employees = employees.ToDictionary(k => k, v => false);
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace HES.Web.Pages.Groups
 
                 var employeeIds = Employees.Where(x => x.Value).Select(x => x.Key.Id).ToList();
 
-                await GroupService.AddEmployeesToGroupAsync(employeeIds, GroupId);
+                //await GroupService.AddEmployeesToGroupAsync(employeeIds, GroupId);
                 await ToastService.ShowToastAsync("Employee added.", ToastType.Success);
                 //await SynchronizationService.UpdateGroupDetails(ExceptPageId, GroupId);
                 //await ModalDialogService.CloseAsync();

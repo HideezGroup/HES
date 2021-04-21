@@ -55,7 +55,7 @@ namespace HES.Web.Pages.Groups
 
         private async Task LoadGroupAsync()
         {
-            Group = await GroupService.GetGroupByIdAsync(GroupId);
+            //Group = await GroupService.GetGroupByIdAsync(GroupId);
             if (Group == null)
                 throw new Exception("Group not found.");
             StateHasChanged();

@@ -126,9 +126,9 @@ namespace HES.Web
             services.AddScoped<IAppSettingsService, AppSettingsService>();
             services.AddScoped<IToastService, ToastService>();
             services.AddScoped<IModalDialogService, ModalDialogService>();
-            services.AddScoped<IGroupService, DeprecatedGroupService>();
+            services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ILdapService, LdapService>();
-            services.AddScoped<ISoftwareVaultService, DeprecatedSoftwareVaultService>();
+            services.AddScoped<ISoftwareVaultService, SoftwareVaultService>();
             services.AddScoped<IBreadcrumbsService, BreadcrumbsService>();
             services.AddScoped<IFido2Service, Fido2Service>();
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();

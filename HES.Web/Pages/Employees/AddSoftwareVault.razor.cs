@@ -34,19 +34,19 @@ namespace HES.Web.Pages.Employees
 
         private async Task SendAsync()
         {
-            try
-            {
-                await SoftwareVaultService.CreateAndSendInvitationAsync(Employee, ServerSettings.Value, ValidTo);         
-                await ToastService.ShowToastAsync("Invitation sent.", ToastType.Success);
-                //await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Employee.Id);
-                //await ModalDialogService.CloseAsync();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
-                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                //await ModalDialogService.CloseAsync();
-            }
+            //try
+            //{
+            //    await SoftwareVaultService.CreateAndSendInvitationAsync(Employee, ServerSettings.Value, ValidTo);
+            //    await ToastService.ShowToastAsync("Invitation sent.", ToastType.Success);
+            //    await HubContext.Clients.AllExcept(ConnectionId).SendAsync(RefreshPage.EmployeesDetails, Employee.Id);
+            //    await ModalDialogService.CloseAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.LogError(ex.Message);
+            //    await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+            //    await ModalDialogService.CloseAsync();
+            //}
         }
     }
 }

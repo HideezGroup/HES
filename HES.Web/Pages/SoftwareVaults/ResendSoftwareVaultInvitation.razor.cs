@@ -43,7 +43,7 @@ namespace HES.Web.Pages.SoftwareVaults
         {
             try
             {
-                await SoftwareVaultService.ResendInvitationAsync(SoftwareVaultInvitation.Employee, ServerSettings.Value, SoftwareVaultInvitation.Id);
+                //await SoftwareVaultService.ResendInvitationAsync(SoftwareVaultInvitation.Employee, ServerSettings.Value, SoftwareVaultInvitation.Id);
                 await Refresh.InvokeAsync(this);
                 await ToastService.ShowToastAsync("Invitation sent.", ToastType.Success);
             }
@@ -60,7 +60,7 @@ namespace HES.Web.Pages.SoftwareVaults
 
         public void Dispose()
         {
-            SoftwareVaultService.Dispose();
+            //SoftwareVaultService.Dispose();
         }
     }
 }
