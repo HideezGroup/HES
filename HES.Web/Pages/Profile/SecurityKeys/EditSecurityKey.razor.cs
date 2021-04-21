@@ -23,7 +23,7 @@ namespace HES.Web.Pages.Profile.SecurityKeys
             {
                 FidoService = ScopedServices.GetRequiredService<IFido2Service>();
 
-                var credential = await FidoService.GetCredentialById(SecurityKeyId);
+                var credential = await FidoService.GetCredentialsById(SecurityKeyId);
                 SecurityKeyName = credential.SecurityKeyName;
 
                 SetInitialized();

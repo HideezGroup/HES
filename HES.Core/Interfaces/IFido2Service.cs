@@ -16,7 +16,11 @@ namespace HES.Core.Interfaces
         Task<AuthorizationResponse> SignInAsync(SecurityKeySignInModel parameters);
         Task<List<FidoStoredCredential>> GetCredentialsByUserEmail(string userEmail);
         Task RemoveCredentialsByUsername(string username);
+        Task<FidoStoredCredential> GetCredentialsById(byte[] id);
+        Task<List<FidoStoredCredential>> GetCredentialsByUserHandleAsync(byte[] userHandle);
+        Task UpdateCounter(byte[] credentialId, uint counter);
+        Task<FidoStoredCredential> GetCredentialsById(string credentialId);
         Task UpdateSecurityKeyNameAsync(string securityKeyId, string name);
-        Task<FidoStoredCredential> GetCredentialById(string credentialId);
+        Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId);
     }
 }

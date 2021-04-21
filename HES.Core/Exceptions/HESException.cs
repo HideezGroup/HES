@@ -126,48 +126,10 @@ namespace HES.Core.Exceptions
             { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
             { HESCode.AppSettingsNotFound,  "Application settings not found." },
 
-            { HESCode.AccountNotFound,  "Account not found." },
-            { HESCode.AccountExist,  "Account with the same name and login exist." },
-            { HESCode.IncorrectUrl,  "Incorrect URL address." },
-            { HESCode.IncorrectOtp,  "Incorrect OTP secret." },
-
-            { HESCode.TemplateNotFound,  "Template not found." },
-            { HESCode.TemplateExist,  "Template with current name already exists." },
-
-            { HESCode.SharedAccountNotFound,  "Shared Account not found." },
-            { HESCode.SharedAccountExist,  "Shared Account with the same name and login exist." },
-            { HESCode.SecurityKeyNotFound,  "Security key not found." },
-            { HESCode.AuthenticatorNotFIDO2,  "Authenticator not FIDO2." },
-
-            { HESCode.CompanyNameAlreadyInUse,  "Company name already in use." },
-            { HESCode.CompanyNotFound,  "Company not found." },
-            { HESCode.DepartmentNameAlreadyInUse,  "Department name already in use" },
-            { HESCode.DepartmentNotFound,  "Department not found." },
-            { HESCode.PositionNameAlreadyInUse,  "Position name already in use." },
-            { HESCode.PositionNotFound,  "Position not found." },
-
-            { HESCode.LicenseOrderNotFound,  "License Order not found." },
-            { HESCode.LicenseForHardwareVaultNotFound,  "Hardware vault licenses not found." },
-
-            { HESCode.ApiKeyEmpty,  "Api Key is empty." },
-
             { HESCode.VaultProfileNotFound,  "Vault profile not found" },
             { HESCode.CannotDeleteDefaultProfile,  "Cannot delete default profile" },
             { HESCode.ProfileNameAlreadyInUse,  "Profile name already in use" },
             { HESCode.ActivationCodeNotFound,  "Activation code not found" },
-
-            { HESCode.OneHardwareVaultConstraint, "Cannot add more than one hardware vault." },
-            { HESCode.HardwareVaultCannotReserve, "Vault in a status that does not allow to reserve." },
-            { HESCode.HardwareVaultUntieBeforeRemove, "First untie the hardware vault before removing." },
-            { HESCode.HardwareVaultВoesNotAllowToRemove, "Vault in a status that does not allow to remove." },
-
-            { HESCode.WorkstationNotFound, "Workstation not found." },
-            { HESCode.WorkstationNotFoundWithParam, "Workstation {0} not found." },
-            { HESCode.WorkstationHardwareVaultPairNotFound, "Workstation and Hardware Vault pair not found." },
-            { HESCode.WorkstationHardwareVaultPairAlreadyExist, "Hardware Vault already added to workstation." },
-
-            { HESCode.LdapSettingsNotSet, "LDAP settings not set." },
-            { HESCode.AppSettingsNotFound, "Application settings not found." },
 
             { HESCode.AccountNotFound, "Account not found." },
             { HESCode.AccountExist, "Account with the same name and login exist." },
