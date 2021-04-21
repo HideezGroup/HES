@@ -1,6 +1,6 @@
 ﻿using HES.Core.Entities;
+using HES.Core.Helpers;
 using HES.Core.Interfaces;
-using HES.Core.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -61,7 +61,7 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Primary,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId
             };
@@ -84,7 +84,7 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Profile,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vault.Id,
                 Password = vault.MasterPassword,
             };
@@ -112,7 +112,7 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Create,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId,
                 Password = password,
@@ -126,7 +126,7 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Update,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId
             };
@@ -138,7 +138,7 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Update,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId,
                 Password = password
@@ -151,7 +151,7 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Update,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId,
                 OtpSecret = otp
@@ -164,7 +164,7 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Delete,
-                Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
+                Timestamp = UnixTimeHelper.ConvertToUnixTime(DateTime.UtcNow),
                 HardwareVaultId = vaultId,
                 AccountId = accountId
             };

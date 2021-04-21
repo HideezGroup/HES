@@ -2,11 +2,12 @@
 using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
+using HES.Core.Helpers;
 using HES.Core.Interfaces;
 using HES.Core.Models.Accounts;
 using HES.Core.Models.AppUsers;
 using HES.Core.Models.DataTableComponent;
-using HES.Core.Utilities;
+using HES.Core.Models.Filters;
 using Hideez.SDK.Communication.PasswordManager;
 using Hideez.SDK.Communication.Security;
 using Hideez.SDK.Communication.Utils;
@@ -17,10 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
-using System.Linq.Expressions;
-using HES.Core.Models.Filters;
 
 namespace HES.Core.Services
 {
@@ -708,14 +708,14 @@ namespace HES.Core.Services
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = personalAccount.Name,
-                Urls = Validation.VerifyUrls(personalAccount.Urls),
+                Urls = ValidationHelper.VerifyUrls(personalAccount.Urls),
                 Apps = personalAccount.Apps,
                 Login = await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, personalAccount.GetLogin()),
                 AccountType = AccountType.Personal,
                 LoginType = personalAccount.LoginType,
                 CreatedAt = DateTime.UtcNow,
                 PasswordUpdatedAt = DateTime.UtcNow,
-                OtpUpdatedAt = Validation.VerifyOtpSecret(personalAccount.OtpSecret) != null ? new DateTime?(DateTime.UtcNow) : null,
+                OtpUpdatedAt = ValidationHelper.VerifyOtpSecret(personalAccount.OtpSecret) != null ? new DateTime?(DateTime.UtcNow) : null,
                 Password = _dataProtectionService.Encrypt(personalAccount.Password),
                 OtpSecret = _dataProtectionService.Encrypt(personalAccount.OtpSecret),
                 UpdateInActiveDirectory = personalAccount.UpdateInActiveDirectory,
@@ -833,7 +833,7 @@ namespace HES.Core.Services
 
             _dataProtectionService.Validate();
             await ValidateAccountNameAndLoginAsync(personalAccount.EmployeeId, personalAccount.Name, personalAccount.GetLogin(), personalAccount.Id);
-            personalAccount.Urls = Validation.VerifyUrls(personalAccount.Urls);
+            personalAccount.Urls = ValidationHelper.VerifyUrls(personalAccount.Urls);
 
             var employee = await GetEmployeeByIdAsync(personalAccount.EmployeeId);
             if (employee == null)
@@ -933,7 +933,7 @@ namespace HES.Core.Services
             var employee = await GetEmployeeByIdAsync(account.EmployeeId);
 
             account.UpdatedAt = DateTime.UtcNow;
-            account.OtpUpdatedAt = Validation.VerifyOtpSecret(accountOtp.OtpSecret) == null ? null : (DateTime?)DateTime.UtcNow;
+            account.OtpUpdatedAt = ValidationHelper.VerifyOtpSecret(accountOtp.OtpSecret) == null ? null : (DateTime?)DateTime.UtcNow;
 
             // Update otp field if there are no vaults
             if (employee.HardwareVaults.Count == 0)

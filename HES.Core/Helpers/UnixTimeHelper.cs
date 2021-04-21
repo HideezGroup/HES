@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace HES.Core.Utilities
+namespace HES.Core.Helpers
 {
-    public static class UnixTime
+    public static class UnixTimeHelper
     {
         public static uint GetUnixTimeUtcNow()
         {

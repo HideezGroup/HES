@@ -1,9 +1,9 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Exceptions;
+using HES.Core.Helpers;
 using HES.Core.Interfaces;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
-using HES.Core.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -109,7 +109,7 @@ namespace HES.Core.Services
 
             await ThrowIfTemplateExistAsync(template);
 
-            template.Urls = Validation.VerifyUrls(template.Urls);
+            template.Urls = ValidationHelper.VerifyUrls(template.Urls);
 
             var result = _dbContext.Templates.Add(template);
             await _dbContext.SaveChangesAsync();
@@ -125,7 +125,7 @@ namespace HES.Core.Services
 
             await ThrowIfTemplateExistAsync(template);
 
-            template.Urls = Validation.VerifyUrls(template.Urls);
+            template.Urls = ValidationHelper.VerifyUrls(template.Urls);
 
             _dbContext.Templates.Update(template);
             await _dbContext.SaveChangesAsync();

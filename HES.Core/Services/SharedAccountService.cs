@@ -1,11 +1,11 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Exceptions;
+using HES.Core.Helpers;
 using HES.Core.Interfaces;
 using HES.Core.Models.Accounts;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using HES.Core.Models.SharedAccounts;
-using HES.Core.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -134,7 +134,7 @@ namespace HES.Core.Services
             var sharedAccount = new SharedAccount()
             {
                 Name = sharedAccountModel.Name,
-                Urls = Validation.VerifyUrls(sharedAccountModel.Urls),
+                Urls = ValidationHelper.VerifyUrls(sharedAccountModel.Urls),
                 Apps = sharedAccountModel.Apps,
                 Login = await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, sharedAccountModel.GetLogin()),
                 LoginType = sharedAccountModel.LoginType,
@@ -144,7 +144,7 @@ namespace HES.Core.Services
 
             if (!string.IsNullOrWhiteSpace(sharedAccountModel.OtpSecret))
             {
-                Validation.VerifyOtpSecret(sharedAccountModel.OtpSecret);
+                ValidationHelper.VerifyOtpSecret(sharedAccountModel.OtpSecret);
                 sharedAccount.OtpSecret = _dataProtectionService.Encrypt(sharedAccountModel.OtpSecret);
                 sharedAccount.OtpSecretChangedAt = DateTime.UtcNow;
             }
@@ -182,7 +182,7 @@ namespace HES.Core.Services
             _dataProtectionService.Validate();
 
             await ValidateAccountNameAndLoginAsync(sharedAccountModel.Name, sharedAccountModel.GetLogin(), sharedAccountModel.Id);
-            sharedAccountModel.Urls = Validation.VerifyUrls(sharedAccountModel.Urls);
+            sharedAccountModel.Urls = ValidationHelper.VerifyUrls(sharedAccountModel.Urls);
 
             var sharedAccount = await GetSharedAccountByIdAsync(sharedAccountModel.Id);
             if (sharedAccount == null)
@@ -283,7 +283,7 @@ namespace HES.Core.Services
 
             _dataProtectionService.Validate();
 
-            Validation.VerifyOtpSecret(accountOtp.OtpSecret);
+            ValidationHelper.VerifyOtpSecret(accountOtp.OtpSecret);
 
             // Update Shared Account
             sharedAccount.OtpSecret = !string.IsNullOrWhiteSpace(accountOtp.OtpSecret) ? _dataProtectionService.Encrypt(accountOtp.OtpSecret) : null;
