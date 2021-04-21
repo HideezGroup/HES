@@ -26,7 +26,7 @@ namespace HES.Web.Pages.Groups
 
         //public List<ActiveDirectoryGroup> Groups { get; set; }
         public LdapSettings LdapSettings { get; set; }
-        public ActiveDirectoryInitialization ActiveDirectoryInitialization { get; set; }
+        //public ActiveDirectoryInitialization ActiveDirectoryInitialization { get; set; }
         public string WarningMessage { get; set; }
         public string SearchText { get; set; } = string.Empty;
         public bool IsSortedAscending { get; set; } = true;
@@ -37,23 +37,23 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                LdapService = ScopedServices.GetRequiredService<ILdapService>();
-                GroupService = ScopedServices.GetRequiredService<IGroupService>();
+                //LdapService = ScopedServices.GetRequiredService<ILdapService>();
+                //GroupService = ScopedServices.GetRequiredService<IGroupService>();
 
-                LdapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
+                //LdapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
 
-                if (LdapSettings == null)
-                {
-                    ActiveDirectoryInitialization = ActiveDirectoryInitialization.HostNotSet;
-                }
-                else if (LdapSettings?.Host != null && LdapSettings?.UserName == null && LdapSettings?.Password == null)
-                {
-                    ActiveDirectoryInitialization = ActiveDirectoryInitialization.CredentialsNotSet;
-                }
-                else
-                {
-                    await GetGroups(LdapSettings);
-                }
+                //if (LdapSettings == null)
+                //{
+                //    ActiveDirectoryInitialization = ActiveDirectoryInitialization.HostNotSet;
+                //}
+                //else if (LdapSettings?.Host != null && LdapSettings?.UserName == null && LdapSettings?.Password == null)
+                //{
+                //    ActiveDirectoryInitialization = ActiveDirectoryInitialization.CredentialsNotSet;
+                //}
+                //else
+                //{
+                //    await GetGroups(LdapSettings);
+                //}
 
                 SetInitialized();
             }
@@ -71,7 +71,7 @@ namespace HES.Web.Pages.Groups
             try
             {
                 //Groups = await LdapService.GetGroupsAsync(settings);
-                ActiveDirectoryInitialization = ActiveDirectoryInitialization.Loaded;
+                //ActiveDirectoryInitialization = ActiveDirectoryInitialization.Loaded;
                 StateHasChanged();
             }
             catch (Exception ex)
