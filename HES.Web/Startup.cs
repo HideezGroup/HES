@@ -279,32 +279,6 @@ namespace HES.Web
             services.AddServerSideBlazor();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            // Localization Options
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                var supportedCultures = new[]
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("en-GB"),
-                    new CultureInfo("en"),
-                    new CultureInfo("fr-FR"),
-                    new CultureInfo("fr"),
-                    new CultureInfo("it-IT"),
-                    new CultureInfo("it"),
-                    new CultureInfo("uk-UA"),
-                    new CultureInfo("uk"),
-                    new CultureInfo("ru-RU"),
-                    new CultureInfo("ru-UA"),
-                    new CultureInfo("ru"),
-                    new CultureInfo("de-DE"),
-                    new CultureInfo("de")
-                };
-
-                options.DefaultRequestCulture = new RequestCulture("en-US");
-                options.SupportedCultures = supportedCultures;
-                options.SupportedUICultures = supportedCultures;
-            });
-
             // Register the Swagger generator
             services.AddSwaggerGen(c =>
             {
@@ -330,9 +304,9 @@ namespace HES.Web
                 }
             }
 
+            app.UseCookiePolicy();
             app.UseStatusCodePages();
 
-            app.UseRequestLocalization();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -365,8 +339,6 @@ namespace HES.Web
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-
-            app.UseCookiePolicy();
 
             using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var logger = scope.ServiceProvider.GetService<ILogger<Startup>>();
