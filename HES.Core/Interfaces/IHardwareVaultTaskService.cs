@@ -1,17 +1,15 @@
 ﻿using HES.Core.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IHardwareVaultTaskService : IDisposable
+    public interface IHardwareVaultTaskService
     {
         IQueryable<HardwareVaultTask> TaskQuery();
         Task<HardwareVaultTask> GetTaskByIdAsync(string id);
-        Task<List<HardwareVaultTask>> GetHardwareVaultTasksAsync();
-        Task AddTaskAsync(HardwareVaultTask vaultTask);
+        Task<List<HardwareVaultTask>> GetHardwareVaultTasksNoTrackingAsync();
         Task AddRangeTasksAsync(IList<HardwareVaultTask> vaultTasks);
         Task AddPrimaryAsync(string vaultId, string accountId);
         Task AddProfileAsync(HardwareVault vault);
