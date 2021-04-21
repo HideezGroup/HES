@@ -1,10 +1,12 @@
-﻿using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
+using Novell.Directory.Ldap;
 using System;
 using System.Threading.Tasks;
 
@@ -23,7 +25,7 @@ namespace HES.Web.Pages.Settings.Parameters
 
         protected override async Task OnInitializedAsync()
         {
-            var setting = await AppSettingsService.GetLdapSettingsAsync();
+            var setting = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
 
             if (setting == null)
                 LdapSettings = new LdapSettings() { Host = Host };
@@ -47,11 +49,11 @@ namespace HES.Web.Pages.Settings.Parameters
                     return;
 
                 await LdapService.ValidateCredentialsAsync(LdapSettings);
-                await AppSettingsService.SetLdapSettingsAsync(LdapSettings);
-                await ToastService.ShowToastAsync("Domain settings updated.", ToastType.Success);    
+                await AppSettingsService.SetSettingsAsync(LdapSettings, ServerConstants.Domain);
+                await ToastService.ShowToastAsync("Domain settings updated.", ToastType.Success);
                 await ModalDialogClose();
             }
-            catch (LdapForNet.LdapInvalidCredentialsException)
+            catch (LdapException ex) when (ex.ResultCode == LdapException.InvalidCredentials)
             {
                 ValidationErrorMessage.DisplayError(nameof(LdapSettings.Password), "Invalid password");
             }

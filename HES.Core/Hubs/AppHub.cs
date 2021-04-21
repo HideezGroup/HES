@@ -1,6 +1,8 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.HES.Client;
 using Hideez.SDK.Communication.HES.DTO;
@@ -25,7 +27,7 @@ namespace HES.Core.Hubs
         private readonly IEmployeeService _employeeService;
         private readonly ILicenseService _licenseService;
         private readonly IAppSettingsService _appSettingsService;
-        private readonly ISynchronizationService _synchronizationService;
+        private readonly IPageSyncService _synchronizationService;
         private readonly ILogger<AppHub> _logger;
 
         public AppHub(IRemoteDeviceConnectionsService remoteDeviceConnectionsService,
@@ -36,7 +38,7 @@ namespace HES.Core.Hubs
                       IEmployeeService employeeService,
                       ILicenseService licenseService,
                       IAppSettingsService appSettingsService,                    
-                      ISynchronizationService synchronizationService,
+                      IPageSyncService synchronizationService,
                       ILogger<AppHub> logger)
         {
             _remoteDeviceConnectionsService = remoteDeviceConnectionsService;
@@ -112,8 +114,11 @@ namespace HES.Core.Hubs
                 // Add or Update workstation info
                 await _remoteWorkstationConnectionsService.RegisterWorkstationInfoAsync(Clients.Caller, workstationInfo);
 
+                var alarmState = await _appSettingsService.GetAlarmStateAsync();
+                var isAlarm = alarmState != null && alarmState.IsAlarm;
+
                 // Update alarm trigger if client was offline            
-                if (workstationInfo.IsAlarmTurnOn && !await _appSettingsService.GetAlarmEnabledAsync())
+                if (workstationInfo.IsAlarmTurnOn && !isAlarm)
                     await Clients.Caller.SetAlarmState(false);
 
                 await ValidateConnectionAsync();

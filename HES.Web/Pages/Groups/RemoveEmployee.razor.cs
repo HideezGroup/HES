@@ -26,7 +26,7 @@ namespace HES.Web.Pages.Groups
             {
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
 
-                GroupMembership = await GroupService.GetGroupMembershipAsync(EmployeeId, GroupId);
+                //GroupMembership = await GroupService.GetGroupMembershipAsync(EmployeeId, GroupId);
 
                 if (GroupMembership == null)
                     throw new Exception("Group membership not found");
@@ -45,7 +45,7 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                await GroupService.RemoveEmployeeFromGroupAsync(GroupMembership.Id);         
+                //await GroupService.RemoveEmployeeFromGroupAsync(GroupMembership.Id);         
                 //await SynchronizationService.UpdateGroupDetails(ExceptPageId, GroupId);
                 await ToastService.ShowToastAsync("Employee removed.", ToastType.Success);
             }

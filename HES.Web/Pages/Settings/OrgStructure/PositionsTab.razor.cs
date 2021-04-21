@@ -26,7 +26,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
 
-                SynchronizationService.UpdateOrgSructurePositionsPage += UpdateOrgSructurePositionsPage;
+                PageSyncService.UpdateOrgSructurePositionsPage += UpdateOrgSructurePositionsPage;
  
                 await BreadcrumbsService.SetOrgStructure();
                 await LoadPositionsAsync();
@@ -99,7 +99,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadPositionsAsync();
-                await SynchronizationService.UpdateOrgSructurePositions(PageId);
+                await PageSyncService.UpdateOrgSructurePositions(PageId);
             }
         }
 
@@ -118,7 +118,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadPositionsAsync();
-                await SynchronizationService.UpdateOrgSructurePositions(PageId);
+                await PageSyncService.UpdateOrgSructurePositions(PageId);
             }
         }
 
@@ -137,13 +137,13 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadPositionsAsync();
-                await SynchronizationService.UpdateOrgSructurePositions(PageId);
+                await PageSyncService.UpdateOrgSructurePositions(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateOrgSructurePositionsPage -= UpdateOrgSructurePositionsPage;
+            PageSyncService.UpdateOrgSructurePositionsPage -= UpdateOrgSructurePositionsPage;
         }
     }
 }

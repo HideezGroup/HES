@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
@@ -19,7 +20,6 @@ namespace HES.Web.Pages.Employees
     public partial class GenerateAdPassword : HESModalBase, IDisposable
     {
         public IEmployeeService EmployeeService { get; set; }
-        public IAccountService AccountService { get; set; }
         public ILdapService LdapService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
@@ -36,11 +36,10 @@ namespace HES.Web.Pages.Employees
             try
             {
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
-                AccountService = ScopedServices.GetRequiredService<IAccountService>();
                 LdapService = ScopedServices.GetRequiredService<ILdapService>();
                 RemoteDeviceConnectionsService = ScopedServices.GetRequiredService<IRemoteDeviceConnectionsService>();
 
-                Account = await AccountService.GetAccountByIdAsync(AccountId);
+                Account = await EmployeeService.GetAccountByIdAsync(AccountId);
                 if (Account == null)
                     throw new HESException(HESCode.AccountNotFound);
 
@@ -48,7 +47,7 @@ namespace HES.Web.Pages.Employees
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Account.Id, Account);
 
-                LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
+                LdapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
 
                 SetInitialized();
             }

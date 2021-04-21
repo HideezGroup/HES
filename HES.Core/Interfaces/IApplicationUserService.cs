@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IApplicationUserService : IDisposable
+    public interface IApplicationUserService
     {
         Task<ApplicationUser> GetUserByIdAsync(string userId);
         Task<ApplicationUser> GetUserByEmailAsync(string email);

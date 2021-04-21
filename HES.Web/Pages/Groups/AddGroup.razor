@@ -18,7 +18,7 @@ else
             @*<HES.Web.Pages.Settings.Parameters.LdapCredentials Host="@LdapSettings.Host" LoadEntities="GetGroups" CancelRequested="ModalDialogService.CloseAsync" />*@
             break;
         case ActiveDirectoryInitialization.Loaded:
-            <Alert Message="@WarningMessage" />
+            @*<Alert Message="@WarningMessage" />
             <div class="alert alert-secondary px-3 py-2" role="alert">
                 Selected @Groups.Where(x => x.Checked).Count() of @Groups.Count() groups.
             </div>
@@ -69,7 +69,7 @@ else
                         <label class="custom-control-label disable-selection" for="createEmployees">Create employees for selected groups</label>
                     </div>
                 </div>
-            </div>
+            </div>*@
             <div class="text-end mt-3">
                 @*<button type="button" class="btn btn-secondary btn-min-w" @onclick="@(async () => await ModalDialogService.CloseAsync())">Cancel</button>*@
                 @*<ButtonSpinner Text="Add" Class="btn btn-primary" Callback="AddAsync" />*@

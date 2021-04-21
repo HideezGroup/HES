@@ -104,7 +104,7 @@ namespace HES.Web.Pages.Employees
 
         protected override async Task ModalDialogCancel()
         {
-            await EmployeeService.UnchangedEmployeeAsync(Employee);
+            EmployeeService.UnchangedEmployee(Employee);
             await base.ModalDialogCancel();
         }
 

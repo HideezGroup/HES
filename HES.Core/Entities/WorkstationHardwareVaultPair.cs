@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HES.Core.Entities
 {
-    public class WorkstationProximityVault
+    public class WorkstationHardwareVaultPair
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

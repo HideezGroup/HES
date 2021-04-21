@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class DashboardService : IDashboardService, IDisposable
+    public class DashboardService : IDashboardService
     {
         private readonly IEmployeeService _employeeService;
         private readonly IWorkstationAuditService _workstationAuditService;
@@ -90,7 +90,7 @@ namespace HES.Core.Services
 
         public async Task<int> GetEmployeesCountAsync()
         {
-            return await _employeeService.EmployeeQuery().CountAsync();
+            return await _employeeService.GetEmployeesCountAsync();
         }
 
         public async Task<int> GetEmployeesOpenedSessionsCountAsync()
@@ -272,29 +272,26 @@ namespace HES.Core.Services
 
         public async Task<int> GetWorkstationsCountAsync()
         {
-            return await _workstationService.WorkstationQuery().CountAsync();
+            return await _workstationService.GetWorkstationsCountAsync();
         }
 
         public async Task<int> GetWorkstationsOnlineCountAsync()
         {
-            return await Task.FromResult(RemoteWorkstationConnectionsService.WorkstationsOnlineCount());
+            return await Task.FromResult(RemoteWorkstationConnectionsService.GetWorkstationsOnlineCount());
         }
 
         public async Task<List<DashboardNotify>> GetWorkstationsNotifyAsync()
         {
             var list = new List<DashboardNotify>();
 
-            var notApproved = await _workstationService
-                .WorkstationQuery()
-                .Where(w => w.Approved == false)
-                .CountAsync();
+            var notApproveCount = await _workstationService.GetWorkstationsNotApproveCountAsync();
 
-            if (notApproved > 0)
+            if (notApproveCount > 0)
             {
                 list.Add(new DashboardNotify()
                 {
                     Message = "Waiting for approval",
-                    Count = notApproved,
+                    Count = notApproveCount,
                     Page = $"{Routes.Workstations}/NotApproved"
                 });
             }
@@ -319,14 +316,5 @@ namespace HES.Core.Services
         }
 
         #endregion
-
-        public void Dispose()
-        {
-            _employeeService.Dispose();
-            _workstationAuditService.Dispose();
-            _hardwareVaultTaskService.Dispose();
-            _workstationService.Dispose();
-            _hardwareVaultService.Dispose();
-        }
     }
 }

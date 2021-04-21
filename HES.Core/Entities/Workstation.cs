@@ -22,7 +22,7 @@ namespace HES.Core.Entities
         public bool Approved { get; set; }
         public bool RFID { get; set; }
 
-        public List<WorkstationProximityVault> WorkstationProximityVaults { get; set; }
+        public List<WorkstationHardwareVaultPair> WorkstationProximityVaults { get; set; }
         public List<WorkstationEvent> WorkstationEvents { get; set; }
         public List<WorkstationSession> WorkstationSessions { get; set; }
 

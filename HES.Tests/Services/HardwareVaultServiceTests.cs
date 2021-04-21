@@ -17,7 +17,7 @@ namespace HES.Tests.Services
         public HardwareVaultServiceTests(CustomWebAppFactory<Startup> factory)
         {
             _hardwareVaultService = factory.GetHardwareVaultService();
-            _testingOptions = new HardwareVaultServiceTestingOptions(100, 30, "1234567", 20, factory.GetHardwareVaultRepository(), factory.GetHardwareVaultProfileRepository());
+            _testingOptions = new HardwareVaultServiceTestingOptions(100, 30, "1234567", 20, factory.GetDbContext());
         }
 
         //TODO ImportHardwarevaults
@@ -71,7 +71,7 @@ namespace HES.Tests.Services
 
             hardwareVault.MAC = "testMac";
 
-           await _hardwareVaultService.UnchangedVaultAsync(hardwareVault);
+           _hardwareVaultService.UnchangedVault(hardwareVault);
 
             Assert.Equal(_testingOptions.HardwareVault.MAC, hardwareVault.MAC);
         }

@@ -1,5 +1,7 @@
-﻿using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -17,10 +19,10 @@ namespace HES.Web.Pages.Settings.Parameters
         {
             try
             {
-                var ldapSettings = await AppSettingsService.GetLdapSettingsAsync();
+                var ldapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
                 ldapSettings.UserName = null;
                 ldapSettings.Password = null;
-                await AppSettingsService.SetLdapSettingsAsync(ldapSettings);
+                await AppSettingsService.SetSettingsAsync(ldapSettings, ServerConstants.Domain);
                 await ToastService.ShowToastAsync("Domain settings updated.", ToastType.Success);
                 await ModalDialogClose();
             }

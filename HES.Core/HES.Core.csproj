@@ -8,7 +8,6 @@
   <ItemGroup>
     <PackageReference Include="AsyncEnumerator" Version="3.1.0" />
     <PackageReference Include="Fido2" Version="1.1.0" />
-    <PackageReference Include="LdapForNet" Version="2.7.11" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.DataAnnotations.Validation" Version="3.2.0-rc1.20223.4" />

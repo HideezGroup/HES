@@ -28,7 +28,7 @@ namespace HES.Web.Pages.Groups
             {
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
 
-                Group = await GroupService.GetGroupByIdAsync(GroupId);
+                //Group = await GroupService.GetGroupByIdAsync(GroupId);
 
                 if (Group == null)
                     throw new Exception("Group not found");
@@ -50,7 +50,7 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                await GroupService.DeleteGroupAsync(GroupId);               
+                //await GroupService.DeleteGroupAsync(GroupId);               
                 //await SynchronizationService.UpdateGroups(ExceptPageId);
                 await ToastService.ShowToastAsync("Group deleted.", ToastType.Success);
                 //await ModalDialogService.CloseAsync();

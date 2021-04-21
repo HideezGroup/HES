@@ -1,6 +1,7 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Crypto;
 using HES.Core.Entities;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using Microsoft.EntityFrameworkCore;
@@ -84,7 +85,7 @@ namespace HES.Core.Services
                     }
                 }
             }
-            catch (NotFinishedPasswordChangeException)
+            catch (DataProtectionNotFinishedPasswordChangeException)
             {
                 _protectionEnabled = true;
                 _notFinishedPasswordChange = true;
@@ -100,7 +101,6 @@ namespace HES.Core.Services
                     using var scope = Services.CreateScope();
                     var scopedApplicationUserService = scope.ServiceProvider.GetRequiredService<IApplicationUserService>();
                     await scopedApplicationUserService.SendActivateDataProtectionAsync();
-                    scopedApplicationUserService.Dispose();
                 }
             }
         }
@@ -122,13 +122,13 @@ namespace HES.Core.Services
         public void Validate()
         {
             if (_notFinishedPasswordChange)
-                throw new Exception("Data protection not finished password change.");
+                throw new HESException(HESCode.DataProtectionNotFinishedPasswordChange);
 
             if (_protectionEnabled && !_protectionActivated)
-                throw new Exception("Data protection not activated.");
+                throw new HESException(HESCode.DataProtectionNotActivated);
 
             if (_protectionBusy)
-                throw new Exception("Data protection is busy.");
+                throw new HESException(HESCode.DataProtectionIsBusy);
         }
 
         public string Encrypt(string plainText)
@@ -161,19 +161,19 @@ namespace HES.Core.Services
         {
             try
             {
-                if (_protectionBusy)
-                    throw new Exception("Data protection is busy.");
-                _protectionBusy = true;
-
                 if (string.IsNullOrWhiteSpace(password))
                     throw new ArgumentNullException(nameof(password));
 
+                if (_protectionBusy)
+                    throw new HESException(HESCode.DataProtectionIsBusy);
+                _protectionBusy = true;
+
                 if (_protectionActivated)
-                    throw new Exception("Data protection is already activated.");
+                    throw new HESException(HESCode.DataProtectionIsAlreadyActivated);
 
                 var dataProtectionEntity = await ReadDataProtectionEntity();
                 if (dataProtectionEntity == null)
-                    throw new Exception("Data protection parameters not found.");
+                    throw new HESException(HESCode.DataProtectionParametersNotFound);
 
                 _key = new DataProtectionKey(dataProtectionEntity.Id, dataProtectionEntity.Params);
 
@@ -191,15 +191,15 @@ namespace HES.Core.Services
         {
             try
             {
-                if (_protectionBusy)
-                    throw new Exception("Data protection is busy.");
-                _protectionBusy = true;
-
                 if (string.IsNullOrWhiteSpace(password))
                     throw new ArgumentNullException(nameof(password));
 
+                if (_protectionBusy)
+                    throw new HESException(HESCode.DataProtectionIsBusy);
+                _protectionBusy = true;
+
                 if (_protectionEnabled)
-                    throw new Exception("Data protection is already enabled.");
+                    throw new HESException(HESCode.DataProtectionIsAlreadyEnabled);
 
                 var prms = DataProtectionKey.CreateParams(password);
 
@@ -224,24 +224,23 @@ namespace HES.Core.Services
             try
             {
                 if (_protectionBusy)
-                    throw new Exception("Data protection is busy.");
+                    throw new HESException(HESCode.DataProtectionIsBusy);
                 _protectionBusy = true;
 
                 if (!_protectionEnabled)
-                    throw new Exception("Data protection is not enabled.");
+                    throw new HESException(HESCode.DataProtectionNotEnabled);
 
                 if (!_protectionActivated)
-                    throw new Exception("Data protection is not activated.");
-
+                    throw new HESException(HESCode.DataProtectionNotActivated);
 
                 var dataProtectionEntity = await ReadDataProtectionEntity();
                 if (dataProtectionEntity == null)
-                    throw new Exception("Data protection parameters not found.");
+                    throw new HESException(HESCode.DataProtectionParametersNotFound);
 
                 var key = new DataProtectionKey(dataProtectionEntity.Id, dataProtectionEntity.Params);
 
                 if (!key.ValidatePassword(password))
-                    throw new Exception("Incorrect password");
+                    throw new HESException(HESCode.IncorrectPassword);
 
                 using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
@@ -265,22 +264,22 @@ namespace HES.Core.Services
             try
             {
                 if (_protectionBusy)
-                    throw new Exception("Data protection is busy.");
+                    throw new HESException(HESCode.DataProtectionIsBusy);
                 _protectionBusy = true;
 
                 if (!_protectionActivated)
-                    throw new Exception("Data protection is not activated");
+                    throw new HESException(HESCode.DataProtectionNotActivated);
 
                 var oldDataProtectionEntity = await ReadDataProtectionEntity();
                 if (oldDataProtectionEntity == null)
-                    throw new Exception("Data protection parameters not found.");
+                    throw new HESException(HESCode.DataProtectionParametersNotFound);
 
                 var oldKey = new DataProtectionKey(oldDataProtectionEntity.Id, oldDataProtectionEntity.Params);
 
                 if (!oldKey.ValidatePassword(oldPassword))
-                    throw new Exception("Incorrect old password");
+                    throw new HESException(HESCode.IncorrectOldPassword);
 
-                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     // Creating the key for the new password
                     var prms = DataProtectionKey.CreateParams(newPassword);
@@ -307,12 +306,11 @@ namespace HES.Core.Services
 
         private async Task ReencryptDatabase(DataProtectionKey key, DataProtectionKey newKey)
         {
-
             using var scope = Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
             // Accounts
-            var scopedAccountRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Account>>();
-            var accounts = await scopedAccountRepository.Query().ToListAsync();
+            var accounts = await dbContext.Accounts.ToListAsync();
             foreach (var account in accounts)
             {
                 if (account.Password != null)
@@ -328,8 +326,7 @@ namespace HES.Core.Services
             }
 
             // AppSettings
-            var scopedAppSettingsRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<AppSettings>>();
-            var domainSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Domain);
+            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Domain);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -338,7 +335,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
-            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
+            var licenseSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);
@@ -349,8 +346,7 @@ namespace HES.Core.Services
             }
 
             // HardwareVaultsActivations
-            var scopedHardwareVaultActivationRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVaultActivation>>();
-            var hardwareVaultActivations = await scopedHardwareVaultActivationRepository.Query().ToListAsync();
+            var hardwareVaultActivations = await dbContext.HardwareVaultActivations.ToListAsync();
             foreach (var hardwareVaultActivation in hardwareVaultActivations)
             {
                 var plainText = key.Decrypt(hardwareVaultActivation.AcivationCode);
@@ -358,8 +354,7 @@ namespace HES.Core.Services
             }
 
             // HardwareVaults   
-            var scopedHardwareVaultRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVault>>();
-            var hardwareVaults = await scopedHardwareVaultRepository.Query().ToListAsync();
+            var hardwareVaults = await dbContext.HardwareVaults.ToListAsync();
             foreach (var hardwareVault in hardwareVaults)
             {
                 if (hardwareVault.MasterPassword != null)
@@ -370,8 +365,7 @@ namespace HES.Core.Services
             }
 
             // HardwareVaultTasks
-            var scopedHardwareVaultTaskRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVaultTask>>();
-            var hardwareVaultTasks = await scopedHardwareVaultTaskRepository.Query().ToListAsync();
+            var hardwareVaultTasks = await dbContext.HardwareVaultTasks.ToListAsync();
             foreach (var task in hardwareVaultTasks)
             {
                 if (task.Password != null)
@@ -387,8 +381,7 @@ namespace HES.Core.Services
             }
 
             // SharedAccounts
-            var scopedSharedAccountRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<SharedAccount>>();
-            var sharedAccounts = await scopedSharedAccountRepository.Query().ToListAsync();
+            var sharedAccounts = await dbContext.SharedAccounts.ToListAsync();
             foreach (var account in sharedAccounts)
             {
                 if (account.Password != null)
@@ -404,36 +397,32 @@ namespace HES.Core.Services
             }
 
             // SoftwareVaultInvitations
-            //var scopedSoftwareVaultInvitationRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<SoftwareVaultInvitation>>();
             //var softwareVaultInvitations = await scopedSoftwareVaultInvitationRepository.Query().ToListAsync();
             //foreach (var softwareVaultInvitation in softwareVaultInvitations)
             //{
             //    
             //}
+            //await scopedSoftwareVaultInvitationRepository.UpdateOnlyPropAsync(softwareVaultInvitations, new string[] { nameof(SoftwareVaultInvitation.ActivationCode) });
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                await scopedAccountRepository.UpdateOnlyPropAsync(accounts, new string[] { nameof(Account.Password), nameof(Account.OtpSecret) });
-                if (domainSettings != null)
-                    await scopedAppSettingsRepository.UpdateAsync(domainSettings);
-                if (licenseSettings != null)
-                    await scopedAppSettingsRepository.UpdateAsync(licenseSettings);
-                await scopedHardwareVaultActivationRepository.UpdateOnlyPropAsync(hardwareVaultActivations, new string[] { nameof(HardwareVaultActivation.AcivationCode) });
-                await scopedHardwareVaultRepository.UpdateOnlyPropAsync(hardwareVaults, new string[] { nameof(HardwareVault.MasterPassword) });
-                await scopedHardwareVaultTaskRepository.UpdateOnlyPropAsync(hardwareVaultTasks, new string[] { nameof(HardwareVaultTask.Password), nameof(HardwareVaultTask.OtpSecret) });
-                await scopedSharedAccountRepository.UpdateOnlyPropAsync(sharedAccounts, new string[] { nameof(SharedAccount.Password), nameof(SharedAccount.OtpSecret) });
-                //await scopedSoftwareVaultInvitationRepository.UpdateOnlyPropAsync(softwareVaultInvitations, new string[] { nameof(SoftwareVaultInvitation.ActivationCode) });
-                transactionScope.Complete();
-            }
+            dbContext.Accounts.UpdateRange(accounts);
+            if (domainSettings != null)
+                dbContext.AppSettings.Update(domainSettings);
+            if (licenseSettings != null)
+                dbContext.AppSettings.Update(licenseSettings);
+            dbContext.HardwareVaultActivations.UpdateRange(hardwareVaultActivations);
+            dbContext.HardwareVaults.UpdateRange(hardwareVaults);
+            dbContext.HardwareVaultTasks.UpdateRange(hardwareVaultTasks);
+            dbContext.SharedAccounts.UpdateRange(sharedAccounts);
+            await dbContext.SaveChangesAsync();
         }
 
         private async Task EncryptDatabase(DataProtectionKey key)
         {
             using var scope = Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
             // Accounts
-            var scopedAccountRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Account>>();
-            var accounts = await scopedAccountRepository.Query().ToListAsync();
+            var accounts = await dbContext.Accounts.ToListAsync();
             foreach (var account in accounts)
             {
                 if (account.Password != null)
@@ -442,9 +431,8 @@ namespace HES.Core.Services
                     account.OtpSecret = key.Encrypt(account.OtpSecret);
             }
 
-            // AppSettings
-            var scopedAppSettingsRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<AppSettings>>();
-            var domainSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Domain);
+            // AppSettings     
+            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Domain);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -452,7 +440,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
-            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
+            var licenseSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);
@@ -462,16 +450,14 @@ namespace HES.Core.Services
             }
 
             // HardwareVaultsActivations
-            var scopedHardwareVaultActivationRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVaultActivation>>();
-            var hardwareVaultActivations = await scopedHardwareVaultActivationRepository.Query().ToListAsync();
+            var hardwareVaultActivations = await dbContext.HardwareVaultActivations.ToListAsync();
             foreach (var hardwareVaultActivation in hardwareVaultActivations)
             {
                 hardwareVaultActivation.AcivationCode = key.Encrypt(hardwareVaultActivation.AcivationCode);
             }
 
-            // HardwareVaults   
-            var scopedHardwareVaultRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVault>>();
-            var hardwareVaults = await scopedHardwareVaultRepository.Query().ToListAsync();
+            // HardwareVaults
+            var hardwareVaults = await dbContext.HardwareVaults.ToListAsync();
             foreach (var hardwareVault in hardwareVaults)
             {
                 if (hardwareVault.MasterPassword != null)
@@ -479,8 +465,7 @@ namespace HES.Core.Services
             }
 
             // HardwareVaultTasks
-            var scopedHardwareVaultTaskRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVaultTask>>();
-            var hardwareVaultTasks = await scopedHardwareVaultTaskRepository.Query().ToListAsync();
+            var hardwareVaultTasks = await dbContext.HardwareVaultTasks.ToListAsync();
             foreach (var task in hardwareVaultTasks)
             {
                 if (task.Password != null)
@@ -490,8 +475,7 @@ namespace HES.Core.Services
             }
 
             // SharedAccounts
-            var scopedSharedAccountRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<SharedAccount>>();
-            var sharedAccounts = await scopedSharedAccountRepository.Query().ToListAsync();
+            var sharedAccounts = await dbContext.SharedAccounts.ToListAsync();
             foreach (var account in sharedAccounts)
             {
                 if (account.Password != null)
@@ -501,36 +485,32 @@ namespace HES.Core.Services
             }
 
             // SoftwareVaultInvitations
-            //var scopedSoftwareVaultInvitationRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<SoftwareVaultInvitation>>();
             //var softwareVaultInvitations = await scopedSoftwareVaultInvitationRepository.Query().ToListAsync();
             //foreach (var softwareVaultInvitation in softwareVaultInvitations)
             //{
             //    softwareVaultInvitation.ActivationCode = key.Encrypt(softwareVaultInvitation.ActivationCode);
             //}
+            //await scopedSoftwareVaultInvitationRepository.UpdateOnlyPropAsync(softwareVaultInvitations, new string[] { nameof(SoftwareVaultInvitation.ActivationCode) });
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                await scopedAccountRepository.UpdateOnlyPropAsync(accounts, new string[] { nameof(Account.Password), nameof(Account.OtpSecret) });
-                if (domainSettings != null)
-                    await scopedAppSettingsRepository.UpdateAsync(domainSettings);
-                if (licenseSettings != null)
-                    await scopedAppSettingsRepository.UpdateAsync(licenseSettings);
-                await scopedHardwareVaultActivationRepository.UpdateOnlyPropAsync(hardwareVaultActivations, new string[] { nameof(HardwareVaultActivation.AcivationCode) });
-                await scopedHardwareVaultRepository.UpdateOnlyPropAsync(hardwareVaults, new string[] { nameof(HardwareVault.MasterPassword) });
-                await scopedHardwareVaultTaskRepository.UpdateOnlyPropAsync(hardwareVaultTasks, new string[] { nameof(HardwareVaultTask.Password), nameof(HardwareVaultTask.OtpSecret) });
-                await scopedSharedAccountRepository.UpdateOnlyPropAsync(sharedAccounts, new string[] { nameof(SharedAccount.Password), nameof(SharedAccount.OtpSecret) });
-                //await scopedSoftwareVaultInvitationRepository.UpdateOnlyPropAsync(softwareVaultInvitations, new string[] { nameof(SoftwareVaultInvitation.ActivationCode) });
-                transactionScope.Complete();
-            }
+            dbContext.Accounts.UpdateRange(accounts);
+            if (domainSettings != null)
+                dbContext.AppSettings.Update(domainSettings);
+            if (licenseSettings != null)
+                dbContext.AppSettings.Update(licenseSettings);
+            dbContext.HardwareVaultActivations.UpdateRange(hardwareVaultActivations);
+            dbContext.HardwareVaults.UpdateRange(hardwareVaults);
+            dbContext.HardwareVaultTasks.UpdateRange(hardwareVaultTasks);
+            dbContext.SharedAccounts.UpdateRange(sharedAccounts);
+            await dbContext.SaveChangesAsync();
         }
 
         private async Task DecryptDatabase(DataProtectionKey key)
         {
             using var scope = Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
             // Accounts
-            var scopedAccountRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<Account>>();
-            var accounts = await scopedAccountRepository.Query().ToListAsync();
+            var accounts = await dbContext.Accounts.ToListAsync();
             foreach (var account in accounts)
             {
                 if (account.Password != null)
@@ -540,8 +520,7 @@ namespace HES.Core.Services
             }
 
             // AppSettings
-            var scopedAppSettingsRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<AppSettings>>();
-            var domainSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Domain);
+            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Domain);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -549,7 +528,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
-            var licenseSettings = await scopedAppSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
+            var licenseSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);
@@ -559,16 +538,14 @@ namespace HES.Core.Services
             }
 
             // HardwareVaultsActivations
-            var scopedHardwareVaultActivationRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVaultActivation>>();
-            var hardwareVaultActivations = await scopedHardwareVaultActivationRepository.Query().ToListAsync();
+            var hardwareVaultActivations = await dbContext.HardwareVaultActivations.ToListAsync();
             foreach (var hardwareVaultActivation in hardwareVaultActivations)
             {
                 hardwareVaultActivation.AcivationCode = key.Decrypt(hardwareVaultActivation.AcivationCode);
             }
 
-            // HardwareVaults   
-            var scopedHardwareVaultRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVault>>();
-            var hardwareVaults = await scopedHardwareVaultRepository.Query().ToListAsync();
+            // HardwareVaults
+            var hardwareVaults = await dbContext.HardwareVaults.ToListAsync();
             foreach (var hardwareVault in hardwareVaults)
             {
                 if (hardwareVault.MasterPassword != null)
@@ -576,8 +553,7 @@ namespace HES.Core.Services
             }
 
             // HardwareVaultTasks
-            var scopedHardwareVaultTaskRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVaultTask>>();
-            var hardwareVaultTasks = await scopedHardwareVaultTaskRepository.Query().ToListAsync();
+            var hardwareVaultTasks = await dbContext.HardwareVaultTasks.ToListAsync();
             foreach (var task in hardwareVaultTasks)
             {
                 if (task.Password != null)
@@ -587,8 +563,7 @@ namespace HES.Core.Services
             }
 
             // SharedAccounts
-            var scopedSharedAccountRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<SharedAccount>>();
-            var sharedAccounts = await scopedSharedAccountRepository.Query().ToListAsync();
+            var sharedAccounts = await dbContext.SharedAccounts.ToListAsync();
             foreach (var account in sharedAccounts)
             {
                 if (account.Password != null)
@@ -597,28 +572,24 @@ namespace HES.Core.Services
                     account.OtpSecret = key.Decrypt(account.OtpSecret);
             }
 
-            // SoftwareVaultInvitations
-            //var scopedSoftwareVaultInvitationRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<SoftwareVaultInvitation>>();
+            // SoftwareVaultInvitations       
             //var softwareVaultInvitations = await scopedSoftwareVaultInvitationRepository.Query().ToListAsync();
             //foreach (var softwareVaultInvitation in softwareVaultInvitations)
             //{
             //    softwareVaultInvitation.ActivationCode = key.Encrypt(softwareVaultInvitation.ActivationCode);
             //}
+            //await scopedSoftwareVaultInvitationRepository.UpdateOnlyPropAsync(softwareVaultInvitations, new string[] { nameof(SoftwareVaultInvitation.ActivationCode) });
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                await scopedAccountRepository.UpdateOnlyPropAsync(accounts, new string[] { nameof(Account.Password), nameof(Account.OtpSecret) });
-                if (domainSettings != null)
-                    await scopedAppSettingsRepository.UpdateAsync(domainSettings);
-                if (licenseSettings != null)
-                    await scopedAppSettingsRepository.UpdateAsync(licenseSettings);
-                await scopedHardwareVaultActivationRepository.UpdateOnlyPropAsync(hardwareVaultActivations, new string[] { nameof(HardwareVaultActivation.AcivationCode) });
-                await scopedHardwareVaultRepository.UpdateOnlyPropAsync(hardwareVaults, new string[] { nameof(HardwareVault.MasterPassword) });
-                await scopedHardwareVaultTaskRepository.UpdateOnlyPropAsync(hardwareVaultTasks, new string[] { nameof(HardwareVaultTask.Password), nameof(HardwareVaultTask.OtpSecret) });
-                await scopedSharedAccountRepository.UpdateOnlyPropAsync(sharedAccounts, new string[] { nameof(SharedAccount.Password), nameof(SharedAccount.OtpSecret) });
-                //await scopedSoftwareVaultInvitationRepository.UpdateOnlyPropAsync(softwareVaultInvitations, new string[] { nameof(SoftwareVaultInvitation.ActivationCode) });
-                transactionScope.Complete();
-            }
+            dbContext.Accounts.UpdateRange(accounts);
+            if (domainSettings != null)
+                dbContext.AppSettings.Update(domainSettings);
+            if (licenseSettings != null)
+                dbContext.AppSettings.UpdateRange(licenseSettings);
+            dbContext.HardwareVaultActivations.UpdateRange(hardwareVaultActivations);
+            dbContext.HardwareVaults.UpdateRange(hardwareVaults);
+            dbContext.HardwareVaultTasks.UpdateRange(hardwareVaultTasks);
+            dbContext.SharedAccounts.UpdateRange(sharedAccounts);
+            await dbContext.SaveChangesAsync();
         }
 
         private string TryGetStoredPassword()
@@ -634,21 +605,19 @@ namespace HES.Core.Services
         private async Task<DataProtection> ReadDataProtectionEntity()
         {
             using var scope = Services.CreateScope();
-            var scopedDataProtectionRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<DataProtection>>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
-            var list = await scopedDataProtectionRepository
-                .Query()
-                .ToListAsync();
+            var list = await dbContext.DataProtection.ToListAsync();
 
             if (list.Count == 0)
                 return null;
 
             if (list.Count > 1)
-                throw new NotFinishedPasswordChangeException("Detected not finished password change operation");
+                throw new DataProtectionNotFinishedPasswordChangeException("Detected not finished password change operation");
 
             var entity = list[0];
             if (string.IsNullOrEmpty(entity.Value))
-                throw new Exception("Data Protection parameters is empty");
+                throw new HESException(HESCode.DataProtectionParametersIsEmpty);
 
             entity.Params = JsonConvert.DeserializeObject<DataProtectionParams>(entity.Value);
 
@@ -658,29 +627,33 @@ namespace HES.Core.Services
         private async Task<DataProtection> SaveDataProtectionEntity(DataProtectionParams prms)
         {
             using var scope = Services.CreateScope();
-            var scopedDataProtectionRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<DataProtection>>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
-            var entity = await scopedDataProtectionRepository.AddAsync(new DataProtection()
+            var data = dbContext.DataProtection.Add(new DataProtection()
             {
                 Value = JsonConvert.SerializeObject(prms),
                 Params = prms
             });
 
-            return entity;
+            await dbContext.SaveChangesAsync();
+
+            return data.Entity;
         }
 
         private async Task DeleteDataProtectionEntity(int id)
         {
             using var scope = Services.CreateScope();
-            var scopedDataProtectionRepository = scope.ServiceProvider.GetRequiredService<IAsyncRepository<DataProtection>>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
 
-            var entity = await scopedDataProtectionRepository
-                .Query()
+            var entity = await dbContext.DataProtection
                 .Where(v => v.Id == id)
                 .FirstOrDefaultAsync();
 
             if (entity != null)
-                await scopedDataProtectionRepository.DeleteAsync(entity);
+            {
+                dbContext.DataProtection.Remove(entity);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         #endregion

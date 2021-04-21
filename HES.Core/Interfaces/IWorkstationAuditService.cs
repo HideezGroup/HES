@@ -2,16 +2,14 @@
 using HES.Core.Models.Audit;
 using HES.Core.Models.DataTableComponent;
 using Hideez.SDK.Communication.HES.DTO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IWorkstationAuditService : IDisposable
+    public interface IWorkstationAuditService
     {
-        IQueryable<WorkstationEvent> EventQuery();
         Task<List<WorkstationEvent>> GetWorkstationEventsAsync(DataLoadingOptions<WorkstationEventFilter> dataLoadingOptions);
         Task<int> GetWorkstationEventsCountAsync(DataLoadingOptions<WorkstationEventFilter> dataLoadingOptions);
         Task AddEventDtoAsync(WorkstationEventDto workstationEventDto);

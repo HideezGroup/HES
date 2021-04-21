@@ -25,7 +25,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<LicenseOrder, LicenseOrderFilter>>();
 
-                SynchronizationService.UpdateLicensesPage += UpdateLicensesPage;     
+                PageSyncService.UpdateLicensesPage += UpdateLicensesPage;     
                 
                 await BreadcrumbsService.SetLicenseOrders();
                 await DataTableService.InitializeAsync(LicenseService.GetLicenseOrdersAsync, LicenseService.GetLicenseOrdersCountAsync, StateHasChanged, nameof(LicenseOrder.CreatedAt), ListSortDirection.Descending);
@@ -81,7 +81,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateLicenses(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
@@ -100,7 +100,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateLicenses(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
@@ -119,7 +119,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateLicenses(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
@@ -138,7 +138,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateLicenses(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
@@ -151,19 +151,19 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete License Order", body, ModalDialogSize.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync("Delete License Order", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateLicenses(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateLicensesPage -= UpdateLicensesPage;
+            PageSyncService.UpdateLicensesPage -= UpdateLicensesPage;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace HES.Web.Pages.Groups
             {
                 await Button.SpinAsync(async () =>
                 {
-                    await GroupService.CreateGroupAsync(Group);
+                    //await GroupService.CreateGroupAsync(Group);
                     await ToastService.ShowToastAsync("Group created.", ToastType.Success);               
                     //await SynchronizationService.UpdateGroups(ExceptPageId);
                     //await ModalDialogService.CloseAsync();

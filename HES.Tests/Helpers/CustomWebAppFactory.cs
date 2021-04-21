@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Linq;
+﻿using HES.Core.Interfaces;
 using HES.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using HES.Core.Interfaces;
-using HES.Core.Entities;
+using System.Linq;
 
 namespace HES.Tests.Helpers
 {
@@ -54,16 +53,10 @@ namespace HES.Tests.Helpers
             return scope.ServiceProvider.GetRequiredService<IHardwareVaultService>();
         }
 
-        public IAsyncRepository<HardwareVaultProfile> GetHardwareVaultProfileRepository()
+        public IApplicationDbContext GetDbContext()
         {
             var scope = Services.CreateScope();
-            return scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVaultProfile>>();
-        }
-
-        public IAsyncRepository<HardwareVault> GetHardwareVaultRepository()
-        {
-            var scope = Services.CreateScope();
-            return scope.ServiceProvider.GetRequiredService<IAsyncRepository<HardwareVault>>();
+            return scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace HES.Web.Pages.Groups
 
                 //ModalDialogService.OnCancel += ModalDialogService_OnCancel;
 
-                Group = await GroupService.GetGroupByIdAsync(GroupId);
+                //Group = await GroupService.GetGroupByIdAsync(GroupId);
 
                 if (Group == null)
                     throw new Exception("Group not found");
@@ -80,7 +80,7 @@ namespace HES.Web.Pages.Groups
 
         private async Task ModalDialogService_OnCancel()
         {
-            await GroupService.UnchangedGroupAsync(Group);
+            //await GroupService.UnchangedGroupAsync(Group);
         }
 
         public void Dispose()

@@ -1,4 +1,6 @@
-﻿using HES.Core.Interfaces;
+﻿using HES.Core.Constants;
+using HES.Core.Exceptions;
+using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -22,7 +24,7 @@ namespace HES.Web.Pages.Settings.Parameters
             try
             {
                 AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
-                SynchronizationService.UpdateParametersPage += UpdateParametersPage;
+                PageSyncService.UpdateParametersPage += UpdateParametersPage;
 
                 await BreadcrumbsService.SetParameters();
                 await LoadDataSettingsAsync();
@@ -53,12 +55,18 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task<LicensingSettings> LoadLicensingSettingsAsync()
         {
-            var license = await AppSettingsService.GetLicensingSettingsAsync();
+            LicensingSettings settings = new();
 
-            if (license == null)
-                return new LicensingSettings();
+            try
+            {
+                settings = await AppSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
+            }
+            catch (HESException ex) when (ex.Code == HESCode.AppSettingsNotFound) 
+            {
+                settings = new LicensingSettings();
+            }
 
-            return license;
+            return settings;
         }
 
         private async Task OpenDialogLicensingSettingsAsync()
@@ -76,14 +84,24 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateParameters(PageId);
+                await PageSyncService.UpdateParameters(PageId);
             }
         }
 
         private async Task<string> LoadDomainSettingsAsync()
         {
-            var domainSettings = await AppSettingsService.GetLdapSettingsAsync();
-            return domainSettings?.Host;
+            LdapSettings settings = new();
+
+            try
+            {
+                settings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
+            }
+            catch (HESException ex) when (ex.Code == HESCode.AppSettingsNotFound)
+            {
+                settings = new LdapSettings();
+            }
+
+            return settings?.Host;
         }
 
         private async Task OpenDialogLdapSettingsAsync()
@@ -101,7 +119,7 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateParameters(PageId);
+                await PageSyncService.UpdateParameters(PageId);
             }
         }
 
@@ -120,13 +138,13 @@ namespace HES.Web.Pages.Settings.Parameters
             if (result.Succeeded)
             {
                 await LoadDataSettingsAsync();
-                await SynchronizationService.UpdateParameters(PageId);
+                await PageSyncService.UpdateParameters(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateParametersPage -= UpdateParametersPage;
+            PageSyncService.UpdateParametersPage -= UpdateParametersPage;
         }
     }
 }

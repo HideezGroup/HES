@@ -27,7 +27,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
         {
             HardwareVaultService = ScopedServices.GetRequiredService<IHardwareVaultService>();
 
-            AccessProfile = await HardwareVaultService.ProfileQuery().AsNoTracking().FirstOrDefaultAsync(x => x.Id == "default");
+            AccessProfile = await HardwareVaultService.GetDefaultProfile();
             AccessProfile.Id = null;
             AccessProfile.Name = null;
 

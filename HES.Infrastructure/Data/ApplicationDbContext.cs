@@ -1,19 +1,21 @@
 ﻿using HES.Core.Entities;
+using HES.Core.Interfaces;
 using HES.Core.Models.Audit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace HES.Infrastructure
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string,
-       IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>,
-       IdentityRoleClaim<string>, IdentityUserToken<string>>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, 
+        IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>, 
+        IdentityRoleClaim<string>, IdentityUserToken<string>>, IApplicationDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,7 +69,23 @@ namespace HES.Infrastructure
             modelBuilder.Entity<SummaryByWorkstations>().HasNoKey();
         }
 
+        public void Unchanged<T>(T entity)
+        {
+            Entry(entity).State = EntityState.Unchanged;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await base.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistAsync<T>(Expression<Func<T, bool>> predicate) where T : class, new()
+        {
+            return await Set<T>().Where(predicate).AsNoTracking().AnyAsync();
+        }
+
         #region DbSet
+
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<HardwareVault> HardwareVaults { get; set; }
@@ -81,7 +99,7 @@ namespace HES.Infrastructure
         public DbSet<SharedAccount> SharedAccounts { get; set; }
         public DbSet<Template> Templates { get; set; }
         public DbSet<Workstation> Workstations { get; set; }
-        public DbSet<WorkstationProximityVault> WorkstationProximityVaults { get; set; }
+        public DbSet<WorkstationHardwareVaultPair> WorkstationHardwareVaultPairs { get; set; }
         public DbSet<WorkstationEvent> WorkstationEvents { get; set; }
         public DbSet<WorkstationSession> WorkstationSessions { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -96,6 +114,7 @@ namespace HES.Infrastructure
         public DbSet<SummaryByEmployees> SummaryByEmployees { get; set; }
         public DbSet<SummaryByDepartments> SummaryByDepartments { get; set; }
         public DbSet<SummaryByWorkstations> SummaryByWorkstations { get; set; }
+
         #endregion
     }
 }

@@ -1,6 +1,8 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.HardwareVaults;
 using HES.Web.Components;
@@ -20,7 +22,7 @@ namespace HES.Web.Pages.Employees
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
         public ILdapService LdapService { get; set; }
-        [Inject] public ISynchronizationService SynchronizationService { get; set; }
+        [Inject] public IPageSyncService SynchronizationService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddHardwareVault> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }
@@ -100,7 +102,7 @@ namespace HES.Web.Pages.Employees
                 {
                     await EmployeeService.AddHardwareVaultAsync(EmployeeId, SelectedHardwareVault.Id);
 
-                    var ldapSettings = await AppSettingsService.GetLdapSettingsAsync();
+                    var ldapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
                     if (ldapSettings?.Password != null)
                     {
                         var employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);

@@ -4,6 +4,7 @@ using HES.Core.Entities;
 using HES.Core.HostedServices;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using HES.Core.Services;
 using HES.Infrastructure;
 using HES.Web.Components;
@@ -93,15 +94,23 @@ namespace HES.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Database
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
+
+            #endregion
+
             #region Services
 
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(Repository<>));
+            services.AddScoped<IApplicationDbContext>(x => x.GetService<ApplicationDbContext>());   
             services.AddScoped(typeof(IDataTableService<,>), typeof(DataTableService<,>));
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IHardwareVaultService, HardwareVaultService>();
             services.AddScoped<IHardwareVaultTaskService, HardwareVaultTaskService>();
-            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IWorkstationService, WorkstationService>();
             services.AddScoped<IWorkstationAuditService, WorkstationAuditService>();
             services.AddScoped<ISharedAccountService, SharedAccountService>();
@@ -125,7 +134,7 @@ namespace HES.Web
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
-            services.AddSingleton<ISynchronizationService, SynchronizationService>();
+            services.AddSingleton<IPageSyncService, PageSyncService>();
 
             services.AddHostedService<RemoveLogsHostedService>();
             services.AddHostedService<LicenseHostedService>();
@@ -147,6 +156,8 @@ namespace HES.Web
             #region Configuration
 
             services.Configure<Fido2Configuration>(Configuration.GetSection("Fido2"));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSender"));
+            services.Configure<ServerSettings>(Configuration.GetSection("ServerSettings"));
 
             #endregion
 
@@ -203,15 +214,6 @@ namespace HES.Web
                     }
                 };
             });
-
-            #endregion
-
-            #region Database
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
-                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
 
             #endregion
 

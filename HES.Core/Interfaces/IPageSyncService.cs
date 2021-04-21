@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface ISynchronizationService
+    public interface IPageSyncService
     {
         event Func<string, Task> UpdateAlarmPage;
         event Func<string, Task> UpdateEmployeePage;

@@ -13,7 +13,7 @@ namespace HES.Tests.Helpers
     public class HardwareVaultServiceTestingOptions
     {
         public int ActivationCodeLenght { get; private set; }
-        public string HardwareVaultId{ get; private set; }
+        public string HardwareVaultId { get; private set; }
         public string EmployeetId { get; private set; }
         public string NewHardwareVaultRFID { get; private set; }
         public HardwareVault HardwareVault { get; private set; }
@@ -21,20 +21,22 @@ namespace HES.Tests.Helpers
         public DataLoadingOptions<HardwareVaultFilter> DataLoadingOptions { get; private set; }
         public List<HardwareVault> TestingHardwareVaults { get; private set; }
 
-        private readonly IAsyncRepository<HardwareVault> _hardwareVaultRepository;
-        public HardwareVaultServiceTestingOptions(int hardwareVaultsCount, int hardwareVaultId, string newHardwareVaultRFID, int employeeId ,IAsyncRepository<HardwareVault> hardwareVaultRepository, IAsyncRepository<HardwareVaultProfile> hardwareVaultProfileRepository)
+        private readonly IApplicationDbContext _dbContext;
+        
+        public HardwareVaultServiceTestingOptions(int hardwareVaultsCount, int hardwareVaultId, string newHardwareVaultRFID, int employeeId, IApplicationDbContext dbContext)
         {
             NewHardwareVaultRFID = newHardwareVaultRFID;
+            _dbContext = dbContext;
             HardwareVaultId = hardwareVaultId.ToString();
-            HardwareVaultsCount = hardwareVaultsCount;
-            _hardwareVaultRepository = hardwareVaultRepository;
+            HardwareVaultsCount = hardwareVaultsCount;    
             EmployeetId = $"{employeeId}";
 
-            hardwareVaultProfileRepository.AddAsync(new HardwareVaultProfile
+            _dbContext.HardwareVaultProfiles.Add(new HardwareVaultProfile
             {
                 Id = ServerConstants.DefaulHardwareVaultProfileId,
                 Name = "Default"
             });
+            _dbContext.SaveChangesAsync();
 
             ActivationCodeLenght = 6;
 
@@ -51,7 +53,7 @@ namespace HES.Tests.Helpers
             };
         }
 
-        private void CreateHardwareVaults()
+        private async void CreateHardwareVaults()
         {
             TestingHardwareVaults = new List<HardwareVault>();
 
@@ -78,7 +80,9 @@ namespace HES.Tests.Helpers
                 }
             }
 
-            _hardwareVaultRepository.AddRangeAsync(TestingHardwareVaults);
+            _dbContext.HardwareVaults.AddRange(TestingHardwareVaults);
+            await _dbContext.SaveChangesAsync();
+
         }
     }
 }

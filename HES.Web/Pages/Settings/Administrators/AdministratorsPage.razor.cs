@@ -30,8 +30,8 @@ namespace HES.Web.Pages.Settings.Administrators
                 EmailSenderService = ScopedServices.GetRequiredService<IEmailSenderService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<ApplicationUser, ApplicationUserFilter>>();
 
-                SynchronizationService.UpdateAdministratorsPage += UpdateAdministratorsPage;
-                SynchronizationService.UpdateAdministratorStatePage += UpdateAdministratorStatePage;
+                PageSyncService.UpdateAdministratorsPage += UpdateAdministratorsPage;
+                PageSyncService.UpdateAdministratorStatePage += UpdateAdministratorStatePage;
 
                 AuthenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 await BreadcrumbsService.SetAdministrators();
@@ -81,7 +81,7 @@ namespace HES.Web.Pages.Settings.Administrators
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateAdministrators(PageId);
+                await PageSyncService.UpdateAdministrators(PageId);
             }
         }
 
@@ -118,14 +118,14 @@ namespace HES.Web.Pages.Settings.Administrators
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateAdministrators(PageId);
+                await PageSyncService.UpdateAdministrators(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateAdministratorsPage -= UpdateAdministratorsPage;
-            SynchronizationService.UpdateAdministratorStatePage -= UpdateAdministratorStatePage;
+            PageSyncService.UpdateAdministratorsPage -= UpdateAdministratorsPage;
+            PageSyncService.UpdateAdministratorStatePage -= UpdateAdministratorStatePage;
         }
     }
 }

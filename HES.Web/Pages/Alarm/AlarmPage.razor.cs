@@ -31,11 +31,11 @@ namespace HES.Web.Pages.Alarm
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
                 AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
 
-                SynchronizationService.UpdateAlarmPage += UpdateAlarmPage;
+                PageSyncService.UpdateAlarmPage += UpdateAlarmPage;
 
                 await BreadcrumbsService.SetAlarm();
                 await GetAlarmStateAsync();
-                WorkstationOnline = RemoteWorkstationConnectionsService.WorkstationsOnlineCount();
+                WorkstationOnline = RemoteWorkstationConnectionsService.GetWorkstationsOnlineCount();
                 WorkstationCount = await WorkstationService.GetWorkstationsCountAsync(new DataLoadingOptions<WorkstationFilter>());
                 CurrentUserEmail = await GetCurrentUserEmailAsync();
                 SetInitialized();
@@ -78,7 +78,7 @@ namespace HES.Web.Pages.Alarm
             if (result.Succeeded)
             {
                 await GetAlarmStateAsync();
-                await SynchronizationService.UpdateAlarm(PageId);
+                await PageSyncService.UpdateAlarm(PageId);
             }
         }
 
@@ -97,13 +97,13 @@ namespace HES.Web.Pages.Alarm
             if (result.Succeeded)
             {
                 await GetAlarmStateAsync();
-                await SynchronizationService.UpdateAlarm(PageId);
+                await PageSyncService.UpdateAlarm(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateAlarmPage -= UpdateAlarmPage;
+            PageSyncService.UpdateAlarmPage -= UpdateAlarmPage;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace HES.Web.Pages.Templates
             {
                 TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
 
-                Template = await TemplateService.GetByIdAsync(TemplateId);
+                Template = await TemplateService.GetTemplateByIdAsync(TemplateId);
 
                 if (Template == null)
                     throw new Exception("Template not found.");
@@ -51,7 +51,7 @@ namespace HES.Web.Pages.Templates
 
         protected override async Task ModalDialogCancel()
         {
-            await TemplateService.UnchangedTemplateAsync(Template);
+            TemplateService.UnchangedTemplate(Template);
             await base.ModalDialogCancel();
         }
 

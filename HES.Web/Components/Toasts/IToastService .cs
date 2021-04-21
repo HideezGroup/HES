@@ -3,7 +3,7 @@ using HES.Core.Enums;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace HES.Core.Interfaces
+namespace HES.Web.Components
 {
     public interface IToastService
     {

@@ -1,4 +1,6 @@
-﻿using HES.Core.Interfaces;
+﻿using HES.Core.Constants;
+using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -40,7 +42,7 @@ namespace HES.Core.HostedServices
                 {
                     var appSettingsService = scope.ServiceProvider.GetRequiredService<IAppSettingsService>();
 
-                    var ldapSettings = await appSettingsService.GetLdapSettingsAsync();
+                    var ldapSettings = await appSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
                     if (ldapSettings?.Password == null)
                         return;
 
@@ -62,7 +64,7 @@ namespace HES.Core.HostedServices
                 {
                     var appSettingsService = scope.ServiceProvider.GetRequiredService<IAppSettingsService>();
 
-                    var ldapSettings = await appSettingsService.GetLdapSettingsAsync();
+                    var ldapSettings = await appSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
                     if (ldapSettings?.Password == null)
                     {
                         _logger.LogWarning("Active Directory credentials no set");

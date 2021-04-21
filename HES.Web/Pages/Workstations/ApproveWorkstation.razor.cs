@@ -61,7 +61,7 @@ namespace HES.Web.Pages.Workstations
 
         protected override async Task ModalDialogCancel()
         {
-            await WorkstationService.UnchangedWorkstationAsync(Workstation);
+            WorkstationService.UnchangedWorkstation(Workstation);
             await base.ModalDialogCancel();
         }
 

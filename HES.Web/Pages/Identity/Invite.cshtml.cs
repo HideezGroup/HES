@@ -17,12 +17,12 @@ namespace HES.Web.Pages.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ISynchronizationService _synchronizationService;
+        private readonly IPageSyncService _synchronizationService;
         private readonly ILogger<InviteModel> _logger;
 
         public InviteModel(UserManager<ApplicationUser> userManager,
                            SignInManager<ApplicationUser> signInManager,
-                           ISynchronizationService synchronizationService,
+                           IPageSyncService synchronizationService,
                            ILogger<InviteModel> logger)
         {
             _userManager = userManager;

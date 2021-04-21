@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
@@ -51,7 +52,7 @@ namespace HES.Web.Pages.Employees
                     MemoryCache.Set(Account.Id, Account);
 
                 Employee = await EmployeeService.GetEmployeeByIdAsync(Account.EmployeeId);
-                LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
+                LdapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
 
                 SetInitialized();
             }
@@ -88,13 +89,13 @@ namespace HES.Web.Pages.Employees
             {
                 Logger.LogError(ex.Message);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-                await ModalDialogClose();
+                await ModalDialogCancel();
             }
         }
 
         protected override async Task ModalDialogCancel()
         {
-            await EmployeeService.UnchangedPersonalAccountAsync(Account);
+            EmployeeService.UnchangedPersonalAccount(Account);
             await base.ModalDialogCancel();
         }
 

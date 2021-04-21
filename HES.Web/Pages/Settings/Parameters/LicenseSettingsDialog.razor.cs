@@ -1,4 +1,5 @@
-﻿using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
@@ -29,7 +30,7 @@ namespace HES.Web.Pages.Settings.Parameters
             {
                 await Button.SpinAsync(async () =>
                 {
-                    await AppSettingsService.SetLicensingSettingsAsync(LicensingSettings);
+                    await AppSettingsService.SetSettingsAsync(LicensingSettings, ServerConstants.Licensing);
                     await ToastService.ShowToastAsync("License settings updated.", ToastType.Success);
                     await ModalDialogClose();
                 });

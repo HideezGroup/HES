@@ -146,7 +146,7 @@ namespace HES.Web.Pages.SoftwareVaults
 
         public void Dispose()
         {
-            SoftwareVaultService.Dispose();
+            //SoftwareVaultService.Dispose();
         }
     }
 }

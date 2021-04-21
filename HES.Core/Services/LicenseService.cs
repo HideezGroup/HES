@@ -1,10 +1,14 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API.License;
+using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.LicenseOrders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -19,27 +23,21 @@ using System.Transactions;
 
 namespace HES.Core.Services
 {
-    public class LicenseService : ILicenseService, IDisposable
+    public class LicenseService : ILicenseService
     {
-        private readonly IAsyncRepository<LicenseOrder> _licenseOrderRepository;
-        private readonly IAsyncRepository<HardwareVaultLicense> _hardwareVaultLicenseRepository;
-        private readonly IAsyncRepository<HardwareVault> _hardwareVaultRepository;
+        private readonly IApplicationDbContext _dbContext;
         private readonly IAppSettingsService _appSettingsService;
         private readonly IApplicationUserService _applicationUserService;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<LicenseService> _logger;
 
-        public LicenseService(IAsyncRepository<LicenseOrder> licenseOrderRepository,
-                                   IAsyncRepository<HardwareVaultLicense> hardwareVaultLicenseRepository,
-                                   IAsyncRepository<HardwareVault> hardwareVaultRepository,
-                                   IAppSettingsService appSettingsService,
-                                   IApplicationUserService applicationUserService,
-                                   IHttpClientFactory httpClientFactory,
-                                   ILogger<LicenseService> logger)
+        public LicenseService(IApplicationDbContext dbContext,
+            IAppSettingsService appSettingsService,
+            IApplicationUserService applicationUserService,
+            IHttpClientFactory httpClientFactory,
+            ILogger<LicenseService> logger)
         {
-            _licenseOrderRepository = licenseOrderRepository;
-            _hardwareVaultLicenseRepository = hardwareVaultLicenseRepository;
-            _hardwareVaultRepository = hardwareVaultRepository;
+            _dbContext = dbContext;
             _appSettingsService = appSettingsService;
             _applicationUserService = applicationUserService;
             _httpClientFactory = httpClientFactory;
@@ -50,16 +48,16 @@ namespace HES.Core.Services
 
         private async Task<HttpClient> CreateHttpClient()
         {
-            var licensing = await _appSettingsService.GetLicensingSettingsAsync();
-
+            var licensing = await _appSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
             if (licensing == null)
-                throw new Exception("Api Key is empty.");
+            {
+                throw new HESException(HESCode.ApiKeyEmpty);
+            }
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(licensing.ApiAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
             return client;
         }
 
@@ -91,13 +89,22 @@ namespace HES.Core.Services
 
         public async Task<List<LicenseOrder>> GetLicenseOrdersAsync()
         {
-            return await _licenseOrderRepository.Query().ToListAsync();
+            return await _dbContext.LicenseOrders.ToListAsync();
         }
 
         public async Task<List<LicenseOrder>> GetLicenseOrdersAsync(DataLoadingOptions<LicenseOrderFilter> dataLoadingOptions)
         {
-            var query = _licenseOrderRepository
-                .Query()
+            return await LicenseOrdersQuery(dataLoadingOptions).Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetLicenseOrdersCountAsync(DataLoadingOptions<LicenseOrderFilter> dataLoadingOptions)
+        {
+            return await LicenseOrdersQuery(dataLoadingOptions).CountAsync();
+        }
+
+        private IQueryable<LicenseOrder> LicenseOrdersQuery(DataLoadingOptions<LicenseOrderFilter> dataLoadingOptions)
+        {
+            var query = _dbContext.LicenseOrders
                 .Include(x => x.HardwareVaultLicenses)
                 .AsQueryable();
 
@@ -181,77 +188,12 @@ namespace HES.Core.Services
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
-        }
-
-        public async Task<int> GetLicenseOrdersCountAsync(DataLoadingOptions<LicenseOrderFilter> dataLoadingOptions)
-        {
-            var query = _licenseOrderRepository
-                .Query()
-                .Include(x => x.HardwareVaultLicenses)
-                .AsQueryable();
-
-            // Filter
-            if (dataLoadingOptions.Filter != null)
-            {
-                if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Note))
-                {
-                    query = query.Where(x => x.Note.Contains(dataLoadingOptions.Filter.Note, StringComparison.OrdinalIgnoreCase));
-                }
-                if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.ContactEmail))
-                {
-                    query = query.Where(w => w.ContactEmail.Contains(dataLoadingOptions.Filter.ContactEmail, StringComparison.OrdinalIgnoreCase));
-                }
-                if (!dataLoadingOptions.Filter.ProlongLicense != null)
-                {
-                    query = query.Where(w => w.ProlongExistingLicenses == dataLoadingOptions.Filter.ProlongLicense);
-                }
-                if (dataLoadingOptions.Filter.OrderStatus != null)
-                {
-                    query = query.Where(x => x.OrderStatus == dataLoadingOptions.Filter.OrderStatus);
-                }
-                if (dataLoadingOptions.Filter.LicenseStartDateStart != null)
-                {
-                    query = query.Where(w => w.StartDate >= dataLoadingOptions.Filter.LicenseStartDateStart);
-                }
-                if (dataLoadingOptions.Filter.LicenseStartDateEnd != null)
-                {
-                    query = query.Where(x => x.StartDate <= dataLoadingOptions.Filter.LicenseStartDateEnd);
-                }
-                if (dataLoadingOptions.Filter.LicenseEndDateStart != null)
-                {
-                    query = query.Where(w => w.EndDate >= dataLoadingOptions.Filter.LicenseEndDateStart);
-                }
-                if (dataLoadingOptions.Filter.LicenseEndDateEnd != null)
-                {
-                    query = query.Where(x => x.EndDate <= dataLoadingOptions.Filter.LicenseEndDateEnd);
-                }
-                if (dataLoadingOptions.Filter.CreatedDateStart != null)
-                {
-                    query = query.Where(w => w.CreatedAt >= dataLoadingOptions.Filter.CreatedDateStart);
-                }
-                if (dataLoadingOptions.Filter.CreatedDateEnd != null)
-                {
-                    query = query.Where(x => x.CreatedAt <= dataLoadingOptions.Filter.CreatedDateEnd);
-                }
-            }
-
-            // Search
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
-            {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.ContactEmail.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Note.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return await query.CountAsync();
+            return query;
         }
 
         public async Task<LicenseOrder> GetLicenseOrderByIdAsync(string orderId)
         {
-            return await _licenseOrderRepository
-                .Query()
+            return await _dbContext.LicenseOrders
                 .Include(x => x.HardwareVaultLicenses)
                 .FirstOrDefaultAsync(x => x.Id == orderId);
         }
@@ -259,28 +201,36 @@ namespace HES.Core.Services
         public async Task<LicenseOrder> CreateOrderAsync(LicenseOrder licenseOrder, List<HardwareVault> hardwareVaults)
         {
             if (licenseOrder == null)
-                throw new ArgumentNullException(nameof(licenseOrder));
-
-            LicenseOrder createdOrder;
-
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                createdOrder = await _licenseOrderRepository.AddAsync(licenseOrder);
-                await AddOrUpdateHardwareVaultEmptyLicensesAsync(createdOrder.Id, hardwareVaults.Select(x => x.Id).ToList());
+                throw new ArgumentNullException(nameof(licenseOrder));
+            }
+
+            EntityEntry<LicenseOrder> createdOrder;
+
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                createdOrder = _dbContext.LicenseOrders.Add(licenseOrder);
+                await _dbContext.SaveChangesAsync();
+
+                await AddOrUpdateHardwareVaultEmptyLicensesAsync(createdOrder.Entity.Id, hardwareVaults.Select(x => x.Id).ToList());
                 transactionScope.Complete();
             }
 
-            return createdOrder;
+            return createdOrder.Entity;
         }
 
         public async Task<LicenseOrder> EditOrderAsync(LicenseOrder licenseOrder, List<HardwareVault> hardwareVaults)
         {
             if (licenseOrder == null)
-                throw new ArgumentNullException(nameof(licenseOrder));
-
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _licenseOrderRepository.UpdateAsync(licenseOrder);
+                throw new ArgumentNullException(nameof(licenseOrder));
+            }
+
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                _dbContext.LicenseOrders.Update(licenseOrder);
+                await _dbContext.SaveChangesAsync();
+
                 await AddOrUpdateHardwareVaultEmptyLicensesAsync(licenseOrder.Id, hardwareVaults.Select(x => x.Id).ToList());
                 transactionScope.Complete();
             }
@@ -288,32 +238,47 @@ namespace HES.Core.Services
             return licenseOrder;
         }
 
-        public async Task<List<LicenseOrder>> AddOrderRangeAsync(List<LicenseOrder> licenseOrders)
+        public async Task AddOrderRangeAsync(List<LicenseOrder> licenseOrders)
         {
             if (licenseOrders == null)
+            {
                 throw new ArgumentNullException(nameof(licenseOrders));
+            }
 
-            return await _licenseOrderRepository.AddRangeAsync(licenseOrders) as List<LicenseOrder>;
+            _dbContext.LicenseOrders.AddRange(licenseOrders);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteOrderAsync(LicenseOrder licenseOrder)
+        public async Task DeleteOrderAsync(string licenseOrderId)
         {
-            if (licenseOrder == null)
-                throw new Exception("Order does not exist.");
+            if (string.IsNullOrWhiteSpace(licenseOrderId))
+            {
+                throw new ArgumentNullException(nameof(licenseOrderId));
+            }
 
-            await _licenseOrderRepository.DeleteAsync(licenseOrder);
+            var licenseOrder = await _dbContext.LicenseOrders.FindAsync(licenseOrderId);
+            if (licenseOrder == null)
+            {
+                throw new HESException(HESCode.LicenseOrderNotFound);
+            }
+
+            _dbContext.LicenseOrders.Remove(licenseOrder);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task SendOrderAsync(LicenseOrder licenseOrder)
         {
             var vaultLicenses = await GetLicensesByOrderIdAsync(licenseOrder.Id);
             if (vaultLicenses == null)
-                throw new Exception("Hardware vault licenses not found.");
+            {
+                throw new HESException(HESCode.LicenseForHardwareVaultNotFound);
+            }
 
-            var licensing = await _appSettingsService.GetLicensingSettingsAsync();
-
+            var licensing = await _appSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
             if (licensing == null)
-                throw new Exception("Api Key is empty.");
+            {
+                throw new HESException(HESCode.ApiKeyEmpty);
+            }
 
             var licenseOrderDto = new LicenseOrderDto()
             {
@@ -335,12 +300,18 @@ namespace HES.Core.Services
             }
 
             licenseOrder.OrderStatus = LicenseOrderStatus.Sent;
-            await _licenseOrderRepository.UpdateOnlyPropAsync(licenseOrder, new string[] { "OrderStatus" });
+
+            _dbContext.LicenseOrders.Update(licenseOrder);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateLicenseOrdersAsync()
         {
-            var orders = await GetOpenLicenseOrdersAsync();
+            var orders = await _dbContext.LicenseOrders
+                .Where(x => x.OrderStatus == LicenseOrderStatus.Sent ||
+                            x.OrderStatus == LicenseOrderStatus.Processing ||
+                            x.OrderStatus == LicenseOrderStatus.WaitingForPayment)
+                .ToListAsync();
 
             foreach (var order in orders)
             {
@@ -357,26 +328,22 @@ namespace HES.Core.Services
 
                 // Status has not changed
                 if (status == order.OrderStatus)
+                {
                     continue;
+                }
 
                 if (status == LicenseOrderStatus.Completed)
+                {
                     await UpdateHardwareVaultsLicensesAsync(order.Id);
+                }
 
                 order.OrderStatus = status;
 
-                await _licenseOrderRepository.UpdateOnlyPropAsync(order, new string[] { "OrderStatus" });
+                _dbContext.LicenseOrders.Update(order);
+                await _dbContext.SaveChangesAsync();
+
                 await _applicationUserService.SendLicenseChangedAsync(order.CreatedAt, status);
             }
-        }
-
-        private async Task<List<LicenseOrder>> GetOpenLicenseOrdersAsync()
-        {
-            return await _licenseOrderRepository
-                .Query()
-                .Where(x => x.OrderStatus == LicenseOrderStatus.Sent ||
-                            x.OrderStatus == LicenseOrderStatus.Processing ||
-                            x.OrderStatus == LicenseOrderStatus.WaitingForPayment)
-                .ToListAsync();
         }
 
         #endregion
@@ -385,41 +352,38 @@ namespace HES.Core.Services
 
         public async Task<List<HardwareVaultLicense>> GetLicensesAsync()
         {
-            return await _hardwareVaultLicenseRepository
-                .Query()
-                .ToListAsync();
+            return await _dbContext.HardwareVaultLicenses.ToListAsync();
         }
 
         public async Task<List<HardwareVaultLicense>> GetActiveLicensesAsync(string vaultId)
         {
-            return await _hardwareVaultLicenseRepository
-                .Query()
+            return await _dbContext.HardwareVaultLicenses
                 .Where(x => x.EndDate >= DateTime.UtcNow.Date && x.HardwareVaultId == vaultId && x.Data != null)
                 .ToListAsync();
         }
 
         public async Task<List<HardwareVaultLicense>> GetNewLicensesByHardwareVaultIdAsync(string vaultId)
         {
-            return await _hardwareVaultLicenseRepository
-                .Query()
+            return await _dbContext.HardwareVaultLicenses
                 .Where(x => x.AppliedAt == null && x.HardwareVaultId == vaultId && x.Data != null)
                 .ToListAsync();
         }
 
         public async Task<List<HardwareVaultLicense>> GetLicensesByOrderIdAsync(string orderId)
         {
-            return await _hardwareVaultLicenseRepository
-                .Query()
+            return await _dbContext.HardwareVaultLicenses
                 .Where(d => d.LicenseOrderId == orderId)
                 .ToListAsync();
         }
 
-        public async Task<List<HardwareVaultLicense>> AddOrUpdateHardwareVaultEmptyLicensesAsync(string orderId, List<string> vaultIds)
+        public async Task AddOrUpdateHardwareVaultEmptyLicensesAsync(string orderId, List<string> vaultIds)
         {
             var existsHardwareVaultLicenses = await GetLicensesByOrderIdAsync(orderId);
 
             if (existsHardwareVaultLicenses != null)
-                await _hardwareVaultLicenseRepository.DeleteRangeAsync(existsHardwareVaultLicenses);
+            {
+                _dbContext.HardwareVaultLicenses.RemoveRange(existsHardwareVaultLicenses);
+            }
 
             var hardwareVaultLicenses = new List<HardwareVaultLicense>();
 
@@ -432,25 +396,26 @@ namespace HES.Core.Services
                 });
             }
 
-            return await _hardwareVaultLicenseRepository.AddRangeAsync(hardwareVaultLicenses) as List<HardwareVaultLicense>;
+            _dbContext.HardwareVaultLicenses.AddRange(hardwareVaultLicenses);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<HardwareVaultLicense>> AddHardwareVaultLicenseRangeAsync(List<HardwareVaultLicense> hardwareVaultLicenses)
+        public async Task AddHardwareVaultLicenseRangeAsync(List<HardwareVaultLicense> hardwareVaultLicenses)
         {
             if (hardwareVaultLicenses == null)
+            {
                 throw new ArgumentNullException(nameof(hardwareVaultLicenses));
+            }
 
-            return await _hardwareVaultLicenseRepository.AddRangeAsync(hardwareVaultLicenses) as List<HardwareVaultLicense>;
+            _dbContext.HardwareVaultLicenses.AddRange(hardwareVaultLicenses);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateHardwareVaultsLicenseStatusAsync()
         {
             var hardwareVaultsChangedStatus = new List<HardwareVault>();
 
-            var hardwareVaults = await _hardwareVaultRepository
-                .Query()
-                .Where(d => d.LicenseEndDate != null)
-                .ToListAsync();
+            var hardwareVaults = await _dbContext.HardwareVaults.Where(d => d.LicenseEndDate != null).ToListAsync();
 
             foreach (var hardwareVault in hardwareVaults)
             {
@@ -490,24 +455,29 @@ namespace HES.Core.Services
 
             if (hardwareVaultsChangedStatus.Count > 0)
             {
-                await _hardwareVaultRepository.UpdateOnlyPropAsync(hardwareVaults, new string[] { nameof(HardwareVault.LicenseStatus) });
+                _dbContext.HardwareVaults.UpdateRange(hardwareVaults);
+                await _dbContext.SaveChangesAsync();
+
                 await _applicationUserService.SendHardwareVaultLicenseStatus(hardwareVaultsChangedStatus);
             }
         }
 
         public async Task ChangeLicenseAppliedAsync(string vaultId, string licenseId)
         {
-            var hardwareVaultLicense = await _hardwareVaultLicenseRepository
-                .Query()
+            var hardwareVaultLicense = await _dbContext.HardwareVaultLicenses
                 .Where(d => d.HardwareVaultId == vaultId && d.Id == licenseId)
                 .FirstOrDefaultAsync();
 
             if (hardwareVaultLicense == null)
-                throw new Exception("Hardware vault license not found.");
+            {
+                throw new HESException(HESCode.LicenseForHardwareVaultNotFound);
+            }
 
-            var vault = await _hardwareVaultRepository.GetByIdAsync(vaultId);
+            var vault = await _dbContext.HardwareVaults.FindAsync(vaultId);
             if (vault == null)
-                throw new Exception($"[{vaultId}] Hardware vault not found.");
+            {
+                throw new HESException(HESCode.HardwareVaultNotFoundWithParam, new string[] { vaultId });
+            }
 
             // Set license is applied
             hardwareVaultLicense.AppliedAt = DateTime.UtcNow;
@@ -515,7 +485,9 @@ namespace HES.Core.Services
             // Check if there are more licenses
             var newLicenses = await GetNewLicensesByHardwareVaultIdAsync(vaultId);
             if (newLicenses.Count == 0)
+            {
                 vault.HasNewLicense = false;
+            }
 
             // Set license end date to vault
             if (vault.LicenseEndDate.HasValue)
@@ -527,18 +499,17 @@ namespace HES.Core.Services
                 vault.LicenseEndDate = hardwareVaultLicense.EndDate;
             }
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                await _hardwareVaultLicenseRepository.UpdateOnlyPropAsync(hardwareVaultLicense, new string[] { nameof(HardwareVaultLicense.AppliedAt) });
-                await _hardwareVaultRepository.UpdateOnlyPropAsync(vault, new string[] { nameof(HardwareVault.HasNewLicense), nameof(HardwareVault.LicenseEndDate) });
-                transactionScope.Complete();
-            }
+            _dbContext.HardwareVaultLicenses.Update(hardwareVaultLicense);
+            _dbContext.HardwareVaults.Update(vault);
+            await _dbContext.SaveChangesAsync();
         }
 
         private async Task UpdateHardwareVaultsLicensesAsync(string orderId)
         {
             if (orderId == null)
+            {
                 throw new ArgumentNullException(nameof(orderId));
+            }
 
             var response = await HttpClientGetDeviceLicensesAsync(orderId);
 
@@ -554,7 +525,7 @@ namespace HES.Core.Services
 
                 // Get vaults to update
                 var vaultsIds = licenses.Select(d => d.DeviceId).ToList();
-                var vaults = await _hardwareVaultRepository.Query().Where(x => vaultsIds.Contains(x.Id)).ToListAsync();
+                var vaults = await _dbContext.HardwareVaults.Where(x => vaultsIds.Contains(x.Id)).ToListAsync();
 
                 foreach (var license in licenses)
                 {
@@ -568,22 +539,12 @@ namespace HES.Core.Services
                     device.LicenseEndDate = dummyLicense.EndDate;
                 }
 
-                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    await _hardwareVaultLicenseRepository.UpdateOnlyPropAsync(dummyLicenses, new string[] { "ImportedAt", "EndDate", "Data" });
-                    await _hardwareVaultRepository.UpdateOnlyPropAsync(vaults, new string[] { "HasNewLicense", "LicenseEndDate" });
-                    transactionScope.Complete();
-                }
+                _dbContext.HardwareVaultLicenses.UpdateRange(dummyLicenses);
+                _dbContext.HardwareVaults.UpdateRange(vaults);
+                await _dbContext.SaveChangesAsync();
             }
         }
 
-        #endregion
-        public void Dispose()
-        {
-            _licenseOrderRepository.Dispose();
-            _hardwareVaultLicenseRepository.Dispose();
-            _hardwareVaultRepository.Dispose();
-            _appSettingsService.Dispose();
-        }
+        #endregion               
     }
 }
