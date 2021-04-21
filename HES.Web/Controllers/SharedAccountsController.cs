@@ -84,7 +84,7 @@ namespace HES.Web.Controllers
 
                 createdAccount = await _sharedAccountService.CreateSharedAccountAsync(sharedAccount);
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.SharedAccountExist)
             {
                 return BadRequest(new { error = ex.Message });
             }

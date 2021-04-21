@@ -30,7 +30,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                     await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.PositionNameAlreadyInUse)
             {
                 ValidationErrorMessage.DisplayError(nameof(Position.Name), ex.Message);
             }

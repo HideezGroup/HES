@@ -71,7 +71,7 @@ namespace HES.Web.Pages.SharedAccounts
                     await ModalDialogClose();
                 });
             }
-            catch (IncorrectOtpException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectOtp)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.OtpSecret), ex.Message);
             }

@@ -62,7 +62,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                     await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.CompanyNameAlreadyInUse)
             {
                 ValidationErrorMessage.DisplayError(nameof(Company.Name), ex.Message);
             }

@@ -368,7 +368,7 @@ namespace HES.Web.Controllers
                 account = await _employeeService.DeleteAccountAsync(id);
                 _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(account.Employee.HardwareVaults.Select(s => s.Id).ToList());
             }
-            catch (NotFoundException)
+            catch (HESException ex) when (ex.Code == HESCode.AccountNotFound)
             {
                 return NotFound();
             }

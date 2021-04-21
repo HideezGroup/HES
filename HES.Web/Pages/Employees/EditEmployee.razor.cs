@@ -90,7 +90,7 @@ namespace HES.Web.Pages.Employees
                     await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.EmployeeAlreadyExist)
             {
                 ValidationErrorMessage.DisplayError(nameof(Employee.FirstName), ex.Message);
             }

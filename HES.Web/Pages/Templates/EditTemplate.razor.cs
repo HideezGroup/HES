@@ -66,11 +66,11 @@ namespace HES.Web.Pages.Templates
                     await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.TemplateExist)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.Name), ex.Message);
             }
-            catch (IncorrectUrlException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectUrl)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.Urls), ex.Message);
             }

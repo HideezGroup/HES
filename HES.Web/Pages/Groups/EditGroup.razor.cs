@@ -66,10 +66,10 @@ namespace HES.Web.Pages.Groups
                 //    //await ModalDialogService.CloseAsync();
                 //});
             }
-            catch (AlreadyExistException ex)
-            {
-                ValidationErrorMessage.DisplayError(nameof(Core.Entities.Group.Name), ex.Message);
-            }
+            //catch (AlreadyExistException ex)
+            //{
+            //    ValidationErrorMessage.DisplayError(nameof(Core.Entities.Group.Name), ex.Message);
+            //}
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
