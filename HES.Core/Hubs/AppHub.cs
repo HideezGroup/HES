@@ -1,8 +1,5 @@
-﻿using HES.Core.Constants;
-using HES.Core.Entities;
-using HES.Core.Enums;
+﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.AppSettings;
 using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.HES.Client;
 using Hideez.SDK.Communication.HES.DTO;

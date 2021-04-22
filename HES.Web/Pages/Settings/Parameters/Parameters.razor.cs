@@ -55,15 +55,11 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task<LicensingSettings> LoadLicensingSettingsAsync()
         {
-            LicensingSettings settings = new();
+            var settings = await AppSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
 
-            try
+            if (settings == null)
             {
-                settings = await AppSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
-            }
-            catch (HESException ex) when (ex.Code == HESCode.AppSettingsNotFound) 
-            {
-                settings = new LicensingSettings();
+                return new LicensingSettings();
             }
 
             return settings;
@@ -90,17 +86,7 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task<string> LoadDomainSettingsAsync()
         {
-            LdapSettings settings = new();
-
-            try
-            {
-                settings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
-            }
-            catch (HESException ex) when (ex.Code == HESCode.AppSettingsNotFound)
-            {
-                settings = new LdapSettings();
-            }
-
+            var settings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
             return settings?.Host;
         }
 
