@@ -326,28 +326,6 @@ namespace HES.Web.Pages.Employees
             }
         }
 
-        private async Task OpenDialogGenerateAdPasswordAsync()
-        {
-            if (!await VerifyAdUserAsync()) return;
-
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(GenerateAdPassword));
-                builder.AddAttribute(1, nameof(GenerateAdPassword.AccountId), DataTableService.SelectedEntity.Id);
-                builder.CloseComponent();
-            };
-
-            var instance = await ModalDialogService.ShowAsync("Generate AD Password", body);
-            var result = await instance.Result;
-
-            if (result.Succeeded)
-            {
-                await LoadEmployeeAsync();
-                await DataTableService.LoadTableDataAsync();
-                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
-            }
-        }
-
         private async Task OpenDialogDeleteAccountAsync()
         {
             if (!await VerifyAdUserAsync()) return;

@@ -12,34 +12,53 @@ else
     }
     else
     {
-        <EditForm Model="AccountPassword" OnValidSubmit="EditAccountPasswordAsync">
-            <DataAnnotationsValidator />
-            <div class="form-group">
-                <h5 class="text-navyblue">@Account.Name</h5>
+        @if (IsActiveDirectoryAccount)
+        {
+            <div class="btn-group w-100 mb-3" role="group">
+                <input type="radio" class="btn-check" name="btnradio" id="enterPwd" autocomplete="off" checked @onclick="@(() => { Tab = PasswordTab.Enter; })" />
+                <label class="btn btn-outline-primary" for="enterPwd">Enter Pwd</label>
+                <input type="radio" class="btn-check" name="btnradio" id="genaratePwd" autocomplete="off" @onclick="@(() => { Tab = PasswordTab.Generate; })" />
+                <label class="btn btn-outline-primary" for="genaratePwd">Generate Pwd</label>
             </div>
-            <div class="form-group">
-                <Label For="@(() => AccountPassword.Password)" class="text-gray" />
-                <InputText @bind-Value="AccountPassword.Password" type="password" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => AccountPassword.Password)" class="text-danger" />
-            </div>
-            <div class="form-group">
-                <Label For="@(() => AccountPassword.ConfirmPassword)" class="text-gray" />
-                <InputText @bind-Value="AccountPassword.ConfirmPassword" type="password" class="form-control text-navyblue" />
-                <ValidationMessage For="@(() => AccountPassword.ConfirmPassword)" class="text-danger" />
-            </div>
-            @if (Employee.ActiveDirectoryGuid != null && LdapSettings != null && Account.Login.Contains(LdapSettings?.Host.Split(".")[0], StringComparison.OrdinalIgnoreCase))
-            {
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input id="updPwd" type="checkbox" class="custom-control-input" @bind="AccountPassword.UpdateActiveDirectoryPassword" />
-                        <label class="custom-control-label" for="updPwd">Update the password in the Active Directory</label>
+        }
+        switch (Tab)
+        {
+            case PasswordTab.Enter:
+                <EditForm Model="AccountPassword" OnValidSubmit="EditAccountPasswordAsync">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <h5 class="text-navyblue">@Account.Name</h5>
                     </div>
+                    <div class="form-group">
+                        <Label For="@(() => AccountPassword.Password)" class="text-gray" />
+                        <InputText @bind-Value="AccountPassword.Password" type="password" class="form-control text-navyblue" />
+                        <ValidationMessage For="@(() => AccountPassword.Password)" class="text-danger" />
+                    </div>
+                    <div class="form-group">
+                        <Label For="@(() => AccountPassword.ConfirmPassword)" class="text-gray" />
+                        <InputText @bind-Value="AccountPassword.ConfirmPassword" type="password" class="form-control text-navyblue" />
+                        <ValidationMessage For="@(() => AccountPassword.ConfirmPassword)" class="text-danger" />
+                    </div>
+                    <div class="form-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+                        <Button @ref="ButtonSpinner" Text="Save" type="submit" class="btn btn-primary" />
+                    </div>
+                </EditForm>
+                break;
+            case PasswordTab.Generate:
+                <h5>Current cryptographic strength</h5>
+                <ul>
+                    <li>Length 16</li>
+                    <li>Is UpperCase</li>
+                    <li>Is LowerCase</li>
+                    <li>Is SpecChar</li>
+                    <li>Is Numeric</li>
+                </ul>
+                <div class="form-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+                    <Button class="btn btn-primary" Text="Generate" OnClick="GenerateAccountPasswordAsync" />
                 </div>
-            }
-            <div class="form-footer">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-                <Button @ref="ButtonSpinner" Text="Save" type="submit" class="btn btn-primary" />
-            </div>
-        </EditForm>
+                break;
+        }
     }
 }

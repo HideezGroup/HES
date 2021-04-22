@@ -336,8 +336,16 @@ namespace HES.Core.Services
                 .ConfigureRemoteCertificateValidationCallback((sender, certificate, chain, errors) => true);
 
             using var connection = new LdapConnection(ldapConnectionOptions);
-            connection.Connect(ldapSettings.Host, LdapConnection.DefaultSslPort);
-            connection.Bind(LdapConnection.LdapV3, ldapCredentials.UserName, ldapCredentials.Password);
+
+            try
+            {
+                connection.Connect(ldapSettings.Host, LdapConnection.DefaultSslPort);
+                connection.Bind(LdapConnection.LdapV3, ldapCredentials.UserName, ldapCredentials.Password);
+            }
+            catch (LdapException ex) when (ex.ResultCode == LdapException.ConnectError)
+            {
+                throw new Exception("Cannot establish a connection to the Ldap server");
+            }
 
             var dn = GetDnFromHost(ldapSettings.Host);
             var objectGUID = GetObjectGuid(employee.ActiveDirectoryGuid);
