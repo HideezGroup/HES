@@ -29,14 +29,15 @@ namespace HES.Web.Pages.Alarm
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
                 AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
-
                 PageSyncService.UpdateAlarmPage += UpdateAlarmPage;
 
                 await BreadcrumbsService.SetAlarm();
                 await GetAlarmStateAsync();
+
+                CurrentUserEmail = await GetCurrentUserEmailAsync();
                 WorkstationOnline = RemoteWorkstationConnectionsService.GetWorkstationsOnlineCount();
                 WorkstationCount = await WorkstationService.GetWorkstationsCountAsync(new DataLoadingOptions<WorkstationFilter>());
-                CurrentUserEmail = await GetCurrentUserEmailAsync();
+
                 SetInitialized();
             }
             catch (Exception ex)
