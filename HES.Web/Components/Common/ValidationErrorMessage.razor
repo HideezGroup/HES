@@ -17,6 +17,8 @@
 
     public void DisplayError(string field, string message)
     {
+        _messageStore.Clear(CurrentEditContext.Field(field));
+
         _messageStore.Add(CurrentEditContext.Field(field), message);
         CurrentEditContext.NotifyValidationStateChanged();
     }

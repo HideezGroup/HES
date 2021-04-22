@@ -56,10 +56,6 @@ namespace HES.Web.Pages.SharedAccounts
                     await ModalDialogClose();
                 });
             }
-            catch (HESException ex) when (ex.Code == HESCode.SharedAccountExist)
-            {
-                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Name), ex.Message);
-            }
             catch (HESException ex) when (ex.Code == HESCode.IncorrectUrl)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.Urls), ex.Message);
@@ -67,6 +63,11 @@ namespace HES.Web.Pages.SharedAccounts
             catch (HESException ex) when (ex.Code == HESCode.IncorrectOtp)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.OtpSecret), ex.Message);
+            }
+            catch (HESException ex) when (ex.Code == HESCode.SharedAccountExist)
+            {
+                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Name), ex.Message);
+                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Login), ex.Message);
             }
             catch (Exception ex)
             {
