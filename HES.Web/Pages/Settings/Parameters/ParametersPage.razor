@@ -17,35 +17,39 @@
             else
             {
                 <div class="alert alert-danger" role="alert">
-                    Required to set
+                    Not set
                 </div>
             }
         </div>
         <div class="mt-4">
-            <button type="button" class="btn btn-primary" @onclick="OpenDialogLicensingSettingsAsync">Set Licensing Settings</button>
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLicensingSettingsAsync">Set Licensing Settings</button>
+            @if (LicensingSettings != null)
+            {
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLicenseSettingsAsync">Delete Settings</button>
+            }
         </div>
     </SettingsCard>
     <SettingsCard Title="Domain" Description="To connect to the domain and import groups and users.">
         <div class="form-group">
             <label class="control-label text-gray">Domain Name</label>
-            @if (DomainHost != null)
+            @if (LdapSettings != null)
             {
                 <div class="alert alert-secondary" role="alert">
-                    @DomainHost
+                    @LdapSettings.Host
                 </div>
             }
             else
             {
                 <div class="alert alert-danger" role="alert">
-                    Required to set
+                    Not set
                 </div>
             }
         </div>
         <div class="mt-4">
             <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLdapSettingsAsync">Set Domain Settings</button>
-            @if (DomainHost != null)
+            @if (LdapSettings != null)
             {
-                <button type="button" class="btn btn-danger" @onclick="OpenDialogDeleteLdapCredentialsAsync">Delete Credentials</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLdapSettingsAsync">Delete Settings</button>
             }
         </div>
     </SettingsCard>

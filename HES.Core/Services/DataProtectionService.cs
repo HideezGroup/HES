@@ -326,7 +326,7 @@ namespace HES.Core.Services
             }
 
             // AppSettings
-            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Domain);
+            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -432,7 +432,7 @@ namespace HES.Core.Services
             }
 
             // AppSettings     
-            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Domain);
+            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -520,7 +520,7 @@ namespace HES.Core.Services
             }
 
             // AppSettings
-            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Domain);
+            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);

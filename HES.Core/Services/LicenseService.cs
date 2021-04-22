@@ -1,10 +1,8 @@
-﻿using HES.Core.Constants;
-using HES.Core.Entities;
+﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API.License;
-using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +46,7 @@ namespace HES.Core.Services
 
         private async Task<HttpClient> CreateHttpClient()
         {
-            var licensing = await _appSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
+            var licensing = await _appSettingsService.GetLicenseSettingsAsync();
             if (licensing == null)
             {
                 throw new HESException(HESCode.ApiKeyEmpty);
@@ -274,7 +272,7 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.LicenseForHardwareVaultNotFound);
             }
 
-            var licensing = await _appSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
+            var licensing = await _appSettingsService.GetLicenseSettingsAsync();
             if (licensing == null)
             {
                 throw new HESException(HESCode.ApiKeyEmpty);

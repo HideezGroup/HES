@@ -5,8 +5,14 @@ namespace HES.Core.Interfaces
 {
     public interface IAppSettingsService
     {
-        Task<T> GetSettingsAsync<T>(string settingsKey);
-        Task SetSettingsAsync<T>(T settings, string settingsKey);
+        Task<LicensingSettings> GetLicenseSettingsAsync();
+        Task SetLicenseSettingsAsync(LicensingSettings licSettings);
+        Task RemoveLicenseSettingsAsync();
+
+        Task<LdapSettings> GetLdapSettingsAsync();
+        Task SetLdapSettingsAsync(LdapSettings ldapSettings);
+        Task RemoveLdapSettingsAsync();
+
         Task<AlarmState> GetAlarmStateAsync();
         Task SetAlarmStateAsync(AlarmState alarmState);
     }

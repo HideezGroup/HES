@@ -1,5 +1,4 @@
-﻿using HES.Core.Constants;
-using HES.Core.Entities;
+﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
@@ -326,7 +325,7 @@ namespace HES.Core.Services
             if (employee.ActiveDirectoryGuid == null)
                 return;
 
-            var ldapSettings = await _appSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
+            var ldapSettings = await _appSettingsService.GetLdapSettingsAsync();
             if (ldapSettings == null)
                 throw new HESException(HESCode.LdapSettingsNotSet);
 

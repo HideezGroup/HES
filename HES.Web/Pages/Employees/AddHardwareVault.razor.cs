@@ -1,8 +1,6 @@
-﻿using HES.Core.Constants;
-using HES.Core.Entities;
+﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using HES.Web.Components;
@@ -102,7 +100,7 @@ namespace HES.Web.Pages.Employees
                 {
                     await EmployeeService.AddHardwareVaultAsync(EmployeeId, SelectedHardwareVault.Id);
 
-                    var ldapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
+                    var ldapSettings = await AppSettingsService.GetLdapSettingsAsync();
                     if (ldapSettings?.Password != null)
                     {
                         var employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);

@@ -1,5 +1,4 @@
-﻿using HES.Core.Constants;
-using HES.Core.Entities;
+﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
@@ -62,7 +61,7 @@ namespace HES.Web.Pages.Employees
                 if (Employee == null)
                     throw new HESException(HESCode.EmployeeNotFound);
 
-                LdapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
+                LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
 
                 if (Employee.ActiveDirectoryGuid != null && LdapSettings.Password != null && Account.Login.Contains(LdapSettings?.Host.Split(".")[0], StringComparison.OrdinalIgnoreCase))
                 {

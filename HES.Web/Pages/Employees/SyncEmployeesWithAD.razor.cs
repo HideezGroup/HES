@@ -1,5 +1,4 @@
-﻿using HES.Core.Constants;
-using HES.Core.Enums;
+﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Web.Components;
@@ -26,9 +25,9 @@ namespace HES.Web.Pages.Employees
             {
                 LdapService = ScopedServices.GetRequiredService<ILdapService>();
 
-                LdapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
+                LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
 
-                if (LdapSettings?.UserName == null && LdapSettings?.Password == null)
+                if (LdapSettings == null)
                 {
                     CredentialsNotSet = true;
                 }

@@ -32,8 +32,13 @@ namespace HES.Core.HostedServices
             try
             {
                 using var scope = Services.CreateScope();
-                var scopedLicenseService = scope.ServiceProvider.GetRequiredService<ILicenseService>();
 
+                var appSettingsService = scope.ServiceProvider.GetRequiredService<IAppSettingsService>();
+                var licenseSettings = await appSettingsService.GetLicenseSettingsAsync();
+                if (licenseSettings == null)
+                    return;
+
+                var scopedLicenseService = scope.ServiceProvider.GetRequiredService<ILicenseService>();
                 await scopedLicenseService.UpdateLicenseOrdersAsync();
                 await scopedLicenseService.UpdateHardwareVaultsLicenseStatusAsync();
             }

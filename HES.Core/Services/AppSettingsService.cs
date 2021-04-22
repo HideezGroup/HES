@@ -27,57 +27,125 @@ namespace HES.Core.Services
             _logger = logger;
         }
 
-        public async Task<T> GetSettingsAsync<T>(string settingsKey)
+        #region License Settings
+
+        public async Task<LicensingSettings> GetLicenseSettingsAsync()
         {
-            if (string.IsNullOrWhiteSpace(settingsKey))
-            {
-                throw new ArgumentNullException(nameof(settingsKey));
-            }
-
-            var appSettings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == settingsKey);
-            if (appSettings == null)
-            {
-                return default;
-            }
-
-            var value = _dataProtectionService.Decrypt(appSettings.Value);
-            return JsonSerializer.Deserialize<T>(value);
-        }
-
-        public async Task SetSettingsAsync<T>(T settings, string settingsKey)
-        {
+            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Licensing);
             if (settings == null)
             {
-                throw new ArgumentNullException(nameof(settings));
+                return null;
             }
 
-            if (string.IsNullOrWhiteSpace(settingsKey))
+            var deserialized = JsonSerializer.Deserialize<LicensingSettings>(settings.Value);
+            deserialized.ApiKey = _dataProtectionService.Decrypt(deserialized.ApiKey);
+
+            return deserialized;
+        }
+
+        public async Task SetLicenseSettingsAsync(LicensingSettings licSettings)
+        {
+            if (licSettings == null)
             {
-                throw new ArgumentNullException(nameof(settingsKey));
+                throw new ArgumentNullException(nameof(licSettings));
             }
 
-            var json = JsonSerializer.Serialize(settings);
-            var encryptedJson = _dataProtectionService.Encrypt(json);
+            licSettings.ApiKey = _dataProtectionService.Encrypt(licSettings.ApiKey);
 
-            var appSettings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == settingsKey);
+            var json = JsonSerializer.Serialize(licSettings);
+
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
+
             if (appSettings == null)
             {
-                appSettings = new AppSettings
+                appSettings = new AppSettings()
                 {
-                    Id = settingsKey,
-                    Value = encryptedJson
+                    Id = ServerConstants.Licensing,
+                    Value = json
                 };
-
                 _dbContext.AppSettings.Add(appSettings);
             }
             else
             {
-                appSettings.Value = encryptedJson;
+                appSettings.Value = json;
                 _dbContext.AppSettings.Update(appSettings);
             }
 
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task RemoveLicenseSettingsAsync()
+        {
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
+            if (appSettings != null)
+            {
+                _dbContext.AppSettings.Remove(appSettings);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        #endregion
+
+        #region Ldap Settings
+
+        public async Task<LdapSettings> GetLdapSettingsAsync()
+        {
+            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Ldap);
+            if (settings == null)
+            {
+                return null;
+            }
+
+            var deserialized = JsonSerializer.Deserialize<LdapSettings>(settings.Value);
+            deserialized.Password = _dataProtectionService.Decrypt(deserialized.Password);
+
+            return deserialized;
+        }
+
+        public async Task SetLdapSettingsAsync(LdapSettings ldapSettings)
+        {
+            if (ldapSettings == null)
+            {
+                throw new ArgumentNullException(nameof(ldapSettings));
+            }
+
+            ldapSettings.Password = _dataProtectionService.Encrypt(ldapSettings.Password);
+
+            var json = JsonSerializer.Serialize(ldapSettings);
+
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
+
+            if (appSettings == null)
+            {
+                appSettings = new AppSettings()
+                {
+                    Id = ServerConstants.Ldap,
+                    Value = json
+                };
+                _dbContext.AppSettings.Add(appSettings);
+            }
+            else
+            {
+                appSettings.Value = json;
+                _dbContext.AppSettings.Update(appSettings);
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveLdapSettingsAsync()
+        {
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
+            if (appSettings != null)
+            {
+                _dbContext.AppSettings.Remove(appSettings);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        #endregion
+
+        #region Alarm Settings
 
         public async Task<AlarmState> GetAlarmStateAsync()
         {
@@ -121,6 +189,7 @@ namespace HES.Core.Services
 
             return alarmState;
         }
+
         public async Task SetAlarmStateAsync(AlarmState alarmState)
         {
             _memoryCache.Set(ServerConstants.Alarm, alarmState);
@@ -139,5 +208,7 @@ namespace HES.Core.Services
                 _logger.LogError(ex.Message);
             }
         }
+
+        #endregion
     }
 }

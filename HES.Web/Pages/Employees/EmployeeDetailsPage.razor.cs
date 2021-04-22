@@ -102,9 +102,9 @@ namespace HES.Web.Pages.Employees
 
         private async Task LoadLdapSettingsAsync()
         {
-            var ldapSettings = await AppSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
+            var ldapSettings = await AppSettingsService.GetLdapSettingsAsync();
 
-            if (ldapSettings?.Password != null)
+            if (ldapSettings != null)
             {
                 LdapHost = ldapSettings.Host.Split(".")[0];
             }

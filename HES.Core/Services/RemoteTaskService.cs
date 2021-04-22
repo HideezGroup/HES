@@ -89,10 +89,10 @@ namespace HES.Core.Services
                 case TaskOperation.Create:
                     if (task.Account.UpdateInActiveDirectory)
                     {
-                        var ldapSettings = await _appSettingsService.GetSettingsAsync<LdapSettings>(ServerConstants.Domain);
-                        if (ldapSettings?.Password == null)
+                        var ldapSettings = await _appSettingsService.GetLdapSettingsAsync();
+                        if (ldapSettings == null)
                         {
-                            throw new Exception("Active Directory required credentials");
+                            throw new Exception("To update the account password from the active directory, the active directory settings are required.");
                         }
                         await _ldapService.SetUserPasswordAsync(task.HardwareVault.EmployeeId, task.Password, ldapSettings);
                     }

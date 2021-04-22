@@ -4,7 +4,6 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API.HardwareVault;
-using HES.Core.Models.AppSettings;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using Hideez.SDK.Communication;
@@ -241,7 +240,7 @@ namespace HES.Core.Services
 
         public async Task ImportVaultsAsync()
         {
-            var licensing = await _appSettingsService.GetSettingsAsync<LicensingSettings>(ServerConstants.Licensing);
+            var licensing = await _appSettingsService.GetLicenseSettingsAsync();
 
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(licensing.ApiAddress);
