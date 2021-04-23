@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace HES.Web.Components
     public partial class ModalDialogsWrapper : HESDomComponentBase, IDisposable
     {
         [Inject] IJSRuntime JSRuntime { get; set; }
+        [Inject] ILogger<ModalDialogsWrapper> Logger { get; set; }
         [Inject] private IModalDialogService ModalDialogService { get; set; }
 
         private List<ModalDialogInstance> ModalDialogItems { get; set; }
@@ -24,7 +26,14 @@ namespace HES.Web.Components
         {
             await InvokeAsync(async () =>
             {
-                await JSRuntime.InvokeVoidAsync("hideModalDialog", modalDialogInstance.Id);
+                try
+                {
+                    await JSRuntime.InvokeVoidAsync("hideModalDialog", modalDialogInstance.Id);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError($"JSRuntime - {ex.Message}");
+                }
                 ModalDialogItems.Remove(modalDialogInstance);
                 StateHasChanged();
             });
