@@ -27,8 +27,9 @@ function ToggleSidebarClass() {
     $('.icon-hideez').toggleClass('toggled');
 }
 
-function toggleModalDialog(dialogId) {
-    $('#' + dialogId).modal('toggle');
+function collapseSub(subId) {    
+    var collapse = bootstrap.Collapse.getInstance(document.getElementById(subId));
+    collapse.hide();
 }
 
 function copyToClipboard() {
