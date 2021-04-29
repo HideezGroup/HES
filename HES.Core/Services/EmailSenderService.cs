@@ -230,7 +230,7 @@ namespace HES.Core.Services
             var htmlTemplate = await GetTemplateAsync("mail-hardware-vault-activation-code");
             var replacement = new Dictionary<string, string>
                 {
-                    {"{{employeeName}}", employee.FullName },
+                    {"{{employee}}", employee.FullName },
                     {"{{code}}", code },
                 };
 

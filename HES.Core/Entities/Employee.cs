@@ -44,7 +44,7 @@ namespace HES.Core.Entities
 
         [NotMapped]
         [Display(Name = "Name")]
-        public string FullName => $"{FirstName} {LastName}";
+        public string FullName => $"{FirstName} {LastName}".Trim();
         [NotMapped]
         public int VaultsCount => (HardwareVaults == null ? 0 : HardwareVaults.Count) + (SoftwareVaults == null ? 0 : SoftwareVaults.Count);
     }
