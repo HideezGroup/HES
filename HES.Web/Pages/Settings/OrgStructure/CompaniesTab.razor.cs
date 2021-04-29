@@ -1,5 +1,4 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -23,7 +22,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             try
             {
                 OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
-                SynchronizationService.UpdateOrgSructureCompaniesPage += UpdateOrgSructureCompaniesPage;
+                PageSyncService.UpdateOrgSructureCompaniesPage += UpdateOrgSructureCompaniesPage;
                 await BreadcrumbsService.SetOrgStructure();
                 await LoadCompaniesAsync();
 
@@ -36,7 +35,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             }
         }
 
-        private async Task UpdateOrgSructureCompaniesPage(string exceptPageId, string userName)
+        private async Task UpdateOrgSructureCompaniesPage(string exceptPageId)
         {
 
             if (PageId == exceptPageId)
@@ -45,7 +44,6 @@ namespace HES.Web.Pages.Settings.OrgStructure
             await InvokeAsync(async () =>
             {
                 await LoadCompaniesAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
 
@@ -71,7 +69,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -90,7 +88,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -109,7 +107,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -128,7 +126,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -147,7 +145,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
@@ -166,13 +164,13 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadCompaniesAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructureCompanies(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateOrgSructureCompaniesPage -= UpdateOrgSructureCompaniesPage;
+            PageSyncService.UpdateOrgSructureCompaniesPage -= UpdateOrgSructureCompaniesPage;
         }
     }
 }

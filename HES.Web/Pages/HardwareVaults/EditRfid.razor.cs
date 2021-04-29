@@ -66,7 +66,7 @@ namespace HES.Web.Pages.HardwareVaults
 
         protected override async Task ModalDialogCancel()
         {
-            await HardwareVaultService.UnchangedVaultAsync(HardwareVault);
+            HardwareVaultService.UnchangedVault(HardwareVault);
             await base.ModalDialogCancel();
         }
 

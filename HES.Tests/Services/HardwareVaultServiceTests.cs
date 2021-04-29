@@ -1,12 +1,8 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Tests.Helpers;
 using HES.Web;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Extensions.Ordering;
@@ -21,9 +17,8 @@ namespace HES.Tests.Services
         public HardwareVaultServiceTests(CustomWebAppFactory<Startup> factory)
         {
             _hardwareVaultService = factory.GetHardwareVaultService();
-            _testingOptions = new HardwareVaultServiceTestingOptions(100, 30, "1234567", 20, factory.GetHardwareVaultRepository(), factory.GetHardwareVaultProfileRepository());
+            _testingOptions = new HardwareVaultServiceTestingOptions(100, 30, "1234567", 20, factory.GetDbContext());
         }
-
 
         //TODO ImportHardwarevaults
 
@@ -52,7 +47,6 @@ namespace HES.Tests.Services
 
             Assert.NotNull(result);
             Assert.Equal(_testingOptions.HardwareVaultId, result.Id);
-            Assert.Equal(_testingOptions.HardwareVault.MAC, result.MAC);
         }
 
         [Fact, Order(5)]
@@ -77,7 +71,7 @@ namespace HES.Tests.Services
 
             hardwareVault.MAC = "testMac";
 
-           await _hardwareVaultService.UnchangedVaultAsync(hardwareVault);
+           _hardwareVaultService.UnchangedVault(hardwareVault);
 
             Assert.Equal(_testingOptions.HardwareVault.MAC, hardwareVault.MAC);
         }
@@ -89,9 +83,16 @@ namespace HES.Tests.Services
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 
-            Assert.True(result.HasNewLicense);
+            Assert.Equal(ServerConstants.DefaulHardwareVaultProfileId, result.HardwareVaultProfileId);
+            Assert.Null(result.EmployeeId);
             Assert.Null(result.MasterPassword);
             Assert.Equal(VaultStatus.Ready, result.Status);
+            Assert.Equal(VaultStatusReason.None, result.StatusReason);
+            Assert.Null(result.StatusDescription);
+            Assert.True(result.NeedSync == false);
+            Assert.True(result.HasNewLicense == false);
+            Assert.True(result.IsStatusApplied == false);
+            Assert.True(result.Timestamp == 0);
         }
 
         [Fact, Order(7)]
@@ -114,48 +115,18 @@ namespace HES.Tests.Services
         }
 
         [Fact, Order(9)]
-        public async Task UpdateVaultAsync()
+        public async Task SetActivatedVaultAsync()
         {
             var hardwareVault = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
-            hardwareVault.Status = VaultStatus.Locked;
 
-            await _hardwareVaultService.SetLockedStatusAsync(hardwareVault);
+            await _hardwareVaultService.SetActiveStatusAsync(hardwareVault);
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 
-            Assert.Equal(VaultStatus.Locked, result.Status);
+            Assert.Equal(VaultStatus.Active, result.Status);
         }
 
         [Fact, Order(10)]
-        public async Task ActivateVaultAsync()
-        {
-            await _hardwareVaultService.ActivateVaultAsync(_testingOptions.HardwareVaultId);
-
-            var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
-
-            Assert.Equal(VaultStatus.Suspended, result.Status);
-            Assert.Equal(VaultStatusReason.None, result.StatusReason);
-        }
-
-
-        [Fact, Order(11)]
-        public async Task UpdateRangeVaultsAsync()
-        {
-            //----------------------------------------
-            // UpdateRangeVaultsAsync has been removed
-            //----------------------------------------
-
-            //var hardwareVault = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
-            //hardwareVault.Status = VaultStatus.Active;
-
-            //await _hardwareVaultService.UpdateRangeVaultsAsync(new HardwareVault[] { hardwareVault });
-
-            //var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
-
-            //Assert.Equal(VaultStatus.Active, result.Status);
-        }
-
-        [Fact, Order(12)]
         public async Task SuspendVaultAsync()
         {
             await _hardwareVaultService.SuspendVaultAsync(_testingOptions.HardwareVaultId, "TestDescription");
@@ -167,29 +138,27 @@ namespace HES.Tests.Services
             Assert.Equal("TestDescription", result.StatusDescription);
         }
 
-        [Fact, Order(13)]
-        public async Task VaultCompromisedAsync()
+        [Fact, Order(11)]
+        public async Task LockVaultAsync()
         {
-            await _hardwareVaultService.VaultCompromisedAsync(_testingOptions.HardwareVaultId, VaultStatusReason.Broken, "TestDescription");
+            var hardwareVault = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
+
+            await _hardwareVaultService.SetLockedStatusAsync(hardwareVault);
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 
-            Assert.Null(result.EmployeeId);
-            Assert.Equal(VaultStatus.Compromised, result.Status);
-            Assert.Equal(VaultStatusReason.Broken, result.StatusReason);
-            Assert.Equal("TestDescription", result.StatusDescription);
+            Assert.Equal(VaultStatus.Locked, result.Status);
         }
 
-        [Fact, Order(14)]
-        public async Task UpdateAfterWipeAsync()
+        [Fact, Order(12)]
+        public async Task ActivateVaultAsync()
         {
-            await _hardwareVaultService.SetReadyStatusAsync(_testingOptions.HardwareVault);
+            await _hardwareVaultService.ActivateVaultAsync(_testingOptions.HardwareVaultId);
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 
-            Assert.Null(result.MasterPassword);
-            Assert.Equal(VaultStatus.Ready, result.Status);
-            Assert.True(result.HasNewLicense);
+            Assert.Equal(VaultStatus.Suspended, result.Status);
+            Assert.Equal(VaultStatusReason.None, result.StatusReason);
         }
     }
 }

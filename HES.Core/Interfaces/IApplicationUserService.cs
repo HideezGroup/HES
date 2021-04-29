@@ -1,11 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Models.API;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.AppUsers;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.Identity;
-using HES.Core.Models.Web.Users;
+using HES.Core.Models.AppUsers;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
+using HES.Core.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IApplicationUserService : IDisposable
+    public interface IApplicationUserService
     {
         Task<ApplicationUser> GetUserByIdAsync(string userId);
         Task<ApplicationUser> GetUserByEmailAsync(string email);
@@ -22,7 +21,7 @@ namespace HES.Core.Interfaces
         Task<List<ApplicationUser>> GetAdministratorsAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions);
         Task<int> GetAdministratorsCountAsync(DataLoadingOptions<ApplicationUserFilter> dataLoadingOptions);
         Task<string> InviteAdministratorAsync(string email, string domain);
-        Task<string> GetCallBackUrl(string email, string domain);
+        Task<string> GenerateInviteCallBackUrl(string email, string domain);
         Task<ApplicationUser> DeleteUserAsync(string id);
         Task<IList<ApplicationUser>> GetAllAdministratorsAsync();
         #endregion

@@ -1,5 +1,4 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -27,7 +26,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
 
-                SynchronizationService.UpdateOrgSructurePositionsPage += UpdateOrgSructurePositionsPage;
+                PageSyncService.UpdateOrgSructurePositionsPage += UpdateOrgSructurePositionsPage;
  
                 await BreadcrumbsService.SetOrgStructure();
                 await LoadPositionsAsync();
@@ -41,7 +40,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             }
         }
 
-        private async Task UpdateOrgSructurePositionsPage(string exceptPageId, string userName)
+        private async Task UpdateOrgSructurePositionsPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -49,7 +48,6 @@ namespace HES.Web.Pages.Settings.OrgStructure
             await InvokeAsync(async () =>
             {
                 await LoadPositionsAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
 
@@ -101,7 +99,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadPositionsAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructurePositions(PageId);
             }
         }
 
@@ -120,7 +118,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadPositionsAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructurePositions(PageId);
             }
         }
 
@@ -139,13 +137,13 @@ namespace HES.Web.Pages.Settings.OrgStructure
             if (result.Succeeded)
             {
                 await LoadPositionsAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateOrgSructurePositions(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateOrgSructurePositionsPage -= UpdateOrgSructurePositionsPage;
+            PageSyncService.UpdateOrgSructurePositionsPage -= UpdateOrgSructurePositionsPage;
         }
     }
 }

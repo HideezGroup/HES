@@ -1,7 +1,7 @@
-﻿using HES.Core.Entities;
-using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Employees;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +25,7 @@ namespace HES.Web.Pages.Employees
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<Employee, EmployeeFilter>>();
 
-                SynchronizationService.UpdateEmployeePage += UpdateEmployeePage;
+                PageSyncService.UpdateEmployeePage += UpdateEmployeePage;
 
                 await BreadcrumbsService.SetEmployees();
                 await DataTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, StateHasChanged, nameof(Employee.FullName));
@@ -53,7 +53,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployees(PageId);
+                await PageSyncService.UpdateEmployees(PageId);
             }
         }
 
@@ -61,7 +61,7 @@ namespace HES.Web.Pages.Employees
         {
             await InvokeAsync(() =>
             {
-                NavigationManager.NavigateTo($"/Employees/Details/{DataTableService.SelectedEntity.Id}");
+                NavigationManager.NavigateTo($"{Routes.EmployeesDetails}{DataTableService.SelectedEntity.Id}");
             });
         }
 
@@ -79,7 +79,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployees(PageId);
+                await PageSyncService.UpdateEmployees(PageId);
             }
         }
 
@@ -98,7 +98,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployees(PageId);
+                await PageSyncService.UpdateEmployees(PageId);
             }
         }
 
@@ -117,11 +117,11 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployees(PageId);
+                await PageSyncService.UpdateEmployees(PageId);
             }
         }
 
-        private async Task UpdateEmployeePage(string exceptPageId, string userName)
+        private async Task UpdateEmployeePage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -129,14 +129,13 @@ namespace HES.Web.Pages.Employees
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateEmployeePage -= UpdateEmployeePage;
+            PageSyncService.UpdateEmployeePage -= UpdateEmployeePage;
         }
     }
 }

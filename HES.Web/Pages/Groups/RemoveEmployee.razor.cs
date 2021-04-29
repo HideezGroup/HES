@@ -14,8 +14,6 @@ namespace HES.Web.Pages.Groups
     {
         public IGroupService GroupService { get; set; }
         [Inject] public ILogger<RemoveEmployee> Logger { get; set; }
-        //[Inject] public IModalDialogService ModalDialogService { get; set; }
-        [Inject] IToastService ToastService { get; set; }
         [Parameter] public string ExceptPageId { get; set; }
         [Parameter] public string GroupId { get; set; }
         [Parameter] public string EmployeeId { get; set; }
@@ -28,7 +26,7 @@ namespace HES.Web.Pages.Groups
             {
                 GroupService = ScopedServices.GetRequiredService<IGroupService>();
 
-                GroupMembership = await GroupService.GetGroupMembershipAsync(EmployeeId, GroupId);
+                //GroupMembership = await GroupService.GetGroupMembershipAsync(EmployeeId, GroupId);
 
                 if (GroupMembership == null)
                     throw new Exception("Group membership not found");
@@ -47,7 +45,7 @@ namespace HES.Web.Pages.Groups
         {
             try
             {
-                await GroupService.RemoveEmployeeFromGroupAsync(GroupMembership.Id);         
+                //await GroupService.RemoveEmployeeFromGroupAsync(GroupMembership.Id);         
                 //await SynchronizationService.UpdateGroupDetails(ExceptPageId, GroupId);
                 await ToastService.ShowToastAsync("Employee removed.", ToastType.Success);
             }

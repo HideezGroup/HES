@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Employees;
+﻿using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;

@@ -1,7 +1,6 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.SharedAccounts;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +24,7 @@ namespace HES.Web.Pages.SharedAccounts
                 SharedAccountService = ScopedServices.GetRequiredService<ISharedAccountService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<SharedAccount, SharedAccountsFilter>>();
 
-                SynchronizationService.UpdateSharedAccountsPage += UpdateSharedAccountsPage;
+                PageSyncService.UpdateSharedAccountsPage += UpdateSharedAccountsPage;
 
                 await BreadcrumbsService.SetSharedAccounts();
                 await DataTableService.InitializeAsync(SharedAccountService.GetSharedAccountsAsync, SharedAccountService.GetSharedAccountsCountAsync, StateHasChanged, nameof(SharedAccount.Name), ListSortDirection.Ascending);
@@ -39,7 +38,7 @@ namespace HES.Web.Pages.SharedAccounts
             }
         }
 
-        private async Task UpdateSharedAccountsPage(string exceptPageId, string userName)
+        private async Task UpdateSharedAccountsPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -47,7 +46,6 @@ namespace HES.Web.Pages.SharedAccounts
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
 
@@ -67,7 +65,7 @@ namespace HES.Web.Pages.SharedAccounts
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateSharedAccounts(PageId);
             }
         }
 
@@ -86,7 +84,7 @@ namespace HES.Web.Pages.SharedAccounts
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateSharedAccounts(PageId);
             }
         }
 
@@ -105,7 +103,7 @@ namespace HES.Web.Pages.SharedAccounts
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateSharedAccounts(PageId);
             }
         }
 
@@ -124,7 +122,7 @@ namespace HES.Web.Pages.SharedAccounts
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateSharedAccounts(PageId);
             }
         }
 
@@ -143,13 +141,13 @@ namespace HES.Web.Pages.SharedAccounts
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateSharedAccounts(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateSharedAccountsPage -= UpdateSharedAccountsPage;
+            PageSyncService.UpdateSharedAccountsPage -= UpdateSharedAccountsPage;
         }
     }
 }

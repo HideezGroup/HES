@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Web.Dashboard;
+﻿using HES.Core.Models.Dashboard;
 using Microsoft.AspNetCore.Components;
 
 namespace HES.Web.Pages.Dashboard

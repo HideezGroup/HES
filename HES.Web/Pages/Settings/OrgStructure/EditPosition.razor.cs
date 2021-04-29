@@ -47,7 +47,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
 
         protected override async Task ModalDialogCancel()
         {
-            await OrgStructureService.UnchangedPositionAsync(Position);
+            OrgStructureService.UnchangedPosition(Position);
             await base.ModalDialogCancel();
         }
 
@@ -62,7 +62,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                     await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.PositionNameAlreadyInUse)
             {
                 ValidationErrorMessage.DisplayError(nameof(Position.Name), ex.Message);
             }

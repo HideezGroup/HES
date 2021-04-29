@@ -1,10 +1,10 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.HardwareVaults;
+using HES.Core.Models.Accounts;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
+using HES.Core.Models.Identity;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -37,6 +37,7 @@ namespace HES.Web.Pages.Employees
         public List<Position> Positions { get; set; }
         public List<SharedAccount> SharedAccounts { get; set; }
         public ValidationErrorMessage EmployeeValidationErrorMessage { get; set; }
+        public ValidationErrorMessage EmailValidationErrorMessage { get; set; }
         public AccountType AccountType { get; set; }
         public string WarningMessage { get; set; }
         public WizardStep WizardStep { get; set; }
@@ -49,7 +50,8 @@ namespace HES.Web.Pages.Employees
         public bool AccountSkiped { get; set; }
         public string InputType { get; private set; } = "Password";
         public string Code { get; set; }
-        public string Email { get; private set; }
+        public UserEmailModel UserEmailModel { get; set; }
+        public Button ButtonSendEmail { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -73,6 +75,7 @@ namespace HES.Web.Pages.Employees
                 EmployeeContext = new EditContext(Employee);
                 PersonalAccount = new AccountAddModel { EmployeeId = Employee.Id, LoginType = LoginType.Local };
                 PersonalAccountContext = new EditContext(PersonalAccount);
+                UserEmailModel = new UserEmailModel();
 
                 SetInitialized();
             }
@@ -121,12 +124,12 @@ namespace HES.Web.Pages.Employees
                     await CreateAsync();
                     if (SelectedHardwareVault == null)
                     {
-                        await ToastService.ShowToastAsync("Employee created.", ToastType.Success);         
+                        await ToastService.ShowToastAsync("Employee created.", ToastType.Success);
                         await ModalDialogClose();
                         break;
                     }
                     Code = await HardwareVaultService.GetVaultActivationCodeAsync(SelectedHardwareVault.Id);
-                    Email = Employee.Email;
+                    UserEmailModel.Email = Employee.Email;
                     WizardStep = WizardStep.Activation;
                     break;
                 case WizardStep.Activation:
@@ -226,7 +229,7 @@ namespace HES.Web.Pages.Employees
         {
             try
             {
-                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     await EmployeeService.CreateEmployeeAsync(Employee);
 
@@ -261,10 +264,18 @@ namespace HES.Web.Pages.Employees
 
         private async Task SendEmailAsync()
         {
-            if (string.IsNullOrWhiteSpace(Email))
-                return;
-
-            await EmailSenderService.SendHardwareVaultActivationCodeAsync(new Employee() { FirstName = Employee.FirstName, LastName = Employee.LastName, Email = Email }, Code);
+            try
+            {
+                await ButtonSendEmail.SpinAsync(async () =>
+                {
+                    await EmailSenderService.SendHardwareVaultActivationCodeAsync(new Employee() { FirstName = Employee.FirstName, LastName = Employee.LastName, Email = UserEmailModel.Email }, Code);
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+            }
         }
 
         private async Task CopyToClipboardAsync()

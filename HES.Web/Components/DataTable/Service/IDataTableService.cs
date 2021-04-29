@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Web.DataTableComponent;
+﻿using HES.Core.Models.DataTableComponent;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

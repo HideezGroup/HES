@@ -1,79 +1,80 @@
-﻿@*@page "/Groups"*@
+﻿@*@page "/groups"*@
+@layout MainLayout
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
 @inherits HESPageBase
 
 @if (Initialized)
 {
     @*<TableAction>
-        <FilterForm>
-            <GroupsFilter FilterChanged="MainTableService.FilterChangedAsync" />
-        </FilterForm>
-        <ActionButtons>
-            <button type="button" class="btn btn-primary me-1" @onclick="OpenModalAddGroupAsync">
-                Add from AD
-            </button>
-            <button type="button" class="btn btn-primary mx-1" @onclick="OpenModalCreateGroupAsync">
-                Create group
-            </button>
-            <button type="button" class="btn btn-light border mx-1 @(MainTableService.SelectedEntity == null ? "d-none" : null)" title="Details" @onclick="NavigateToGroupDetails">
-                <img class="icon-btn" src="/svg/icon-details.svg" />
-                Details
-            </button>
-            <button type="button" class="btn btn-light border mx-1 @(MainTableService.SelectedEntity == null ? "d-none" : null)" title="Edit Group" @onclick="OpenModalEditGroupAsync">
-                <img class="icon-btn" src="/svg/icon-edit.svg" />
-                Edit
-            </button>
-            <button type="button" class="btn btn-light border mx-1 @(MainTableService.SelectedEntity == null ? "d-none" : null)" title="Delete Group" @onclick="OpenModalDeleteGroupAsync">
-                <img class="icon-btn" src="/svg/icon-delete.svg" />
-                Delete
-            </button>
-        </ActionButtons>
-        <FilterButtons>
-            <TableFilter SearchTextChanged="MainTableService.SearchTextChangedAsync" />
-        </FilterButtons>
-    </TableAction>
-    <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" SelecedItemDblClick="NavigateToGroupDetails" Loading="MainTableService.Loading">
-        <TableHeader>
-            <MainTableHeader Title="Name"
-                             TitleWidth="70"
-                             SortColumn="@nameof(Group.Name)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Email"
-                             TitleWidth="20"
-                             SortColumn="@nameof(Group.Email)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-            <MainTableHeader Title="Employees"
-                             TitleWidth="10"
-                             SortColumn="@nameof(Group.GroupMemberships)"
-                             CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
-                             CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
-                             SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
-                             SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
-        </TableHeader>
-        <TableRow>
-            <td title="@context.Description">
-                @context.Name
-            </td>
-            <td>
-                @context.Email
-            </td>
-            <td>
-                @context.GroupMemberships.Count
-            </td>
-        </TableRow>
-    </MainTable>
-    <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
-                DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
-                TotalRecords="MainTableService.TotalRecords"
-                CurrentPage="MainTableService.CurrentPage"
-                DisplayRows="MainTableService.DataLoadingOptions.Take"
-                DisplayRecords="MainTableService.Entities.Count" />*@
+            <FilterForm>
+                <GroupsFilter FilterChanged="MainTableService.FilterChangedAsync" />
+            </FilterForm>
+            <ActionButtons>
+                <button type="button" class="btn btn-primary me-1" @onclick="OpenModalAddGroupAsync">
+                    Add from AD
+                </button>
+                <button type="button" class="btn btn-primary mx-1" @onclick="OpenModalCreateGroupAsync">
+                    Create group
+                </button>
+                <button type="button" class="btn btn-light border mx-1 @(MainTableService.SelectedEntity == null ? "d-none" : null)" title="Details" @onclick="NavigateToGroupDetails">
+                    <img class="icon-btn" src="/svg/icon-details.svg" />
+                    Details
+                </button>
+                <button type="button" class="btn btn-light border mx-1 @(MainTableService.SelectedEntity == null ? "d-none" : null)" title="Edit Group" @onclick="OpenModalEditGroupAsync">
+                    <img class="icon-btn" src="/svg/icon-edit.svg" />
+                    Edit
+                </button>
+                <button type="button" class="btn btn-light border mx-1 @(MainTableService.SelectedEntity == null ? "d-none" : null)" title="Delete Group" @onclick="OpenModalDeleteGroupAsync">
+                    <img class="icon-btn" src="/svg/icon-delete.svg" />
+                    Delete
+                </button>
+            </ActionButtons>
+            <FilterButtons>
+                <TableFilter SearchTextChanged="MainTableService.SearchTextChangedAsync" />
+            </FilterButtons>
+        </TableAction>
+        <MainTable Items="MainTableService.Entities" SelectedItem="MainTableService.SelectedEntity" SelecedItemChanged="MainTableService.SelectedItemChangedAsync" SelecedItemDblClick="NavigateToGroupDetails" Loading="MainTableService.Loading">
+            <TableHeader>
+                <MainTableHeader Title="Name"
+                                 TitleWidth="70"
+                                 SortColumn="@nameof(Group.Name)"
+                                 CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
+                                 CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
+                                 SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
+                                 SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
+                <MainTableHeader Title="Email"
+                                 TitleWidth="20"
+                                 SortColumn="@nameof(Group.Email)"
+                                 CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
+                                 CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
+                                 SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
+                                 SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
+                <MainTableHeader Title="Employees"
+                                 TitleWidth="10"
+                                 SortColumn="@nameof(Group.GroupMemberships)"
+                                 CurrentSortedColumn="@MainTableService.DataLoadingOptions.SortedColumn"
+                                 CurrentSortDirection="@MainTableService.DataLoadingOptions.SortDirection"
+                                 SortedColumnChanged="MainTableService.SortedColumnChangedAsync"
+                                 SortDirectionChanged="MainTableService.SortDirectionChangedAsync" />
+            </TableHeader>
+            <TableRow>
+                <td title="@context.Description">
+                    @context.Name
+                </td>
+                <td>
+                    @context.Email
+                </td>
+                <td>
+                    @context.GroupMemberships.Count
+                </td>
+            </TableRow>
+        </MainTable>
+        <Pagination CurrentPageChanged="MainTableService.CurrentPageChangedAsync"
+                    DisplayRowsChanged="MainTableService.DisplayRowsChangedAsync"
+                    TotalRecords="MainTableService.TotalRecords"
+                    CurrentPage="MainTableService.CurrentPage"
+                    DisplayRows="MainTableService.DataLoadingOptions.Take"
+                    DisplayRecords="MainTableService.Entities.Count" />*@
 }
 else if (LoadFailed)
 {

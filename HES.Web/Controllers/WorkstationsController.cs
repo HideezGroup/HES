@@ -2,9 +2,8 @@
 using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.Workstations;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -191,10 +190,10 @@ namespace HES.Web.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<WorkstationProximityVault>>> GetProximityVaults(string id)
+        public async Task<ActionResult<IEnumerable<WorkstationHardwareVaultPair>>> GetProximityVaults(string id)
         {
-            var count = await _workstationService.GetProximityVaultsCountAsync(new DataLoadingOptions<WorkstationDetailsFilter>() { EntityId = id });
-            return await _workstationService.GetProximityVaultsAsync(new DataLoadingOptions<WorkstationDetailsFilter>
+            var count = await _workstationService.GetWorkstationHardwareVaultPairsCountAsync(new DataLoadingOptions<WorkstationDetailsFilter>() { EntityId = id });
+            return await _workstationService.GetWorkstationHardwareVaultPairsAsync(new DataLoadingOptions<WorkstationDetailsFilter>
             {
                 Take = count,
                 SortedColumn = nameof(Employee.FullName),
@@ -206,9 +205,9 @@ namespace HES.Web.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WorkstationProximityVault>> GetProximityVaultById(string id)
+        public async Task<ActionResult<WorkstationHardwareVaultPair>> GetProximityVaultById(string id)
         {
-            var proximityVault = await _workstationService.GetProximityVaultByIdAsync(id);
+            var proximityVault = await _workstationService.GetWorkstationHardwareVaultPairByIdAsync(id);
 
             if (proximityVault == null)
             {
@@ -222,11 +221,11 @@ namespace HES.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> AddProximityVault(AddProximityVaultDto proximityVaultDto)
         {
-            WorkstationProximityVault proximityDevice;
+            WorkstationHardwareVaultPair proximityDevice;
             try
             {
-                proximityDevice = await _workstationService.AddProximityVaultAsync(proximityVaultDto.WorkstationId, proximityVaultDto.HardwareVaultId);
-                await _remoteWorkstationConnectionsService.UpdateProximitySettingsAsync(proximityVaultDto.WorkstationId, await _workstationService.GetProximitySettingsAsync(proximityVaultDto.WorkstationId));
+                proximityDevice = await _workstationService.CreateWorkstationHardwareVaultPairAsync(proximityVaultDto.WorkstationId, proximityVaultDto.HardwareVaultId);
+                await _remoteWorkstationConnectionsService.UpdateProximitySettingsAsync(proximityVaultDto.WorkstationId, await _workstationService.GetWorkstationHardwareVaultPairSettingsAsync(proximityVaultDto.WorkstationId));
 
             }
             catch (Exception ex)
@@ -241,9 +240,9 @@ namespace HES.Web.Controllers
         [HttpPost("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WorkstationProximityVault>> DeleteProximityDevice(string id)
+        public async Task<ActionResult<WorkstationHardwareVaultPair>> DeleteProximityDevice(string id)
         {
-            var proximityDevice = await _workstationService.GetProximityVaultByIdAsync(id);
+            var proximityDevice = await _workstationService.GetWorkstationHardwareVaultPairByIdAsync(id);
             if (proximityDevice == null)
             {
                 return NotFound();
@@ -251,7 +250,7 @@ namespace HES.Web.Controllers
 
             try
             {
-                await _workstationService.DeleteProximityVaultAsync(id);
+                await _workstationService.DeleteWorkstationHardwareVaultPairAsync(id);
             }
             catch (Exception ex)
             {

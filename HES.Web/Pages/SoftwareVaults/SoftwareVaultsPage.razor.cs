@@ -1,5 +1,5 @@
 ﻿using HES.Core.Interfaces;
-using HES.Core.Models.Web.Breadcrumb;
+using HES.Core.Models.Breadcrumb;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;

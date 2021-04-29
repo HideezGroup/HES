@@ -22,10 +22,11 @@ namespace HES.Web.Pages.Identity
         InvalidToken
     }
 
-    public partial class RegisterSecurityKey : HESComponentBase
+    public partial class RegisterSecurityKey : HESPageBase
     {
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<RegisterSecurityKey> Logger { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service Fido2Service { get; set; }

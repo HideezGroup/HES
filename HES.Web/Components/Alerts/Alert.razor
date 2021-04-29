@@ -1,0 +1,14 @@
+﻿@namespace HES.Web.Components
+
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div class="alert alert-warning d-flex @Class" role="alert">
+        <img src="/svg/notify-warning.svg" />
+        <span class="mx-2">@Message</span>
+    </div>
+}
+
+@code {
+    [Parameter] public string Message { get; set; } = string.Empty;
+    [Parameter] public string Class { get; set; } = string.Empty;
+}

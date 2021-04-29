@@ -16,17 +16,17 @@ else
             <DataAnnotationsValidator />
             <ValidationErrorMessage @ref="ValidationErrorMessage" />
             <div class="form-group">
-                <FormLabel For="@(() => Group.Name)" class="text-gray" />
+                <Label For="@(() => Group.Name)" class="text-gray" />
                 <InputText @bind-Value="Group.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => Group.Name)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => Group.Email)" class="text-gray" />
+                <Label For="@(() => Group.Email)" class="text-gray" />
                 <InputText @bind-Value="Group.Email" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => Group.Email)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => Group.Description)" class="text-gray" />
+                <Label For="@(() => Group.Description)" class="text-gray" />
                 <InputTextArea @bind-Value="Group.Description" class="form-control text-navyblue" rows="3" />
                 <ValidationMessage For="@(() => Group.Description)" class="text-danger" />
             </div>

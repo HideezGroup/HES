@@ -1,7 +1,6 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +24,7 @@ namespace HES.Web.Pages.Templates
                 TemplateService = ScopedServices.GetRequiredService<ITemplateService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<Template, TemplateFilter>>();
 
-                SynchronizationService.UpdateTemplatesPage += UpdateTemplatesPage;
+                PageSyncService.UpdateTemplatesPage += UpdateTemplatesPage;
 
                 await BreadcrumbsService.SetTemplates();
                 await DataTableService.InitializeAsync(TemplateService.GetTemplatesAsync, TemplateService.GetTemplatesCountAsync, StateHasChanged, nameof(Template.Name), ListSortDirection.Ascending);
@@ -39,7 +38,7 @@ namespace HES.Web.Pages.Templates
             }
         }
 
-        private async Task UpdateTemplatesPage(string exceptPageId, string userName)
+        private async Task UpdateTemplatesPage(string exceptPageId)
         {
 
             if (PageId == exceptPageId)
@@ -48,7 +47,6 @@ namespace HES.Web.Pages.Templates
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
 
@@ -68,7 +66,7 @@ namespace HES.Web.Pages.Templates
             if (result.Succeeded)
             {              
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateTemplates(PageId);
             }
         }
 
@@ -87,7 +85,7 @@ namespace HES.Web.Pages.Templates
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateTemplates(PageId);
             }
         }
 
@@ -106,13 +104,13 @@ namespace HES.Web.Pages.Templates
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateTemplates(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateTemplatesPage -= UpdateTemplatesPage; 
+            PageSyncService.UpdateTemplatesPage -= UpdateTemplatesPage; 
         }
     }
 }

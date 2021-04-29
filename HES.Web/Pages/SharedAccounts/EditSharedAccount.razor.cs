@@ -2,7 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.SharedAccounts;
+using HES.Core.Models.SharedAccounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
@@ -56,7 +56,7 @@ namespace HES.Web.Pages.SharedAccounts
 
         protected override async Task ModalDialogCancel()
         {
-            await SharedAccountService.UnchangedAsync(SharedAccount);
+            SharedAccountService.Unchanged(SharedAccount);
             await base.ModalDialogCancel();
         }
 
@@ -72,11 +72,11 @@ namespace HES.Web.Pages.SharedAccounts
                     await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.SharedAccountExist)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.Name), ex.Message);
             }
-            catch (IncorrectUrlException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectUrl)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.Urls), ex.Message);
             }

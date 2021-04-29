@@ -1,0 +1,25 @@
+﻿@page "/logout"
+@model HES.Web.Pages.Identity.LogoutModel
+@{
+    ViewData["Title"] = "Log out";
+}
+
+<div class="d-flex justify-content-center align-items-center h-100">
+    <div class="custom-card text-center">
+        <div class="text-center m-3">
+            <img src="/svg/hideez-es-logo.svg" />
+        </div>
+        <h3 class="text-navyblue my-3">@ViewData["Title"]</h3>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form class="form-inline" asp-page="@Routes.Logout" method="post">
+                <button type="submit" class="btn btn-outline-primary w-100">Logout</button>
+            </form>
+        }
+        else
+        {
+            <p>You have successfully logged out of the application.</p>
+            <a href="@Routes.Login">Go to login page</a>
+        }
+    </div>
+</div>

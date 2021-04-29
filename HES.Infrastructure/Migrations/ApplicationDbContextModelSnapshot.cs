@@ -15,7 +15,7 @@ namespace HES.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.3");
+                .HasAnnotation("ProductVersion", "5.0.4");
 
             modelBuilder.Entity("HES.Core.Entities.Account", b =>
                 {
@@ -925,7 +925,7 @@ namespace HES.Infrastructure.Migrations
                     b.ToTable("WorkstationEvents");
                 });
 
-            modelBuilder.Entity("HES.Core.Entities.WorkstationProximityVault", b =>
+            modelBuilder.Entity("HES.Core.Entities.WorkstationHardwareVaultPair", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -952,7 +952,7 @@ namespace HES.Infrastructure.Migrations
 
                     b.HasIndex("WorkstationId");
 
-                    b.ToTable("WorkstationProximityVaults");
+                    b.ToTable("WorkstationHardwareVaultPairs");
                 });
 
             modelBuilder.Entity("HES.Core.Entities.WorkstationSession", b =>
@@ -1003,7 +1003,7 @@ namespace HES.Infrastructure.Migrations
                     b.ToTable("WorkstationSessions");
                 });
 
-            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByDayAndEmployee", b =>
+            modelBuilder.Entity("HES.Core.Models.Audit.SummaryByDayAndEmployee", b =>
                 {
                     b.Property<TimeSpan>("AvgSessionsDuration")
                         .HasColumnType("time(6)");
@@ -1030,7 +1030,7 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("int");
                 });
 
-            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByDepartments", b =>
+            modelBuilder.Entity("HES.Core.Models.Audit.SummaryByDepartments", b =>
                 {
                     b.Property<TimeSpan>("AvgSessionsDuration")
                         .HasColumnType("time(6)");
@@ -1060,7 +1060,7 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("int");
                 });
 
-            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByEmployees", b =>
+            modelBuilder.Entity("HES.Core.Models.Audit.SummaryByEmployees", b =>
                 {
                     b.Property<decimal>("AvgSessionsCountPerDay")
                         .HasColumnType("decimal(65,30)");
@@ -1093,7 +1093,7 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("int");
                 });
 
-            modelBuilder.Entity("HES.Core.Models.Web.Audit.SummaryByWorkstations", b =>
+            modelBuilder.Entity("HES.Core.Models.Audit.SummaryByWorkstations", b =>
                 {
                     b.Property<TimeSpan>("AvgSessionsDuration")
                         .HasColumnType("time(6)");
@@ -1410,7 +1410,7 @@ namespace HES.Infrastructure.Migrations
                     b.Navigation("Workstation");
                 });
 
-            modelBuilder.Entity("HES.Core.Entities.WorkstationProximityVault", b =>
+            modelBuilder.Entity("HES.Core.Entities.WorkstationHardwareVaultPair", b =>
                 {
                     b.HasOne("HES.Core.Entities.HardwareVault", "HardwareVault")
                         .WithMany()

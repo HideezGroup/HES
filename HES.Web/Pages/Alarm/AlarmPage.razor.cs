@@ -1,9 +1,7 @@
-﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.AppSettings;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.Workstations;
+﻿using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using HES.Core.Services;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -31,14 +29,15 @@ namespace HES.Web.Pages.Alarm
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
                 AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
-
-                SynchronizationService.UpdateAlarmPage += UpdateAlarmPage;
+                PageSyncService.UpdateAlarmPage += UpdateAlarmPage;
 
                 await BreadcrumbsService.SetAlarm();
                 await GetAlarmStateAsync();
-                WorkstationOnline = RemoteWorkstationConnectionsService.WorkstationsOnlineCount();
-                WorkstationCount = await WorkstationService.GetWorkstationsCountAsync(new DataLoadingOptions<WorkstationFilter>());
+
                 CurrentUserEmail = await GetCurrentUserEmailAsync();
+                WorkstationOnline = RemoteWorkstationConnectionsService.GetWorkstationsOnlineCount();
+                WorkstationCount = await WorkstationService.GetWorkstationsCountAsync(new DataLoadingOptions<WorkstationFilter>());
+
                 SetInitialized();
             }
             catch (Exception ex)
@@ -47,7 +46,7 @@ namespace HES.Web.Pages.Alarm
             }
         }
 
-        private async Task UpdateAlarmPage(string exceptPageId, string userName)
+        private async Task UpdateAlarmPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -55,7 +54,6 @@ namespace HES.Web.Pages.Alarm
             await InvokeAsync(async () =>
             {
                 await GetAlarmStateAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -80,7 +78,7 @@ namespace HES.Web.Pages.Alarm
             if (result.Succeeded)
             {
                 await GetAlarmStateAsync();
-                await SynchronizationService.UpdateAlarm(PageId);
+                await PageSyncService.UpdateAlarm(PageId);
             }
         }
 
@@ -99,13 +97,13 @@ namespace HES.Web.Pages.Alarm
             if (result.Succeeded)
             {
                 await GetAlarmStateAsync();
-                await SynchronizationService.UpdateAlarm(PageId);
+                await PageSyncService.UpdateAlarm(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateAlarmPage -= UpdateAlarmPage;
+            PageSyncService.UpdateAlarmPage -= UpdateAlarmPage;
         }
     }
 }

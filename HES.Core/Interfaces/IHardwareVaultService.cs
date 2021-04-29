@@ -1,18 +1,16 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.HardwareVaults;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IHardwareVaultService : IDisposable
+    public interface IHardwareVaultService
     {
         IQueryable<HardwareVault> VaultQuery();
         Task<HardwareVault> GetVaultByIdAsync(string id);
@@ -26,7 +24,7 @@ namespace HES.Core.Interfaces
         Task UpdateNeedSyncAsync(List<HardwareVault> vaults, bool needSync);
         Task UpdateTimestampAsync(HardwareVault vault, uint timestamp);
         Task<HardwareVault> UpdateVaultAsync(HardwareVault vault);
-        Task UnchangedVaultAsync(HardwareVault vault);
+        void UnchangedVault(HardwareVault vault);
         Task SetReadyStatusAsync(HardwareVault vault);
         Task SetActiveStatusAsync(HardwareVault vault);
         Task SetLockedStatusAsync(HardwareVault vault);
@@ -39,7 +37,7 @@ namespace HES.Core.Interfaces
         Task ActivateVaultAsync(string vaultId);
         Task SuspendVaultAsync(string vaultId, string description);
         Task VaultCompromisedAsync(string vaultId, VaultStatusReason reason, string description);
-        IQueryable<HardwareVaultProfile> ProfileQuery();
+        Task<HardwareVaultProfile> GetDefaultProfile();
         Task<List<HardwareVaultProfile>> GetProfilesAsync();
         Task<List<HardwareVaultProfile>> GetHardwareVaultProfilesAsync(DataLoadingOptions<HardwareVaultProfileFilter> dataLoadingOptions);
         Task<int> GetHardwareVaultProfileCountAsync(DataLoadingOptions<HardwareVaultProfileFilter> dataLoadingOptions);
@@ -50,6 +48,6 @@ namespace HES.Core.Interfaces
         Task DeleteProfileAsync(string id);
         Task ChangeVaultProfileAsync(string vaultId, string profileId);
         Task<AccessParams> GetAccessParamsAsync(string vaultId);
-        Task UnchangedProfileAsync(HardwareVaultProfile profile);
+        void UnchangedProfile(HardwareVaultProfile profile);
     }
 }

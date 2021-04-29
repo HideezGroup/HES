@@ -1,27 +1,26 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Extensions;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Identity
 {
-    public partial class ConfirmEmailChange : HESComponentBase
+    public partial class ConfirmEmailChange : HESPageBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
         [Inject] public ILogger<ConfirmEmailChange> Logger { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public string ErrorTitle { get; set; }
         public string ErrorDescription { get; set; }

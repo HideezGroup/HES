@@ -1,5 +1,4 @@
-﻿using HES.Core.Models.Web.Group;
-using HES.Web.Components;
+﻿using HES.Core.Models.Filters;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -18,13 +17,13 @@ namespace HES.Web.Pages.Groups
             Initialized = true;
         }
 
-        private async Task FilterAsync()
-        {
-            //await ButtonSpinner.SpinAsync(async () =>
-            //{
-            //    await FilterChanged.Invoke(Filter);
-            //});
-        }
+        //private async Task FilterAsync()
+        //{
+        //    //await ButtonSpinner.SpinAsync(async () =>
+        //    //{
+        //    //    await FilterChanged.Invoke(Filter);
+        //    //});
+        //}
 
         private async Task ClearAsync()
         {

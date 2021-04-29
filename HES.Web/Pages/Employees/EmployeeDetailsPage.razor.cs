@@ -1,14 +1,16 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.AppUsers;
+using HES.Core.Models.AppSettings;
+using HES.Core.Models.AppUsers;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
-using LdapForNet;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Novell.Directory.Ldap;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,9 +27,8 @@ namespace HES.Web.Pages.Employees
         [Parameter] public string EmployeeId { get; set; }
 
         public Employee Employee { get; set; }
-        public string LdapHost { get; set; }
-        public bool AdUserNotFound { get; set; }
         public UserSsoInfo UserSsoInfo { get; set; }
+        public string LdapHost { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -38,15 +39,14 @@ namespace HES.Web.Pages.Employees
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<Account, AccountFilter>>();
                 LdapService = ScopedServices.GetRequiredService<ILdapService>();
 
-                SynchronizationService.UpdateEmployeeDetailsPage += UpdateEmployeeDetailsPage;
-                SynchronizationService.UpdateHardwareVaultState += UpdateHardwareVaultState;
+                PageSyncService.UpdateEmployeeDetailsPage += UpdateEmployeeDetailsPage;
+                PageSyncService.UpdateHardwareVaultState += UpdateHardwareVaultState;
 
                 await LoadEmployeeAsync();
-                await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
-                await LoadLdapSettingsAsync();
-                await DataTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
-
                 await LoadEmployeeSsoState();
+                await LoadLdapSettingsAsync();
+                await BreadcrumbsService.SetEmployeeDetails(Employee?.FullName);
+                await DataTableService.InitializeAsync(EmployeeService.GetAccountsAsync, EmployeeService.GetAccountsCountAsync, StateHasChanged, nameof(Account.Name), entityId: EmployeeId);
 
                 SetInitialized();
             }
@@ -59,7 +59,7 @@ namespace HES.Web.Pages.Employees
 
         #region Page update
 
-        private async Task UpdateEmployeeDetailsPage(string exceptPageId, string employeeId, string userName)
+        private async Task UpdateEmployeeDetailsPage(string exceptPageId, string employeeId)
         {
             if (Employee.Id != employeeId || PageId == exceptPageId)
                 return;
@@ -68,7 +68,6 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -90,7 +89,7 @@ namespace HES.Web.Pages.Employees
         {
             Employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId, asNoTracking: true);
             if (Employee == null)
-                throw new Exception("Employee not found.");
+                throw new HESException(HESCode.EmployeeNotFound);
 
             StateHasChanged();
         }
@@ -105,7 +104,7 @@ namespace HES.Web.Pages.Employees
         {
             var ldapSettings = await AppSettingsService.GetLdapSettingsAsync();
 
-            if (ldapSettings?.Password != null)
+            if (ldapSettings != null)
             {
                 LdapHost = ldapSettings.Host.Split(".")[0];
             }
@@ -125,7 +124,7 @@ namespace HES.Web.Pages.Employees
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Notify);
                 return false;
             }
-            catch (LdapException ex) when (ex.ResultCode == (LdapForNet.Native.Native.ResultCode)81)
+            catch (LdapException ex) when (ex.ResultCode == LdapException.ServerDown)
             {
                 await ToastService.ShowToastAsync("The LDAP server is unavailable.", ToastType.Error);
                 return false;
@@ -156,7 +155,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -177,7 +176,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -211,8 +210,9 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -234,7 +234,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -256,7 +256,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -276,8 +276,9 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -297,8 +298,9 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -318,29 +320,9 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
-            }
-        }
-
-        private async Task OpenDialogGenerateAdPasswordAsync()
-        {
-            if (!await VerifyAdUserAsync()) return;
-
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(GenerateAdPassword));
-                builder.AddAttribute(1, nameof(GenerateAdPassword.AccountId), DataTableService.SelectedEntity.Id);
-                builder.CloseComponent();
-            };
-
-            var instance = await ModalDialogService.ShowAsync("Generate AD Password", body);
-            var result = await instance.Result;
-
-            if (result.Succeeded)
-            {
-                await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -360,8 +342,9 @@ namespace HES.Web.Pages.Employees
 
             if (result.Succeeded)
             {
+                await LoadEmployeeAsync();
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -399,14 +382,14 @@ namespace HES.Web.Pages.Employees
         {
             if (!await VerifyAdUserAsync()) return;
 
-            RenderFragment body = (builder) =>
-            {
-                builder.OpenComponent(0, typeof(SoftwareVaultDetails));
-                builder.AddAttribute(1, nameof(SoftwareVaultDetails.SoftwareVault), softwareVault);
-                builder.CloseComponent();
-            };
+            //RenderFragment body = (builder) =>
+            //{
+            //    builder.OpenComponent(0, typeof(SoftwareVaultDetails));
+            //    builder.AddAttribute(1, nameof(SoftwareVaultDetails.SoftwareVault), softwareVault);
+            //    builder.CloseComponent();
+            //};
 
-            await ModalDialogService.ShowAsync("Software vault details", body);
+            //await ModalDialogService.ShowAsync("Software vault details", body);
         }
 
         private async Task OpenDialogHardwareVaultDetailsAsync(HardwareVault hardwareVault)
@@ -454,7 +437,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeSsoState();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -475,7 +458,7 @@ namespace HES.Web.Pages.Employees
             if (result.Succeeded)
             {
                 await LoadEmployeeSsoState();
-                await SynchronizationService.UpdateEmployeeDetails(PageId, EmployeeId);
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
             }
         }
 
@@ -483,8 +466,8 @@ namespace HES.Web.Pages.Employees
 
         public void Dispose()
         {
-            SynchronizationService.UpdateEmployeeDetailsPage -= UpdateEmployeeDetailsPage;
-            SynchronizationService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
+            PageSyncService.UpdateEmployeeDetailsPage -= UpdateEmployeeDetailsPage;
+            PageSyncService.UpdateHardwareVaultState -= UpdateHardwareVaultState;
         }
     }
 }

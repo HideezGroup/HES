@@ -25,14 +25,9 @@ namespace HES.Core.Services
         }
 
         const int channelNo = 4;
-
         readonly string _deviceId;
-
-        readonly ConcurrentDictionary<string, RemoteDeviceDescription> _appConnections
-            = new ConcurrentDictionary<string, RemoteDeviceDescription>();
-        
-        readonly ConcurrentDictionary<string, DeviceConnectionContainer> _connectionContainers
-            = new ConcurrentDictionary<string, DeviceConnectionContainer>();
+        readonly ConcurrentDictionary<string, RemoteDeviceDescription> _appConnections = new();
+        readonly ConcurrentDictionary<string, DeviceConnectionContainer> _connectionContainers = new();
 
         public bool IsDeviceConnectedToHost => _appConnections.Count > 0;
 
@@ -41,18 +36,14 @@ namespace HES.Core.Services
             _deviceId = deviceId;
         }
 
-        // device connected to the workstation, adding it to the list of the connected devices
+        // Device connected to the workstation, adding it to the list of the connected devices,
         // overwrite if already exists
         public void OnDeviceConnected(string workstationId, IRemoteAppConnection appConnection)
         {
-            //_appConnections.AddOrUpdate(workstationId, new RemoteDeviceDescription(appConnection), (conn, old) =>
-            //{
-            //    return new RemoteDeviceDescription(appConnection);
-            //});
             _appConnections.TryAdd(workstationId, new RemoteDeviceDescription(appConnection));
         }
 
-        // device disconnected from the workstation, removing it from the list of the connected devices
+        // Device disconnected from the workstation, removing it from the list of the connected devices
         public void OnDeviceDisconnected(string workstationId)
         {
             if (_appConnections.TryRemove(workstationId, out RemoteDeviceDescription descr))
@@ -61,7 +52,7 @@ namespace HES.Core.Services
             }
         }
 
-        // workstation disconnected from the server, if this device has connections to this workstation, close them
+        // Workstation disconnected from the server, if this device has connections to this workstation, close them
         public void OnAppHubDisconnected(string workstationId)
         {
             if (_appConnections.TryRemove(workstationId, out RemoteDeviceDescription descr))
@@ -78,7 +69,9 @@ namespace HES.Core.Services
                 // trying to connect to any workstation, first, look for that where Device is not empty
                 descr = _appConnections.Values.Where(x => x.Device != null).FirstOrDefault();
                 if (descr == null)
+                {
                     descr = _appConnections.Values.FirstOrDefault();
+                }
             }
             else
             {
@@ -86,25 +79,33 @@ namespace HES.Core.Services
             }
 
             if (descr == null)
+            {
                 throw new HideezException(HideezErrorCode.DeviceNotConnectedToAnyHost);
+            }
 
             TaskCompletionSource<Device> tcs = null;
             lock (descr)
             {
                 if (descr.Device != null)
+                {
                     return descr.Device;
+                }
 
                 tcs = descr.Tcs;
                 if (tcs == null)
+                {
                     descr.Tcs = new TaskCompletionSource<Device>();
+                }
             }
 
             if (tcs != null)
+            {
                 return await tcs.Task;
+            }
 
             try
             {
-                // call Hideez Client to make remote channel
+                // Call Hideez Client to make remote channel
                 await descr.AppConnection.EstablishRemoteHwVaultConnection(_deviceId, channelNo);
 
                 await descr.Tcs.Task.TimeoutAfter(20_000);
@@ -159,7 +160,7 @@ namespace HES.Core.Services
                 {
                     descr.Device = null;
 
-                    // inform clients about connection fail
+                    // Inform clients about connection fail
                     descr.Tcs?.TrySetException(ex);
                 }
             });
@@ -191,7 +192,9 @@ namespace HES.Core.Services
         {
             var kvp = _appConnections.FirstOrDefault();
             if (kvp.Value == null)
+            {
                 return null;
+            }
             return kvp.Value.Device;
         }
 
@@ -199,7 +202,9 @@ namespace HES.Core.Services
         {
             var kvp = _appConnections.FirstOrDefault();
             if (kvp.Key == null)
+            {
                 return null;
+            }
             return kvp.Key;
         }
     }

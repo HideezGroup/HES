@@ -1,0 +1,64 @@
+﻿@page "/settings/parameters"
+@layout MainLayout
+@attribute [Authorize(Roles = ApplicationRoles.Admin)]
+@inherits HESPageBase
+
+@if (Initialized)
+{
+    <SettingsCard Title="Licensing" Description="API authentication key for ordering licenses and the address of the licensing server.">
+        <div class="form-group">
+            <label class="control-label text-gray">Api Address</label>
+            @if (LicensingSettings?.ApiAddress != null)
+            {
+                <div class="alert alert-secondary" role="alert">
+                    @LicensingSettings.ApiAddress
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    Not set
+                </div>
+            }
+        </div>
+        <div class="mt-4">
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLicensingSettingsAsync">Set Licensing Settings</button>
+            @if (LicensingSettings != null)
+            {
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLicenseSettingsAsync">Delete Settings</button>
+            }
+        </div>
+    </SettingsCard>
+    <SettingsCard Title="Domain" Description="To connect to the domain and import groups and users.">
+        <div class="form-group">
+            <label class="control-label text-gray">Domain Name</label>
+            @if (LdapSettings != null)
+            {
+                <div class="alert alert-secondary" role="alert">
+                    @LdapSettings.Host
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    Not set
+                </div>
+            }
+        </div>
+        <div class="mt-4">
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLdapSettingsAsync">Set Domain Settings</button>
+            @if (LdapSettings != null)
+            {
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLdapSettingsAsync">Delete Settings</button>
+            }
+        </div>
+    </SettingsCard>
+}
+else if (LoadFailed)
+{
+    <LoadingFailed ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <Loader />
+}

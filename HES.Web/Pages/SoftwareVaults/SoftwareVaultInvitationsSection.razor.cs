@@ -1,8 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppSettings;
-using HES.Core.Models.Web.SoftwareVault;
+using HES.Core.Models.AppSettings;
+using HES.Core.Models.SoftwareVault;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -36,11 +36,11 @@ namespace HES.Web.Pages.SoftwareVaults
 
         #endregion
 
-        protected override async Task OnInitializedAsync()
-        {
-            SoftwareVaultService = ScopedServices.GetRequiredService<ISoftwareVaultService>();
-            //await LoadTableDataAsync();   
-        }
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    SoftwareVaultService = ScopedServices.GetRequiredService<ISoftwareVaultService>();
+        //    //await LoadTableDataAsync();   
+        //}
 
         //private async Task OpenDialogResendInvitationAsync()
         //{            
@@ -146,7 +146,7 @@ namespace HES.Web.Pages.SoftwareVaults
 
         public void Dispose()
         {
-            SoftwareVaultService.Dispose();
+            //SoftwareVaultService.Dispose();
         }
     }
 }

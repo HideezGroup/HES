@@ -1,0 +1,90 @@
+﻿@page "/login"
+@layout BlankLayout
+@inherits HESPageBase
+
+@if (Initialized)
+{
+    <ErrorAlert Message="@ErrorMessage" Close="@ClearErrorMessage" />
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="custom-card">
+            <div class="text-center m-3">
+                <img src="/svg/hideez-es-logo.svg" />
+            </div>
+            @switch (AuthenticationStep)
+            {
+                case AuthenticationStep.EmailValidation:
+                    <h3 class="text-navyblue my-3">Sign in</h3>
+                    <EditForm Model="UserEmailModel" OnValidSubmit="NextAsync">
+                        <DataAnnotationsValidator />
+                        <ValidationErrorMessage @ref="ValidationErrorMessage" />
+                        <div class="form-group">
+                            <InputText @bind-Value="UserEmailModel.Email" class="form-control" placeholder="Email" id="email" />
+                            <ValidationMessage For="@(() => UserEmailModel.Email)" class="text-danger" />
+                        </div>
+                        <div class="text-end">
+                            <Button @ref="ButtonSpinner" Text="Next" type="submit" class="btn btn-primary" />
+                        </div>
+                    </EditForm>
+                    break;
+                case AuthenticationStep.EnterPassword:
+                    <div class="d-flex align-items-center">
+                        <Button Text="" OnClick="BackToEmailValidation" class="btn p-0">
+                            <Image><img src="/svg/icon-arrow-back.svg" /></Image>
+                        </Button>
+                        <h5 class="text-gray mx-2 my-0">@UserEmailModel.Email</h5>
+                    </div>
+                    <h3 class="text-navyblue my-3">Enter password</h3>
+                    <EditForm Model="PasswordSignInModel" OnValidSubmit="LoginWithPasswordAsync">
+                        <DataAnnotationsValidator />
+                        <ValidationErrorMessage @ref="ValidationErrorMessage" />
+                        <div class="form-group">
+                            <InputText @bind-Value="PasswordSignInModel.Password" placeholder="Password" class="form-control" type="password" id="password" />
+                            <ValidationMessage For="@(() => PasswordSignInModel.Password)" class="text-danger" />
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe" @bind="PasswordSignInModel.RememberMe">
+                                <label class="form-check-label" for="rememberMe">
+                                    Remember me
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <a href="@Routes.ForgotPassword" class="mds-link">Forgot your password?</a>
+                        </div>
+                        <div class="d-flex @(HasSecurityKey ? "justify-content-between":"justify-content-end") align-items-center mt-3">
+                            @if (HasSecurityKey)
+                            {
+                                <Button Text="Sign in with a security key" OnClick="SignInWithSecurityKeyAsync" type="button" class="btn btn-link px-0" />
+                            }
+                            <Button @ref="ButtonSpinner" Text="Login" type="submit" class="btn btn-primary" />
+                        </div>
+                    </EditForm>
+                    break;
+                case AuthenticationStep.SecurityKeyAuthentication:
+                    <h3 class="text-navyblue my-3">Sign in with a security key</h3>
+                    <span>Your PC will open a security window. Follow the instructions there to sign in.</span>
+                    <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                        <Loader DisableShadow="true" />
+                    </div>
+                    break;
+                case AuthenticationStep.SecurityKeyError:
+                    <h3 class="text-navyblue my-3">Sign in with a security key</h3>
+                    <span>We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</span>
+                    <div class="text-end mt-3">
+                        <Button Text="Back" OnClick="BackToEmailValidation" class="btn btn-outline-secondary" />
+                        <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-primary" />
+                    </div>
+                    break;
+            }
+        </div>
+    </div>
+}
+else if (LoadFailed)
+{
+    <LoadingFailed ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <Loader AbsoluteCenter="true" />
+}

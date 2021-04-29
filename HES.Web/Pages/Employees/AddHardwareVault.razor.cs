@@ -1,8 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.HardwareVaults;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +20,7 @@ namespace HES.Web.Pages.Employees
         public IEmployeeService EmployeeService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
         public ILdapService LdapService { get; set; }
-        [Inject] public ISynchronizationService SynchronizationService { get; set; }
+        [Inject] public IPageSyncService SynchronizationService { get; set; }
         [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddHardwareVault> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }

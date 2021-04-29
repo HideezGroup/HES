@@ -2,8 +2,8 @@
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.API.Identity;
-using HES.Core.Models.Web.AppUsers;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.AppUsers;
+using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -31,17 +31,13 @@ namespace HES.Web.Controllers
         private readonly IFido2Service _fido2Service;
         private readonly UrlEncoder _urlEncoder;
         private readonly ILogger<IdentityController> _logger;
-        private readonly IEmailSenderService _emailSenderService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IAsyncRepository<FidoStoredCredential> _fidoCredentialRepository;
 
         public IdentityController(IApplicationUserService applicationUserService,
                                   IFido2Service fido2Service,
                                   UrlEncoder urlEncoder,
                                   ILogger<IdentityController> logger,
-                                  IEmailSenderService emailSenderService,
-                                  IAsyncRepository<FidoStoredCredential> fidoCredentialRepository,
                                   UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager)
         {
@@ -50,9 +46,7 @@ namespace HES.Web.Controllers
             _fido2Service = fido2Service;
             _urlEncoder = urlEncoder;
             _userManager = userManager;
-            _fidoCredentialRepository = fidoCredentialRepository;
             _signInManager = signInManager;
-            _emailSenderService = emailSenderService;
         }
 
         [HttpGet]

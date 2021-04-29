@@ -1,7 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.LicenseOrders;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +25,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 LicenseService = ScopedServices.GetRequiredService<ILicenseService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<LicenseOrder, LicenseOrderFilter>>();
 
-                SynchronizationService.UpdateLicensesPage += UpdateLicensesPage;     
+                PageSyncService.UpdateLicensesPage += UpdateLicensesPage;     
                 
                 await BreadcrumbsService.SetLicenseOrders();
                 await DataTableService.InitializeAsync(LicenseService.GetLicenseOrdersAsync, LicenseService.GetLicenseOrdersCountAsync, StateHasChanged, nameof(LicenseOrder.CreatedAt), ListSortDirection.Descending);
@@ -39,7 +39,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             }
         }
 
-        private async Task UpdateLicensesPage(string exceptPageId, string userName)
+        private async Task UpdateLicensesPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -47,9 +47,24 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
+        }
+
+        private async Task UpdateLicenseInfoAsync()
+        {
+            try
+            {
+                await LicenseService.UpdateLicenseOrdersAsync();
+                await LicenseService.UpdateHardwareVaultsLicenseStatusAsync();
+                await DataTableService.LoadTableDataAsync();
+                await ToastService.ShowToastAsync("License info updated.", ToastType.Success);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+            }
         }
 
         private async Task CreateLicenseOrderAsync()
@@ -66,7 +81,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
@@ -85,7 +100,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
@@ -104,7 +119,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
@@ -123,7 +138,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
@@ -136,19 +151,19 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete License Order", body, ModalDialogSize.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync("Delete License Order", body);
             var result = await instance.Result;
 
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateLicenses(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateLicensesPage -= UpdateLicensesPage;
+            PageSyncService.UpdateLicensesPage -= UpdateLicensesPage;
         }
     }
 }

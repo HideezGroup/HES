@@ -1,9 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Models.Employees;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.DataTableComponent;
+using HES.Core.Models.Accounts;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -49,7 +48,8 @@ namespace HES.Tests.Helpers
                 Login = "login1",
                 Password = "qwerty",
                 ConfirmPassword = "qwerty",
-                EmployeeId = AccountsEmployeeId
+                EmployeeId = AccountsEmployeeId,
+                LoginType = LoginType.WebApp
             };
 
             //WorkstationAccount = new WorkstationAccount()

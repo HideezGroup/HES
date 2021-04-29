@@ -1,6 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Models.Web.SoftwareVault;
+using HES.Core.Models.SoftwareVault;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

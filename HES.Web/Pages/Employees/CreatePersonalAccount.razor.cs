@@ -2,7 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Accounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +20,6 @@ namespace HES.Web.Pages.Employees
         public ITemplateService TemplateService { get; set; }
         public ILdapService LdapService { get; set; }
         public IRemoteDeviceConnectionsService RemoteDeviceConnectionsService { get; set; }
-        [Inject] public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<CreatePersonalAccount> Logger { get; set; }
         [Parameter] public string EmployeeId { get; set; }
 

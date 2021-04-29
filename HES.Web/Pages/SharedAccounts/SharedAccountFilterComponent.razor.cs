@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Web.SharedAccounts;
+﻿using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -11,11 +11,11 @@ namespace HES.Web.Pages.SharedAccounts
         [Parameter] public Func<SharedAccountsFilter, Task> FilterChanged { get; set; }
 
         public SharedAccountsFilter Filter { get; set; } = new SharedAccountsFilter();
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         private async Task FilteredAsync()
         {
-            await ButtonSpinner.SpinAsync(async () =>
+            await Button.SpinAsync(async () =>
             {
                 await FilterChanged.Invoke(Filter);
             });

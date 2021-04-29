@@ -1,4 +1,5 @@
-﻿@page "/Settings/Administrators"
+﻿@page "/settings/administrators"
+@layout MainLayout
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
 @inherits HESPageBase
 
@@ -15,11 +16,11 @@
                     {
                         if (!DataTableService.SelectedEntity.EmailConfirmed)
                         {
-                            <ButtonSpinner Text="Resend invite" Class="btn btn-light border ms-1" Callback="ResendInviteAsync">
+                            <Button Text="Resend invite" class="btn btn-light border ms-1" OnClick="ResendInviteAsync">
                                 <Image>
                                     <img class="icon-btn" src="/svg/icon-send.svg" />
                                 </Image>
-                            </ButtonSpinner>
+                            </Button>
                         }
                         if (DataTableService.Entities.Count != 1 && AuthenticationState.User.Identity.Name != DataTableService.SelectedEntity.Email)
                         {

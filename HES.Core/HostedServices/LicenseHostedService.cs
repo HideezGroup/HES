@@ -23,7 +23,7 @@ namespace HES.Core.HostedServices
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(60));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(30));
             return Task.CompletedTask;
         }
 
@@ -32,8 +32,13 @@ namespace HES.Core.HostedServices
             try
             {
                 using var scope = Services.CreateScope();
-                var scopedLicenseService = scope.ServiceProvider.GetRequiredService<ILicenseService>();
 
+                var appSettingsService = scope.ServiceProvider.GetRequiredService<IAppSettingsService>();
+                var licenseSettings = await appSettingsService.GetLicenseSettingsAsync();
+                if (licenseSettings == null)
+                    return;
+
+                var scopedLicenseService = scope.ServiceProvider.GetRequiredService<ILicenseService>();
                 await scopedLicenseService.UpdateLicenseOrdersAsync();
                 await scopedLicenseService.UpdateHardwareVaultsLicenseStatusAsync();
             }

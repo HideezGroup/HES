@@ -1,7 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Users;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -30,8 +30,8 @@ namespace HES.Web.Pages.Settings.Administrators
                 EmailSenderService = ScopedServices.GetRequiredService<IEmailSenderService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<ApplicationUser, ApplicationUserFilter>>();
 
-                SynchronizationService.UpdateAdministratorsPage += UpdateAdministratorsPage;
-                SynchronizationService.UpdateAdministratorStatePage += UpdateAdministratorStatePage;
+                PageSyncService.UpdateAdministratorsPage += UpdateAdministratorsPage;
+                PageSyncService.UpdateAdministratorStatePage += UpdateAdministratorStatePage;
 
                 AuthenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 await BreadcrumbsService.SetAdministrators();
@@ -46,7 +46,7 @@ namespace HES.Web.Pages.Settings.Administrators
             }
         }
 
-        private async Task UpdateAdministratorsPage(string exceptPageId, string userName)
+        private async Task UpdateAdministratorsPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -54,7 +54,6 @@ namespace HES.Web.Pages.Settings.Administrators
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -82,7 +81,7 @@ namespace HES.Web.Pages.Settings.Administrators
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateAdministrators(PageId);
+                await PageSyncService.UpdateAdministrators(PageId);
             }
         }
 
@@ -90,7 +89,7 @@ namespace HES.Web.Pages.Settings.Administrators
         {
             try
             {
-                var callBakcUrl = await ApplicationUserService.GetCallBackUrl(DataTableService.SelectedEntity.Email, NavigationManager.BaseUri);
+                var callBakcUrl = await ApplicationUserService.GenerateInviteCallBackUrl(DataTableService.SelectedEntity.Email, NavigationManager.BaseUri);
                 await EmailSenderService.SendUserInvitationAsync(DataTableService.SelectedEntity.Email, callBakcUrl);
                 await ToastService.ShowToastAsync("Administrator invited.", ToastType.Success);
             }
@@ -119,14 +118,14 @@ namespace HES.Web.Pages.Settings.Administrators
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateAdministrators(PageId);
+                await PageSyncService.UpdateAdministrators(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateAdministratorsPage -= UpdateAdministratorsPage;
-            SynchronizationService.UpdateAdministratorStatePage -= UpdateAdministratorStatePage;
+            PageSyncService.UpdateAdministratorsPage -= UpdateAdministratorsPage;
+            PageSyncService.UpdateAdministratorStatePage -= UpdateAdministratorStatePage;
         }
     }
 }

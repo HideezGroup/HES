@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 
-namespace HES.Web.Components.Toasts
+namespace HES.Web.Components
 {
     public partial class ToastsWrapper : ComponentBase, IDisposable
     {

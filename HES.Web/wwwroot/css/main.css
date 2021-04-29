@@ -196,18 +196,6 @@ label {
     }
 }
 
-.loading-tab {
-    position: fixed;
-    top: 119px;
-    left: 250px;
-    z-index: 100;
-    width: calc(100vw - 250px);
-    height: 100%;
-    overflow: hidden;
-    outline: 0;
-    background: #F7F8FC;
-}
-
 @media screen and (max-width: 768px) {
     .loading-tab {
         top: 0;

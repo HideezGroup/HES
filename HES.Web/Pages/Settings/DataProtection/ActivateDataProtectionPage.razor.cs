@@ -1,4 +1,5 @@
-﻿using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Web.Components;
@@ -19,21 +20,21 @@ namespace HES.Web.Pages.Settings.DataProtection
 
         public InputModel Input { get; set; } = new InputModel();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override void OnInitialized()
         {
             var status = DataProtectionService.Status();
 
             if (status != ProtectionStatus.Activate)
-                NavigationManager.NavigateTo("");
+                NavigationManager.NavigateTo(Routes.Dashboard);
         }
 
         private async Task ActivateAsync()
         {
             try
             {
-                await ButtonSpinner.SpinAsync(async () =>
+                await Button.SpinAsync(async () =>
                 {
                     var result = await DataProtectionService.ActivateProtectionAsync(Input.Password);
                     if (!result)
@@ -41,7 +42,7 @@ namespace HES.Web.Pages.Settings.DataProtection
                         ValidationErrorMessage.DisplayError(nameof(InputModel.Password), "Invalid password");
                         return;
                     }
-                    NavigationManager.NavigateTo("");
+                    NavigationManager.NavigateTo(Routes.Dashboard);
                 });
 
             }

@@ -1,5 +1,5 @@
 ﻿using HES.Core.Interfaces;
-using HES.Core.Models.Web.LicenseOrders;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -13,7 +13,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
         [Parameter] public Func<LicenseOrderFilter, Task> FilterChanged { get; set; }
 
         public LicenseOrderFilter Filter { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override void OnInitialized()
         {
@@ -22,7 +22,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
         private async Task FilteredAsync()
         {
-            await ButtonSpinner.SpinAsync(async () =>
+            await Button.SpinAsync(async () =>
             {
                 await FilterChanged.Invoke(Filter);
             });

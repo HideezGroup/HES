@@ -2,7 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.SharedAccounts;
+using HES.Core.Models.SharedAccounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,17 +56,18 @@ namespace HES.Web.Pages.SharedAccounts
                     await ModalDialogClose();
                 });
             }
-            catch (AlreadyExistException ex)
-            {
-                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Name), ex.Message);
-            }
-            catch (IncorrectUrlException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectUrl)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.Urls), ex.Message);
             }
-            catch (IncorrectOtpException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectOtp)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.OtpSecret), ex.Message);
+            }
+            catch (HESException ex) when (ex.Code == HESCode.SharedAccountExist)
+            {
+                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Name), ex.Message);
+                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Login), ex.Message);
             }
             catch (Exception ex)
             {

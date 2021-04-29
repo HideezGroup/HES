@@ -1,7 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -53,7 +53,9 @@ namespace HES.Core.Services
             await TrySetCookieAsync(httpResponse);
 
             if (authorizationResponse.Succeeded)
+            {
                 await SetAuthenticatedAsync(authorizationResponse.User);
+            }
 
             return authorizationResponse;
         }
@@ -68,7 +70,9 @@ namespace HES.Core.Services
             await TrySetCookieAsync(httpResponse);
 
             if (authorizationResponse.Succeeded)
+            {
                 await SetAuthenticatedAsync(authorizationResponse.User);
+            }
 
             return authorizationResponse;
         }
@@ -81,20 +85,26 @@ namespace HES.Core.Services
 
             List<string> cookies = null;
             if (client.DefaultRequestHeaders.TryGetValues("Cookie", out IEnumerable<string> cookieEntries))
+            {
                 cookies = cookieEntries.ToList();
+            }
 
             if (httpResponse.IsSuccessStatusCode && cookies != null && cookies.Any())
-            {                
+            {
                 foreach (var cookie in cookies[0].Split(';'))
                 {
                     var cookieParts = cookie.Split('=');
                     if (cookieParts[0] == ".AspNetCore.Identity.Application")
+                    {
                         await _jsRuntime.InvokeVoidAsync("removeCookie", cookieParts[0]);
+                    }
                 }
             }
 
             if (authorizationResponse.Succeeded)
+            {
                 await SetAuthenticatedAsync(authorizationResponse.User);
+            }
 
             return authorizationResponse;
         }
@@ -149,7 +159,7 @@ namespace HES.Core.Services
                 _logger.LogError(ex.Message);
             }
 
-            var client = _httpClientFactory.CreateClient("HES");   
+            var client = _httpClientFactory.CreateClient("HES");
             client.BaseAddress = new Uri(_navigationManager.BaseUri);
 
             if (!string.IsNullOrWhiteSpace(cookie))

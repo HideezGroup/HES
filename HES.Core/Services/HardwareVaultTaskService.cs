@@ -1,42 +1,39 @@
 ﻿using HES.Core.Entities;
+using HES.Core.Helpers;
 using HES.Core.Interfaces;
-using HES.Core.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace HES.Core.Services
 {
-    public class HardwareVaultTaskService : IHardwareVaultTaskService, IDisposable
+    public class HardwareVaultTaskService : IHardwareVaultTaskService
     {
-        private readonly IAsyncRepository<HardwareVaultTask> _hardwareVaultTaskRepository;
+        private readonly IApplicationDbContext _dbContext;
 
-        public HardwareVaultTaskService(IAsyncRepository<HardwareVaultTask> hardwareVaultTaskRepository)
+        public HardwareVaultTaskService(IApplicationDbContext dbContext)
         {
-            _hardwareVaultTaskRepository = hardwareVaultTaskRepository;
+            _dbContext = dbContext;
         }
 
         public IQueryable<HardwareVaultTask> TaskQuery()
         {
-            return _hardwareVaultTaskRepository.Query();
+            return _dbContext.HardwareVaultTasks.AsQueryable();
         }
 
         public async Task<HardwareVaultTask> GetTaskByIdAsync(string taskId)
         {
-            return await _hardwareVaultTaskRepository
-               .Query()
+            return await _dbContext.HardwareVaultTasks
                .Include(x => x.HardwareVault)
                .Include(x => x.Account.Employee.HardwareVaults)
                .FirstOrDefaultAsync(x => x.Id == taskId);
         }
 
-        public async Task<List<HardwareVaultTask>> GetHardwareVaultTasksAsync()
+        public async Task<List<HardwareVaultTask>> GetHardwareVaultTasksNoTrackingAsync()
         {
-            return await _hardwareVaultTaskRepository
-            .Query()
+            return await _dbContext.HardwareVaultTasks
             .Include(x => x.HardwareVault.Employee)
             .Include(x => x.Account.Employee)
             .OrderByDescending(x => x.CreatedAt)
@@ -44,78 +41,69 @@ namespace HES.Core.Services
             .ToListAsync();
         }
 
-        public async Task AddTaskAsync(HardwareVaultTask vaultTask)
-        {
-            await _hardwareVaultTaskRepository.AddAsync(vaultTask);
-        }
-
         public async Task AddRangeTasksAsync(IList<HardwareVaultTask> vaultTasks)
         {
-            await _hardwareVaultTaskRepository.AddRangeAsync(vaultTasks);
+            _dbContext.HardwareVaultTasks.AddRange(vaultTasks);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task AddPrimaryAsync(string vaultId, string accountId)
         {
-            var previousTask = await _hardwareVaultTaskRepository
-                .Query()
+            var previousTask = await _dbContext.HardwareVaultTasks
                 .FirstOrDefaultAsync(x => x.HardwareVaultId == vaultId && x.Operation == TaskOperation.Primary);
 
             if (previousTask != null)
-                await _hardwareVaultTaskRepository.DeleteAsync(previousTask);
+            {
+                _dbContext.HardwareVaultTasks.Remove(previousTask);
+            }
 
             var task = new HardwareVaultTask()
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Primary,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId
             };
 
-            await _hardwareVaultTaskRepository.AddAsync(task);
+            _dbContext.HardwareVaultTasks.Add(task);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task AddProfileAsync(HardwareVault vault)
         {
-            var previousProfileTask = await _hardwareVaultTaskRepository
-                .Query()
+            var previousProfileTask = await _dbContext.HardwareVaultTasks
                 .FirstOrDefaultAsync(x => x.HardwareVaultId == vault.Id && x.Operation == TaskOperation.Profile);
+
+            if (previousProfileTask != null)
+            {
+                _dbContext.HardwareVaultTasks.Remove(previousProfileTask);
+            }
 
             var newProfileTask = new HardwareVaultTask
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Profile,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vault.Id,
                 Password = vault.MasterPassword,
             };
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                if (previousProfileTask != null)
-                {
-                    await _hardwareVaultTaskRepository.DeleteAsync(previousProfileTask);
-                }
-
-                await _hardwareVaultTaskRepository.AddAsync(newProfileTask);
-
-                transactionScope.Complete();
-            }
+            _dbContext.HardwareVaultTasks.Add(newProfileTask);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteTaskAsync(HardwareVaultTask vaultTask)
         {
-            await _hardwareVaultTaskRepository.DeleteAsync(vaultTask);
+            _dbContext.HardwareVaultTasks.Remove(vaultTask);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteTasksByVaultIdAsync(string vaultId)
         {
-            var allTasks = await _hardwareVaultTaskRepository
-                .Query()
-                .Where(t => t.HardwareVaultId == vaultId)
-                .ToListAsync();
-
-            await _hardwareVaultTaskRepository.DeleteRangeAsync(allTasks);
+            var tasks = _dbContext.HardwareVaultTasks.Where(t => t.HardwareVaultId == vaultId);
+            _dbContext.HardwareVaultTasks.RemoveRange(tasks);
+            await _dbContext.SaveChangesAsync();
         }
 
         public HardwareVaultTask GetAccountCreateTask(string vaultId, string accountId, string password, string otp)
@@ -124,7 +112,7 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Create,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId,
                 Password = password,
@@ -138,36 +126,36 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Update,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
-                AccountId = accountId              
+                AccountId = accountId
             };
-        }  
-        
-        public HardwareVaultTask GetAccountPwdUpdateTask(string vaultId, string accountId , string password)
+        }
+
+        public HardwareVaultTask GetAccountPwdUpdateTask(string vaultId, string accountId, string password)
         {
             return new HardwareVaultTask
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Update,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId,
                 Password = password
             };
-        }  
-        
-        public HardwareVaultTask GetAccountOtpUpdateTask(string vaultId, string accountId , string otp)
+        }
+
+        public HardwareVaultTask GetAccountOtpUpdateTask(string vaultId, string accountId, string otp)
         {
             return new HardwareVaultTask
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Update,
-                Timestamp = UnixTime.GetUnixTimeUtcNow(),
+                Timestamp = UnixTimeHelper.GetUnixTimeUtcNow(),
                 HardwareVaultId = vaultId,
                 AccountId = accountId,
                 OtpSecret = otp
-            };      
+            };
         }
 
         public HardwareVaultTask GetAccountDeleteTask(string vaultId, string accountId)
@@ -176,15 +164,10 @@ namespace HES.Core.Services
             {
                 CreatedAt = DateTime.UtcNow,
                 Operation = TaskOperation.Delete,
-                Timestamp = UnixTime.ConvertToUnixTime(DateTime.UtcNow),
+                Timestamp = UnixTimeHelper.ConvertToUnixTime(DateTime.UtcNow),
                 HardwareVaultId = vaultId,
                 AccountId = accountId
             };
-        }
-
-        public void Dispose()
-        {
-            _hardwareVaultTaskRepository.Dispose();
         }
     }
 }

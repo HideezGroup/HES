@@ -1,18 +1,16 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.Audit;
-using HES.Core.Models.Web.DataTableComponent;
+using HES.Core.Models.Audit;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using Hideez.SDK.Communication.HES.DTO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IWorkstationAuditService : IDisposable
+    public interface IWorkstationAuditService
     {
-        IQueryable<WorkstationEvent> EventQuery();
         Task<List<WorkstationEvent>> GetWorkstationEventsAsync(DataLoadingOptions<WorkstationEventFilter> dataLoadingOptions);
         Task<int> GetWorkstationEventsCountAsync(DataLoadingOptions<WorkstationEventFilter> dataLoadingOptions);
         Task AddEventDtoAsync(WorkstationEventDto workstationEventDto);

@@ -3,10 +3,9 @@ using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.SharedAccounts;
+using HES.Core.Models.Accounts;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.SharedAccounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using HES.Core.Models.Filters;
 
 namespace HES.Web.Controllers
 {
@@ -85,7 +85,7 @@ namespace HES.Web.Controllers
 
                 createdAccount = await _sharedAccountService.CreateSharedAccountAsync(sharedAccount);
             }
-            catch (AlreadyExistException ex)
+            catch (HESException ex) when (ex.Code == HESCode.SharedAccountExist)
             {
                 return BadRequest(new { error = ex.Message });
             }

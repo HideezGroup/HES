@@ -1,7 +1,6 @@
 ﻿using HES.Core.Entities;
-using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Workstations;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,22 +13,22 @@ namespace HES.Web.Pages.Workstations
     public partial class WorkstationDetailsPage : HESPageBase, IDisposable
     {
         public IWorkstationService WorkstationService { get; set; }
-        public IDataTableService<WorkstationProximityVault, WorkstationDetailsFilter> DataTableService { get; set; }
+        public IDataTableService<WorkstationHardwareVaultPair, WorkstationDetailsFilter> DataTableService { get; set; }
         [Inject] public ILogger<WorkstationDetailsPage> Logger { get; set; }
         [Parameter] public string WorkstationId { get; set; }
 
-        public Workstation Workstation { get; set; }   
+        public Workstation Workstation { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
-                DataTableService = ScopedServices.GetRequiredService<IDataTableService<WorkstationProximityVault, WorkstationDetailsFilter>>();
-                SynchronizationService.UpdateWorkstationDetailsPage += UpdateWorkstationDetailsPage;
+                DataTableService = ScopedServices.GetRequiredService<IDataTableService<WorkstationHardwareVaultPair, WorkstationDetailsFilter>>();
+                PageSyncService.UpdateWorkstationDetailsPage += UpdateWorkstationDetailsPage;
                 await LoadWorkstationAsync();
                 await BreadcrumbsService.SetWorkstationDetails(Workstation.Name);
-                await DataTableService.InitializeAsync(WorkstationService.GetProximityVaultsAsync, WorkstationService.GetProximityVaultsCountAsync, StateHasChanged, nameof(WorkstationProximityVault.HardwareVaultId), entityId: WorkstationId);
+                await DataTableService.InitializeAsync(WorkstationService.GetWorkstationHardwareVaultPairsAsync, WorkstationService.GetWorkstationHardwareVaultPairsCountAsync, StateHasChanged, nameof(WorkstationHardwareVaultPair.HardwareVaultId), entityId: WorkstationId);
                 SetInitialized();
             }
             catch (Exception ex)
@@ -39,15 +38,14 @@ namespace HES.Web.Pages.Workstations
             }
         }
 
-        private async Task UpdateWorkstationDetailsPage(string exceptPageId, string workstationId, string userName)
+        private async Task UpdateWorkstationDetailsPage(string exceptPageId, string workstationId)
         {
             if (Workstation.Id != workstationId || PageId == exceptPageId)
                 return;
 
             await InvokeAsync(async () =>
-            {     
+            {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -74,7 +72,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateWorkstationDetails(PageId, WorkstationId);
             }
         }
 
@@ -94,13 +92,13 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateWorkstationDetails(PageId, WorkstationId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateWorkstationDetailsPage -= UpdateWorkstationDetailsPage;
+            PageSyncService.UpdateWorkstationDetailsPage -= UpdateWorkstationDetailsPage;
         }
     }
 }

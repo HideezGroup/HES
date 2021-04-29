@@ -1,6 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System;
@@ -36,21 +37,21 @@ namespace HES.Web.Pages.SoftwareVaults
 
         public async Task DeleteAsync()
         {
-            try
-            {
-                await SoftwareVaultService.DeleteInvitationAsync(SoftwareVaultInvitation.Id);
-                await Refresh.InvokeAsync(this);
-                await ToastService.ShowToastAsync("Invitation deleted.", ToastType.Success);           
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
-                await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
-            }
-            finally
-            {
-                //await ModalDialogService.CloseAsync();
-            }
+            //try
+            //{
+            //    await SoftwareVaultService.DeleteInvitationAsync(SoftwareVaultInvitation.Id);
+            //    await Refresh.InvokeAsync(this);
+            //    await ToastService.ShowToastAsync("Invitation deleted.", ToastType.Success);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.LogError(ex.Message);
+            //    await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
+            //}
+            //finally
+            //{
+            //    await ModalDialogService.CloseAsync();
+            //}
         }
     }
 }

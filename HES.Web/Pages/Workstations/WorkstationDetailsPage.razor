@@ -1,4 +1,5 @@
-﻿@page "/Workstations/Details/{WorkstationId}"
+﻿@page "/workstations/details/{WorkstationId}"
+@layout MainLayout
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
 @inherits HESPageBase
 
@@ -36,25 +37,25 @@
                     <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" Loading="DataTableService.Loading">
                         <TableHeader>
                             <DataTableHeaderItem Title="Hardware Vault"
-                                                 SortColumn="@nameof(WorkstationProximityVault.HardwareVault)"
+                                                 SortColumn="@nameof(WorkstationHardwareVaultPair.HardwareVault)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
                             <DataTableHeaderItem Title="Employee"
-                                                 SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee)"
+                                                 SortColumn="@nameof(WorkstationHardwareVaultPair.HardwareVault.Employee)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
                             <DataTableHeaderItem Title="Company"
-                                                 SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department.Company)"
+                                                 SortColumn="@nameof(WorkstationHardwareVaultPair.HardwareVault.Employee.Department.Company)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
                             <DataTableHeaderItem Title="Department"
-                                                 SortColumn="@nameof(WorkstationProximityVault.HardwareVault.Employee.Department)"
+                                                 SortColumn="@nameof(WorkstationHardwareVaultPair.HardwareVault.Employee.Department)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"

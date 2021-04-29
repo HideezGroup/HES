@@ -2,8 +2,8 @@
 using HES.Core.Enums;
 using HES.Core.Helpers;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppUsers;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.AppUsers;
+using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Pages.Profile.SecurityKeys;
 using HES.Web.Pages.Profile.TwoFactor;

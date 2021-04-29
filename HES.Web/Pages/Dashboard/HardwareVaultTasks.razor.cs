@@ -20,7 +20,7 @@ namespace HES.Web.Pages.Dashboard
         {
             try
             {
-                HardwareVaultTaskList = await HardwareVaultTaskService.GetHardwareVaultTasksAsync();
+                HardwareVaultTaskList = await HardwareVaultTaskService.GetHardwareVaultTasksNoTrackingAsync();
             }
             catch (Exception ex)
             {

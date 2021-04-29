@@ -1,6 +1,6 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.HardwareVaults;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.Rendering;

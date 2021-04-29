@@ -98,7 +98,7 @@ namespace HES.Core.Crypto
                 plainText = CryptoHelper.Decrypt(KeyId, _key, cipherText);
                 return true;
             }
-            catch (WrongCryptoKeyIdException)
+            catch (DataProtectionWrongCryptoKeyIdException)
             {
                 return false;
             }

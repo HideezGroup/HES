@@ -77,24 +77,24 @@ else
             <ValidationErrorMessage @ref="EmployeeValidationErrorMessage" />
             <div class="row">
                 <div class="form-group col">
-                    <FormLabel For="@(() => Employee.FirstName)" class="text-gray" />
+                    <Label For="@(() => Employee.FirstName)" class="text-gray" />
                     <InputText @bind-Value="Employee.FirstName" class="form-control text-navyblue" />
                     <ValidationMessage For="@(() => Employee.FirstName)" class="text-danger" />
                 </div>
                 <div class="form-group col">
-                    <FormLabel For="@(() => Employee.LastName)" class="text-gray" />
+                    <Label For="@(() => Employee.LastName)" class="text-gray" />
                     <InputText @bind-Value="Employee.LastName" class="form-control text-navyblue" />
                     <ValidationMessage For="@(() => Employee.LastName)" class="text-danger" />
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col">
-                    <FormLabel For="@(() => Employee.Email)" class="text-gray" />
+                    <Label For="@(() => Employee.Email)" class="text-gray" />
                     <InputText @bind-Value="Employee.Email" class="form-control text-navyblue" />
                     <ValidationMessage For="@(() => Employee.Email)" class="text-danger" />
                 </div>
                 <div class="form-group col">
-                    <FormLabel For="@(() => Employee.PhoneNumber)" class="text-gray" />
+                    <Label For="@(() => Employee.PhoneNumber)" class="text-gray" />
                     <InputText @bind-Value="Employee.PhoneNumber" class="form-control text-navyblue" />
                     <ValidationMessage For="@(() => Employee.PhoneNumber)" class="text-danger" />
                 </div>
@@ -111,7 +111,7 @@ else
                     </select>
                 </div>
                 <div class="form-group col">
-                    <FormLabel For="@(() => Employee.DepartmentId)" class="text-gray" />
+                    <Label For="@(() => Employee.DepartmentId)" class="text-gray" />
                     <select @bind="Employee.DepartmentId" class="form-select">
                         @foreach (var item in Departments)
                         {
@@ -122,7 +122,7 @@ else
             </div>
             <div class="row">
                 <div class="form-group col">
-                    <FormLabel For="@(() => Employee.PositionId)" class="text-gray" />
+                    <Label For="@(() => Employee.PositionId)" class="text-gray" />
                     <select @bind="Employee.PositionId" class="form-select">
                         <option selected></option>
                         @foreach (var item in Positions)
@@ -139,7 +139,7 @@ else
     <div class="wizard-tab @(WizardStep != WizardStep.HardwareVault ? "d-none" : null)">
         <div class="row justify-content-center">
             <div class="col col-sm-6">
-                <Alert Message="@WarningMessage" />          
+                <Alert Message="@WarningMessage" />
                 <SearchBox SearchTextChanged="SearchTextChangedAsync" />
                 <div class="list-group my-3 py-1 overflow-auto" style="max-height: 300px">
                     @foreach (var hardwareVault in HardwareVaults)
@@ -172,17 +172,17 @@ else
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <FormLabel For="@(() => PersonalAccount.Name)" class="text-gray" />
+                                <Label For="@(() => PersonalAccount.Name)" class="text-gray" />
                                 <InputText @bind-Value="PersonalAccount.Name" class="form-control text-navyblue" tabindex="1" />
                                 <ValidationMessage For="@(() => PersonalAccount.Name)" class="text-danger" />
                             </div>
                             <div class="form-group">
-                                <FormLabel For="@(() => PersonalAccount.Urls)" class="text-gray" />
+                                <Label For="@(() => PersonalAccount.Urls)" class="text-gray" />
                                 <textarea @bind="PersonalAccount.Urls" style="height:81px" class="form-control text-navyblue" tabindex="2" />
                                 <ValidationMessage For="@(() => PersonalAccount.Urls)" class="text-danger" />
                             </div>
                             <div class="form-group">
-                                <FormLabel For="@(() => PersonalAccount.Apps)" class="text-gray" />
+                                <Label For="@(() => PersonalAccount.Apps)" class="text-gray" />
                                 <textarea @bind="PersonalAccount.Apps" style="height:81px" class="form-control text-navyblue" tabindex="3" />
                                 <ValidationMessage For="@(() => PersonalAccount.Apps)" class="text-danger" />
                             </div>
@@ -201,21 +201,21 @@ else
                             {
                                 case LoginType.WebApp:
                                     <div class="form-group">
-                                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                                         <InputText @bind-Value="PersonalAccount.Login" class="form-control text-navyblue" tabindex="4" />
                                         <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                                     </div>
                                     break;
                                 case LoginType.Local:
                                     <div class="form-group">
-                                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                                         <InputText @bind-Value="PersonalAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
                                         <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                                     </div>
                                     break;
                                 case LoginType.Domain:
                                     <div class="form-group">
-                                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                                         <div class="input-group">
                                             <input type="text" @bind="PersonalAccount.Domain" placeholder="Domain" class="form-control" tabindex="4">
                                             <input type="text" @bind="PersonalAccount.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
@@ -226,26 +226,26 @@ else
                                     break;
                                 case LoginType.AzureAD:
                                     <div class="form-group">
-                                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                                         <InputText @bind-Value="PersonalAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
                                         <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                                     </div>
                                     break;
                                 case LoginType.Microsoft:
                                     <div class="form-group">
-                                        <FormLabel For="@(() => PersonalAccount.Login)" class="text-gray" />
+                                        <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                                         <InputText @bind-Value="PersonalAccount.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
                                         <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                                     </div>
                                     break;
                             }
                             <div class="form-group">
-                                <FormLabel For="@(() => PersonalAccount.Password)" class="text-gray" />
+                                <Label For="@(() => PersonalAccount.Password)" class="text-gray" />
                                 <InputText @bind-Value="PersonalAccount.Password" type="password" class="form-control text-navyblue" tabindex="6" />
                                 <ValidationMessage For="@(() => PersonalAccount.Password)" class="text-danger" />
                             </div>
                             <div class="form-group">
-                                <FormLabel For="@(() => PersonalAccount.ConfirmPassword)" class="text-gray" />
+                                <Label For="@(() => PersonalAccount.ConfirmPassword)" class="text-gray" />
                                 <InputText @bind-Value="PersonalAccount.ConfirmPassword" type="password" class="form-control text-navyblue" tabindex="7" />
                                 <ValidationMessage For="@(() => PersonalAccount.ConfirmPassword)" class="text-danger" />
                             </div>
@@ -254,7 +254,7 @@ else
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <FormLabel For="@(() => PersonalAccount.OtpSecret)" class="text-gray" />
+                                <Label For="@(() => PersonalAccount.OtpSecret)" class="text-gray" />
                                 <InputText @bind-Value="PersonalAccount.OtpSecret" class="form-control text-navyblue" tabindex="8" />
                                 <ValidationMessage For="@(() => PersonalAccount.OtpSecret)" class="text-danger" />
                             </div>
@@ -339,9 +339,18 @@ else
                     <label class="control-label fw-bold">Vault - @SelectedHardwareVault?.Id</label>
                 </div>
                 <label class="control-label text-gray">You can send the code to the email</label>
-                <div class="input-group form-group">
-                    <input type="text" class="form-control text-navyblue" @bind="Email" />
-                    <ButtonSpinner Class="btn btn-outline-primary" Text="Send email" Callback="SendEmailAsync" />
+                <div class="input-group1 form-group">
+                    <EditForm Model="UserEmailModel" OnValidSubmit="SendEmailAsync">
+                        <DataAnnotationsValidator />
+                        <ValidationErrorMessage @ref="EmailValidationErrorMessage" />
+                        <div class="input-group">
+                            <InputText @bind-Value="UserEmailModel.Email" class="form-control text-navyblue" placeholder="Email" />
+                            <Button @ref="ButtonSendEmail" Text="Send email" type="submit" class="btn btn-outline-primary" />
+                        </div>
+                        <ValidationMessage For="@(() => UserEmailModel.Email)" class="text-danger" />
+                    </EditForm>
+                    @*<input type="text" class="form-control text-navyblue" @bind="Email" />
+                        <Button class="btn btn-outline-primary" Text="Send email" OnClick="SendEmailAsync" />*@
                 </div>
                 <label class="control-label text-gray">Activation code</label>
                 <div class="input-group form-group">

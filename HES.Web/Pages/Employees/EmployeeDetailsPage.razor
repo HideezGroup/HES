@@ -1,4 +1,5 @@
-﻿@page "/Employees/Details/{EmployeeId}"
+﻿@page "/employees/details/{EmployeeId}"
+@layout MainLayout
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
 @inherits HESPageBase
 
@@ -6,7 +7,19 @@
 {
     <div class="row align-items-center details-card mb-3">
         <div class="col">
-            <h1 class="text-navyblue text-break m-0">@Employee?.FullName</h1>
+            <div class="d-flex">
+                <h1 class="text-navyblue text-break m-0">
+                    @Employee?.FullName
+                </h1>
+                @if (Employee.ActiveDirectoryGuid != null)
+                {
+                    <div>
+                        <span class="badge bg-primary ms-1 my-2" title="Imported from Active Directory">
+                            AD
+                        </span>
+                    </div>
+                }
+            </div>
         </div>
         @*<div class="col-auto ps-1 pe-1">
                 <ButtonSpinner Class="btn-primary" Text="Add Software Vault" Callback="OpenModalAddSoftwareVaultAsync" />
@@ -168,14 +181,7 @@
                                     <button type="button" @onclick="OpenDialogEditPersonalAccountOtpAsync" class="btn btn-light border mx-2" title="Edit personal account OTP">
                                         <img class="icon-btn" src="/svg/icon-otp.svg" />
                                         Edit OTP
-                                    </button>
-                                    @if (Employee.ActiveDirectoryGuid != null && DataTableService.SelectedEntity.Login.Split(@"\")[0].Contains(LdapHost ?? string.Empty, StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        <button type="button" @onclick="OpenDialogGenerateAdPasswordAsync" class="btn btn-light border mx-2" title="Generate Active Directory Password">
-                                            <img class="icon-btn" src="/svg/icon_random.svg" />
-                                            Generate Password
-                                        </button>
-                                    }
+                                    </button>                               
                                 }
                                 <button type="button" @onclick="OpenDialogDeleteAccountAsync" class="btn btn-light border mx-2" title="Delete account">
                                     <img class="icon-btn" src="/svg/icon-delete.svg" />

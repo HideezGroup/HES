@@ -1,8 +1,7 @@
 ﻿using HES.Core.Constants;
-using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Identity;
+using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Extensions;
 using Microsoft.AspNetCore.Components;
@@ -14,13 +13,14 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Identity
 {
-    public partial class SingleSignOn : HESComponentBase
+    public partial class SingleSignOn : HESPageBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service Fido2Service { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<SingleSignOn> Logger { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public AuthenticationStep AuthenticationStep { get; set; }
         public SecurityKeySignInModel SecurityKeySignInModel { get; set; } = new SecurityKeySignInModel();

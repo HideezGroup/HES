@@ -1,4 +1,4 @@
-﻿using HES.Core.Models.Web.Audit;
+﻿using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -12,7 +12,7 @@ namespace HES.Web.Pages.Audit.WorkstationSummaries
         [Parameter] public string TabName { get; set; }
 
         public SummaryFilter Filter { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override void OnInitialized()
         {
@@ -21,7 +21,7 @@ namespace HES.Web.Pages.Audit.WorkstationSummaries
 
         private async Task FilteredAsync()
         {
-            await ButtonSpinner.SpinAsync(async () =>
+            await Button.SpinAsync(async () =>
             {
                 await FilterChanged.Invoke(Filter);
             });

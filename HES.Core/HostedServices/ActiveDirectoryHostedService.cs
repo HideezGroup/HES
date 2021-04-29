@@ -36,17 +36,16 @@ namespace HES.Core.HostedServices
         {
             try
             {
-                using (var scope = _serviceProvider.CreateScope())
-                {
-                    var appSettingsService = scope.ServiceProvider.GetRequiredService<IAppSettingsService>();
+                using var scope = _serviceProvider.CreateScope();
 
-                    var ldapSettings = await appSettingsService.GetLdapSettingsAsync();
-                    if (ldapSettings?.Password == null)
-                        return;
+                var appSettingsService = scope.ServiceProvider.GetRequiredService<IAppSettingsService>();
 
-                    var ldapService = scope.ServiceProvider.GetRequiredService<ILdapService>();
-                    await ldapService.SyncUsersAsync(ldapSettings);
-                }
+                var ldapSettings = await appSettingsService.GetLdapSettingsAsync();
+                if (ldapSettings == null)
+                    return;
+
+                var ldapService = scope.ServiceProvider.GetRequiredService<ILdapService>();
+                await ldapService.SyncUsersAsync(ldapSettings);
             }
             catch (Exception ex)
             {
@@ -58,20 +57,16 @@ namespace HES.Core.HostedServices
         {
             try
             {
-                using (var scope = _serviceProvider.CreateScope())
-                {
-                    var appSettingsService = scope.ServiceProvider.GetRequiredService<IAppSettingsService>();
+                using var scope = _serviceProvider.CreateScope();
 
-                    var ldapSettings = await appSettingsService.GetLdapSettingsAsync();
-                    if (ldapSettings?.Password == null)
-                    {
-                        _logger.LogWarning("Active Directory credentials no set");
-                        return;
-                    }
+                var appSettingsService = scope.ServiceProvider.GetRequiredService<IAppSettingsService>();
 
-                    var ldapService = scope.ServiceProvider.GetRequiredService<ILdapService>();
-                    await ldapService.ChangePasswordWhenExpiredAsync(ldapSettings);
-                }
+                var ldapSettings = await appSettingsService.GetLdapSettingsAsync();
+                if (ldapSettings == null)                
+                    return;                
+
+                var ldapService = scope.ServiceProvider.GetRequiredService<ILdapService>();
+                await ldapService.ChangePasswordWhenExpiredAsync(ldapSettings);
             }
             catch (Exception ex)
             {

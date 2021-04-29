@@ -2,7 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Accounts;
+using HES.Core.Models.Accounts;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
@@ -55,7 +55,7 @@ namespace HES.Web.Pages.SharedAccounts
 
         protected override async Task ModalDialogCancel()
         {
-            await SharedAccountService.UnchangedAsync(Account);
+            SharedAccountService.Unchanged(Account);
             await base.ModalDialogCancel();
         }
 
@@ -71,7 +71,7 @@ namespace HES.Web.Pages.SharedAccounts
                     await ModalDialogClose();
                 });
             }
-            catch (IncorrectOtpException ex)
+            catch (HESException ex) when (ex.Code == HESCode.IncorrectOtp)
             {
                 ValidationErrorMessage.DisplayError(nameof(SharedAccount.OtpSecret), ex.Message);
             }

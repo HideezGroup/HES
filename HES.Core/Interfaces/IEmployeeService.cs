@@ -1,33 +1,34 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
-using HES.Core.Models.Employees;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.AppUsers;
-using HES.Core.Models.Web.DataTableComponent;
-using System;
+using HES.Core.Models.Accounts;
+using HES.Core.Models.AppUsers;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
 {
-    public interface IEmployeeService : IDisposable
+    public interface IEmployeeService
     {
         #region Employee
-        IQueryable<Employee> EmployeeQuery();
+
         Task<List<Employee>> GetEmployeesAsync(DataLoadingOptions<EmployeeFilter> dataLoadingOptions);
         Task<int> GetEmployeesCountAsync(DataLoadingOptions<EmployeeFilter> dataLoadingOptions);
-        Task<Employee> GetEmployeeByIdAsync(string id, bool asNoTracking = false, bool byActiveDirectoryGuid = false);
+        Task<Employee> GetEmployeeByIdAsync(string employeeId, bool asNoTracking = false, bool byActiveDirectoryGuid = false);
+        Task<List<Employee>> GetEmployeesADAsync();
+        Task<int> GetEmployeesCountAsync();
+        Task<Employee> GetEmployeeByNameAsync(string firstName, string lastName);
         Task<IList<string>> GetEmployeeVaultIdsAsync(string employeeId);
         Task<Employee> ImportEmployeeAsync(Employee employee);
         Task<Employee> CreateEmployeeAsync(Employee employee);
         Task<bool> CheckEmployeeNameExistAsync(Employee employee);
         Task EditEmployeeAsync(Employee employee);
-        Task DeleteEmployeeAsync(string id);
+        Task DeleteEmployeeAsync(string employeeId);
         Task UpdateLastSeenAsync(string vaultId);
-        Task UnchangedEmployeeAsync(Employee employee);
+        void UnchangedEmployee(Employee employee);
         Task RemoveFromHideezKeyOwnersAsync(string employeeId);
+
         #endregion
 
         #region SSO
@@ -49,16 +50,20 @@ namespace HES.Core.Interfaces
         Task<List<Account>> GetAccountsAsync(DataLoadingOptions<AccountFilter> dataLoadingOptions);
         Task<int> GetAccountsCountAsync(DataLoadingOptions<AccountFilter> dataLoadingOptions);
         Task<List<Account>> GetAccountsByEmployeeIdAsync(string employeeId);
+        Task<List<Account>> GetAccountsBySharedAccountIdAsync(string sharedAccountId);
         Task SetAsPrimaryAccountAsync(string employeeId, string accountId);
-        Task<Account> GetAccountByIdAsync(string accountId);
+        Task<Account> GetAccountByIdAsync(string accountId, bool asNoTracking = false);
         Task<Account> CreatePersonalAccountAsync(AccountAddModel personalAccount);
         Task EditPersonalAccountAsync(AccountEditModel personalAccount);
         Task EditPersonalAccountPwdAsync(Account account, AccountPassword accountPassword);
         Task EditPersonalAccountOtpAsync(Account account, AccountOtp accountOtp);
         Task<Account> AddSharedAccountAsync(string employeeId, string sharedAccountId);
-        Task UnchangedPersonalAccountAsync(Account account);
+        Task UpdateAfterAccountCreateAsync(Account account, uint timestamp);
+        Task UpdateAfterAccountModifyAsync(Account account, uint timestamp);
+        Task UpdateAccountsAsync(params Account[] accounts);
+        void UnchangedPersonalAccount(Account account);
         Task<Account> DeleteAccountAsync(string accountId);
-
+        Task DeleteAccountsByEmployeeIdAsync(string employeeId);
         #endregion
     }
 }

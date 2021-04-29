@@ -1,5 +1,5 @@
 ﻿using HES.Core.Enums;
-using HES.Core.Models.Web.Audit;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Hideez.SDK.Communication;
 using Microsoft.AspNetCore.Components;
@@ -17,7 +17,7 @@ namespace HES.Web.Pages.Audit.WorkstationSessions
         public WorkstationSessionFilter Filter { get; set; }
         public List<string> SessionSwitchSubject { get; set; }
         public List<string> AccountTypes { get; set; }
-        public ButtonSpinner ButtonSpinner { get; set; }
+        public Button Button { get; set; }
 
         protected override void OnInitialized()
         {
@@ -28,7 +28,7 @@ namespace HES.Web.Pages.Audit.WorkstationSessions
 
         private async Task FilteredAsync()
         {
-            await ButtonSpinner.SpinAsync(async () =>
+            await Button.SpinAsync(async () =>
             {
                 await FilterChanged.Invoke(Filter);
             });

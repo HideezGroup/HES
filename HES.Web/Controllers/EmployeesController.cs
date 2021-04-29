@@ -4,10 +4,8 @@ using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.API.Employee;
-using HES.Core.Models.Employees;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.Accounts;
-using HES.Core.Models.Web.DataTableComponent;
+using HES.Core.Models.Accounts;
+using HES.Core.Models.DataTableComponent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using HES.Core.Models.Filters;
 
 namespace HES.Web.Controllers
 {
@@ -369,7 +368,7 @@ namespace HES.Web.Controllers
                 account = await _employeeService.DeleteAccountAsync(id);
                 _remoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(account.Employee.HardwareVaults.Select(s => s.Id).ToList());
             }
-            catch (NotFoundException)
+            catch (HESException ex) when (ex.Code == HESCode.AccountNotFound)
             {
                 return NotFound();
             }

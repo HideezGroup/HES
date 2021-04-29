@@ -1,4 +1,4 @@
-﻿@using HES.Core.Models.Web.Breadcrumb
+﻿@using HES.Core.Models.Breadcrumb
 @inject IBreadcrumbsService BreadcrumbsService
 @implements IDisposable
 
@@ -24,7 +24,7 @@
             </ol>
         </nav>
     }
-    <a class="btn btn-link ms-auto" href="Alarm" role="button" title="Alarm Button">
+    <a class="btn btn-link ms-auto" href="@Routes.Alarm" role="button" title="Alarm Button">
         <img src="/svg/icon-alarm.svg" />
     </a>
     <div class="btn-group no-arrow me-2">
@@ -47,7 +47,7 @@
                 </a>
             </li>
             <li>
-                <form class="form-inline dropdown-item" method="post" action="/Identity/Account/Logout">
+                <form class="form-inline dropdown-item" method="post" action="@Routes.Logout">
                     <button type="submit" class="nav-link btn btn-link text-dark p-0 w-100 text-start text-decoration-none">
                         <img src="/svg/icon-logout.svg" />
                         Logout

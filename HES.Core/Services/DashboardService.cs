@@ -3,7 +3,7 @@ using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Core.Models;
-using HES.Core.Models.Web.Dashboard;
+using HES.Core.Models.Dashboard;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class DashboardService : IDashboardService, IDisposable
+    public class DashboardService : IDashboardService
     {
         private readonly IEmployeeService _employeeService;
         private readonly IWorkstationAuditService _workstationAuditService;
@@ -90,7 +90,7 @@ namespace HES.Core.Services
 
         public async Task<int> GetEmployeesCountAsync()
         {
-            return await _employeeService.EmployeeQuery().CountAsync();
+            return await _employeeService.GetEmployeesCountAsync();
         }
 
         public async Task<int> GetEmployeesOpenedSessionsCountAsync()
@@ -116,7 +116,7 @@ namespace HES.Core.Services
                 {
                     Message = "Non-hideez unlock (24h)",
                     Count = nonHideezUnlock,
-                    Page = "/Audit/WorkstationSessions/NonHideezUnlock"         
+                    Page = $"{Routes.WorkstationSessions}/NonHideezUnlock"
                 });
             }
 
@@ -131,7 +131,7 @@ namespace HES.Core.Services
                 {
                     Message = "Long open session (>12h)",
                     Count = longOpenSession,
-                    Page = "/Audit/WorkstationSessions/LongOpenSession"              
+                    Page = $"{Routes.WorkstationSessions}/LongOpenSession"
                 });
             }
 
@@ -149,7 +149,7 @@ namespace HES.Core.Services
                 LeftLink = "/Employees",
                 RightText = "Opened Sessions",
                 RightValue = $"{await GetEmployeesOpenedSessionsCountAsync()}",
-                RightLink = "/Audit/WorkstationSessions/OpenedSessions",
+                RightLink = $"{Routes.WorkstationSessions}/OpenedSessions",
                 Notifications = await GetEmployeesNotifyAsync()
             };
         }
@@ -183,7 +183,7 @@ namespace HES.Core.Services
                 {
                     Message = "Low battery",
                     Count = lowBattery,
-                    Page = "/HardwareVaults/LowBattery"
+                    Page = $"{Routes.HardwareVaults}/LowBattery"
                 });
             }
 
@@ -198,7 +198,7 @@ namespace HES.Core.Services
                 {
                     Message = "Vault locked",
                     Count = vaultLocked,
-                    Page = "/HardwareVaults/VaultLocked"       
+                    Page = $"{Routes.HardwareVaults}/VaultLocked"
                 });
             }
 
@@ -213,7 +213,7 @@ namespace HES.Core.Services
                 {
                     Message = "License warning",
                     Count = licenseWarning,
-                    Page = "/HardwareVaults/LicenseWarning"
+                    Page = $"{Routes.HardwareVaults}/LicenseWarning"
                 });
             }
 
@@ -228,7 +228,7 @@ namespace HES.Core.Services
                 {
                     Message = "License critical",
                     Count = licenseCritical,
-                    Page = "/HardwareVaults/LicenseCritical"          
+                    Page = $"{Routes.HardwareVaults}/LicenseCritical"
                 });
             }
 
@@ -243,7 +243,7 @@ namespace HES.Core.Services
                 {
                     Message = "License expired",
                     Count = licenseExpired,
-                    Page = "/HardwareVaults/LicenseExpired"
+                    Page = $"{Routes.HardwareVaults}/LicenseExpired"
                 });
             }
 
@@ -258,10 +258,10 @@ namespace HES.Core.Services
                 CardLogo = "/svg/logo-hardware-vaults.svg",
                 LeftText = "Registered",
                 LeftValue = $"{await GetHardwareVaultsCountAsync()}",
-                LeftLink = "/HardwareVaults",
+                LeftLink = Routes.HardwareVaults,
                 RightText = "Ready",
                 RightValue = $"{await GetReadyHardwareVaultsCountAsync()}",
-                RightLink = "/HardwareVaults/VaultReady",
+                RightLink = $"{Routes.HardwareVaults}/VaultReady",
                 Notifications = await GetHardwareVaultsNotifyAsync()
             };
         }
@@ -272,30 +272,27 @@ namespace HES.Core.Services
 
         public async Task<int> GetWorkstationsCountAsync()
         {
-            return await _workstationService.WorkstationQuery().CountAsync();
+            return await _workstationService.GetWorkstationsCountAsync();
         }
 
         public async Task<int> GetWorkstationsOnlineCountAsync()
         {
-            return await Task.FromResult(RemoteWorkstationConnectionsService.WorkstationsOnlineCount());
+            return await Task.FromResult(RemoteWorkstationConnectionsService.GetWorkstationsOnlineCount());
         }
 
         public async Task<List<DashboardNotify>> GetWorkstationsNotifyAsync()
         {
             var list = new List<DashboardNotify>();
 
-            var notApproved = await _workstationService
-                .WorkstationQuery()
-                .Where(w => w.Approved == false)
-                .CountAsync();
+            var notApproveCount = await _workstationService.GetWorkstationsNotApproveCountAsync();
 
-            if (notApproved > 0)
+            if (notApproveCount > 0)
             {
                 list.Add(new DashboardNotify()
                 {
                     Message = "Waiting for approval",
-                    Count = notApproved,
-                    Page = "/Workstations/NotApproved"             
+                    Count = notApproveCount,
+                    Page = $"{Routes.Workstations}/NotApproved"
                 });
             }
 
@@ -310,23 +307,14 @@ namespace HES.Core.Services
                 CardLogo = "/svg/logo-workstations.svg",
                 LeftText = "Registered",
                 LeftValue = $"{await GetWorkstationsCountAsync()}",
-                LeftLink = "/Workstations",
+                LeftLink = Routes.Workstations,
                 RightText = "Online",
                 RightValue = $"{await GetWorkstationsOnlineCountAsync()}",
-                RightLink = "/Workstations/Online",
+                RightLink = $"{Routes.Workstations}/Online",
                 Notifications = await GetWorkstationsNotifyAsync()
             };
         }
 
         #endregion
-
-        public void Dispose()
-        {
-            _employeeService.Dispose();
-            _workstationAuditService.Dispose();
-            _hardwareVaultTaskService.Dispose();
-            _workstationService.Dispose();
-            _hardwareVaultService.Dispose();
-        }
     }
 }

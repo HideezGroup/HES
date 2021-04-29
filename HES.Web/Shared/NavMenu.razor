@@ -13,49 +13,49 @@
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="Employees">
+                <NavLink class="nav-link" href="@Routes.Employees">
                     <img class="icon-employees i-sidebar" src="/svg/empty.svg" />
                     <span class="page_labels">Employees</span>
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="HardwareVaults">
+                <NavLink class="nav-link" href="@Routes.HardwareVaults">
                     <img class="icon-devices i-sidebar" src="/svg/empty.svg" />
                     <span class="page_labels">Hardware Vaults</span>
                 </NavLink>
             </li>
             @*<li class="nav-item">
-                <NavLink class="nav-link" href="SoftwareVaults">
+                <NavLink class="nav-link" href="@Routes.SoftwareVaults">
                         <img class="icon-software-vault i-sidebar" src="/svg/empty.svg"/>
                         <span class="page_labels">Software Vaults</span>
                     </NavLink>
                 </li>*@
             <li class="nav-item">
-                <NavLink class="nav-link" href="Workstations">
+                <NavLink class="nav-link" href="@Routes.Workstations">
                     <img class="icon-computers i-sidebar" src="/svg/empty.svg" />
                     <span class="page_labels">Workstations</span>
                 </NavLink>
             </li>
             @*<li class="nav-item">
-                    <NavLink class="nav-link" href="Groups">
+                    <NavLink class="nav-link" href="@Routes.Groups">
                         <img class="icon-groups i-sidebar" src="/svg/empty.svg" />
                         <span class="page_labels">Groups</span>
                     </NavLink>
                 </li>*@
             <li class="nav-item">
-                <NavLink class="nav-link" href="SharedAccounts">
+                <NavLink class="nav-link" href="@Routes.SharedAccounts">
                     <img class="icon-shared-accounts i-sidebar" src="/svg/empty.svg" />
                     <span class="page_labels">Shared Accounts</span>
                 </NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="Templates">
+                <NavLink class="nav-link" href="@Routes.Templates">
                     <img class="icon-templates i-sidebar" src="/svg/empty.svg" />
                     <span class="page_labels">Templates</span>
                 </NavLink>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed aria-exp" data-bs-toggle="collapse" href="#audit" role="button" aria-expanded="false" aria-controls="Audit">
+                <a class="nav-link collapsed aria-exp" data-bs-toggle="collapse" href="#audit" role="button" aria-expanded="false" aria-controls="Audit" onclick="collapseSub('settings')">
                     <img class="icon-audit i-sidebar" src="/svg/empty.svg" />
                     <span class="page_labels">Audit</span>
                     <img class="icon-arrow i-sidebar" src="/svg/empty.svg" />
@@ -64,17 +64,17 @@
                     <div class="card card-body border-navyblue">
                         <ul class="nav nav-pills flex-column expand-pills">
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Audit/WorkstationEvents">
+                                <NavLink class="nav-link" href="@Routes.WorkstationEvents">
                                     <span>Events</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Audit/WorkstationSessions">
+                                <NavLink class="nav-link" href="@Routes.WorkstationSessions">
                                     <span>Sessions</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Audit/WorkstationSummaries">
+                                <NavLink class="nav-link" href="@Routes.WorkstationSummaries">
                                     <span>Summaries</span>
                                 </NavLink>
                             </li>
@@ -83,7 +83,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed aria-exp" data-bs-toggle="collapse" href="#settings" role="button" aria-expanded="false" aria-controls="Settings">
+                <a class="nav-link collapsed aria-exp" data-bs-toggle="collapse" href="#settings" role="button" aria-expanded="false" aria-controls="Settings" onclick="collapseSub('audit')">
                     <img class="icon-settings i-sidebar" src="/svg/empty.svg" />
                     <span class="page_labels">Settings</span>
                     <img class="icon-arrow i-sidebar" src="/svg/empty.svg" />
@@ -92,44 +92,44 @@
                     <div class="card card-body border-navyblue">
                         <ul class="nav nav-pills flex-column expand-pills">
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Settings/Administrators">
+                                <NavLink class="nav-link" href="@Routes.Administrators">
                                     <span>Administrators</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Settings/DataProtection">
+                                <NavLink class="nav-link" href="@Routes.DataProtection">
                                     <span>Data Protection</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Settings/HardwareVaultAccessProfile">
+                                <NavLink class="nav-link" href="@Routes.HardwareVaultAccessProfile">
                                     <span>Vault Access Profiles</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Settings/OrgStructure">
+                                <NavLink class="nav-link" href="@Routes.OrgStructure">
                                     <span>OrgStructure</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Settings/LicenseOrders">
+                                <NavLink class="nav-link" href="@Routes.LicenseOrders">
                                     <span>License Orders</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
-                                <NavLink class="nav-link" href="Settings/Parameters">
+                                <NavLink class="nav-link" href="@Routes.Parameters">
                                     <span>Parameters</span>
                                 </NavLink>
                             </li>
                         </ul>
                     </div>
                 </div>
-            </li>
+            </li>          
         </ul>
     </div>
     <div class="navigation-menu__footer copyright">
-        <span class="d-block">© 2020 Hideez Group Inc.</span>
-        <span class="d-block">Hideez Enterprise Server</span>
+        <span class="d-block">@HES.Core.Constants.ServerConstants.Copyright</span>
+        <span class="d-block">@HES.Core.Constants.ServerConstants.ServerName</span>
         <span class="d-block">Version: @HES.Core.Constants.ServerConstants.Version</span>
     </div>
 </div>

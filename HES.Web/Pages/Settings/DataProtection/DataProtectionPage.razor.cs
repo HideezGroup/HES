@@ -1,5 +1,4 @@
-﻿using HES.Core.Enums;
-using HES.Core.Interfaces;
+﻿using HES.Core.Interfaces;
 using HES.Core.Services;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -12,7 +11,6 @@ namespace HES.Web.Pages.Settings.DataProtection
     public partial class DataProtectionPage : HESPageBase, IDisposable
     {
         [Inject] public IDataProtectionService DataProtectionService { get; set; }
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public ILogger<DataProtectionPage> Logger { get; set; }
 
         public ProtectionStatus Status { get; set; }
@@ -21,7 +19,7 @@ namespace HES.Web.Pages.Settings.DataProtection
         {
             try
             {
-                SynchronizationService.UpdateDataProtectionPage += UpdateDataProtectionPage;
+                PageSyncService.UpdateDataProtectionPage += UpdateDataProtectionPage;
                 ProtectionStatus();
                 await BreadcrumbsService.SetDataProtection();
                 SetInitialized();
@@ -33,15 +31,14 @@ namespace HES.Web.Pages.Settings.DataProtection
             }
         }
 
-        private async Task UpdateDataProtectionPage(string exceptPageId, string userName)
+        private async Task UpdateDataProtectionPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
 
-            await InvokeAsync(async () =>
+            await InvokeAsync(() =>
             {
                 ProtectionStatus();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -66,7 +63,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateDataProtection(PageId);
             }
         }
 
@@ -84,7 +81,7 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateDataProtection(PageId);
             }
         }
 
@@ -102,13 +99,13 @@ namespace HES.Web.Pages.Settings.DataProtection
             if (result.Succeeded)
             {
                 ProtectionStatus();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateDataProtection(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateDataProtectionPage -= UpdateDataProtectionPage;
+            PageSyncService.UpdateDataProtectionPage -= UpdateDataProtectionPage;
         }
     }
 }

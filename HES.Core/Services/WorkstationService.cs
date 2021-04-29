@@ -1,51 +1,62 @@
 ﻿using HES.Core.Entities;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.Workstations;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using Hideez.SDK.Communication.HES.DTO;
-using Hideez.SDK.Communication.Workstation;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class WorkstationService : IWorkstationService, IDisposable
+    public class WorkstationService : IWorkstationService
     {
-        private readonly IAsyncRepository<Workstation> _workstationRepository;
-        private readonly IAsyncRepository<WorkstationProximityVault> _workstationProximityVaultRepository;
+        private readonly IApplicationDbContext _dbContext;
 
-        public WorkstationService(IAsyncRepository<Workstation> workstationRepository,
-                                  IAsyncRepository<WorkstationProximityVault> workstationProximityVaultRepository)
+        public WorkstationService(IApplicationDbContext dbContext)
         {
-            _workstationRepository = workstationRepository;
-            _workstationProximityVaultRepository = workstationProximityVaultRepository;
+            _dbContext = dbContext;
         }
 
         #region Workstation
 
-        public IQueryable<Workstation> WorkstationQuery()
+        public async Task<Workstation> GetWorkstationByIdAsync(string workstationId)
         {
-            return _workstationRepository.Query();
-        }
-
-        public async Task<Workstation> GetWorkstationByIdAsync(string id)
-        {
-            return await _workstationRepository
-                .Query()
+            return await _dbContext.Workstations
                 .Include(x => x.Department.Company)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == workstationId);
         }
 
         public async Task<List<Workstation>> GetWorkstationsAsync(DataLoadingOptions<WorkstationFilter> dataLoadingOptions)
         {
-            var query = _workstationRepository
-                .Query()
+            return await WorkstationQuery(dataLoadingOptions).Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetWorkstationsNotApproveCountAsync()
+        {
+            return await _dbContext.Workstations.Where(x => !x.Approved).CountAsync();
+        }
+
+        public async Task<int> GetWorkstationsCountAsync(DataLoadingOptions<WorkstationFilter> dataLoadingOptions)
+        {
+            return await WorkstationQuery(dataLoadingOptions).CountAsync();
+        }
+
+        public async Task<int> GetWorkstationsCountAsync()
+        {
+            return await _dbContext.Workstations
+                .Include(x => x.Department.Company)
+                .Include(x => x.WorkstationProximityVaults)
+                .CountAsync();
+        }
+
+        private IQueryable<Workstation> WorkstationQuery(DataLoadingOptions<WorkstationFilter> dataLoadingOptions)
+        {
+            var query = _dbContext.Workstations
                 .Include(x => x.Department.Company)
                 .Include(x => x.WorkstationProximityVaults)
                 .AsQueryable();
@@ -96,6 +107,19 @@ namespace HES.Core.Services
                 if (dataLoadingOptions.Filter.Approved != null)
                 {
                     query = query.Where(x => x.Approved == dataLoadingOptions.Filter.Approved);
+                }
+                if (dataLoadingOptions.Filter.Online != null)
+                {
+                    var workstationIds = RemoteWorkstationConnectionsService.GetWorkstationsOnlineIds();
+
+                    if (dataLoadingOptions.Filter.Online.Value == true)
+                    {
+                        query = query.Where(x => workstationIds.Contains(x.Id));
+                    }
+                    else
+                    {
+                        query = query.Where(x => !workstationIds.Contains(x.Id));
+                    }
                 }
             }
 
@@ -148,130 +172,52 @@ namespace HES.Core.Services
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+            return query;
         }
 
-        public async Task<int> GetWorkstationsCountAsync(DataLoadingOptions<WorkstationFilter> dataLoadingOptions)
+        public async Task AddWorkstationAsync(WorkstationInfoDto workstationInfoModel)
         {
-            var query = _workstationRepository
-               .Query()
-               .Include(x => x.Department.Company)
-               .Include(x => x.WorkstationProximityVaults)
-               .AsQueryable();
-
-            // Filter
-            if (dataLoadingOptions.Filter != null)
+            if (workstationInfoModel == null)
             {
-                if (dataLoadingOptions.Filter.Name != null)
-                {
-                    query = query.Where(w => w.Name.Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Domain != null)
-                {
-                    query = query.Where(w => w.Domain.Contains(dataLoadingOptions.Filter.Domain, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.ClientVersion != null)
-                {
-                    query = query.Where(w => w.ClientVersion.Contains(dataLoadingOptions.Filter.ClientVersion, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Company != null)
-                {
-                    query = query.Where(x => x.Department.Company.Name.Contains(dataLoadingOptions.Filter.Company, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.Department != null)
-                {
-                    query = query.Where(x => x.Department.Name.Contains(dataLoadingOptions.Filter.Department, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.OS != null)
-                {
-                    query = query.Where(w => w.OS.Contains(dataLoadingOptions.Filter.OS, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.IP != null)
-                {
-                    query = query.Where(w => w.IP.Contains(dataLoadingOptions.Filter.IP, StringComparison.OrdinalIgnoreCase));
-                }
-                if (dataLoadingOptions.Filter.LastSeenStartDate != null)
-                {
-                    query = query.Where(w => w.LastSeen >= dataLoadingOptions.Filter.LastSeenStartDate);
-                }
-                if (dataLoadingOptions.Filter.LastSeenEndDate != null)
-                {
-                    query = query.Where(x => x.LastSeen <= dataLoadingOptions.Filter.LastSeenEndDate);
-                }
-                if (dataLoadingOptions.Filter.RFID != null)
-                {
-                    query = query.Where(x => x.RFID == dataLoadingOptions.Filter.RFID);
-                }
-                if (dataLoadingOptions.Filter.Approved != null)
-                {
-                    query = query.Where(x => x.Approved == dataLoadingOptions.Filter.Approved);
-                }
-            }
-
-            // Search
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
-            {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Domain.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.ClientVersion.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Company.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.OS.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.IP.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return await query.CountAsync();
-        }
-
-        public async Task<bool> ExistAsync(Expression<Func<Workstation, bool>> predicate)
-        {
-            return await _workstationRepository.ExistAsync(predicate);
-        }
-
-        public async Task AddWorkstationAsync(WorkstationInfoDto workstationInfoDto)
-        {
-            if (workstationInfoDto == null)
-            {
-                throw new ArgumentNullException(nameof(workstationInfoDto));
+                throw new ArgumentNullException(nameof(workstationInfoModel));
             }
 
             var workstation = new Workstation()
             {
-                Id = workstationInfoDto.Id,
-                Name = workstationInfoDto.MachineName,
-                Domain = workstationInfoDto.Domain,
-                OS = workstationInfoDto.OsName,
-                ClientVersion = workstationInfoDto.AppVersion,
-                IP = workstationInfoDto.IP,
+                Id = workstationInfoModel.Id,
+                Name = workstationInfoModel.MachineName,
+                Domain = workstationInfoModel.Domain,
+                OS = workstationInfoModel.OsName,
+                ClientVersion = workstationInfoModel.AppVersion,
+                IP = workstationInfoModel.IP,
                 LastSeen = DateTime.UtcNow,
                 DepartmentId = null
             };
 
-            await _workstationRepository.AddAsync(workstation);
+            _dbContext.Workstations.Add(workstation);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateWorkstationInfoAsync(WorkstationInfoDto workstationInfoDto)
+        public async Task EditWorkstationInfoAsync(WorkstationInfoDto workstationInfoModel)
         {
-            if (workstationInfoDto == null)
+            if (workstationInfoModel == null)
             {
-                throw new ArgumentNullException(nameof(workstationInfoDto));
+                throw new ArgumentNullException(nameof(workstationInfoModel));
             }
 
-            var workstation = await GetWorkstationByIdAsync(workstationInfoDto.Id);
+            var workstation = await GetWorkstationByIdAsync(workstationInfoModel.Id);
             if (workstation == null)
             {
-                throw new Exception($"Workstation not found.");
+                throw new HESException(HESCode.WorkstationNotFound);
             }
 
-            workstation.ClientVersion = workstationInfoDto.AppVersion;
-            workstation.OS = workstationInfoDto.OsName;
-            workstation.IP = workstationInfoDto.IP;
+            workstation.ClientVersion = workstationInfoModel.AppVersion;
+            workstation.OS = workstationInfoModel.OsName;
+            workstation.IP = workstationInfoModel.IP;
             workstation.LastSeen = DateTime.UtcNow;
 
-            string[] properties = { "ClientVersion", "OS", "IP", "LastSeen" };
-            await _workstationRepository.UpdateOnlyPropAsync(workstation, properties);
+            _dbContext.Workstations.Update(workstation);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task EditWorkstationAsync(Workstation workstation)
@@ -281,101 +227,115 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(workstation));
             }
 
-            string[] properties = { "DepartmentId", "RFID" };
-            await _workstationRepository.UpdateOnlyPropAsync(workstation, properties);
+            _dbContext.Workstations.Update(workstation);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task ApproveWorkstationAsync(Workstation workstation)
         {
             if (workstation == null)
+            {
                 throw new ArgumentNullException(nameof(workstation));
+            }
 
             workstation.Approved = true;
 
-            await _workstationRepository.UpdateAsync(workstation);
+            _dbContext.Workstations.Update(workstation);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UnapproveWorkstationAsync(string workstationId)
         {
-            if (workstationId == null)
+            if (string.IsNullOrWhiteSpace(workstationId))
+            {
                 throw new ArgumentNullException(nameof(workstationId));
+            }
 
             var workstation = await GetWorkstationByIdAsync(workstationId);
             if (workstation == null)
-                throw new Exception("Workstation not found.");
+            {
+                throw new HESException(HESCode.WorkstationNotFound);
+            }
 
             workstation.Approved = false;
             workstation.RFID = false;
             workstation.DepartmentId = null;
 
-            await _workstationRepository.UpdateAsync(workstation);
+            _dbContext.Workstations.Update(workstation);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteWorkstationAsync(string workstationId)
         {
-            if (workstationId == null)
+            if (string.IsNullOrWhiteSpace(workstationId))
+            {
                 throw new ArgumentNullException(nameof(workstationId));
+            }
 
             var workstation = await GetWorkstationByIdAsync(workstationId);
             if (workstation == null)
-                throw new Exception("Workstation not found.");
+            {
+                throw new HESException(HESCode.WorkstationNotFound);
+            }
 
-            await _workstationRepository.DeleteAsync(workstation);
+            _dbContext.Workstations.Remove(workstation);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> GetRfidStateAsync(string workstationId)
+        public async Task<bool> CheckIsRFIDEnabledAsync(string workstationId)
         {
-            var workstation = await _workstationRepository
-                        .Query()
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync(w => w.Id == workstationId);
+            var workstation = await GetWorkstationByIdAsync(workstationId);
+            if (workstation == null)
+            {
+                throw new HESException(HESCode.WorkstationNotFound);
+            }
 
             return workstation.RFID;
         }
 
         public async Task<bool> CheckIsApprovedAsync(string workstationId)
         {
-            var workstaton = await _workstationRepository.Query().AsNoTracking().FirstOrDefaultAsync(x => x.Id == workstationId);
-
-            if (workstaton == null)
+            var workstation = await GetWorkstationByIdAsync(workstationId);
+            if (workstation == null)
+            {
                 return false;
+            }
 
-            if (workstaton.Approved == false)
-                return false;
-
-            return true;
+            return workstation.Approved;
         }
 
-        public async Task UnchangedWorkstationAsync(Workstation workstation)
+        public void UnchangedWorkstation(Workstation workstation)
         {
-            await _workstationRepository.UnchangedAsync(workstation);
+            _dbContext.Unchanged(workstation);
         }
 
         #endregion
 
-        #region Proximity
+        #region WorkstationHardwareVaultPair
 
-        public IQueryable<WorkstationProximityVault> ProximityVaultQuery()
+        public async Task<WorkstationHardwareVaultPair> GetWorkstationHardwareVaultPairByIdAsync(string pairId)
         {
-            return _workstationProximityVaultRepository.Query();
-        }
-
-        public async Task<WorkstationProximityVault> GetProximityVaultByIdAsync(string id)
-        {
-            return await _workstationProximityVaultRepository
-                .Query()
+            return await _dbContext.WorkstationHardwareVaultPairs
                 .Include(d => d.HardwareVault.Employee.Department.Company)
                 .Include(d => d.Workstation.Department.Company)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == pairId);
         }
 
-        public async Task<List<WorkstationProximityVault>> GetProximityVaultsAsync(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions)
+        public async Task<List<WorkstationHardwareVaultPair>> GetWorkstationHardwareVaultPairsAsync(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions)
         {
-            var query = _workstationProximityVaultRepository
-                .Query()
+            return await WorkstationHardwareVaultPairQuery(dataLoadingOptions).Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetWorkstationHardwareVaultPairsCountAsync(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions)
+        {
+            return await WorkstationHardwareVaultPairQuery(dataLoadingOptions).CountAsync();
+        }
+
+        private IQueryable<WorkstationHardwareVaultPair> WorkstationHardwareVaultPairQuery(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions)
+        {
+            var query = _dbContext.WorkstationHardwareVaultPairs
                 .Include(d => d.HardwareVault.Employee.Department.Company)
-                .Where(d => d.WorkstationId == dataLoadingOptions.EntityId)
-                .AsQueryable();
+                .Where(d => d.WorkstationId == dataLoadingOptions.EntityId);
 
             // Search
             if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
@@ -391,63 +351,42 @@ namespace HES.Core.Services
             // Sort Direction
             switch (dataLoadingOptions.SortedColumn)
             {
-                case nameof(WorkstationProximityVault.HardwareVault):
+                case nameof(WorkstationHardwareVaultPair.HardwareVault):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.HardwareVaultId) : query.OrderByDescending(x => x.HardwareVaultId);
                     break;
-                case nameof(WorkstationProximityVault.HardwareVault.Employee):
+                case nameof(WorkstationHardwareVaultPair.HardwareVault.Employee):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.HardwareVault.Employee.FirstName).ThenBy(x => x.HardwareVault.Employee.LastName) : query.OrderByDescending(x => x.HardwareVault.Employee.FirstName).ThenByDescending(x => x.HardwareVault.Employee.LastName);
                     break;
-                case nameof(WorkstationProximityVault.HardwareVault.Employee.Department.Company):
+                case nameof(WorkstationHardwareVaultPair.HardwareVault.Employee.Department.Company):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.HardwareVault.Employee.Department.Company.Name) : query.OrderByDescending(x => x.HardwareVault.Employee.Department.Company.Name);
                     break;
-                case nameof(WorkstationProximityVault.HardwareVault.Employee.Department):
+                case nameof(WorkstationHardwareVaultPair.HardwareVault.Employee.Department):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.HardwareVault.Employee.Department.Name) : query.OrderByDescending(x => x.HardwareVault.Employee.Department.Name);
                     break;
             }
 
-            return await query.Skip(dataLoadingOptions.Skip).Take(dataLoadingOptions.Take).AsNoTracking().ToListAsync();
+            return query;
         }
 
-        public async Task<int> GetProximityVaultsCountAsync(DataLoadingOptions<WorkstationDetailsFilter> dataLoadingOptions)
+        public async Task<WorkstationHardwareVaultPair> CreateWorkstationHardwareVaultPairAsync(string workstationId, string vaultId)
         {
-            var query = _workstationProximityVaultRepository
-                            .Query()
-                            .Include(d => d.HardwareVault.Employee.Department.Company)
-                            .Where(d => d.WorkstationId == dataLoadingOptions.EntityId)
-                            .AsQueryable();
-
-            // Search
-            if (!string.IsNullOrWhiteSpace(dataLoadingOptions.SearchText))
+            if (string.IsNullOrWhiteSpace(workstationId))
             {
-                dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
-
-                query = query.Where(x => x.HardwareVaultId.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    (x.HardwareVault.Employee.FirstName + " " + x.HardwareVault.Employee.LastName).Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.HardwareVault.Employee.Department.Company.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.HardwareVault.Employee.Department.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+                throw new ArgumentNullException(nameof(workstationId));
             }
 
-            return await query.CountAsync();
-        }
-
-        public async Task<WorkstationProximityVault> AddProximityVaultAsync(string workstationId, string vaultId)
-        {
-            if (workstationId == null)
-                throw new ArgumentNullException(nameof(workstationId));
-
-            if (vaultId == null)
+            if (string.IsNullOrWhiteSpace(vaultId))
+            {
                 throw new ArgumentNullException(nameof(vaultId));
+            }
 
-            var exists = await _workstationProximityVaultRepository
-            .Query()
-            .Where(d => d.HardwareVaultId == vaultId)
-            .Where(d => d.WorkstationId == workstationId)
-            .AnyAsync();
+            var pairExist = await _dbContext.ExistAsync<WorkstationHardwareVaultPair>(x => x.HardwareVaultId == vaultId && x.WorkstationId == workstationId);
+            if (pairExist)
+            {
+                throw new HESException(HESCode.WorkstationHardwareVaultPairAlreadyExist);
+            }
 
-            if (exists)
-                throw new Exception("Vault already added to workstation.");
-
-            var proximityVault = new WorkstationProximityVault
+            var pair = new WorkstationHardwareVaultPair
             {
                 WorkstationId = workstationId,
                 HardwareVaultId = vaultId,
@@ -456,42 +395,48 @@ namespace HES.Core.Services
                 LockTimeout = 5
             };
 
-            return await _workstationProximityVaultRepository.AddAsync(proximityVault);
+            var result = _dbContext.WorkstationHardwareVaultPairs.Add(pair);
+            await _dbContext.SaveChangesAsync();
+
+            return result.Entity;
         }
 
-        public async Task DeleteProximityVaultAsync(string proximityVaultId)
+        public async Task DeleteWorkstationHardwareVaultPairAsync(string pairId)
         {
-            if (proximityVaultId == null)
-                throw new ArgumentNullException(nameof(proximityVaultId));
+            if (string.IsNullOrWhiteSpace(pairId))
+            {
+                throw new ArgumentNullException(nameof(pairId));
+            }
 
-            var proximityVault = await _workstationProximityVaultRepository.GetByIdAsync(proximityVaultId);
-            if (proximityVault == null)
-                throw new Exception("Proximity vault not found.");
+            var pair = await _dbContext.WorkstationHardwareVaultPairs.FindAsync(pairId);
+            if (pair == null)
+            {
+                throw new HESException(HESCode.WorkstationHardwareVaultPairNotFound);
+            }
 
-            await _workstationProximityVaultRepository.DeleteAsync(proximityVault);
+            _dbContext.WorkstationHardwareVaultPairs.Remove(pair);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteProximityByVaultIdAsync(string vaultsId)
+        public async Task DeleteWorkstationHardwareVaultPairsByVaultIdAsync(string vaultId)
         {
-            var allProximity = await _workstationProximityVaultRepository
-             .Query()
-             .Where(w => w.HardwareVaultId == vaultsId)
-             .ToListAsync();
+            var proximityVaults = _dbContext.WorkstationHardwareVaultPairs.Where(x => x.HardwareVaultId == vaultId);
 
-            await _workstationProximityVaultRepository.DeleteRangeAsync(allProximity);
+            _dbContext.WorkstationHardwareVaultPairs.RemoveRange(proximityVaults);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IReadOnlyList<HwVaultProximitySettingsDto>> GetProximitySettingsAsync(string workstationId)
+        public async Task<IReadOnlyList<HwVaultProximitySettingsDto>> GetWorkstationHardwareVaultPairSettingsAsync(string workstationId)
         {
             var workstation = await GetWorkstationByIdAsync(workstationId);
-
             if (workstation == null)
-                throw new Exception("Workstation not found");
+            {
+                throw new HESException(HESCode.WorkstationNotFound);
+            }
 
-            var deviceProximitySettings = new List<HwVaultProximitySettingsDto>();
+            var settings = new List<HwVaultProximitySettingsDto>();
 
-            var proximityDevices = await _workstationProximityVaultRepository
-                .Query()
+            var proximityDevices = await _dbContext.WorkstationHardwareVaultPairs
                 .Include(d => d.HardwareVault)
                 .Where(d => d.WorkstationId == workstationId)
                 .AsNoTracking()
@@ -501,7 +446,7 @@ namespace HES.Core.Services
             {
                 foreach (var proximity in proximityDevices)
                 {
-                    deviceProximitySettings.Add(new HwVaultProximitySettingsDto()
+                    settings.Add(new HwVaultProximitySettingsDto()
                     {
                         SerialNo = proximity.HardwareVaultId,
                         Mac = proximity.HardwareVault.MAC,
@@ -512,15 +457,9 @@ namespace HES.Core.Services
                 }
             }
 
-            return deviceProximitySettings;
+            return settings;
         }
 
         #endregion
-
-        public void Dispose()
-        {
-            _workstationRepository.Dispose();
-            _workstationProximityVaultRepository.Dispose();
-        }
     }
 }

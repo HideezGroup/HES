@@ -1,6 +1,6 @@
 ﻿@if (Filter == null)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
@@ -41,7 +41,7 @@ else
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
                 <label class="mb-0 text-gray">Last Seen End Date</label>
-                <DateTimePicker @bind-value="Filter.LastSeenEndDate" />
+                <DateTimePicker @bind-Value="Filter.LastSeenEndDate" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
                 <label class="mb-0 text-gray">RFID</label>
@@ -59,9 +59,17 @@ else
                     <option value="No">No</option>
                 </select>
             </div>
+            <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
+                <label class="mb-0 text-gray">Online</label>
+                <select @onchange="OnChangeOnline" class="form-select">
+                    <option selected></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
             <div class="col align-self-end text-end form-group">
-                <ButtonSpinner Text="Clear" Class="btn btn-secondary" Callback="ClearAsync" />
-                <ButtonSpinner @ref="ButtonSpinner" Submit="true" Text="Filter" Class="btn btn-primary" />
+                <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync" />
+                <Button @ref="Button" Text="Filter" type="submit" class="btn btn-primary" />
             </div>
         </div>
     </EditForm>

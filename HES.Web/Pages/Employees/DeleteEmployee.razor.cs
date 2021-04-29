@@ -33,6 +33,8 @@ namespace HES.Web.Pages.Employees
                 if (Employee == null)
                     throw new HESException(HESCode.EmployeeNotFound);
 
+                EmployeeHasVault = Employee.HardwareVaults.Count > 0 || Employee.SoftwareVaults.Count > 0;
+
                 EntityBeingEdited = MemoryCache.TryGetValue(Employee.Id, out object _);
                 if (!EntityBeingEdited)
                     MemoryCache.Set(Employee.Id, Employee);
@@ -44,12 +46,7 @@ namespace HES.Web.Pages.Employees
                 await ModalDialogCancel();
             }
         }
-
-        protected override void OnParametersSet()
-        {
-            EmployeeHasVault = Employee.HardwareVaults.Count > 0 || Employee.SoftwareVaults.Count > 0;
-        }
-
+         
         public async Task DeleteEmployeeAsync()
         {
             try

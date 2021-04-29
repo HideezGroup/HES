@@ -2,7 +2,7 @@
 
 @if (!Initialized)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
@@ -16,17 +16,17 @@ else
             <DataAnnotationsValidator />
             <ValidationErrorMessage @ref="ValidationErrorMessage" />
             <div class="form-group">
-                <FormLabel For="@(() => SharedAccountEditModel.Name)" class="text-gray" />
+                <Label For="@(() => SharedAccountEditModel.Name)" class="text-gray" />
                 <InputText @bind-Value="SharedAccountEditModel.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => SharedAccountEditModel.Name)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => SharedAccountEditModel.Urls)" class="text-gray" />
+                <Label For="@(() => SharedAccountEditModel.Urls)" class="text-gray" />
                 <textarea @bind="SharedAccountEditModel.Urls" rows="3" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => SharedAccountEditModel.Urls)" class="text-danger" />
             </div>
             <div class="form-group">
-                <FormLabel For="@(() => SharedAccountEditModel.Apps)" class="text-gray" />
+                <Label For="@(() => SharedAccountEditModel.Apps)" class="text-gray" />
                 <textarea @bind="SharedAccountEditModel.Apps" rows="3" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => SharedAccountEditModel.Apps)" class="text-danger" />
             </div>
@@ -44,21 +44,21 @@ else
             {
                 case LoginType.WebApp:
                     <div class="form-group">
-                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
                         <InputText @bind-Value="SharedAccountEditModel.Login" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Local:
                     <div class="form-group">
-                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
                         <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Domain:
                     <div class="form-group">
-                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
                         <div class="input-group">
                             <input type="text" @bind="SharedAccountEditModel.Domain" placeholder="Domain" class="form-control" tabindex="4">
                             <input type="text" @bind="SharedAccountEditModel.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
@@ -69,14 +69,14 @@ else
                     break;
                 case LoginType.AzureAD:
                     <div class="form-group">
-                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
                         <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Microsoft:
                     <div class="form-group">
-                        <FormLabel For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
+                        <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
                         <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>

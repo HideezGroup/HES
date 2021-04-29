@@ -1,7 +1,7 @@
-﻿using HES.Core.Entities;
-using HES.Core.Enums;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.Workstations;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +25,7 @@ namespace HES.Web.Pages.Workstations
             {
                 WorkstationService = ScopedServices.GetRequiredService<IWorkstationService>();
                 DataTableService = ScopedServices.GetRequiredService<IDataTableService<Workstation, WorkstationFilter>>();
-                SynchronizationService.UpdateWorkstationsPage += UpdateWorkstationsPage;
+                PageSyncService.UpdateWorkstationsPage += UpdateWorkstationsPage;
 
                 switch (DashboardFilter)
                 {
@@ -33,7 +33,7 @@ namespace HES.Web.Pages.Workstations
                         DataTableService.DataLoadingOptions.Filter.Approved = false;
                         break;
                     case "Online":
-                        //TODO
+                        DataTableService.DataLoadingOptions.Filter.Online = true;
                         break;
                 }
 
@@ -49,7 +49,7 @@ namespace HES.Web.Pages.Workstations
             }
         }
 
-        private async Task UpdateWorkstationsPage(string exceptPageId, string userName)
+        private async Task UpdateWorkstationsPage(string exceptPageId)
         {
             if (PageId == exceptPageId)
                 return;
@@ -57,7 +57,6 @@ namespace HES.Web.Pages.Workstations
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Page edited by {userName}.", ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -77,7 +76,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateWorkstations(PageId);
             }
         }
 
@@ -96,7 +95,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateWorkstations(PageId);
             }
         }
 
@@ -115,7 +114,7 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateWorkstations(PageId);
             }
         }
 
@@ -123,7 +122,7 @@ namespace HES.Web.Pages.Workstations
         {
             await InvokeAsync(() =>
             {
-                NavigationManager.NavigateTo($"/Workstations/Details/{DataTableService.SelectedEntity.Id}");
+                NavigationManager.NavigateTo($"{Routes.WorkstationsDetails}{DataTableService.SelectedEntity.Id}");
             });
         }
 
@@ -142,13 +141,13 @@ namespace HES.Web.Pages.Workstations
             if (result.Succeeded)
             {
                 await DataTableService.LoadTableDataAsync();
-                await SynchronizationService.UpdateTemplates(PageId);
+                await PageSyncService.UpdateWorkstations(PageId);
             }
         }
 
         public void Dispose()
         {
-            SynchronizationService.UpdateWorkstationsPage -= UpdateWorkstationsPage;
+            PageSyncService.UpdateWorkstationsPage -= UpdateWorkstationsPage;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 @if (!Initialized)
 {
-    <LoadingText />
+    <Loader />
 }
 else
 {
@@ -16,7 +16,7 @@ else
             <DataAnnotationsValidator />
             <ValidationErrorMessage @ref="ValidationErrorMessage" />
             <div class="form-group">
-                <FormLabel For="@(() => Company.Name)" class="text-gray" />
+                <Label For="@(() => Company.Name)" class="text-gray" />
                 <InputText @bind-Value="Company.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => Company.Name)" class="text-danger" />
             </div>

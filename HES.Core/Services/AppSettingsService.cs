@@ -1,55 +1,60 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web.AppSettings;
+using HES.Core.Models.AppSettings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HES.Core.Services
 {
-    public class AppSettingsService : IAppSettingsService, IDisposable
+    public class AppSettingsService : IAppSettingsService
     {
-        private readonly IAsyncRepository<AppSettings> _appSettingsRepository;
+        private readonly IApplicationDbContext _dbContext;
         private readonly IDataProtectionService _dataProtectionService;
         private readonly IMemoryCache _memoryCache;
         private readonly ILogger<AppSettingsService> _logger;
 
-        public AppSettingsService(IAsyncRepository<AppSettings> appSettingsRepository, IDataProtectionService dataProtectionService, IMemoryCache memoryCache, ILogger<AppSettingsService> logger)
+        public AppSettingsService(IApplicationDbContext applicationDbContext, IDataProtectionService dataProtectionService, IMemoryCache memoryCache, ILogger<AppSettingsService> logger)
         {
-            _appSettingsRepository = appSettingsRepository;
+            _dbContext = applicationDbContext;
             _dataProtectionService = dataProtectionService;
             _memoryCache = memoryCache;
             _logger = logger;
         }
 
-        public async Task<LicensingSettings> GetLicensingSettingsAsync()
+        #region License Settings
+
+        public async Task<LicensingSettings> GetLicenseSettingsAsync()
         {
-            var licensing = await _appSettingsRepository.Query().AsNoTracking().FirstOrDefaultAsync(x => x.Id == ServerConstants.Licensing);
-
-            if (licensing == null)
+            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Licensing);
+            if (settings == null)
+            {
                 return null;
+            }
 
-            var deserialized = JsonConvert.DeserializeObject<LicensingSettings>(licensing.Value);
+            var deserialized = JsonSerializer.Deserialize<LicensingSettings>(settings.Value);
             deserialized.ApiKey = _dataProtectionService.Decrypt(deserialized.ApiKey);
 
             return deserialized;
         }
 
-        public async Task SetLicensingSettingsAsync(LicensingSettings licensing)
+        public async Task SetLicenseSettingsAsync(LicensingSettings licSettings)
         {
-            if (licensing == null)
-                throw new ArgumentNullException(nameof(LicensingSettings));
+            if (licSettings == null)
+            {
+                throw new ArgumentNullException(nameof(licSettings));
+            }
 
-            licensing.ApiKey = _dataProtectionService.Encrypt(licensing.ApiKey);
+            licSettings.ApiKey = _dataProtectionService.Encrypt(licSettings.ApiKey);
 
-            var json = JsonConvert.SerializeObject(licensing);
+            var json = JsonSerializer.Serialize(licSettings);
 
-            var appSettings = await _appSettingsRepository.GetByIdAsync(ServerConstants.Licensing);
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
 
             if (appSettings == null)
             {
@@ -58,61 +63,98 @@ namespace HES.Core.Services
                     Id = ServerConstants.Licensing,
                     Value = json
                 };
-                await _appSettingsRepository.AddAsync(appSettings);
+                _dbContext.AppSettings.Add(appSettings);
             }
             else
             {
                 appSettings.Value = json;
-                await _appSettingsRepository.UpdateAsync(appSettings);
+                _dbContext.AppSettings.Update(appSettings);
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveLicenseSettingsAsync()
+        {
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
+            if (appSettings != null)
+            {
+                _dbContext.AppSettings.Remove(appSettings);
+                await _dbContext.SaveChangesAsync();
             }
         }
 
-        public async Task<EmailSettings> GetEmailSettingsAsync()
+        #endregion
+
+        #region Ldap Settings
+
+        public async Task<LdapSettings> GetLdapSettingsAsync()
         {
-            var settings = await _appSettingsRepository.Query().AsNoTracking().FirstOrDefaultAsync(x => x.Id == ServerConstants.Email);
-
+            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Ldap);
             if (settings == null)
+            {
                 return null;
+            }
 
-            var deserialized = JsonConvert.DeserializeObject<EmailSettings>(settings.Value);
+            var deserialized = JsonSerializer.Deserialize<LdapSettings>(settings.Value);
             deserialized.Password = _dataProtectionService.Decrypt(deserialized.Password);
 
             return deserialized;
         }
 
-        public async Task SetEmailSettingsAsync(EmailSettings email)
+        public async Task SetLdapSettingsAsync(LdapSettings ldapSettings)
         {
-            if (email == null)
-                throw new ArgumentNullException(nameof(email));
+            if (ldapSettings == null)
+            {
+                throw new ArgumentNullException(nameof(ldapSettings));
+            }
 
-            email.Password = _dataProtectionService.Encrypt(email.Password);
+            ldapSettings.Password = _dataProtectionService.Encrypt(ldapSettings.Password);
 
-            var json = JsonConvert.SerializeObject(email);
+            var json = JsonSerializer.Serialize(ldapSettings);
 
-            var appSettings = await _appSettingsRepository.GetByIdAsync(ServerConstants.Email);
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
 
             if (appSettings == null)
             {
                 appSettings = new AppSettings()
                 {
-                    Id = ServerConstants.Email,
+                    Id = ServerConstants.Ldap,
                     Value = json
                 };
-                await _appSettingsRepository.AddAsync(appSettings);
+                _dbContext.AppSettings.Add(appSettings);
             }
             else
             {
                 appSettings.Value = json;
-                await _appSettingsRepository.UpdateAsync(appSettings);
+                _dbContext.AppSettings.Update(appSettings);
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveLdapSettingsAsync()
+        {
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
+            if (appSettings != null)
+            {
+                _dbContext.AppSettings.Remove(appSettings);
+                await _dbContext.SaveChangesAsync();
             }
         }
+
+        #endregion
+
+        #region Alarm Settings
 
         public async Task<AlarmState> GetAlarmStateAsync()
         {
             var alarmState = _memoryCache.Get<AlarmState>(ServerConstants.Alarm);
 
             if (alarmState != null)
+            {
                 return alarmState;
+            }
 
             alarmState = new AlarmState();
 
@@ -133,9 +175,11 @@ namespace HES.Core.Services
                 }
 
                 if (string.IsNullOrWhiteSpace(json))
+                {
                     return alarmState;
+                }
 
-                alarmState = JsonConvert.DeserializeObject<AlarmState>(json);
+                alarmState = JsonSerializer.Deserialize<AlarmState>(json);
                 _memoryCache.Set(ServerConstants.Alarm, alarmState);
             }
             catch (Exception ex)
@@ -146,19 +190,13 @@ namespace HES.Core.Services
             return alarmState;
         }
 
-        public async Task<bool> GetAlarmEnabledAsync()
-        {
-            var alarmState = await GetAlarmStateAsync();
-            return alarmState != null ? alarmState.IsAlarm : false;
-        }
-
         public async Task SetAlarmStateAsync(AlarmState alarmState)
         {
             _memoryCache.Set(ServerConstants.Alarm, alarmState);
 
             try
             {
-                var json = JsonConvert.SerializeObject(alarmState);
+                var json = JsonSerializer.Serialize(alarmState);
                 var _path = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "alarmstate.json");
                 using (var writer = new StreamWriter(_path, false))
                 {
@@ -171,84 +209,6 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task<ServerSettings> GetServerSettingsAsync()
-        {
-            var server = await _appSettingsRepository.Query().AsNoTracking().FirstOrDefaultAsync(x => x.Id == ServerConstants.Server);
-
-            if (server == null)
-                return null;
-
-            return JsonConvert.DeserializeObject<ServerSettings>(server.Value);
-        }
-
-        public async Task SetServerSettingsAsync(ServerSettings server)
-        {
-            if (server == null)
-                throw new ArgumentNullException(nameof(ServerSettings));
-
-            var json = JsonConvert.SerializeObject(server);
-
-            var appSettings = await _appSettingsRepository.GetByIdAsync(ServerConstants.Server);
-
-            if (appSettings == null)
-            {
-                appSettings = new AppSettings()
-                {
-                    Id = ServerConstants.Server,
-                    Value = json
-                };
-                await _appSettingsRepository.AddAsync(appSettings);
-            }
-            else
-            {
-                appSettings.Value = json;
-                await _appSettingsRepository.UpdateAsync(appSettings);
-            }
-        }
-
-        public async Task<LdapSettings> GetLdapSettingsAsync()
-        {
-            var domain = await _appSettingsRepository.Query().AsNoTracking().FirstOrDefaultAsync(x => x.Id == ServerConstants.Domain);
-
-            if (domain == null)
-                return null;
-
-            var deserialized = JsonConvert.DeserializeObject<LdapSettings>(domain.Value);
-            deserialized.Password = _dataProtectionService.Decrypt(deserialized.Password);
-
-            return deserialized;
-        }
-
-        public async Task SetLdapSettingsAsync(LdapSettings ldapSettings)
-        {
-            if (ldapSettings == null)
-                throw new ArgumentNullException(nameof(LdapSettings));
-
-            ldapSettings.Password = _dataProtectionService.Encrypt(ldapSettings.Password);
-
-            var json = JsonConvert.SerializeObject(ldapSettings);
-
-            var appSettings = await _appSettingsRepository.GetByIdAsync(ServerConstants.Domain);
-
-            if (appSettings == null)
-            {
-                appSettings = new AppSettings()
-                {
-                    Id = ServerConstants.Domain,
-                    Value = json
-                };
-                await _appSettingsRepository.AddAsync(appSettings);
-            }
-            else
-            {
-                appSettings.Value = json;
-                await _appSettingsRepository.UpdateAsync(appSettings);
-            }
-        }
-
-        public void Dispose()
-        {
-            _appSettingsRepository.Dispose();
-        }
+        #endregion
     }
 }

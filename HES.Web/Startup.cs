@@ -4,6 +4,7 @@ using HES.Core.Entities;
 using HES.Core.HostedServices;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using HES.Core.Services;
 using HES.Infrastructure;
 using HES.Web.Components;
@@ -19,9 +20,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Rsk.Saml.Configuration;
@@ -36,6 +35,7 @@ namespace HES.Web
     {
         public IConfiguration Configuration { get; }
         public bool Saml2pEnabled { get; set; }
+        public bool ReverseProxyHandleSSL { get; set; }
 
         public Startup(IConfiguration configuration)
         {
@@ -86,20 +86,31 @@ namespace HES.Web
                 Saml2pEnabled = true;
             }
 
+            ReverseProxyHandleSSL = configuration.GetValue<bool>("ServerSettings:ReverseProxyHandleSSL");
+
             Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add Services
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(Repository<>));
+            #region Database
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
+
+            #endregion
+
+            #region Services
+
+            services.AddScoped<IApplicationDbContext>(x => x.GetService<ApplicationDbContext>());   
             services.AddScoped(typeof(IDataTableService<,>), typeof(DataTableService<,>));
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IHardwareVaultService, HardwareVaultService>();
             services.AddScoped<IHardwareVaultTaskService, HardwareVaultTaskService>();
-            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IWorkstationService, WorkstationService>();
             services.AddScoped<IWorkstationAuditService, WorkstationAuditService>();
             services.AddScoped<ISharedAccountService, SharedAccountService>();
@@ -122,9 +133,8 @@ namespace HES.Web
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
-            services.AddSingleton<ISynchronizationService, SynchronizationService>();
+            services.AddSingleton<IPageSyncService, PageSyncService>();
 
             services.AddHostedService<RemoveLogsHostedService>();
             services.AddHostedService<LicenseHostedService>();
@@ -141,7 +151,18 @@ namespace HES.Web
             services.AddSignalR();
             services.AddMemoryCache();
 
-            // Cookie
+            #endregion
+
+            #region Configuration
+
+            services.Configure<Fido2Configuration>(Configuration.GetSection("Fido2"));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSender"));
+            services.Configure<ServerSettings>(Configuration.GetSection("ServerSettings"));
+
+            #endregion
+
+            #region Cookie
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -154,80 +175,12 @@ namespace HES.Web
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromDays(14);
                 options.LoginPath = "/login";
-                options.LogoutPath = "/Account/Logout";
+                options.LogoutPath = "/logout";
                 options.Cookie = new CookieBuilder
                 {
                     IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
                 };
             });
-
-            // Dismiss strong password
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 3;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequireNonAlphanumeric = false;
-
-                // Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.AllowedForNewUsers = true;
-            });
-
-            services.Configure<Fido2Configuration>(Configuration.GetSection("Fido2"));
-
-            // Database
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection")),
-                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)));
-
-            // Identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders()
-                .AddTokenProvider<RegisterSecurityKeyTokenProvider<ApplicationUser>>(RegisterSecurityKeyTokenConstants.TokenName);
-
-            // IDP
-            if (Saml2pEnabled)
-            {
-                services.AddIdentityServer(options =>
-                {
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.UserInteraction.LoginUrl = "/sso";
-                    options.UserInteraction.LogoutUrl = "/slo";
-                })
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddInMemoryIdentityResources(SamlConfig.GetIdentityResources())
-                .AddInMemoryApiResources(SamlConfig.GetApis())
-                .AddInMemoryClients(SamlConfig.GetClients(Configuration))
-                .AddSigningCredential(SamlConfig.GetCertificate(Configuration))
-                .AddSamlPlugin(options =>
-                {
-                    options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
-                    options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
-                    options.WantAuthenticationRequestsSigned = false;
-                    options.UseLegacyRsaEncryption = false;
-                })
-                .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
-                .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
-            }
-
-            // Auth policy
-            services.AddAuthorization(config =>
-                        {
-                            config.AddPolicy("RequireAdministratorRole",
-                                policy => policy.RequireRole("Administrator"));
-                            config.AddPolicy("RequireUserRole",
-                                policy => policy.RequireRole("User"));
-                        });
 
             // Override OnRedirectToLogin via API
             services.ConfigureApplicationCookie(config =>
@@ -262,44 +215,69 @@ namespace HES.Web
                 };
             });
 
-            // Mvc
-            services.AddMvc()
-                .AddRazorPagesOptions(options =>
-                {
-                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage", "RequireAdministratorRole");
-                })
-                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            #endregion
 
+            #region Identity
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<RegisterSecurityKeyTokenProvider<ApplicationUser>>(RegisterSecurityKeyTokenConstants.TokenName);
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 3;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireNonAlphanumeric = false;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+            });
+
+            #endregion
+
+            #region SAML
+
+            if (Saml2pEnabled)
+            {
+                services.AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.UserInteraction.LoginUrl = "/sso";
+                    options.UserInteraction.LogoutUrl = "/slo";
+                })
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddInMemoryIdentityResources(SamlConfig.GetIdentityResources())
+                .AddInMemoryApiResources(SamlConfig.GetApis())
+                .AddInMemoryClients(SamlConfig.GetClients(Configuration))
+                .AddSigningCredential(SamlConfig.GetCertificate(Configuration))
+                .AddSamlPlugin(options =>
+                {
+                    options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
+                    options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
+                    options.WantAuthenticationRequestsSigned = false;
+                    options.UseLegacyRsaEncryption = false;
+                })
+                .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
+                .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
+            }
+
+            #endregion
+
+            services.AddMvc().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddDatabaseDeveloperPageExceptionFilter();
-
-            // Localization Options
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                var supportedCultures = new[]
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("en-GB"),
-                    new CultureInfo("en"),
-                    new CultureInfo("fr-FR"),
-                    new CultureInfo("fr"),
-                    new CultureInfo("it-IT"),
-                    new CultureInfo("it"),
-                    new CultureInfo("uk-UA"),
-                    new CultureInfo("uk"),
-                    new CultureInfo("ru-RU"),
-                    new CultureInfo("ru-UA"),
-                    new CultureInfo("ru"),
-                    new CultureInfo("de-DE"),
-                    new CultureInfo("de")
-                };
-
-                options.DefaultRequestCulture = new RequestCulture("en-US");
-                options.SupportedCultures = supportedCultures;
-                options.SupportedUICultures = supportedCultures;
-            });
 
             // Register the Swagger generator
             services.AddSwaggerGen(c =>
@@ -320,12 +298,15 @@ namespace HES.Web
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                if (!ReverseProxyHandleSSL)
+                {
+                    app.UseHsts();
+                }
             }
 
+            app.UseCookiePolicy();
             app.UseStatusCodePages();
 
-            app.UseRequestLocalization();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -336,7 +317,11 @@ namespace HES.Web
                 app.UseIdentityServerSamlPlugin();
             }
 
-            app.UseHttpsRedirection();
+            if (!ReverseProxyHandleSSL)
+            {
+                app.UseHttpsRedirection();
+            }
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -355,16 +340,9 @@ namespace HES.Web
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            app.UseCookiePolicy();
-
-            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var logger = scope.ServiceProvider.GetService<ILogger<Startup>>();
-                logger.LogInformation($"Server started {ServerConstants.Version}");
-
-                var appSettingsService = scope.ServiceProvider.GetService<IAppSettingsService>();
-                appSettingsService.GetAlarmStateAsync().Wait();
-            }
+            using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var logger = scope.ServiceProvider.GetService<ILogger<Startup>>();
+            logger.LogInformation($"Server started {ServerConstants.Version}");
         }
     }
 }

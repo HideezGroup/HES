@@ -1,4 +1,5 @@
-﻿@page "/Settings/LicenseOrders"
+﻿@page "/settings/license-orders"
+@layout MainLayout
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
 @inherits HESPageBase
 
@@ -11,6 +12,7 @@
                     <LicenseOrderFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
                 </FilterForm>
                 <ActionButtons>
+                    <Button Text="Refresh Licenses" OnClick="UpdateLicenseInfoAsync" class="btn btn-primary mx-1" />
                     <button type="button" @onclick="CreateLicenseOrderAsync" class="btn btn-primary mx-1" title="New Order">
                         New Order
                     </button>

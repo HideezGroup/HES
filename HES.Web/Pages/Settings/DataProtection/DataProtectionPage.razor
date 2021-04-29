@@ -1,23 +1,10 @@
-﻿@page "/Settings/DataProtection"
+﻿@page "/settings/data-protection"
+@layout MainLayout
 @inherits HESPageBase
 @attribute [Authorize(Roles = ApplicationRoles.Admin)]
 
 @if (Initialized)
 {
-    <h1 class="text-navyblue">Data Protection</h1>
-    <hr />
-    @if (Status == Core.Services.ProtectionStatus.Off)
-    {
-        <p>Data protection is disabled.</p>
-        <button type="button" class="btn btn-primary" @onclick="async () => await EnableDataProtectionAsync()">Enable</button>
-    }
-    else if (Status == Core.Services.ProtectionStatus.On)
-    {
-        <p>Data protection is enabled.</p>
-        <button type="button" class="btn btn-primary" @onclick="async () => await ChangeDataProtectionPasswordAsync()">Change Password</button>
-        <button type="button" class="btn btn-secondary" @onclick="async () => await DisableDataProtectionAsync()">Disable</button>
-    }
-    <hr />
     <h5>
         What is the purpose of Data Protection?
     </h5>
@@ -67,6 +54,23 @@
         <br />
         An update of the Data Protection password should be done according to the company’s information security regulations.
     </p>
+    <div class="card">
+        <div class="card-body d-flex justify-content-center">
+            <div class="mx-auto text-center">
+                @if (Status == Core.Services.ProtectionStatus.Off)
+                {
+                    <p class="border-bottom pb-1">Data protection is disabled.</p>
+                    <button type="button" class="btn btn-primary w-100" @onclick="async () => await EnableDataProtectionAsync()">Enable</button>
+                }
+                else if (Status == Core.Services.ProtectionStatus.On)
+                {
+                    <p class="border-bottom pb-1">Data protection is enabled.</p>
+                    <button type="button" class="btn btn-outline-primary w-100 mb-3" @onclick="async () => await ChangeDataProtectionPasswordAsync()">Change Password</button>
+                    <button type="button" class="btn btn-outline-danger w-100" @onclick="async () => await DisableDataProtectionAsync()">Disable</button>
+                }
+            </div>
+        </div>
+    </div>
 }
 else if (LoadFailed)
 {

@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -29,7 +30,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
                 LicenseOrder = await LicenseService.GetLicenseOrderByIdAsync(LicenseOrderId);
                 if (LicenseOrder == null)
-                    throw new Exception("License Order not found.");
+                    throw new HESException(HESCode.LicenseOrderNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(LicenseOrder.Id, out object _);
                 if (!EntityBeingEdited)
@@ -47,7 +48,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
         {
             try
             {
-                await LicenseService.DeleteOrderAsync(LicenseOrder);
+                await LicenseService.DeleteOrderAsync(LicenseOrderId);
                 await ToastService.ShowToastAsync("License order deleted.", ToastType.Success);
                 await ModalDialogClose();
             }

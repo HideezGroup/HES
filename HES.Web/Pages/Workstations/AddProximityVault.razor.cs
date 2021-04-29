@@ -1,10 +1,8 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Interfaces;
-using HES.Core.Models.Web;
-using HES.Core.Models.Web.DataTableComponent;
-using HES.Core.Models.Web.HardwareVaults;
-using HES.Core.Models.Web.Workstations;
+using HES.Core.Models.DataTableComponent;
+using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -72,15 +70,15 @@ namespace HES.Web.Pages.Workstations
                 Filter = filter
             });
 
-            var count = await WorkstationService.GetProximityVaultsCountAsync(new DataLoadingOptions<WorkstationDetailsFilter>() { EntityId = WorkstationId });
+            var count = await WorkstationService.GetWorkstationHardwareVaultPairsCountAsync(new DataLoadingOptions<WorkstationDetailsFilter>() { EntityId = WorkstationId });
             var proximityVaultFilter = new DataLoadingOptions<WorkstationDetailsFilter>()
             {
                 Take = count,
-                SortedColumn = nameof(WorkstationProximityVault.HardwareVaultId),
+                SortedColumn = nameof(WorkstationHardwareVaultPair.HardwareVaultId),
                 SortDirection = ListSortDirection.Ascending,
                 EntityId = WorkstationId
             };
-            var proximityVaults = await WorkstationService.GetProximityVaultsAsync(proximityVaultFilter);
+            var proximityVaults = await WorkstationService.GetWorkstationHardwareVaultPairsAsync(proximityVaultFilter);
             AlreadyAdded = proximityVaults.Count > 0;
 
             HardwareVaults = HardwareVaults.Where(x => !proximityVaults.Select(s => s.HardwareVaultId).Contains(x.Id)).ToList();
@@ -113,8 +111,8 @@ namespace HES.Web.Pages.Workstations
                     return;
                 }
 
-                await WorkstationService.AddProximityVaultAsync(WorkstationId, SelectedHardwareVault.Id);
-                await RemoteWorkstationConnectionsService.UpdateProximitySettingsAsync(WorkstationId, await WorkstationService.GetProximitySettingsAsync(WorkstationId));
+                await WorkstationService.CreateWorkstationHardwareVaultPairAsync(WorkstationId, SelectedHardwareVault.Id);
+                await RemoteWorkstationConnectionsService.UpdateProximitySettingsAsync(WorkstationId, await WorkstationService.GetWorkstationHardwareVaultPairSettingsAsync(WorkstationId));
                 await ToastService.ShowToastAsync("Vault added", ToastType.Success);
                 await ModalDialogClose();
             }
