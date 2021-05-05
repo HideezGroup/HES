@@ -89,6 +89,11 @@ namespace HES.Web.Pages.Identity
 
                 NavigationManager.NavigateTo(Routes.SSO + NavigationManager.GetQueryString(), true);
             }
+            catch (JSException ex)
+            {
+                Logger.LogWarning($"JS. {UserEmailModel.Email}. {ex.Message}");
+                AuthenticationStep = AuthenticationStep.SecurityKeyError;
+            }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);
