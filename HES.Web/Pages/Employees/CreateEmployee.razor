@@ -139,7 +139,7 @@ else
     <div class="wizard-tab @(WizardStep != WizardStep.HardwareVault ? "d-none" : null)">
         <div class="row justify-content-center">
             <div class="col col-sm-6">
-                <Alert Message="@WarningMessage" />          
+                <Alert Message="@WarningMessage" />
                 <SearchBox SearchTextChanged="SearchTextChangedAsync" />
                 <div class="list-group my-3 py-1 overflow-auto" style="max-height: 300px">
                     @foreach (var hardwareVault in HardwareVaults)
@@ -339,9 +339,18 @@ else
                     <label class="control-label fw-bold">Vault - @SelectedHardwareVault?.Id</label>
                 </div>
                 <label class="control-label text-gray">You can send the code to the email</label>
-                <div class="input-group form-group">
-                    <input type="text" class="form-control text-navyblue" @bind="Email" />
-                    <Button class="btn btn-outline-primary" Text="Send email" OnClick="SendEmailAsync" />
+                <div class="input-group1 form-group">
+                    <EditForm Model="UserEmailModel" OnValidSubmit="SendEmailAsync">
+                        <DataAnnotationsValidator />
+                        <ValidationErrorMessage @ref="EmailValidationErrorMessage" />
+                        <div class="input-group">
+                            <InputText @bind-Value="UserEmailModel.Email" class="form-control text-navyblue" placeholder="Email" />
+                            <Button @ref="ButtonSendEmail" Text="Send email" type="submit" class="btn btn-outline-primary" />
+                        </div>
+                        <ValidationMessage For="@(() => UserEmailModel.Email)" class="text-danger" />
+                    </EditForm>
+                    @*<input type="text" class="form-control text-navyblue" @bind="Email" />
+                        <Button class="btn btn-outline-primary" Text="Send email" OnClick="SendEmailAsync" />*@
                 </div>
                 <label class="control-label text-gray">Activation code</label>
                 <div class="input-group form-group">

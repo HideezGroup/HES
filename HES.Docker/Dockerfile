@@ -10,7 +10,7 @@ COPY --from=base /app .
 WORKDIR /app/HES/HES.Web/
 # Create directory and compiling application Hes
 RUN mkdir -p  /opt/HES/ \
-      && dotnet publish -c release -v d -o "/opt/HES" --runtime linux-x64 HES.Web.csproj \
+      && dotnet publish -c release -v d -o /opt/HES --runtime linux-x64 HES.Web.csproj \
       && cp Crypto_linux.dll /opt/HES/Crypto.dll
 # Set work directory when container starting
 WORKDIR /opt/HES/

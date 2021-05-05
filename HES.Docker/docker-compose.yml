@@ -7,7 +7,7 @@ networks:
 services:
   # Create HES images
   hes:
-    container_name: hes-<Name_Of_Domain>
+    container_name: hes-site
     restart: always
     command: ./HES.Web
     build: .
@@ -21,8 +21,8 @@ services:
     depends_on:
       - hes-db
     volumes:
-      - ./<Name_Of_Domain>/appsettings.json:/opt/HES/appsettings.json
-      - ./<Name_Of_Domain>/logs:/opt/HES/logs
+      - ./hes-site/appsettings.Production.json:/opt/HES/appsettings.Production.json
+      - ./hes-site/logs:/opt/HES/logs
   hes-db:
     image: mysql
     container_name: hes-db
@@ -30,7 +30,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     environment:
       # these variables specify the name of the database and passwords 
-      # (the same database, user and password must be written in the appsettings.json file)
+      # (the same database, user and password must be written in the appsettings.Production.json file)
       MYSQL_DATABASE: db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
@@ -59,4 +59,4 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/certs:/etc/nginx/certs
-
+      - ./nginx/log:/var/log/nginx
