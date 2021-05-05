@@ -37,5 +37,10 @@ namespace HES.Web.Extensions
 
             return queryValues;
         }
+
+        public static string GetQueryString(this NavigationManager navigationManager)
+        {
+            return new Uri(navigationManager.Uri).Query;
+        }
     }
 }

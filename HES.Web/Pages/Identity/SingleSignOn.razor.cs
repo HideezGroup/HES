@@ -4,6 +4,7 @@ using HES.Core.Interfaces;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Extensions;
+using ITfoxtec.Identity.Saml2.Schemas;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,8 @@ namespace HES.Web.Pages.Identity
         public UserEmailModel UserEmailModel { get; set; } = new UserEmailModel();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public Button Button { get; set; }
-        public string ReturnUrl { get; set; }
+        public string ErrorTitle { get; set; }
+        public string ErrorDescription { get; set; }
 
         protected override void OnInitialized()
         {
@@ -36,7 +38,12 @@ namespace HES.Web.Pages.Identity
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
                 Fido2Service = ScopedServices.GetRequiredService<IFido2Service>();
 
-                ReturnUrl = NavigationManager.GetQueryValue("returnUrl") ?? Routes.SingleSignOn;
+                var samlRequest = NavigationManager.GetQueryValue(Saml2Constants.Message.SamlRequest);
+                if (samlRequest == null)
+                {
+                    ErrorTitle = "Wrong parameters";
+                    ErrorDescription = $"HTTP Query String does not contain {Saml2Constants.Message.SamlRequest}";
+                }
 
                 SetInitialized();
             }
@@ -44,21 +51,6 @@ namespace HES.Web.Pages.Identity
             {
                 Logger.LogError(ex.Message);
                 SetLoadFailed(ex.Message);
-            }
-        }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                try
-                {
-                    await JSRuntime.InvokeVoidAsync("setFocus", "email");
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex.Message);
-                }
             }
         }
 
@@ -95,7 +87,7 @@ namespace HES.Web.Pages.Identity
                 var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
                 response.ThrowIfFailed();
 
-                NavigationManager.NavigateTo(ReturnUrl, true);
+                NavigationManager.NavigateTo(Routes.SSO + NavigationManager.GetQueryString(), true);
             }
             catch (Exception ex)
             {

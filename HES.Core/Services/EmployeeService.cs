@@ -427,6 +427,12 @@ namespace HES.Core.Services
                 throw new ArgumentNullException(nameof(employee));
             }
 
+            var existingUser = await _userManager.FindByEmailAsync(employee.Email);
+            if (existingUser != null)
+            {
+                throw new HESException(HESCode.EmailAlreadyTaken);
+            }
+
             var user = new ApplicationUser
             {
                 FullName = employee.FullName,
