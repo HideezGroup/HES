@@ -61,19 +61,19 @@ namespace HES.Core.Services
             {
                 if (dataLoadingOptions.Filter.Name != null)
                 {
-                    query = query.Where(w => w.Name.Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.Name.Contains(dataLoadingOptions.Filter.Name));
                 }
                 if (dataLoadingOptions.Filter.Urls != null)
                 {
-                    query = query.Where(w => w.Urls.Contains(dataLoadingOptions.Filter.Urls, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.Urls.Contains(dataLoadingOptions.Filter.Urls));
                 }
                 if (dataLoadingOptions.Filter.Apps != null)
                 {
-                    query = query.Where(w => w.Apps.Contains(dataLoadingOptions.Filter.Apps, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.Apps.Contains(dataLoadingOptions.Filter.Apps));
                 }
                 if (dataLoadingOptions.Filter.Login != null)
                 {
-                    query = query.Where(w => w.Login.Contains(dataLoadingOptions.Filter.Login, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.Login.Contains(dataLoadingOptions.Filter.Login));
                 }
             }
 
@@ -82,10 +82,10 @@ namespace HES.Core.Services
             {
                 dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Urls.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Apps.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Login.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Urls.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Apps.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Login.Contains(dataLoadingOptions.SearchText));
             }
 
             //Sort Direction

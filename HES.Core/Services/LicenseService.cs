@@ -111,11 +111,11 @@ namespace HES.Core.Services
             {
                 if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Note))
                 {
-                    query = query.Where(x => x.Note.Contains(dataLoadingOptions.Filter.Note, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(x => x.Note.Contains(dataLoadingOptions.Filter.Note));
                 }
                 if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.ContactEmail))
                 {
-                    query = query.Where(w => w.ContactEmail.Contains(dataLoadingOptions.Filter.ContactEmail, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.ContactEmail.Contains(dataLoadingOptions.Filter.ContactEmail));
                 }
                 if (!dataLoadingOptions.Filter.ProlongLicense != null)
                 {
@@ -156,8 +156,8 @@ namespace HES.Core.Services
             {
                 dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-                query = query.Where(x => x.ContactEmail.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Note.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(x => x.ContactEmail.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Note.Contains(dataLoadingOptions.SearchText));
             }
 
             // Sort Direction
