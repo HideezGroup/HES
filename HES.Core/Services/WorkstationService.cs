@@ -66,31 +66,31 @@ namespace HES.Core.Services
             {
                 if (dataLoadingOptions.Filter.Name != null)
                 {
-                    query = query.Where(w => w.Name.Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.Name.Contains(dataLoadingOptions.Filter.Name));
                 }
                 if (dataLoadingOptions.Filter.Domain != null)
                 {
-                    query = query.Where(w => w.Domain.Contains(dataLoadingOptions.Filter.Domain, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.Domain.Contains(dataLoadingOptions.Filter.Domain));
                 }
                 if (dataLoadingOptions.Filter.ClientVersion != null)
                 {
-                    query = query.Where(w => w.ClientVersion.Contains(dataLoadingOptions.Filter.ClientVersion, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.ClientVersion.Contains(dataLoadingOptions.Filter.ClientVersion));
                 }
                 if (dataLoadingOptions.Filter.Company != null)
                 {
-                    query = query.Where(x => x.Department.Company.Name.Contains(dataLoadingOptions.Filter.Company, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(x => x.Department.Company.Name.Contains(dataLoadingOptions.Filter.Company));
                 }
                 if (dataLoadingOptions.Filter.Department != null)
                 {
-                    query = query.Where(x => x.Department.Name.Contains(dataLoadingOptions.Filter.Department, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(x => x.Department.Name.Contains(dataLoadingOptions.Filter.Department));
                 }
                 if (dataLoadingOptions.Filter.OS != null)
                 {
-                    query = query.Where(w => w.OS.Contains(dataLoadingOptions.Filter.OS, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.OS.Contains(dataLoadingOptions.Filter.OS));
                 }
                 if (dataLoadingOptions.Filter.IP != null)
                 {
-                    query = query.Where(w => w.IP.Contains(dataLoadingOptions.Filter.IP, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(w => w.IP.Contains(dataLoadingOptions.Filter.IP));
                 }
                 if (dataLoadingOptions.Filter.LastSeenStartDate != null)
                 {
@@ -128,13 +128,13 @@ namespace HES.Core.Services
             {
                 dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Domain.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.ClientVersion.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Company.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Department.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.OS.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.IP.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Domain.Contains(dataLoadingOptions.SearchText) ||
+                                    x.ClientVersion.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Department.Company.Name.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Department.Name.Contains(dataLoadingOptions.SearchText) ||
+                                    x.OS.Contains(dataLoadingOptions.SearchText) ||
+                                    x.IP.Contains(dataLoadingOptions.SearchText));
             }
 
             // Sort Direction
@@ -342,10 +342,10 @@ namespace HES.Core.Services
             {
                 dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-                query = query.Where(x => x.HardwareVaultId.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    (x.HardwareVault.Employee.FirstName + " " + x.HardwareVault.Employee.LastName).Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.HardwareVault.Employee.Department.Company.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.HardwareVault.Employee.Department.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(x => x.HardwareVaultId.Contains(dataLoadingOptions.SearchText) ||
+                                    (x.HardwareVault.Employee.FirstName + " " + x.HardwareVault.Employee.LastName).Contains(dataLoadingOptions.SearchText) ||
+                                    x.HardwareVault.Employee.Department.Company.Name.Contains(dataLoadingOptions.SearchText) ||
+                                    x.HardwareVault.Employee.Department.Name.Contains(dataLoadingOptions.SearchText));
             }
 
             // Sort Direction

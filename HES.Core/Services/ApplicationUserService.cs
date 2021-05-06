@@ -91,8 +91,8 @@ namespace HES.Core.Services
             {
                 dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-                query = query.Where(x => x.Email.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.PhoneNumber.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(x => x.Email.Contains(dataLoadingOptions.SearchText) ||
+                                    x.PhoneNumber.Contains(dataLoadingOptions.SearchText));
             }
 
             switch (dataLoadingOptions.SortedColumn)

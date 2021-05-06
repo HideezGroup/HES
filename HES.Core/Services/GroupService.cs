@@ -44,11 +44,11 @@ namespace HES.Core.Services
         //    {
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Name))
         //        {
-        //            query = query.Where(x => x.Name.Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
+        //            query = query.Where(x => x.Name.Contains(dataLoadingOptions.Filter.Name));
         //        }
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Email))
         //        {
-        //            query = query.Where(x => x.Email.Contains(dataLoadingOptions.Filter.Email, StringComparison.OrdinalIgnoreCase));
+        //            query = query.Where(x => x.Email.Contains(dataLoadingOptions.Filter.Email));
         //        }
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.MembersCount))
         //        {
@@ -61,8 +61,8 @@ namespace HES.Core.Services
         //    {
         //        dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-        //        query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-        //                                 x.Email.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
+        //        query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText) ||
+        //                                 x.Email.Contains(dataLoadingOptions.SearchText) ||
         //                                 x.GroupMemberships.Count.ToString().Contains(dataLoadingOptions.SearchText));
         //    }
 
@@ -92,11 +92,11 @@ namespace HES.Core.Services
         //    {
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Name))
         //        {
-        //            query = query.Where(x => x.Name.Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
+        //            query = query.Where(x => x.Name.Contains(dataLoadingOptions.Filter.Name));
         //        }
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Email))
         //        {
-        //            query = query.Where(x => x.Email.Contains(dataLoadingOptions.Filter.Email, StringComparison.OrdinalIgnoreCase));
+        //            query = query.Where(x => x.Email.Contains(dataLoadingOptions.Filter.Email));
         //        }
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.MembersCount))
         //        {
@@ -109,8 +109,8 @@ namespace HES.Core.Services
         //    {
         //        dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-        //        query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-        //                                 x.Email.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
+        //        query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText) ||
+        //                                 x.Email.Contains(dataLoadingOptions.SearchText) ||
         //                                 x.GroupMemberships.Count.ToString().Contains(dataLoadingOptions.SearchText));
         //    }
 
@@ -220,11 +220,11 @@ namespace HES.Core.Services
         //    {
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Name))
         //        {
-        //            query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
+        //            query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.Filter.Name));
         //        }
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Email))
         //        {
-        //            query = query.Where(x => x.Employee.Email.Contains(dataLoadingOptions.Filter.Email, StringComparison.OrdinalIgnoreCase));
+        //            query = query.Where(x => x.Employee.Email.Contains(dataLoadingOptions.Filter.Email));
         //        }
         //    }
 
@@ -233,8 +233,8 @@ namespace HES.Core.Services
         //    {
         //        dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-        //        query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-        //                                 x.Employee.Email.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+        //        query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.SearchText) ||
+        //                                 x.Employee.Email.Contains(dataLoadingOptions.SearchText));
         //    }
 
         //    // Sort Direction
@@ -264,11 +264,11 @@ namespace HES.Core.Services
         //    {
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Name))
         //        {
-        //            query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
+        //            query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.Filter.Name));
         //        }
         //        if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Email))
         //        {
-        //            query = query.Where(x => x.Employee.Email.Contains(dataLoadingOptions.Filter.Email, StringComparison.OrdinalIgnoreCase));
+        //            query = query.Where(x => x.Employee.Email.Contains(dataLoadingOptions.Filter.Email));
         //        }
         //    }
 
@@ -277,8 +277,8 @@ namespace HES.Core.Services
         //    {
         //        dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-        //        query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-        //                                 x.Employee.Email.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+        //        query = query.Where(x => (x.Employee.FirstName + " " + x.Employee.LastName).Contains(dataLoadingOptions.SearchText) ||
+        //                                 x.Employee.Email.Contains(dataLoadingOptions.SearchText));
         //    }
 
         //    return await query.CountAsync();

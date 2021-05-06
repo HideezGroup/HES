@@ -51,15 +51,15 @@ namespace HES.Core.Services
             {
                 if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Name))
                 {
-                    query = query.Where(x => x.Name.Contains(dataLoadingOptions.Filter.Name, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(x => x.Name.Contains(dataLoadingOptions.Filter.Name));
                 }
                 if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Urls))
                 {
-                    query = query.Where(x => x.Urls.Contains(dataLoadingOptions.Filter.Urls, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(x => x.Urls.Contains(dataLoadingOptions.Filter.Urls));
                 }
                 if (!string.IsNullOrWhiteSpace(dataLoadingOptions.Filter.Apps))
                 {
-                    query = query.Where(x => x.Apps.Contains(dataLoadingOptions.Filter.Apps, StringComparison.OrdinalIgnoreCase));
+                    query = query.Where(x => x.Apps.Contains(dataLoadingOptions.Filter.Apps));
                 }
             }
 
@@ -68,9 +68,9 @@ namespace HES.Core.Services
             {
                 dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
-                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Urls.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                    x.Apps.Contains(dataLoadingOptions.SearchText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(x => x.Name.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Urls.Contains(dataLoadingOptions.SearchText) ||
+                                    x.Apps.Contains(dataLoadingOptions.SearchText));
             }
 
             // Sort Direction
