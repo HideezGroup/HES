@@ -311,7 +311,10 @@ namespace HES.Web
                 app.UseHttpsRedirection();
             }
 
-            app.UseSaml2();
+            if (Saml2Enabled)
+            {
+                app.UseSaml2();
+            }
 
             app.UseAuthentication();
             app.UseAuthorization();
