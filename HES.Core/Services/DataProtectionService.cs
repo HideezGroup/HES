@@ -33,6 +33,7 @@ namespace HES.Core.Services
     /// AppSettings
     ///     - Key: domain - field: Password
     ///     - Key: licensing - field: ApiKey
+    ///     - Key: splunk - field: Token
     /// HardwareVaultsActivations
     ///     - ActivationCode
     /// HardwareVaults   
@@ -304,6 +305,8 @@ namespace HES.Core.Services
             }
         }
 
+        #region Encrypt/Decrypt database
+
         private async Task ReencryptDatabase(DataProtectionKey key, DataProtectionKey newKey)
         {
             using var scope = Services.CreateScope();
@@ -343,6 +346,15 @@ namespace HES.Core.Services
                 settings.ApiKey = newKey.Encrypt(plainText);
                 var json = JsonConvert.SerializeObject(settings);
                 licenseSettings.Value = json;
+            }
+            var splunkSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            if (splunkSettings != null)
+            {
+                var settings = JsonConvert.DeserializeObject<SplunkSettings>(splunkSettings.Value);
+                var plainText = key.Decrypt(settings.Token);
+                settings.Token = newKey.Encrypt(plainText);
+                var json = JsonConvert.SerializeObject(settings);
+                splunkSettings.Value = json;
             }
 
             // HardwareVaultsActivations
@@ -409,6 +421,8 @@ namespace HES.Core.Services
                 dbContext.AppSettings.Update(domainSettings);
             if (licenseSettings != null)
                 dbContext.AppSettings.Update(licenseSettings);
+            if (splunkSettings != null)
+                dbContext.AppSettings.Update(splunkSettings);
             dbContext.HardwareVaultActivations.UpdateRange(hardwareVaultActivations);
             dbContext.HardwareVaults.UpdateRange(hardwareVaults);
             dbContext.HardwareVaultTasks.UpdateRange(hardwareVaultTasks);
@@ -447,6 +461,14 @@ namespace HES.Core.Services
                 settings.ApiKey = key.Encrypt(settings.ApiKey);
                 var json = JsonConvert.SerializeObject(settings);
                 licenseSettings.Value = json;
+            }
+            var splunkSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            if (splunkSettings != null)
+            {
+                var settings = JsonConvert.DeserializeObject<SplunkSettings>(splunkSettings.Value);
+                settings.Token = key.Encrypt(settings.Token);
+                var json = JsonConvert.SerializeObject(settings);
+                splunkSettings.Value = json;
             }
 
             // HardwareVaultsActivations
@@ -496,7 +518,9 @@ namespace HES.Core.Services
             if (domainSettings != null)
                 dbContext.AppSettings.Update(domainSettings);
             if (licenseSettings != null)
-                dbContext.AppSettings.Update(licenseSettings);
+                dbContext.AppSettings.Update(licenseSettings);  
+            if (splunkSettings != null)
+                dbContext.AppSettings.Update(splunkSettings);
             dbContext.HardwareVaultActivations.UpdateRange(hardwareVaultActivations);
             dbContext.HardwareVaults.UpdateRange(hardwareVaults);
             dbContext.HardwareVaultTasks.UpdateRange(hardwareVaultTasks);
@@ -535,6 +559,14 @@ namespace HES.Core.Services
                 settings.ApiKey = key.Decrypt(settings.ApiKey);
                 var json = JsonConvert.SerializeObject(settings);
                 licenseSettings.Value = json;
+            }  
+            var splunkSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            if (splunkSettings != null)
+            {
+                var settings = JsonConvert.DeserializeObject<SplunkSettings>(splunkSettings.Value);
+                settings.Token = key.Decrypt(settings.Token);
+                var json = JsonConvert.SerializeObject(settings);
+                splunkSettings.Value = json;
             }
 
             // HardwareVaultsActivations
@@ -585,12 +617,16 @@ namespace HES.Core.Services
                 dbContext.AppSettings.Update(domainSettings);
             if (licenseSettings != null)
                 dbContext.AppSettings.UpdateRange(licenseSettings);
+            if (splunkSettings != null)
+                dbContext.AppSettings.UpdateRange(splunkSettings);
             dbContext.HardwareVaultActivations.UpdateRange(hardwareVaultActivations);
             dbContext.HardwareVaults.UpdateRange(hardwareVaults);
             dbContext.HardwareVaultTasks.UpdateRange(hardwareVaultTasks);
             dbContext.SharedAccounts.UpdateRange(sharedAccounts);
             await dbContext.SaveChangesAsync();
         }
+
+        #endregion
 
         private string TryGetStoredPassword()
         {

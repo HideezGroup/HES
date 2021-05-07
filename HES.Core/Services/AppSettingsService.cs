@@ -210,5 +210,64 @@ namespace HES.Core.Services
         }
 
         #endregion
+
+        #region Splunk Settrings
+
+        public async Task<SplunkSettings> GetSplunkSettingsAsync()
+        {
+            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Splunk);
+            if (settings == null)
+            {
+                return null;
+            }
+
+            var deserialized = JsonSerializer.Deserialize<SplunkSettings>(settings.Value);
+            deserialized.Token = _dataProtectionService.Decrypt(deserialized.Token);
+
+            return deserialized;
+        }
+
+        public async Task SetSplunkSettingsAsync(SplunkSettings splunkSettings)
+        {
+            if (splunkSettings == null)
+            {
+                throw new ArgumentNullException(nameof(splunkSettings));
+            }
+
+            splunkSettings.Token = _dataProtectionService.Encrypt(splunkSettings.Token);
+
+            var json = JsonSerializer.Serialize(splunkSettings);
+
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+
+            if (appSettings == null)
+            {
+                appSettings = new AppSettings()
+                {
+                    Id = ServerConstants.Splunk,
+                    Value = json
+                };
+                _dbContext.AppSettings.Add(appSettings);
+            }
+            else
+            {
+                appSettings.Value = json;
+                _dbContext.AppSettings.Update(appSettings);
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task RemoveSplunkSettingsAsync()
+        {
+            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            if (appSettings != null)
+            {
+                _dbContext.AppSettings.Remove(appSettings);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        #endregion
     }
 }
