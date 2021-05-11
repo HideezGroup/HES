@@ -53,6 +53,30 @@
             }
         </div>
     </SettingsCard>
+    <SettingsCard Title="Splunk" Description="Settings for sending events to the Splank.">
+        <div class="form-group">
+            <label class="control-label text-gray">Host</label>
+            @if (SplunkSettings != null)
+            {
+                <div class="alert alert-secondary" role="alert">
+                    @SplunkSettings.Host
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    Not set
+                </div>
+            }
+        </div>
+        <div class="mt-4">
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogSplunkSettingsAsync">Set Splunk Settings</button>
+            @if (SplunkSettings != null)
+            {
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteSplunkSettingsAsync">Delete Settings</button>
+            }
+        </div>
+    </SettingsCard>
 }
 else if (LoadFailed)
 {

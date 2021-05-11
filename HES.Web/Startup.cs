@@ -131,7 +131,7 @@ namespace HES.Web
             services.AddScoped<IBreadcrumbsService, BreadcrumbsService>();
             services.AddScoped<IFido2Service, Fido2Service>();
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();
-
+      
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
             services.AddSingleton<IPageSyncService, PageSyncService>();
@@ -142,6 +142,13 @@ namespace HES.Web
 
             services.AddHttpClient();
             services.AddHttpClient("HES").ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler()
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+            });
+            services.AddHttpClient("Splunk").ConfigurePrimaryHttpMessageHandler(() =>
             {
                 return new HttpClientHandler()
                 {

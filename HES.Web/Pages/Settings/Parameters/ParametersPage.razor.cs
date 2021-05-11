@@ -16,6 +16,7 @@ namespace HES.Web.Pages.Settings.Parameters
 
         public LicensingSettings LicensingSettings { get; set; }
         public LdapSettings LdapSettings { get; set; }
+        public SplunkSettings SplunkSettings { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -38,17 +39,25 @@ namespace HES.Web.Pages.Settings.Parameters
 
         private async Task UpdateParametersPage(string exceptPageId)
         {
-            await InvokeAsync(async () =>
+            try
             {
-                await LoadDataSettingsAsync();
-                StateHasChanged();
-            });
+                await InvokeAsync(async () =>
+                {
+                    await LoadDataSettingsAsync();
+                    StateHasChanged();
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+            }
         }
 
         private async Task LoadDataSettingsAsync()
         {
             LicensingSettings = await AppSettingsService.GetLicenseSettingsAsync();
             LdapSettings = await AppSettingsService.GetLdapSettingsAsync();
+            SplunkSettings = await AppSettingsService.GetSplunkSettingsAsync();
         }
 
         #region License
@@ -116,6 +125,46 @@ namespace HES.Web.Pages.Settings.Parameters
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(DeleteLdapSettings));
+                builder.CloseComponent();
+            };
+
+            var instance = await ModalDialogService.ShowAsync("Delete Settings", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadDataSettingsAsync();
+                await PageSyncService.UpdateParameters(PageId);
+            }
+        }
+
+        #endregion
+
+        #region Splunk
+
+        private async Task OpenDialogSplunkSettingsAsync()
+        {
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(AddSplunkSettings));
+                builder.CloseComponent();
+            };
+
+            var instance = await ModalDialogService.ShowAsync("Splunk Settings", body, ModalDialogSize.Default);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadDataSettingsAsync();
+                await PageSyncService.UpdateParameters(PageId);
+            }
+        }
+
+        private async Task OpenDialogDeleteSplunkSettingsAsync()
+        {
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(DeleteSplunkSettings));
                 builder.CloseComponent();
             };
 

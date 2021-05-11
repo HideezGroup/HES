@@ -20,5 +20,6 @@ namespace HES.Core.Constants
         public const string Ldap = "domain";
         public const string Email = "email";
         public const string Server = "server";
+        public const string Splunk = "splunk";
     }
 }
