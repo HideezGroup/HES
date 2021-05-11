@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace HES.Core.Services
 {
     public class AppSettingsService : IAppSettingsService
     {
+        private static readonly ConcurrentDictionary<string, object> _cache = new();
         private readonly IApplicationDbContext _dbContext;
         private readonly IDataProtectionService _dataProtectionService;
         private readonly IMemoryCache _memoryCache;
@@ -215,15 +217,21 @@ namespace HES.Core.Services
 
         public async Task<SplunkSettings> GetSplunkSettingsAsync()
         {
+            if (_cache.TryGetValue(ServerConstants.Splunk, out object value))
+            {
+                return (SplunkSettings)value;
+            }
+
             var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Splunk);
             if (settings == null)
             {
+                _cache.AddOrUpdate(ServerConstants.Splunk, settings, (key, existing) => settings);
                 return null;
             }
 
             var deserialized = JsonSerializer.Deserialize<SplunkSettings>(settings.Value);
             deserialized.Token = _dataProtectionService.Decrypt(deserialized.Token);
-
+            _cache.AddOrUpdate(ServerConstants.Splunk, deserialized, (key, existing) => deserialized);
             return deserialized;
         }
 
@@ -256,6 +264,7 @@ namespace HES.Core.Services
             }
 
             await _dbContext.SaveChangesAsync();
+            _cache.TryRemove(ServerConstants.Splunk, out object _);
         }
 
         public async Task RemoveSplunkSettingsAsync()
@@ -266,6 +275,7 @@ namespace HES.Core.Services
                 _dbContext.AppSettings.Remove(appSettings);
                 await _dbContext.SaveChangesAsync();
             }
+            _cache.TryRemove(ServerConstants.Splunk, out object _);
         }
 
         #endregion

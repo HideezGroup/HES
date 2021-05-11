@@ -2,6 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using HES.Core.Models.Audit;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
@@ -226,22 +227,27 @@ namespace HES.Core.Services
             await _dbContext.WorkstationEvents.AddAsync(workstationEvent);
             await _dbContext.SaveChangesAsync();
 
-            var splunkEvent = new SplunkWorkstationEventDto
+            var splunkSettings = await _appSettingsService.GetSplunkSettingsAsync();
+            if (splunkSettings != null)
             {
-                Date = workstationEventDto.Date,
-                Event = workstationEventDto.EventId.ToString(),
-                Severity = workstationEventDto.SeverityId.ToString(),
-                Note = workstationEventDto.Note,
-                Workstation = workstation.Name,
-                UserSession = workstationEventDto.UserSession,
-                HardwareVault = workstationEventDto.DeviceId,
-                Employee = employee?.FullName,
-                Company = employee?.Department?.Company?.Name,
-                Department = employee?.Department?.Name,
-                Account = account?.Name,
-                AccountType = account?.AccountType.ToString()
-            };
-            await SendSplunkEventAsync(splunkEvent.GetEvent());
+                var splunkEvent = new SplunkWorkstationEventDto
+                {
+                    Date = workstationEventDto.Date,
+                    Event = workstationEventDto.EventId.ToString(),
+                    Severity = workstationEventDto.SeverityId.ToString(),
+                    Note = workstationEventDto.Note,
+                    Workstation = workstation.Name,
+                    UserSession = workstationEventDto.UserSession,
+                    HardwareVault = workstationEventDto.DeviceId,
+                    Employee = employee?.FullName,
+                    Company = employee?.Department?.Company?.Name,
+                    Department = employee?.Department?.Name,
+                    Account = account?.Name,
+                    AccountType = account?.AccountType.ToString()
+                };
+
+                await SendSplunkEventAsync(splunkEvent.ToSplunkJson(), splunkSettings);
+            }
         }
 
         #endregion
@@ -1183,16 +1189,15 @@ namespace HES.Core.Services
 
         #region Splunk
 
-        public async Task SendSplunkEventAsync(string content)
+        public async Task SendSplunkEventAsync(string content, SplunkSettings splunkSettings)
         {
+            if (splunkSettings == null)
+            {
+                throw new ArgumentNullException(nameof(splunkSettings));
+            }
+
             try
             {
-                var splunkSettings = await _appSettingsService.GetSplunkSettingsAsync();
-                if (splunkSettings == null)
-                {
-                    return;
-                }
-            
                 var client = _httpClientFactory.CreateClient("Splunk");
                 client.BaseAddress = new Uri(splunkSettings.Host);
                 client.DefaultRequestHeaders.Add("Authorization", $"Splunk {splunkSettings.Token}");

@@ -18,7 +18,7 @@ namespace HES.Core.Models.Splunk
         public string Account { get; set; }
         public string AccountType { get; set; }
 
-        public string GetEvent()
+        public string ToSplunkJson()
         {
             return JsonSerializer.Serialize(new
             {
