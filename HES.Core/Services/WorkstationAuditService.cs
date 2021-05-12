@@ -2,9 +2,11 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.AppSettings;
 using HES.Core.Models.Audit;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
+using HES.Core.Models.Splunk;
 using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.HES.DTO;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HES.Core.Services
@@ -20,11 +23,15 @@ namespace HES.Core.Services
     public class WorkstationAuditService : IWorkstationAuditService
     {
         private readonly IApplicationDbContext _dbContext;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IAppSettingsService _appSettingsService;
         private readonly ILogger<WorkstationAuditService> _logger;
 
-        public WorkstationAuditService(IApplicationDbContext dbContext, ILogger<WorkstationAuditService> logger)
+        public WorkstationAuditService(IApplicationDbContext dbContext, IHttpClientFactory httpClientFactory, IAppSettingsService appSettingsService, ILogger<WorkstationAuditService> logger)
         {
             _dbContext = dbContext;
+            _httpClientFactory = httpClientFactory;
+            _appSettingsService = appSettingsService;
             _logger = logger;
         }
 
@@ -194,13 +201,10 @@ namespace HES.Core.Services
                 var hardwareVault = await _dbContext.HardwareVaults.FindAsync(workstationEventDto.DeviceId);
                 if (hardwareVault != null)
                 {
-                    employee = await _dbContext.Employees.FindAsync(hardwareVault.EmployeeId);
+                    employee = await _dbContext.Employees.Include(x => x.Department.Company).FirstOrDefaultAsync(x => x.Id == hardwareVault.EmployeeId);
 
                     account = await _dbContext.Accounts
-                        .Where(d => d.Name == workstationEventDto.AccountName &&
-                                    d.Login == workstationEventDto.AccountLogin &&
-                                    d.EmployeeId == hardwareVault.EmployeeId)
-                        .AsNoTracking()
+                        .Where(d => d.Name == workstationEventDto.AccountName && d.Login == workstationEventDto.AccountLogin && d.EmployeeId == hardwareVault.EmployeeId)
                         .FirstOrDefaultAsync();
                 }
             }
@@ -222,6 +226,28 @@ namespace HES.Core.Services
 
             await _dbContext.WorkstationEvents.AddAsync(workstationEvent);
             await _dbContext.SaveChangesAsync();
+
+            var splunkSettings = await _appSettingsService.GetSplunkSettingsAsync();
+            if (splunkSettings != null)
+            {
+                var splunkEvent = new SplunkWorkstationEventDto
+                {
+                    Date = workstationEventDto.Date,
+                    Event = workstationEventDto.EventId.ToString(),
+                    Severity = workstationEventDto.SeverityId.ToString(),
+                    Note = workstationEventDto.Note,
+                    Workstation = workstation.Name,
+                    UserSession = workstationEventDto.UserSession,
+                    HardwareVault = workstationEventDto.DeviceId,
+                    Employee = employee?.FullName,
+                    Company = employee?.Department?.Company?.Name,
+                    Department = employee?.Department?.Name,
+                    Account = account?.Name,
+                    AccountType = account?.AccountType.ToString()
+                };
+
+                await SendSplunkEventAsync(splunkEvent.ToSplunkJson(), splunkSettings);
+            }
         }
 
         #endregion
@@ -675,7 +701,7 @@ namespace HES.Core.Services
 	                    DATE(WorkstationSessions.StartDate) DESC, Employee ASC")
                 .CountAsync();
         }
-              
+
         public async Task<List<SummaryByEmployees>> GetSummaryByEmployeesAsync(DataLoadingOptions<SummaryFilter> dataLoadingOptions)
         {
             var having = string.Empty;
@@ -1026,7 +1052,7 @@ namespace HES.Core.Services
                 if (dataLoadingOptions.Filter.Employee != null)
                 {
                     filterParameters.Add($"Workstation LIKE '%{dataLoadingOptions.Filter.Workstation}%'");
-                }  
+                }
             }
 
             // Search
@@ -1041,7 +1067,7 @@ namespace HES.Core.Services
             {
                 case nameof(SummaryByWorkstations.Workstation):
                     orderby = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? "ORDER BY Workstation ASC" : "ORDER BY Workstation DESC";
-                    break; 
+                    break;
                 case nameof(SummaryByWorkstations.EmployeesCount):
                     orderby = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? "ORDER BY EmployeesCount ASC" : "ORDER BY EmployeesCount DESC";
                     break;
@@ -1113,7 +1139,7 @@ namespace HES.Core.Services
                 if (dataLoadingOptions.Filter.Employee != null)
                 {
                     filterParameters.Add($"Workstation LIKE '%{dataLoadingOptions.Filter.Workstation}%'");
-                }               
+                }
             }
 
             // Search
@@ -1159,7 +1185,35 @@ namespace HES.Core.Services
                  .CountAsync();
         }
 
+        #endregion
 
-        #endregion       
+        #region Splunk
+
+        public async Task SendSplunkEventAsync(string content, SplunkSettings splunkSettings)
+        {
+            if (splunkSettings == null)
+            {
+                throw new ArgumentNullException(nameof(splunkSettings));
+            }
+
+            try
+            {
+                var client = _httpClientFactory.CreateClient("Splunk");
+                client.BaseAddress = new Uri(splunkSettings.Host);
+                client.DefaultRequestHeaders.Add("Authorization", $"Splunk {splunkSettings.Token}");
+                var response = await client.PostAsync("services/collector", new StringContent(content));
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning(response.StatusCode.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
+        #endregion
     }
 }

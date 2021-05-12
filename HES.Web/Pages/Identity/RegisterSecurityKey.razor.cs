@@ -83,6 +83,11 @@ namespace HES.Web.Pages.Identity
                 await Fido2Service.AddSecurityKeyAsync(User.Email, JSRuntime);
                 RegistrationStep = SecurityKeyRegistrationStep.Done;
             }
+            catch (JSException ex)
+            {
+                Logger.LogWarning($"JS. {User.Email}. {ex.Message}");
+                RegistrationStep = SecurityKeyRegistrationStep.Error;
+            }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);

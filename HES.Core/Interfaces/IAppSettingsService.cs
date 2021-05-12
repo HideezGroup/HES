@@ -15,5 +15,9 @@ namespace HES.Core.Interfaces
 
         Task<AlarmState> GetAlarmStateAsync();
         Task SetAlarmStateAsync(AlarmState alarmState);
+
+        Task<SplunkSettings> GetSplunkSettingsAsync();
+        Task SetSplunkSettingsAsync(SplunkSettings splunkSettings);
+        Task RemoveSplunkSettingsAsync();
     }
 }

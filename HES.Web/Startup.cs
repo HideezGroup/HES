@@ -5,27 +5,27 @@ using HES.Core.HostedServices;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
+using HES.Core.Models.Saml;
 using HES.Core.Services;
 using HES.Infrastructure;
 using HES.Web.Components;
-using HES.Web.Extensions;
 using HES.Web.Providers;
-using IdentityServer4;
+using ITfoxtec.Identity.Saml2;
+using ITfoxtec.Identity.Saml2.MvcCore;
+using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
+using ITfoxtec.Identity.Saml2.Util;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Rsk.Saml.Configuration;
 using System;
-using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -34,10 +34,11 @@ namespace HES.Web
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public bool Saml2pEnabled { get; set; }
-        public bool ReverseProxyHandleSSL { get; set; }
+        public IWebHostEnvironment Env { get; }
+        public bool Saml2Enabled { get; }
+        public bool ReverseProxyHandleSSL { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             #region Environment variables
 
@@ -81,14 +82,23 @@ namespace HES.Web
 
             #endregion
 
-            if (!string.IsNullOrWhiteSpace(configuration.GetValue<string>("SAML2P:LicenseName")) && !string.IsNullOrWhiteSpace(configuration.GetValue<string>("SAML2P:LicenseKey")))
-            {
-                Saml2pEnabled = true;
-            }
+            #region Reverse Proxy
 
             ReverseProxyHandleSSL = configuration.GetValue<bool>("ServerSettings:ReverseProxyHandleSSL");
 
+            #endregion
+
+            #region SAML
+
+            if (!string.IsNullOrWhiteSpace(configuration.GetValue<string>("Saml2:SigningCertificatePassword")))
+            {
+                Saml2Enabled = true;
+            }
+
+            #endregion
+
             Configuration = configuration;
+            Env = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -105,7 +115,7 @@ namespace HES.Web
 
             #region Services
 
-            services.AddScoped<IApplicationDbContext>(x => x.GetService<ApplicationDbContext>());   
+            services.AddScoped<IApplicationDbContext>(x => x.GetService<ApplicationDbContext>());
             services.AddScoped(typeof(IDataTableService<,>), typeof(DataTableService<,>));
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
@@ -131,7 +141,7 @@ namespace HES.Web
             services.AddScoped<IBreadcrumbsService, BreadcrumbsService>();
             services.AddScoped<IFido2Service, Fido2Service>();
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();
-
+      
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
             services.AddSingleton<IPageSyncService, PageSyncService>();
@@ -142,6 +152,13 @@ namespace HES.Web
 
             services.AddHttpClient();
             services.AddHttpClient("HES").ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                return new HttpClientHandler()
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+            });
+            services.AddHttpClient("Splunk").ConfigurePrimaryHttpMessageHandler(() =>
             {
                 return new HttpClientHandler()
                 {
@@ -244,31 +261,17 @@ namespace HES.Web
 
             #region SAML
 
-            if (Saml2pEnabled)
+            services.Configure<Saml2Configuration>(Configuration.GetSection("Saml2"));
+            services.Configure<Saml2RelyingParties>(Configuration.GetSection("Saml2Sp"));
+
+            if (Saml2Enabled)
             {
-                services.AddIdentityServer(options =>
+                services.Configure<Saml2Configuration>(saml2Configuration =>
                 {
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.UserInteraction.LoginUrl = "/sso";
-                    options.UserInteraction.LogoutUrl = "/slo";
-                })
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddInMemoryIdentityResources(SamlConfig.GetIdentityResources())
-                .AddInMemoryApiResources(SamlConfig.GetApis())
-                .AddInMemoryClients(SamlConfig.GetClients(Configuration))
-                .AddSigningCredential(SamlConfig.GetCertificate(Configuration))
-                .AddSamlPlugin(options =>
-                {
-                    options.Licensee = Configuration.GetValue<string>("SAML2P:LicenseName");
-                    options.LicenseKey = Configuration.GetValue<string>("SAML2P:LicenseKey");
-                    options.WantAuthenticationRequestsSigned = false;
-                    options.UseLegacyRsaEncryption = false;
-                })
-                .AddInMemoryServiceProviders(SamlConfig.GetServiceProviders(Configuration))
-                .Services.Configure<CookieAuthenticationOptions>(IdentityServerConstants.DefaultCookieAuthenticationScheme, cookie => { cookie.Cookie.Name = "idsrv.idp"; });
+                    saml2Configuration.SigningCertificate = CertificateUtil.Load(Env.MapToPhysicalFilePath(Configuration["Saml2:SigningCertificateFile"]), Configuration["Saml2:SigningCertificatePassword"]);
+                    saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
+                });
+                services.AddSaml2();
             }
 
             #endregion
@@ -306,20 +309,18 @@ namespace HES.Web
 
             app.UseCookiePolicy();
             app.UseStatusCodePages();
-
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            if (Saml2pEnabled)
-            {
-                app.UseIdentityServer();
-                app.UseIdentityServerSamlPlugin();
-            }
-
             if (!ReverseProxyHandleSSL)
             {
                 app.UseHttpsRedirection();
+            }
+
+            if (Saml2Enabled)
+            {
+                app.UseSaml2();
             }
 
             app.UseAuthentication();

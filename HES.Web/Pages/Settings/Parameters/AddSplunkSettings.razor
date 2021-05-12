@@ -1,0 +1,26 @@
+﻿@inherits HESModalBase
+
+@if (SplunkSettings == null)
+{
+    <Loader />
+}
+else
+{
+<EditForm Model="@SplunkSettings" OnValidSubmit="@UpdateSettingsAsync">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <Label For="@(() => SplunkSettings.Host)" class="text-gray" />
+        <InputText @bind-Value="SplunkSettings.Host" class="form-control text-navyblue" placeholder="https://example.splunkcloud.com:8088" />
+        <ValidationMessage For="@(() => SplunkSettings.Host)" class="text-danger" />
+    </div>
+    <div class="form-group">
+        <Label For="@(() => SplunkSettings.Token)" class="text-gray" />
+        <InputText @bind-Value="SplunkSettings.Token" class="form-control text-navyblue" />
+        <ValidationMessage For="@(() => SplunkSettings.Token)" class="text-danger" />
+    </div>  
+    <div class="form-footer">
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+        <Button @ref="Button" Text="Save" type="submit" class="btn btn-primary" />
+    </div>
+</EditForm>
+}

@@ -130,6 +130,11 @@ namespace HES.Web.Pages.Identity
 
                 NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard, true);
             }
+            catch (JSException ex)
+            {
+                Logger.LogWarning($"JS. {UserEmailModel.Email}. {ex.Message}");
+                AuthenticationStep = AuthenticationStep.SecurityKeyError;
+            }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);

@@ -57,6 +57,11 @@ namespace HES.Web.Pages.Profile.SecurityKeys
 
                 ChangeState(SecurityKeyAddingStep.Done);
             }
+            catch (JSException ex)
+            {
+                Logger.LogWarning($"JS. {CurrentUser.Email}. {ex.Message}");
+                ChangeState(SecurityKeyAddingStep.Error);
+            }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);

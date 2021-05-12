@@ -17,6 +17,7 @@
 
         public const string SingleSignOn = "/sso";
         public const string SingleLogOut = "/slo";
+        public const string SSO = "/saml/login";
         public const string RegisterSecurityKey = "/register-security-key";
 
         public const string Dashboard = "/";
