@@ -82,6 +82,7 @@ namespace HES.Web.Pages.Identity
             try
             {
                 AuthenticationStep = AuthenticationStep.SecurityKeyAuthentication;
+                StateHasChanged();
 
                 SecurityKeySignInModel.AuthenticatorAssertionRawResponse = await Fido2Service.MakeAssertionRawResponse(UserEmailModel.Email, JSRuntime);
                 var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
