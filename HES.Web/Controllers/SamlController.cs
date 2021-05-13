@@ -37,8 +37,8 @@ namespace HES.Web.Controllers
             _signInManager = signInManager;
             _logger = logger;
         }
-
-        [Route("Login")]
+              
+        [HttpGet("Login")]
         public async Task<IActionResult> Login()
         {
             if (!User.Identity.IsAuthenticated)
@@ -115,7 +115,7 @@ namespace HES.Web.Controllers
             }
         }
 
-        [Route("Metadata")]
+        [HttpGet("Metadata")]
         public IActionResult Metadata()
         {
             var entityDescriptor = new EntityDescriptor(_saml2Configuration)
