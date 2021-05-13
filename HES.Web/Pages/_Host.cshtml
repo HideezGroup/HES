@@ -16,6 +16,9 @@
     <link href="~/css/main.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
+    @{
+        HttpContext.Response.Headers["Cache-Control"] = "no-store";
+    }
     <component type="typeof(App)" render-mode="Server" />
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
@@ -32,7 +35,7 @@
             <div>
                 <h5 class="mb-3">Reconnection to the server.</h5>
                 <component type="typeof(HES.Web.Components.Loader)" render-mode="Static" />
-            </div>     
+            </div>
         </div>
         <div class="failed-to-connect flex-column justify-content-center align-items-center h-100">
             <h5 class="mb-3">Could not connect to the server.</h5>

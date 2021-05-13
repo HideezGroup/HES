@@ -141,7 +141,7 @@ namespace HES.Web
             services.AddScoped<IBreadcrumbsService, BreadcrumbsService>();
             services.AddScoped<IFido2Service, Fido2Service>();
             services.AddScoped<IIdentityApiClient, IdentityApiClient>();
-      
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
             services.AddSingleton<IPageSyncService, PageSyncService>();
@@ -178,62 +178,6 @@ namespace HES.Web
 
             #endregion
 
-            #region Cookie
-
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromDays(14);
-                options.LoginPath = "/login";
-                options.LogoutPath = "/logout";
-                options.Cookie = new CookieBuilder
-                {
-                    IsEssential = true // required for auth to work without explicit user consent; adjust to suit your privacy policy
-                };
-            });
-
-            // Override OnRedirectToLogin via API
-            services.ConfigureApplicationCookie(config =>
-            {
-                config.Events = new CookieAuthenticationEvents
-                {
-                    OnRedirectToAccessDenied = context =>
-                    {
-                        if (context.Request.Path.StartsWithSegments("/api"))
-                        {
-                            context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
-                        }
-                        else
-                        {
-                            context.Response.Redirect(context.RedirectUri);
-                        }
-
-                        return Task.CompletedTask;
-                    },
-                    OnRedirectToLogin = context =>
-                    {
-                        if (context.Request.Path.StartsWithSegments("/api"))
-                        {
-                            context.Response.StatusCode = (int)System.Net.HttpStatusCode.Unauthorized;
-                        }
-                        else
-                        {
-                            context.Response.Redirect(context.RedirectUri);
-                        }
-                        return Task.CompletedTask;
-                    }
-                };
-            });
-
-            #endregion
-
             #region Identity
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -255,6 +199,45 @@ namespace HES.Web
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.AllowedForNewUsers = true;
+            });
+
+            #endregion
+
+            #region Cookie
+
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = new PathString(Routes.Login);
+                config.LogoutPath = new PathString(Routes.Logout);
+                config.AccessDeniedPath = new PathString(Routes.AccessDenied);
+
+                config.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToAccessDenied = context =>
+                    {
+                        if (context.Request.Path.StartsWithSegments("/api"))
+                        {
+                            context.Response.StatusCode = (int)System.Net.HttpStatusCode.Forbidden;
+                        }
+                        else
+                        {
+                            context.Response.Redirect(context.RedirectUri);
+                        }
+                        return Task.CompletedTask;
+                    },
+                    OnRedirectToLogin = context =>
+                    {
+                        if (context.Request.Path.StartsWithSegments("/api"))
+                        {
+                            context.Response.StatusCode = (int)System.Net.HttpStatusCode.Unauthorized;
+                        }
+                        else
+                        {
+                            context.Response.Redirect(context.RedirectUri);
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             #endregion
@@ -307,7 +290,6 @@ namespace HES.Web
                 }
             }
 
-            app.UseCookiePolicy();
             app.UseStatusCodePages();
             app.UseStaticFiles();
 
