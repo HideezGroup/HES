@@ -118,7 +118,7 @@
             </ul>
         </section>
     }
-    @if (EmployeeService.IsSaml2PEnabled() && !string.IsNullOrWhiteSpace(Employee.Email) && Employee.HardwareVaults.Count > 0)
+    @if (EmployeeService.IsSaml2Enabled() && !string.IsNullOrWhiteSpace(Employee.Email) && Employee.HardwareVaults.Count > 0)
     {
         <section>
             <h4 class="text-navyblue me-2">Single Sign On</h4>

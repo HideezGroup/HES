@@ -382,14 +382,9 @@ namespace HES.Core.Services
 
         #region SSO
 
-        public bool IsSaml2PEnabled()
+        public bool IsSaml2Enabled()
         {
-            if (!string.IsNullOrWhiteSpace(_configuration.GetValue<string>("SAML2P:LicenseName")) && !string.IsNullOrWhiteSpace(_configuration.GetValue<string>("SAML2P:LicenseKey")))
-            {
-                return true;
-            }
-
-            return false;
+            return SamlHelper.IsEnabled(_configuration);        
         }
 
         public async Task<UserSsoInfo> GetUserSsoInfoAsync(Employee employee)
