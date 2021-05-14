@@ -37,7 +37,7 @@ namespace HES.Web.Controllers
             _signInManager = signInManager;
             _logger = logger;
         }
-              
+
         [HttpGet("Login")]
         public async Task<IActionResult> Login()
         {
@@ -68,7 +68,9 @@ namespace HES.Web.Controllers
                 requestBinding.Unbind(Request.ToGenericHttpRequest(), saml2AuthnRequest);
 
                 var sessionIndex = Guid.NewGuid().ToString();
-                return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, requestBinding.RelayState, relyingParty, sessionIndex, GetUserClaims());
+                var user = await _signInManager.UserManager.FindByNameAsync(User.Identity.Name);
+
+                return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, requestBinding.RelayState, relyingParty, sessionIndex, GetUserClaims(user));
             }
             catch (Exception ex)
             {
@@ -251,10 +253,13 @@ namespace HES.Web.Controllers
             return _saml2RelyingParties.RelyingParties.Where(rp => rp.Issuer != null && rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
         }
 
-        private IEnumerable<Claim> GetUserClaims()
+        private IEnumerable<Claim> GetUserClaims(ApplicationUser user)
         {
             yield return new Claim(ClaimTypes.NameIdentifier, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
             yield return new Claim(ClaimTypes.Email, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
+            yield return new Claim(ClaimTypes.Name, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value);
+            yield return new Claim(ClaimTypes.GivenName, user.FullName.Split(" ").FirstOrDefault());
+            yield return new Claim(ClaimTypes.Surname, user.FullName.Split(" ").LastOrDefault());
         }
     }
 }
