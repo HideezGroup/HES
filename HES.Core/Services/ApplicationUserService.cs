@@ -122,7 +122,7 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.EmailAlreadyTaken);
             }
 
-            var user = new ApplicationUser { UserName = email, Email = email };
+            var user = new ApplicationUser { UserName = email, Email = email, Culture = CultureConstants.EN };
             var password = Guid.NewGuid().ToString();
 
             var result = await _userManager.CreateAsync(user, password);
@@ -139,7 +139,7 @@ namespace HES.Core.Services
                 throw new Exception(HESException.GetIdentityResultErrors(roleResult.Errors));
             }
 
-            return await GenerateInviteCallBackUrl(email, domain);   
+            return await GenerateInviteCallBackUrl(email, domain);
         }
 
         public async Task<string> GenerateInviteCallBackUrl(string email, string domain)
@@ -160,7 +160,7 @@ namespace HES.Core.Services
             }
 
             var user = await GetUserByIdAsync(userId);
-            
+
             await _userManager.DeleteAsync(user);
             return user;
         }

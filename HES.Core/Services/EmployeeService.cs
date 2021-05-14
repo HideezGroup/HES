@@ -439,7 +439,8 @@ namespace HES.Core.Services
                 PhoneNumber = employee.PhoneNumber,
                 UserName = employee.Email,
                 Email = employee.Email,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Culture = CultureConstants.EN
             };
 
             var result = await _userManager.CreateAsync(user);
