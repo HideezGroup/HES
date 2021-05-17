@@ -50,6 +50,8 @@ namespace HES.Web.Pages.Identity
                 if (User == null)
                 {
                     RegistrationStep = SecurityKeyRegistrationStep.UserNotFound;
+                    SetInitialized();
+                    return;
                 }
 
                 // Check key is already added
@@ -57,6 +59,8 @@ namespace HES.Web.Pages.Identity
                 if (cred.Count > 0)
                 {
                     RegistrationStep = SecurityKeyRegistrationStep.AlreadyAdded;
+                    SetInitialized();
+                    return;
                 }
 
                 // Verify token
@@ -64,6 +68,8 @@ namespace HES.Web.Pages.Identity
                 if (!tokenIsValid)
                 {
                     RegistrationStep = SecurityKeyRegistrationStep.InvalidToken;
+                    SetInitialized();
+                    return;
                 }
 
                 SetInitialized();

@@ -295,12 +295,45 @@ namespace HES.Core.Services
             // If the field is NULL then the unique check does not work; therefore, we write empty
             employee.LastName ??= string.Empty;
 
-            employee.DepartmentId ??= employee.DepartmentId;
-            employee.PositionId ??= employee.PositionId;
-
             await ThrowIfEmployeeExistAsync(x => x.FirstName == employee.FirstName && x.LastName == employee.LastName && x.Id != employee.Id);
 
             await UpdateEmployeeInDatabase(employee);
+
+            var user = await _userManager.FindByIdAsync(employee.Id);
+
+            if (user != null)
+            {
+                var isUser = await _userManager.IsInRoleAsync(user, ApplicationRoles.User);
+                if (!isUser)
+                {
+                    return;
+                }
+
+                if (employee.Email != user.Email)
+                {
+                    await _userManager.DeleteAsync(user);
+                    return;
+                }
+
+                var update = false;
+
+                if (employee.FirstName != user.FirstName)
+                {
+                    user.FirstName = employee.FirstName;
+                    update = true;
+                }
+
+                if (!string.IsNullOrWhiteSpace(employee.LastName) && employee.LastName != user.LastName)
+                {
+                    user.LastName = employee.LastName;
+                    update = true;
+                }
+
+                if (update)
+                {
+                    await _userManager.UpdateAsync(user);
+                }
+            }
         }
 
         public async Task DeleteEmployeeAsync(string employeeId)
@@ -325,10 +358,17 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.HardwareVaultUntieBeforeRemove);
             }
 
-            //TODO SoftwareVault
+            // TODO SoftwareVault
 
             _dbContext.Employees.Remove(employee);
             await _dbContext.SaveChangesAsync();
+
+            // SSO user
+            var user = await _userManager.FindByIdAsync(employee.Id);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
         }
 
         public async Task UpdateLastSeenAsync(string vaultId)
@@ -384,7 +424,7 @@ namespace HES.Core.Services
 
         public bool IsSaml2Enabled()
         {
-            return SamlHelper.IsEnabled(_configuration);        
+            return SamlHelper.IsEnabled(_configuration);
         }
 
         public async Task<UserSsoInfo> GetUserSsoInfoAsync(Employee employee)
@@ -428,9 +468,21 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.EmailAlreadyTaken);
             }
 
+            if (string.IsNullOrWhiteSpace(employee.LastName))
+            {
+                throw new HESException(HESCode.EmployeeRequiresLastName);
+            }
+
+            if (string.IsNullOrWhiteSpace(employee.Email))
+            {
+                throw new HESException(HESCode.EmployeeRequiresEmail);
+            }
+
             var user = new ApplicationUser
             {
-                FullName = employee.FullName,
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
                 PhoneNumber = employee.PhoneNumber,
                 UserName = employee.Email,
                 Email = employee.Email,
@@ -569,8 +621,19 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.HardwareVaultВoesNotAllowToRemove);
             }
 
-            using (TransactionScope transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
+                // Remove SSO user
+                var user = await _userManager.FindByIdAsync(vault.EmployeeId);
+                if (user != null)
+                {
+                    var isUser = await _userManager.IsInRoleAsync(user, ApplicationRoles.User);
+                    if (isUser)
+                    {
+                        await _userManager.DeleteAsync(user);
+                    }
+                }
+
                 await _hardwareVaultTaskService.DeleteTasksByVaultIdAsync(vaultId);
                 await _workstationService.DeleteWorkstationHardwareVaultPairsByVaultIdAsync(vaultId);
 

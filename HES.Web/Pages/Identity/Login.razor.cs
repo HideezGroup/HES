@@ -43,15 +43,21 @@ namespace HES.Web.Pages.Identity
         public string ReturnUrl { get; set; }
         public bool SetFocus { get; set; }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             try
             {
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
                 Fido2Service = ScopedServices.GetRequiredService<IFido2Service>();
 
+                if (await GetCurrentUserIsAuthenticatedAsync())
+                {
+                    NavigationManager.NavigateTo(Routes.Logout, true);
+                    return;
+                }
+
                 ReturnUrl = NavigationManager.GetQueryValue("returnUrl");
-                ChangeFocus();
+                SwitchFocus();
 
                 SetInitialized();
             }
@@ -64,19 +70,26 @@ namespace HES.Web.Pages.Identity
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (SetFocus)
+            try
             {
-                switch (AuthenticationStep)
+                if (SetFocus)
                 {
-                    case AuthenticationStep.EmailValidation:
-                        await JSRuntime.InvokeVoidAsync("setFocus", "email");
-                        ChangeFocus();
-                        break;
-                    case AuthenticationStep.EnterPassword:
-                        await JSRuntime.InvokeVoidAsync("setFocus", "password");
-                        ChangeFocus();
-                        break;
+                    switch (AuthenticationStep)
+                    {
+                        case AuthenticationStep.EmailValidation:
+                            await JSRuntime.InvokeVoidAsync("setFocus", "email");
+                            SwitchFocus();
+                            break;
+                        case AuthenticationStep.EnterPassword:
+                            await JSRuntime.InvokeVoidAsync("setFocus", "password");
+                            SwitchFocus();
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning($"JS. {ex.Message}");
             }
         }
 
@@ -102,7 +115,7 @@ namespace HES.Web.Pages.Identity
 
                     PasswordSignInModel.Email = UserEmailModel.Email;
                     HasSecurityKey = (await Fido2Service.GetCredentialsByUserEmail(UserEmailModel.Email)).Count > 0;
-                    ChangeFocus();
+                    SwitchFocus();
                     AuthenticationStep = AuthenticationStep.EnterPassword;
                 });
             }
@@ -191,7 +204,7 @@ namespace HES.Web.Pages.Identity
             AuthenticationStep = AuthenticationStep.EmailValidation;
         }
 
-        private void ChangeFocus()
+        private void SwitchFocus()
         {
             SetFocus = !SetFocus;
         }

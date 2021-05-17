@@ -254,13 +254,12 @@ namespace HES.Web.Controllers
         }
 
         private IEnumerable<Claim> GetUserClaims(ApplicationUser user)
-        {
-            //yield return new Claim(ClaimTypes.NameIdentifier, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value);
+        {         
             yield return new Claim(ClaimTypes.NameIdentifier, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
             yield return new Claim(ClaimTypes.Email, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
             yield return new Claim(ClaimTypes.Name, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value);
-            yield return new Claim(ClaimTypes.GivenName, user.FullName.Split(" ").FirstOrDefault());
-            yield return new Claim(ClaimTypes.Surname, user.FullName.Split(" ").LastOrDefault());
+            yield return new Claim(ClaimTypes.GivenName, user.FirstName);
+            yield return new Claim(ClaimTypes.Surname, user.LastName);
         }
     }
 }

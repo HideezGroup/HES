@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Helpers;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppUsers;
@@ -42,6 +43,10 @@ namespace HES.Web.Pages.Profile
                 FidoService = ScopedServices.GetRequiredService<IFido2Service>();
 
                 CurrentUser = await ApplicationUserService.GetUserByEmailAsync(await GetCurrentUserEmailAsync());
+                if (CurrentUser == null)
+                {
+                    throw new HESException(HESCode.UserNotFound);
+                }
 
                 // Password
                 ChangePasswordModel = new ChangePasswordModel() { UserId = CurrentUser.Id };
