@@ -48,7 +48,7 @@ namespace HES.Core.Services
 
         public async Task<ApplicationUser> GetUserByIdAsync(string userId)
         {
-            return await _userManager.FindByIdAsync(userId);  
+            return await _userManager.FindByIdAsync(userId);
         }
 
         public async Task<ApplicationUser> GetUserByEmailAsync(string email)
@@ -80,6 +80,7 @@ namespace HES.Core.Services
                 dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
                 query = query.Where(x => x.Email.Contains(dataLoadingOptions.SearchText) ||
+                                   (x.FirstName + " " + x.LastName).Contains(dataLoadingOptions.SearchText) ||
                                     x.PhoneNumber.Contains(dataLoadingOptions.SearchText));
             }
 
@@ -87,6 +88,9 @@ namespace HES.Core.Services
             {
                 case nameof(ApplicationUser.Email):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Email) : query.OrderByDescending(x => x.Email);
+                    break;
+                case nameof(ApplicationUser.DisplayName):
+                    query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.FirstName).ThenBy(x => x.LastName) : query.OrderByDescending(x => x.FirstName).ThenByDescending(x => x.LastName);
                     break;
                 case nameof(ApplicationUser.PhoneNumber):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.PhoneNumber) : query.OrderByDescending(x => x.PhoneNumber);
