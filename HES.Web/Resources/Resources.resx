@@ -117,6 +117,45 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Alarm_DisableAlarm_Body" xml:space="preserve">
+    <value>Are you sure you want to turn off the alarm and unlock all workstations?</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Confirm" xml:space="preserve">
+    <value>Please enter your password to confirm</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Title" xml:space="preserve">
+    <value>Turn off alarm</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Toast" xml:space="preserve">
+    <value>All workstations are unlocked.</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Body" xml:space="preserve">
+    <value>Are you sure you want to turn on the alarm and lock all workstations?</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Title" xml:space="preserve">
+    <value>Turn on alarm</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Toast" xml:space="preserve">
+    <value>All workstations are locked.</value>
+  </data>
+  <data name="Alarm_PageDescription" xml:space="preserve">
+    <value>This button allows you to remotely lock workstations and block the connection of hardware vaults.</value>
+  </data>
+  <data name="Alarm_PageHeader" xml:space="preserve">
+    <value>Alarm Button</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Btn_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Btn_TurnOff" xml:space="preserve">
+    <value>Turn Off</value>
+  </data>
+  <data name="Btn_TurnOn" xml:space="preserve">
+    <value>Turn On</value>
+  </data>
   <data name="Label_Administrators" xml:space="preserve">
     <value>Administrators</value>
   </data>
@@ -129,8 +168,14 @@
   <data name="Label_DataProtection" xml:space="preserve">
     <value>Data Protection</value>
   </data>
+  <data name="Label_DisabledBy" xml:space="preserve">
+    <value>Disabled by</value>
+  </data>
   <data name="Label_Employees" xml:space="preserve">
     <value>Employees</value>
+  </data>
+  <data name="Label_EnabledBy" xml:space="preserve">
+    <value>Enabled by</value>
   </data>
   <data name="Label_Events" xml:space="preserve">
     <value>Events</value>
@@ -143,6 +188,9 @@
   </data>
   <data name="Label_LicenseOrders" xml:space="preserve">
     <value>License Orders</value>
+  </data>
+  <data name="Label_NeverUsed" xml:space="preserve">
+    <value>Never used</value>
   </data>
   <data name="Label_OrgStructure" xml:space="preserve">
     <value>OrgStructure</value>
@@ -162,6 +210,9 @@
   <data name="Label_SoftwareVaults" xml:space="preserve">
     <value>Software Vaults</value>
   </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="Label_Summaries" xml:space="preserve">
     <value>Summaries</value>
   </data>
@@ -173,5 +224,17 @@
   </data>
   <data name="Label_Workstations" xml:space="preserve">
     <value>Workstations</value>
+  </data>
+  <data name="Label_WorkstationsCount" xml:space="preserve">
+    <value>Workstations Count</value>
+  </data>
+  <data name="Label_WorkstationsOnline" xml:space="preserve">
+    <value>Workstations Online</value>
+  </data>
+  <data name="Title_LockAll" xml:space="preserve">
+    <value>Lock all workstations</value>
+  </data>
+  <data name="Title_UnlockAll" xml:space="preserve">
+    <value>Unlock all workstations</value>
   </data>
 </root>

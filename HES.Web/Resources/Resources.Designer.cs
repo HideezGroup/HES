@@ -61,6 +61,123 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Are you sure you want to turn off the alarm and unlock all workstations?.
+        /// </summary>
+        internal static string Alarm_DisableAlarm_Body {
+            get {
+                return ResourceManager.GetString("Alarm_DisableAlarm_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Please enter your password to confirm.
+        /// </summary>
+        internal static string Alarm_DisableAlarm_Confirm {
+            get {
+                return ResourceManager.GetString("Alarm_DisableAlarm_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turn off alarm.
+        /// </summary>
+        internal static string Alarm_DisableAlarm_Title {
+            get {
+                return ResourceManager.GetString("Alarm_DisableAlarm_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на All workstations are unlocked..
+        /// </summary>
+        internal static string Alarm_DisableAlarm_Toast {
+            get {
+                return ResourceManager.GetString("Alarm_DisableAlarm_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Are you sure you want to turn on the alarm and lock all workstations?.
+        /// </summary>
+        internal static string Alarm_EnableAlarm_Body {
+            get {
+                return ResourceManager.GetString("Alarm_EnableAlarm_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turn on alarm.
+        /// </summary>
+        internal static string Alarm_EnableAlarm_Title {
+            get {
+                return ResourceManager.GetString("Alarm_EnableAlarm_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на All workstations are locked..
+        /// </summary>
+        internal static string Alarm_EnableAlarm_Toast {
+            get {
+                return ResourceManager.GetString("Alarm_EnableAlarm_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This button allows you to remotely lock workstations and block the connection of hardware vaults..
+        /// </summary>
+        internal static string Alarm_PageDescription {
+            get {
+                return ResourceManager.GetString("Alarm_PageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Alarm Button.
+        /// </summary>
+        internal static string Alarm_PageHeader {
+            get {
+                return ResourceManager.GetString("Alarm_PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        internal static string Btn_Cancel {
+            get {
+                return ResourceManager.GetString("Btn_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm.
+        /// </summary>
+        internal static string Btn_Confirm {
+            get {
+                return ResourceManager.GetString("Btn_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turn Off.
+        /// </summary>
+        internal static string Btn_TurnOff {
+            get {
+                return ResourceManager.GetString("Btn_TurnOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turn On.
+        /// </summary>
+        internal static string Btn_TurnOn {
+            get {
+                return ResourceManager.GetString("Btn_TurnOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Administrators.
         /// </summary>
         internal static string Label_Administrators {
@@ -97,11 +214,29 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled by.
+        /// </summary>
+        internal static string Label_DisabledBy {
+            get {
+                return ResourceManager.GetString("Label_DisabledBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Employees.
         /// </summary>
         internal static string Label_Employees {
             get {
                 return ResourceManager.GetString("Label_Employees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enabled by.
+        /// </summary>
+        internal static string Label_EnabledBy {
+            get {
+                return ResourceManager.GetString("Label_EnabledBy", resourceCulture);
             }
         }
         
@@ -138,6 +273,15 @@ namespace HES.Web.Resources {
         internal static string Label_LicenseOrders {
             get {
                 return ResourceManager.GetString("Label_LicenseOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Never used.
+        /// </summary>
+        internal static string Label_NeverUsed {
+            get {
+                return ResourceManager.GetString("Label_NeverUsed", resourceCulture);
             }
         }
         
@@ -196,6 +340,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Status.
+        /// </summary>
+        internal static string Label_Status {
+            get {
+                return ResourceManager.GetString("Label_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Summaries.
         /// </summary>
         internal static string Label_Summaries {
@@ -228,6 +381,42 @@ namespace HES.Web.Resources {
         internal static string Label_Workstations {
             get {
                 return ResourceManager.GetString("Label_Workstations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstations Count.
+        /// </summary>
+        internal static string Label_WorkstationsCount {
+            get {
+                return ResourceManager.GetString("Label_WorkstationsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstations Online.
+        /// </summary>
+        internal static string Label_WorkstationsOnline {
+            get {
+                return ResourceManager.GetString("Label_WorkstationsOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Lock all workstations.
+        /// </summary>
+        internal static string Title_LockAll {
+            get {
+                return ResourceManager.GetString("Title_LockAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unlock all workstations.
+        /// </summary>
+        internal static string Title_UnlockAll {
+            get {
+                return ResourceManager.GetString("Title_UnlockAll", resourceCulture);
             }
         }
     }

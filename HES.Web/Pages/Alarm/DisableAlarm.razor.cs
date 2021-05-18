@@ -49,7 +49,7 @@ namespace HES.Web.Pages.Alarm
                     throw new HESException(HESCode.IncorrectCurrentPassword);
 
                 await RemoteWorkstationConnections.UnlockAllWorkstationsAsync(ApplicationUser.Email);
-                await ToastService.ShowToastAsync("All workstations are unlocked.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resources.Alarm_DisableAlarm_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

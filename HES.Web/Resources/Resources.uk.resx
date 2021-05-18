@@ -174,4 +174,67 @@
   <data name="Label_SoftwareVaults" xml:space="preserve">
     <value>Програмні сховища</value>
   </data>
+  <data name="Alarm_PageDescription" xml:space="preserve">
+    <value>Ця кнопка дозволяє віддалено блокувати робочі станції та блокувати підключення апаратних сховищ.</value>
+  </data>
+  <data name="Alarm_PageHeader" xml:space="preserve">
+    <value>Кнопка тривоги</value>
+  </data>
+  <data name="Btn_TurnOff" xml:space="preserve">
+    <value>Вимкнути</value>
+  </data>
+  <data name="Btn_TurnOn" xml:space="preserve">
+    <value>Ввімкнути</value>
+  </data>
+  <data name="Label_DisabledBy" xml:space="preserve">
+    <value>Вимкнено</value>
+  </data>
+  <data name="Label_EnabledBy" xml:space="preserve">
+    <value>Увімкнено</value>
+  </data>
+  <data name="Label_NeverUsed" xml:space="preserve">
+    <value>Ніколи не використовували</value>
+  </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Label_WorkstationsCount" xml:space="preserve">
+    <value>Кількість робочих станцій</value>
+  </data>
+  <data name="Label_WorkstationsOnline" xml:space="preserve">
+    <value>Робочі станції в онлайні</value>
+  </data>
+  <data name="Title_LockAll" xml:space="preserve">
+    <value>Заблокувати всі робочі станції</value>
+  </data>
+  <data name="Title_UnlockAll" xml:space="preserve">
+    <value>Розблокувати всі робочі станції</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Body" xml:space="preserve">
+    <value>Ви впевнені, що хочете вимкнути тривогу і розблокувати всі робочі станції?</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Confirm" xml:space="preserve">
+    <value>Будь ласка, введіть свій пароль для підтвердження</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Title" xml:space="preserve">
+    <value>Вимкніть тривогу</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Body" xml:space="preserve">
+    <value>Ви впевнені, що хочете увімкнути тривогу і заблокувати всі робочі станції?</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Title" xml:space="preserve">
+    <value>Увімкніть тривогу</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Toast" xml:space="preserve">
+    <value>Усі робочі станції заблоковані.</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>Скасувати</value>
+  </data>
+  <data name="Btn_Confirm" xml:space="preserve">
+    <value>Підтвердьте</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Toast" xml:space="preserve">
+    <value>Усі робочі станції розблоковані.</value>
+  </data>
 </root>
