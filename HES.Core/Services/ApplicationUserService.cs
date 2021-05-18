@@ -48,24 +48,12 @@ namespace HES.Core.Services
 
         public async Task<ApplicationUser> GetUserByIdAsync(string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                throw new HESException(HESCode.UserNotFound);
-            }
-
-            return user;
+            return await _userManager.FindByIdAsync(userId);
         }
 
         public async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                throw new HESException(HESCode.UserNotFound);
-            }
-
-            return user;
+            return await _userManager.FindByEmailAsync(email);
         }
 
         #region Administrators
@@ -92,6 +80,7 @@ namespace HES.Core.Services
                 dataLoadingOptions.SearchText = dataLoadingOptions.SearchText.Trim();
 
                 query = query.Where(x => x.Email.Contains(dataLoadingOptions.SearchText) ||
+                                   (x.FirstName + " " + x.LastName).Contains(dataLoadingOptions.SearchText) ||
                                     x.PhoneNumber.Contains(dataLoadingOptions.SearchText));
             }
 
@@ -99,6 +88,9 @@ namespace HES.Core.Services
             {
                 case nameof(ApplicationUser.Email):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.Email) : query.OrderByDescending(x => x.Email);
+                    break;
+                case nameof(ApplicationUser.DisplayName):
+                    query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.FirstName).ThenBy(x => x.LastName) : query.OrderByDescending(x => x.FirstName).ThenByDescending(x => x.LastName);
                     break;
                 case nameof(ApplicationUser.PhoneNumber):
                     query = dataLoadingOptions.SortDirection == ListSortDirection.Ascending ? query.OrderBy(x => x.PhoneNumber) : query.OrderByDescending(x => x.PhoneNumber);
@@ -145,6 +137,10 @@ namespace HES.Core.Services
         public async Task<string> GenerateInviteCallBackUrl(string email, string domain)
         {
             var user = await GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var callbackUrl = $"{domain.TrimEnd('/')}{Routes.Invite}?code={WebUtility.UrlEncode(code)}&Email={email}";
@@ -160,6 +156,10 @@ namespace HES.Core.Services
             }
 
             var user = await GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
 
             await _userManager.DeleteAsync(user);
             return user;
@@ -177,6 +177,10 @@ namespace HES.Core.Services
         public async Task<string> GenerateEnableSsoCallBackUrlAsync(string email, string domain)
         {
             var user = await GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
 
             var code = await _userManager.GenerateUserTokenAsync(user, _registerSecurityKeyTokenProvoderName, _registerSecurityKeyTokenProvoderPurpose);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -199,25 +203,20 @@ namespace HES.Core.Services
         public async Task UpdateProfileInfoAsync(UserProfileModel parameters)
         {
             var user = await GetUserByIdAsync(parameters.UserId);
-
-            if (parameters.FullName != user.FullName)
+            if (user == null)
             {
-                user.FullName = parameters.FullName;
-                var userResult = await _userManager.UpdateAsync(user);
-
-                if (!userResult.Succeeded)
-                {
-                    throw new Exception(HESException.GetIdentityResultErrors(userResult.Errors));
-                }
+                throw new HESException(HESCode.UserNotFound);
             }
 
-            if (parameters.PhoneNumber != user.PhoneNumber)
+            user.FirstName = parameters.FirstName;
+            user.LastName = parameters.LastName;
+            user.PhoneNumber = parameters.PhoneNumber;
+
+            var userResult = await _userManager.UpdateAsync(user);
+
+            if (!userResult.Succeeded)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, parameters.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    throw new Exception(HESException.GetIdentityResultErrors(setPhoneResult.Errors));
-                }
+                throw new Exception(HESException.GetIdentityResultErrors(userResult.Errors));
             }
         }
 
@@ -229,6 +228,10 @@ namespace HES.Core.Services
             }
 
             var user = await GetUserByEmailAsync(parameters.CurrentEmail);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
 
             var exist = await GetUserByEmailAsync(parameters.NewEmail);
             if (exist != null)
@@ -245,6 +248,10 @@ namespace HES.Core.Services
         public async Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters)
         {
             var user = await GetUserByIdAsync(parameters.UserId);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
 
             using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -285,6 +292,10 @@ namespace HES.Core.Services
             }
 
             var user = await GetUserByIdAsync(parameters.UserId);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
 
             var isValidPassword = await _userManager.CheckPasswordAsync(user, parameters.OldPassword);
             if (!isValidPassword)
@@ -353,6 +364,10 @@ namespace HES.Core.Services
             try
             {
                 var user = await GetUserByEmailAsync(parameters.Email);
+                if (user == null)
+                {
+                    throw new HESException(HESCode.UserNotFound);
+                }
 
                 var result = await _signInManager.PasswordSignInAsync(parameters.Email, parameters.Password, parameters.RememberMe, lockoutOnFailure: true);
 

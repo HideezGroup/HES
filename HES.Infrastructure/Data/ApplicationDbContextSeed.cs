@@ -39,14 +39,22 @@ namespace HES.Infrastructure.Data
             var roleResult = await roleManager.RoleExistsAsync(ApplicationRoles.Admin);
             if (!roleResult)
             {
-                string adminName = "admin@hideez.com";
-                string adminPassword = "admin";
+                string adminEmail = "admin@hideez.com";
+                string adminPassword = "admin";            
 
                 // Create roles
                 await roleManager.CreateAsync(new ApplicationRole(ApplicationRoles.Admin));
                 await roleManager.CreateAsync(new ApplicationRole(ApplicationRoles.User));
                 // Create admin
-                var admin = new ApplicationUser { UserName = adminName, Email = adminName, EmailConfirmed = true, Culture = CultureConstants.EN };
+                var admin = new ApplicationUser
+                {
+                    UserName = adminEmail,
+                    Email = adminEmail,
+                    EmailConfirmed = true,
+                    FirstName = "admin",
+                    LastName = "hideez",
+                    Culture = CultureConstants.EN
+                };
                 await userManager.CreateAsync(admin, adminPassword);
                 // Add admin to role
                 await userManager.AddToRoleAsync(admin, ApplicationRoles.Admin);

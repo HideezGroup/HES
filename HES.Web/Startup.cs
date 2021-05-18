@@ -1,6 +1,7 @@
 using Fido2NetLib;
 using HES.Core.Constants;
 using HES.Core.Entities;
+using HES.Core.Helpers;
 using HES.Core.HostedServices;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
@@ -93,11 +94,8 @@ namespace HES.Web
 
             #region SAML
 
-            if (!string.IsNullOrWhiteSpace(configuration.GetValue<string>("Saml2:SigningCertificatePassword")))
-            {
-                Saml2Enabled = true;
-            }
-
+            Saml2Enabled = SamlHelper.IsEnabled(configuration);
+       
             #endregion
 
             Configuration = configuration;

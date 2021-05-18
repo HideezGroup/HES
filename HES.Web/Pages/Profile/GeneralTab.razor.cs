@@ -40,12 +40,18 @@ namespace HES.Web.Pages.Profile
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
 
                 var email = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.Name;
+
                 User = await ApplicationUserService.GetUserByEmailAsync(email);
+                if (User == null)
+                {
+                    throw new HESException(HESCode.UserNotFound);
+                }
 
                 UserProfileModel = new UserProfileModel
                 {
                     UserId = User.Id,
-                    FullName = User.FullName,
+                    FirstName = User.FirstName,
+                    LastName = User.LastName,              
                     PhoneNumber = User.PhoneNumber
                 };
 

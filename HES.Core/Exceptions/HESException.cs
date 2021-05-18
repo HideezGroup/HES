@@ -22,6 +22,8 @@ namespace HES.Core.Exceptions
         EmployeeNotFound,
         ActiveDirectoryUserNotFound,
         EmployeeAlreadyExist,
+        EmployeeRequiresLastName,
+        EmployeeRequiresEmail,
 
         // Hardware Vault
         HardwareVaultNotFound,
@@ -109,6 +111,8 @@ namespace HES.Core.Exceptions
             { HESCode.EmployeeNotFound, "Employee not found." },
             { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
             { HESCode.EmployeeAlreadyExist, "Employee with current name already exists." },
+            { HESCode.EmployeeRequiresLastName, "Requires last name." },
+            { HESCode.EmployeeRequiresEmail, "Requires email." },
 
             { HESCode.HardwareVaultNotFound, "Hardware Vault not found." },
             { HESCode.HardwareVaultNotFoundWithParam,  "Hardware Vault {0} not found." },

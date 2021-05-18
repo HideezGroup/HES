@@ -8,10 +8,10 @@
     <div class="custom-card text-center">
         <div class="text-center m-3">
             <img src="/svg/hideez-es-logo.svg" />
-        </div>
-        <h3 class="text-navyblue my-3">@ViewData["Title"]</h3>
+        </div> 
         @if (User.Identity.IsAuthenticated)
         {
+            <h5 class="text-navyblue my-3">@User.Identity.Name</h5>
             <form class="form-inline" asp-page="@Routes.Logout" method="post">
                 <button type="submit" class="btn btn-outline-primary w-100">Logout</button>
             </form>
