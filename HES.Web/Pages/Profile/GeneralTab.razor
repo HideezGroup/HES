@@ -9,9 +9,14 @@
             <EditForm Model="UserProfileModel" OnValidSubmit="UpdateProfileInfoAsync">
                 <DataAnnotationsValidator />
                 <div class="form-group">
-                    <Label For="@(() => UserProfileModel.FullName)" class="form-label" />
-                    <InputText @bind-Value="UserProfileModel.FullName" class="form-control" />
-                    <ValidationMessage For="@(() => UserProfileModel.FullName)" class="text-danger" />
+                    <Label For="@(() => UserProfileModel.FirstName)" class="form-label" />
+                    <InputText @bind-Value="UserProfileModel.FirstName" class="form-control" />
+                    <ValidationMessage For="@(() => UserProfileModel.FirstName)" class="text-danger" />
+                </div>
+                <div class="form-group">
+                    <Label For="@(() => UserProfileModel.LastName)" class="form-label" />
+                    <InputText @bind-Value="UserProfileModel.LastName" class="form-control" />
+                    <ValidationMessage For="@(() => UserProfileModel.LastName)" class="text-danger" />
                 </div>
                 <div class="form-group">
                     <Label For="@(() => UserProfileModel.PhoneNumber)" class="form-label" />
@@ -54,7 +59,7 @@
                     <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
                     <p>Deleting this data will permanently remove your account, and this cannot be recovered.</p>
                 </div>
-                <div class="col-auto d-flex align-items-center">
+                <div class="col-auto d-flex align-items-end">
                     <div>
                         <button class="btn btn-outline-secondary" type="button" @onclick="DownloadPersonalDataAsync">Download</button>
                         <button class="btn btn-outline-danger" type="button" @onclick="DeletePersonalDataAsync">Delete</button>
