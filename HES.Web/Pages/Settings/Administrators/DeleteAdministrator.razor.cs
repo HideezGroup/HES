@@ -27,7 +27,9 @@ namespace HES.Web.Pages.Settings.Administrators
 
                 ApplicationUser = await ApplicationUserService.GetUserByIdAsync(ApplicationUserId);
                 if (ApplicationUser == null)
+                {
                     throw new HESException(HESCode.UserNotFound);
+                }
             }
             catch (Exception ex)
             {

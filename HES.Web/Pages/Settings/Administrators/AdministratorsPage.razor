@@ -42,6 +42,12 @@
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
+                    <DataTableHeaderItem Title="Name"
+                                         SortColumn="@nameof(ApplicationUser.DisplayName)"
+                                         CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
+                                         CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
+                                         SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
+                                         SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
                     <DataTableHeaderItem Title="Phone Number"
                                          SortColumn="@nameof(ApplicationUser.PhoneNumber)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
@@ -64,6 +70,9 @@
                 <TableRow>
                     <td>
                         @context.Email
+                    </td>
+                    <td>
+                        @context.DisplayName
                     </td>
                     <td>
                         @context.PhoneNumber

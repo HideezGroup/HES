@@ -22,6 +22,11 @@ namespace HES.Web.Components
             return (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.Name;
         }
 
+        protected async Task<bool> GetCurrentUserIsAuthenticatedAsync()
+        {
+            return (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.IsAuthenticated;
+        }
+
         protected override void SetInitialized()
         {
             PageId = Guid.NewGuid().ToString();

@@ -101,7 +101,7 @@ namespace HES.Core.Services
 
         public async Task DeleteTasksByVaultIdAsync(string vaultId)
         {
-            var tasks = _dbContext.HardwareVaultTasks.Where(t => t.HardwareVaultId == vaultId);
+            var tasks = _dbContext.HardwareVaultTasks.Where(t => t.HardwareVaultId == vaultId).AsQueryable();
             _dbContext.HardwareVaultTasks.RemoveRange(tasks);
             await _dbContext.SaveChangesAsync();
         }

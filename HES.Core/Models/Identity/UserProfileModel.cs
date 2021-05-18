@@ -7,8 +7,13 @@ namespace HES.Core.Models.Identity
         [Required]
         public string UserId { get; set; }
 
-        [Display(Name = "Name")]
-        public string FullName { get; set; }
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
