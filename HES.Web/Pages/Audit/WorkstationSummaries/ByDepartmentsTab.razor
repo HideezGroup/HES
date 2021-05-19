@@ -10,70 +10,70 @@
                     <SummaryFilterComponent FilterChanged="DataTableService.FilterChangedAsync" TabName="@nameof(ByDepartmentsTab)" />
                 </FilterForm>
                 <ActionButtons>
-                    <h2 class="text-navyblue mb-0">Summary</h2>
+                    <h2 class="text-navyblue mb-0">@Resource.Summary_PageTitle</h2>
                 </ActionButtons>
             </DataTableActions>
         </WrapperHeader>
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Company"
+                    <DataTableHeaderItem Title="@Resource.Label_Company"
                                          TitleWidth="12"
                                          SortColumn="@nameof(SummaryByDepartments.Company)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Department"
+                    <DataTableHeaderItem Title="@Resource.Label_Department"
                                          TitleWidth="11"
                                          SortColumn="@nameof(SummaryByDepartments.Department)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Employees Count"
+                    <DataTableHeaderItem Title="@Resource.Label_EmployeesCount"
                                          TitleWidth="11"
                                          SortColumn="@nameof(SummaryByDepartments.EmployeesCount)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Workstations Count"
+                    <DataTableHeaderItem Title="@Resource.Label_WorkstationsCount"
                                          TitleWidth="11"
                                          SortColumn="@nameof(SummaryByDepartments.WorkstationsCount)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Total Sessions Count"
+                    <DataTableHeaderItem Title="@Resource.Label_TotalSessionsCount"
                                          TitleWidth="11"
                                          SortColumn="@nameof(SummaryByDepartments.TotalSessionsCount)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Total Sessions Duration"
+                    <DataTableHeaderItem Title="@Resource.Label_TotalSessionsDuration"
                                          TitleWidth="11"
                                          SortColumn="@nameof(SummaryByDepartments.TotalSessionsDuration)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Avg Sessions Duration"
+                    <DataTableHeaderItem Title="@Resource.Label_AvgSessionsDuration"
                                          TitleWidth="11"
                                          SortColumn="@nameof(SummaryByDepartments.AvgSessionsDuration)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Avg Total Duartion By Employee"
+                    <DataTableHeaderItem Title="@Resource.Label_AvgTotalDuartionByEmployee"
                                          TitleWidth="11"
                                          SortColumn="@nameof(SummaryByDepartments.AvgTotalDuartionByEmployee)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Avg Total Sessions Count By Employee"
+                    <DataTableHeaderItem Title="@Resource.Label_AvgTotalSessionsCountByEmployee"
                                          TitleWidth="11"
                                          SortColumn="@nameof(SummaryByDepartments.AvgTotalSessionsCountByEmployee)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"

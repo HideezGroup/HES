@@ -22,14 +22,14 @@ namespace HES.Web.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class Resource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace HES.Web.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HES.Web.Resources.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HES.Web.Resources.Resource", typeof(Resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -151,11 +151,47 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Clear.
+        /// </summary>
+        internal static string Btn_Clear {
+            get {
+                return ResourceManager.GetString("Btn_Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Confirm.
         /// </summary>
         internal static string Btn_Confirm {
             get {
                 return ResourceManager.GetString("Btn_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filter.
+        /// </summary>
+        internal static string Btn_Filter {
+            get {
+                return ResourceManager.GetString("Btn_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filters.
+        /// </summary>
+        internal static string Btn_Filters {
+            get {
+                return ResourceManager.GetString("Btn_Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Refresh.
+        /// </summary>
+        internal static string Btn_Refresh {
+            get {
+                return ResourceManager.GetString("Btn_Refresh", resourceCulture);
             }
         }
         
@@ -178,6 +214,33 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Account.
+        /// </summary>
+        internal static string Label_Account {
+            get {
+                return ResourceManager.GetString("Label_Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Type.
+        /// </summary>
+        internal static string Label_AccountType {
+            get {
+                return ResourceManager.GetString("Label_AccountType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Active.
+        /// </summary>
+        internal static string Label_Active {
+            get {
+                return ResourceManager.GetString("Label_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Administrators.
         /// </summary>
         internal static string Label_Administrators {
@@ -192,6 +255,96 @@ namespace HES.Web.Resources {
         internal static string Label_Audit {
             get {
                 return ResourceManager.GetString("Label_Audit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Avg Sessions Count Per Day.
+        /// </summary>
+        internal static string Label_AvgSessionsCountPerDay {
+            get {
+                return ResourceManager.GetString("Label_AvgSessionsCountPerDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Avg Sessions Duration.
+        /// </summary>
+        internal static string Label_AvgSessionsDuration {
+            get {
+                return ResourceManager.GetString("Label_AvgSessionsDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Avg Total Duartion By Employee.
+        /// </summary>
+        internal static string Label_AvgTotalDuartionByEmployee {
+            get {
+                return ResourceManager.GetString("Label_AvgTotalDuartionByEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Avg Total Sessions Count By Employee.
+        /// </summary>
+        internal static string Label_AvgTotalSessionsCountByEmployee {
+            get {
+                return ResourceManager.GetString("Label_AvgTotalSessionsCountByEmployee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Avg Working Hours Per Day.
+        /// </summary>
+        internal static string Label_AvgWorkingHoursPerDay {
+            get {
+                return ResourceManager.GetString("Label_AvgWorkingHoursPerDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на By Days And Employees.
+        /// </summary>
+        internal static string Label_ByDaysAndEmployees {
+            get {
+                return ResourceManager.GetString("Label_ByDaysAndEmployees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на By Departments.
+        /// </summary>
+        internal static string Label_ByDepartments {
+            get {
+                return ResourceManager.GetString("Label_ByDepartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на By Employees.
+        /// </summary>
+        internal static string Label_ByEmployees {
+            get {
+                return ResourceManager.GetString("Label_ByEmployees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на By Workstations.
+        /// </summary>
+        internal static string Label_ByWorkstations {
+            get {
+                return ResourceManager.GetString("Label_ByWorkstations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Company.
+        /// </summary>
+        internal static string Label_Company {
+            get {
+                return ResourceManager.GetString("Label_Company", resourceCulture);
             }
         }
         
@@ -214,11 +367,38 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Date.
+        /// </summary>
+        internal static string Label_Date {
+            get {
+                return ResourceManager.GetString("Label_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Department.
+        /// </summary>
+        internal static string Label_Department {
+            get {
+                return ResourceManager.GetString("Label_Department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Disabled by.
         /// </summary>
         internal static string Label_DisabledBy {
             get {
                 return ResourceManager.GetString("Label_DisabledBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Employee.
+        /// </summary>
+        internal static string Label_Employee {
+            get {
+                return ResourceManager.GetString("Label_Employee", resourceCulture);
             }
         }
         
@@ -232,11 +412,38 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Employees Count.
+        /// </summary>
+        internal static string Label_EmployeesCount {
+            get {
+                return ResourceManager.GetString("Label_EmployeesCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enabled by.
         /// </summary>
         internal static string Label_EnabledBy {
             get {
                 return ResourceManager.GetString("Label_EnabledBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на End Date.
+        /// </summary>
+        internal static string Label_EndDate {
+            get {
+                return ResourceManager.GetString("Label_EndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Event.
+        /// </summary>
+        internal static string Label_Event {
+            get {
+                return ResourceManager.GetString("Label_Event", resourceCulture);
             }
         }
         
@@ -255,6 +462,15 @@ namespace HES.Web.Resources {
         internal static string Label_Groups {
             get {
                 return ResourceManager.GetString("Label_Groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault.
+        /// </summary>
+        internal static string Label_HardwareVault {
+            get {
+                return ResourceManager.GetString("Label_HardwareVault", resourceCulture);
             }
         }
         
@@ -286,6 +502,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Note.
+        /// </summary>
+        internal static string Label_Note {
+            get {
+                return ResourceManager.GetString("Label_Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на OrgStructure.
         /// </summary>
         internal static string Label_OrgStructure {
@@ -304,6 +529,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Search.
+        /// </summary>
+        internal static string Label_Search {
+            get {
+                return ResourceManager.GetString("Label_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Session.
+        /// </summary>
+        internal static string Label_Session {
+            get {
+                return ResourceManager.GetString("Label_Session", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Sessions.
         /// </summary>
         internal static string Label_Sessions {
@@ -313,11 +556,29 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Sessions Count.
+        /// </summary>
+        internal static string Label_SessionsCount {
+            get {
+                return ResourceManager.GetString("Label_SessionsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Settings.
         /// </summary>
         internal static string Label_Settings {
             get {
                 return ResourceManager.GetString("Label_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Severity.
+        /// </summary>
+        internal static string Label_Severity {
+            get {
+                return ResourceManager.GetString("Label_Severity", resourceCulture);
             }
         }
         
@@ -336,6 +597,15 @@ namespace HES.Web.Resources {
         internal static string Label_SoftwareVaults {
             get {
                 return ResourceManager.GetString("Label_SoftwareVaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Start Date.
+        /// </summary>
+        internal static string Label_StartDate {
+            get {
+                return ResourceManager.GetString("Label_StartDate", resourceCulture);
             }
         }
         
@@ -367,11 +637,56 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Total Sessions Count.
+        /// </summary>
+        internal static string Label_TotalSessionsCount {
+            get {
+                return ResourceManager.GetString("Label_TotalSessionsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Total Sessions Duration.
+        /// </summary>
+        internal static string Label_TotalSessionsDuration {
+            get {
+                return ResourceManager.GetString("Label_TotalSessionsDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unlocked By.
+        /// </summary>
+        internal static string Label_UnlockedBy {
+            get {
+                return ResourceManager.GetString("Label_UnlockedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Vault Access Profiles.
         /// </summary>
         internal static string Label_VaultAccessProfiles {
             get {
                 return ResourceManager.GetString("Label_VaultAccessProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Working Days Count.
+        /// </summary>
+        internal static string Label_WorkingDaysCount {
+            get {
+                return ResourceManager.GetString("Label_WorkingDaysCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation.
+        /// </summary>
+        internal static string Label_Workstation {
+            get {
+                return ResourceManager.GetString("Label_Workstation", resourceCulture);
             }
         }
         
@@ -403,6 +718,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Summary.
+        /// </summary>
+        internal static string Summary_PageTitle {
+            get {
+                return ResourceManager.GetString("Summary_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filter.
+        /// </summary>
+        internal static string Title_Filter {
+            get {
+                return ResourceManager.GetString("Title_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Lock all workstations.
         /// </summary>
         internal static string Title_LockAll {
@@ -412,11 +745,38 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Refresh table.
+        /// </summary>
+        internal static string Title_RefreshTable {
+            get {
+                return ResourceManager.GetString("Title_RefreshTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Unlock all workstations.
         /// </summary>
         internal static string Title_UnlockAll {
             get {
                 return ResourceManager.GetString("Title_UnlockAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation Events.
+        /// </summary>
+        internal static string WorkstationEvents_PageTitle {
+            get {
+                return ResourceManager.GetString("WorkstationEvents_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation Sessions.
+        /// </summary>
+        internal static string WorkstationSessions_PageTitle {
+            get {
+                return ResourceManager.GetString("WorkstationSessions_PageTitle", resourceCulture);
             }
         }
     }

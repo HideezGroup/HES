@@ -72,7 +72,7 @@ namespace HES.Web.Pages.Alarm
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync(Resources.Resources.Alarm_EnableAlarm_Title, body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Alarm_EnableAlarm_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -91,7 +91,7 @@ namespace HES.Web.Pages.Alarm
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync(Resources.Resources.Alarm_DisableAlarm_Title, body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Alarm_DisableAlarm_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
