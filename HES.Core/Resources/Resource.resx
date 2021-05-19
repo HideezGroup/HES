@@ -117,6 +117,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Dashboard_EmployeesCard_LeftText" xml:space="preserve">
+    <value>Registered</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_LongOpenSession" xml:space="preserve">
+    <value>Long open session (&gt;12h)</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_NonHideezUnlock" xml:space="preserve">
+    <value>Non-hideez unlock (24h)</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_RightText" xml:space="preserve">
+    <value>Opened Sessions</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_Title" xml:space="preserve">
+    <value>Employees</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LeftText" xml:space="preserve">
+    <value>Registered</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseCritical" xml:space="preserve">
+    <value>License critical</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseExpired" xml:space="preserve">
+    <value>License expired</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseWarning" xml:space="preserve">
+    <value>License warning</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LowBattery" xml:space="preserve">
+    <value>Low battery</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_RightText" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_Title" xml:space="preserve">
+    <value>Hardware Vaults</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_VaultLocked" xml:space="preserve">
+    <value>Vault locked</value>
+  </data>
+  <data name="Dashboard_ServerCard_LeftLink" xml:space="preserve">
+    <value>https://github.com/HideezGroup/HES</value>
+  </data>
+  <data name="Dashboard_ServerCard_LeftText" xml:space="preserve">
+    <value>HES version</value>
+  </data>
+  <data name="Dashboard_ServerCard_LongPendingTasks" xml:space="preserve">
+    <value>Long pending tasks</value>
+  </data>
+  <data name="Dashboard_ServerCard_RightText" xml:space="preserve">
+    <value>Hardware Vault Tasks</value>
+  </data>
+  <data name="Dashboard_ServerCard_Title" xml:space="preserve">
+    <value>Hideez Enterprise Server</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_LeftText" xml:space="preserve">
+    <value>Registered</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_RightText" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_Title" xml:space="preserve">
+    <value>Workstations</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_WaitingForApproval" xml:space="preserve">
+    <value>Waiting for approval</value>
+  </data>
   <data name="Display_Account" xml:space="preserve">
     <value>Account</value>
   </data>

@@ -61,6 +61,204 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Registered.
+        /// </summary>
+        public static string Dashboard_EmployeesCard_LeftText {
+            get {
+                return ResourceManager.GetString("Dashboard_EmployeesCard_LeftText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long open session (&gt;12h).
+        /// </summary>
+        public static string Dashboard_EmployeesCard_LongOpenSession {
+            get {
+                return ResourceManager.GetString("Dashboard_EmployeesCard_LongOpenSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Non-hideez unlock (24h).
+        /// </summary>
+        public static string Dashboard_EmployeesCard_NonHideezUnlock {
+            get {
+                return ResourceManager.GetString("Dashboard_EmployeesCard_NonHideezUnlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Opened Sessions.
+        /// </summary>
+        public static string Dashboard_EmployeesCard_RightText {
+            get {
+                return ResourceManager.GetString("Dashboard_EmployeesCard_RightText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Employees.
+        /// </summary>
+        public static string Dashboard_EmployeesCard_Title {
+            get {
+                return ResourceManager.GetString("Dashboard_EmployeesCard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Registered.
+        /// </summary>
+        public static string Dashboard_HardwareVaultsCard_LeftText {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultsCard_LeftText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License critical.
+        /// </summary>
+        public static string Dashboard_HardwareVaultsCard_LicenseCritical {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultsCard_LicenseCritical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License expired.
+        /// </summary>
+        public static string Dashboard_HardwareVaultsCard_LicenseExpired {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultsCard_LicenseExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License warning.
+        /// </summary>
+        public static string Dashboard_HardwareVaultsCard_LicenseWarning {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultsCard_LicenseWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Low battery.
+        /// </summary>
+        public static string Dashboard_HardwareVaultsCard_LowBattery {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultsCard_LowBattery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ready.
+        /// </summary>
+        public static string Dashboard_HardwareVaultsCard_RightText {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultsCard_RightText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vaults.
+        /// </summary>
+        public static string Dashboard_HardwareVaultsCard_Title {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultsCard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vault locked.
+        /// </summary>
+        public static string Dashboard_HardwareVaultsCard_VaultLocked {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultsCard_VaultLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на https://github.com/HideezGroup/HES.
+        /// </summary>
+        public static string Dashboard_ServerCard_LeftLink {
+            get {
+                return ResourceManager.GetString("Dashboard_ServerCard_LeftLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на HES version.
+        /// </summary>
+        public static string Dashboard_ServerCard_LeftText {
+            get {
+                return ResourceManager.GetString("Dashboard_ServerCard_LeftText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long pending tasks.
+        /// </summary>
+        public static string Dashboard_ServerCard_LongPendingTasks {
+            get {
+                return ResourceManager.GetString("Dashboard_ServerCard_LongPendingTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault Tasks.
+        /// </summary>
+        public static string Dashboard_ServerCard_RightText {
+            get {
+                return ResourceManager.GetString("Dashboard_ServerCard_RightText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hideez Enterprise Server.
+        /// </summary>
+        public static string Dashboard_ServerCard_Title {
+            get {
+                return ResourceManager.GetString("Dashboard_ServerCard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Registered.
+        /// </summary>
+        public static string Dashboard_WorkstationsCard_LeftText {
+            get {
+                return ResourceManager.GetString("Dashboard_WorkstationsCard_LeftText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Online.
+        /// </summary>
+        public static string Dashboard_WorkstationsCard_RightText {
+            get {
+                return ResourceManager.GetString("Dashboard_WorkstationsCard_RightText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstations.
+        /// </summary>
+        public static string Dashboard_WorkstationsCard_Title {
+            get {
+                return ResourceManager.GetString("Dashboard_WorkstationsCard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Waiting for approval.
+        /// </summary>
+        public static string Dashboard_WorkstationsCard_WaitingForApproval {
+            get {
+                return ResourceManager.GetString("Dashboard_WorkstationsCard_WaitingForApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Account.
         /// </summary>
         public static string Display_Account {

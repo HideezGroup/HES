@@ -11,16 +11,16 @@ else
             <thead>
                 <tr>
                     <th>
-                        Employee
+                        @Resource.Label_Employee
                     </th>
                     <th>
-                        Hardware Vault
+                        @Resource.Label_HardwareVault
                     </th>
                     <th>
-                        Operation
+                        @Resource.Label_Operation
                     </th>
-                    <th>
-                        Created
+                    <th style="width:1%;">
+                        @Resource.Label_Created
                     </th>
                 </tr>
             </thead>
@@ -51,22 +51,14 @@ else
                                     break;
                                 case TaskOperation.Profile:
                                     <span class="badge bg-secondary">Profile</span>
-                                    break;                            
+                                    break;
                                 default:
                                     @item.Operation
                                     break;
                             }
                         </td>
-                        <td>
-                            <div class="d-flex justify-content-between">
-                                <span>
-                                    @TimeZoneInfo.ConvertTimeFromUtc((DateTime)item.CreatedAt, TimeZoneInfo.Local)
-                                </span>
-                                @if (item.CreatedAt < DateTime.UtcNow.AddDays(-1))
-                                {
-                                    <img src="/svg/notify-warning.svg" class="ms-auto" title="Long Pending" />
-                                }
-                            </div>
+                        <td class="@(item.CreatedAt < DateTime.UtcNow.AddDays(-3) ? "bg-warning": string.Empty)" title="@(item.CreatedAt < DateTime.UtcNow.AddDays(-3) ? Resource.Title_LongPending : string.Empty)">
+                            @TimeZoneInfo.ConvertTimeFromUtc((DateTime)item.CreatedAt, TimeZoneInfo.Local)
                         </td>
                     </tr>
                 }
@@ -74,6 +66,6 @@ else
         </table>
     </div>
     <div class="text-end mt-3">
-        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Close</button>
+        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Close</button>
     </div>
 }

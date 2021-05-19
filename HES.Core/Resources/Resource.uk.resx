@@ -159,4 +159,70 @@
   <data name="Display_UnlockedBy" xml:space="preserve">
     <value>Розблоковано</value>
   </data>
+  <data name="Dashboard_EmployeesCard_LeftText" xml:space="preserve">
+    <value>Зареєстровано</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_LongOpenSession" xml:space="preserve">
+    <value>Тривалий відкритий сеанс (&gt; 12 годин)</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_NonHideezUnlock" xml:space="preserve">
+    <value>Розблокування без Hideez (24 години)</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_RightText" xml:space="preserve">
+    <value>Відкриті сесії</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_Title" xml:space="preserve">
+    <value>Співробітники</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LeftText" xml:space="preserve">
+    <value>Зареєстровано</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseCritical" xml:space="preserve">
+    <value>Ліцензія критична</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseExpired" xml:space="preserve">
+    <value>Термін дії ліцензії закінчився</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseWarning" xml:space="preserve">
+    <value>Попередження про ліцензію</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LowBattery" xml:space="preserve">
+    <value>Низький заряд батареї</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_RightText" xml:space="preserve">
+    <value>Готові</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_Title" xml:space="preserve">
+    <value>Апаратні сховища</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_VaultLocked" xml:space="preserve">
+    <value>Сховище заблоковано</value>
+  </data>
+  <data name="Dashboard_ServerCard_LeftLink" xml:space="preserve">
+    <value>https://github.com/HideezGroup/HES</value>
+  </data>
+  <data name="Dashboard_ServerCard_LeftText" xml:space="preserve">
+    <value>Версія HES</value>
+  </data>
+  <data name="Dashboard_ServerCard_LongPendingTasks" xml:space="preserve">
+    <value>Завдання, що довго розглядаються</value>
+  </data>
+  <data name="Dashboard_ServerCard_RightText" xml:space="preserve">
+    <value>Завдання апаратних сховищ</value>
+  </data>
+  <data name="Dashboard_ServerCard_Title" xml:space="preserve">
+    <value>Сервер Hideez Enterprise</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_LeftText" xml:space="preserve">
+    <value>Зареєстровано</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_RightText" xml:space="preserve">
+    <value>В онлайні</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_Title" xml:space="preserve">
+    <value>Робочі станції</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_WaitingForApproval" xml:space="preserve">
+    <value>В очікуванні схвалення</value>
+  </data>
 </root>

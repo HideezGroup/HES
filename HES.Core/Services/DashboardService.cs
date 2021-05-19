@@ -53,13 +53,13 @@ namespace HES.Core.Services
         public async Task<List<DashboardNotify>> GetServerNotifyAsync()
         {
             var list = new List<DashboardNotify>();
-            var longPendingTasksCount = await _hardwareVaultTaskService.TaskQuery().Where(d => d.CreatedAt <= DateTime.UtcNow.AddDays(-1)).CountAsync();
+            var longPendingTasksCount = await _hardwareVaultTaskService.TaskQuery().Where(d => d.CreatedAt <= DateTime.UtcNow.AddDays(-3)).CountAsync();
 
             if (longPendingTasksCount > 0)
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "Long pending tasks",
+                    Message = Resources.Resource.Dashboard_ServerCard_LongPendingTasks,
                     Count = longPendingTasksCount,
                     Page = "long-pending-tasks"
                 });
@@ -72,12 +72,12 @@ namespace HES.Core.Services
         {
             return new DashboardCard()
             {
-                CardTitle = "Hideez Enterprise Server",
+                CardTitle = Resources.Resource.Dashboard_ServerCard_Title,
                 CardLogo = "/svg/logo-server.svg",
-                LeftText = "HES version",
+                LeftText = Resources.Resource.Dashboard_ServerCard_LeftText,
                 LeftValue = $"{GetServerVersion()}",
-                LeftLink = "https://github.com/HideezGroup/HES",
-                RightText = "Hardware Vault Tasks",
+                LeftLink = Resources.Resource.Dashboard_ServerCard_LeftLink,
+                RightText = Resources.Resource.Dashboard_ServerCard_RightText,
                 RightValue = $"{await GetHardwareVaultTasksCount()}",
                 RightLink = "#",
                 Notifications = await GetServerNotifyAsync()
@@ -114,7 +114,7 @@ namespace HES.Core.Services
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "Non-hideez unlock (24h)",
+                    Message = Resources.Resource.Dashboard_EmployeesCard_NonHideezUnlock,
                     Count = nonHideezUnlock,
                     Page = $"{Routes.WorkstationSessions}/NonHideezUnlock"
                 });
@@ -129,7 +129,7 @@ namespace HES.Core.Services
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "Long open session (>12h)",
+                    Message = Resources.Resource.Dashboard_EmployeesCard_LongOpenSession,
                     Count = longOpenSession,
                     Page = $"{Routes.WorkstationSessions}/LongOpenSession"
                 });
@@ -142,12 +142,12 @@ namespace HES.Core.Services
         {
             return new DashboardCard()
             {
-                CardTitle = "Employees",
+                CardTitle = Resources.Resource.Dashboard_EmployeesCard_Title,
                 CardLogo = "/svg/logo-employees.svg",
-                LeftText = "Registered",
+                LeftText = Resources.Resource.Dashboard_EmployeesCard_LeftText,
                 LeftValue = $"{await GetEmployeesCountAsync()}",
                 LeftLink = "/Employees",
-                RightText = "Opened Sessions",
+                RightText = Resources.Resource.Dashboard_EmployeesCard_RightText,
                 RightValue = $"{await GetEmployeesOpenedSessionsCountAsync()}",
                 RightLink = $"{Routes.WorkstationSessions}/OpenedSessions",
                 Notifications = await GetEmployeesNotifyAsync()
@@ -181,7 +181,7 @@ namespace HES.Core.Services
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "Low battery",
+                    Message = Resources.Resource.Dashboard_HardwareVaultsCard_LowBattery,
                     Count = lowBattery,
                     Page = $"{Routes.HardwareVaults}/LowBattery"
                 });
@@ -196,7 +196,7 @@ namespace HES.Core.Services
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "Vault locked",
+                    Message = Resources.Resource.Dashboard_HardwareVaultsCard_VaultLocked,
                     Count = vaultLocked,
                     Page = $"{Routes.HardwareVaults}/VaultLocked"
                 });
@@ -211,7 +211,7 @@ namespace HES.Core.Services
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "License warning",
+                    Message = Resources.Resource.Dashboard_HardwareVaultsCard_LicenseWarning,
                     Count = licenseWarning,
                     Page = $"{Routes.HardwareVaults}/LicenseWarning"
                 });
@@ -226,7 +226,7 @@ namespace HES.Core.Services
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "License critical",
+                    Message = Resources.Resource.Dashboard_HardwareVaultsCard_LicenseCritical,
                     Count = licenseCritical,
                     Page = $"{Routes.HardwareVaults}/LicenseCritical"
                 });
@@ -241,7 +241,7 @@ namespace HES.Core.Services
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "License expired",
+                    Message = Resources.Resource.Dashboard_HardwareVaultsCard_LicenseExpired,
                     Count = licenseExpired,
                     Page = $"{Routes.HardwareVaults}/LicenseExpired"
                 });
@@ -254,12 +254,12 @@ namespace HES.Core.Services
         {
             return new DashboardCard()
             {
-                CardTitle = "Hardware Vaults",
+                CardTitle = Resources.Resource.Dashboard_HardwareVaultsCard_Title,
                 CardLogo = "/svg/logo-hardware-vaults.svg",
-                LeftText = "Registered",
+                LeftText = Resources.Resource.Dashboard_HardwareVaultsCard_LeftText,
                 LeftValue = $"{await GetHardwareVaultsCountAsync()}",
                 LeftLink = Routes.HardwareVaults,
-                RightText = "Ready",
+                RightText = Resources.Resource.Dashboard_HardwareVaultsCard_RightText,
                 RightValue = $"{await GetReadyHardwareVaultsCountAsync()}",
                 RightLink = $"{Routes.HardwareVaults}/VaultReady",
                 Notifications = await GetHardwareVaultsNotifyAsync()
@@ -290,7 +290,7 @@ namespace HES.Core.Services
             {
                 list.Add(new DashboardNotify()
                 {
-                    Message = "Waiting for approval",
+                    Message = Resources.Resource.Dashboard_WorkstationsCard_WaitingForApproval,
                     Count = notApproveCount,
                     Page = $"{Routes.Workstations}/NotApproved"
                 });
@@ -303,12 +303,12 @@ namespace HES.Core.Services
         {
             return new DashboardCard()
             {
-                CardTitle = "Workstations",
+                CardTitle = Resources.Resource.Dashboard_WorkstationsCard_Title,
                 CardLogo = "/svg/logo-workstations.svg",
-                LeftText = "Registered",
+                LeftText = Resources.Resource.Dashboard_WorkstationsCard_LeftText,
                 LeftValue = $"{await GetWorkstationsCountAsync()}",
                 LeftLink = Routes.Workstations,
-                RightText = "Online",
+                RightText = Resources.Resource.Dashboard_WorkstationsCard_RightText,
                 RightValue = $"{await GetWorkstationsOnlineCountAsync()}",
                 RightLink = $"{Routes.Workstations}/Online",
                 Notifications = await GetWorkstationsNotifyAsync()

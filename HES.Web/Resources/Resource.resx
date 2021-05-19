@@ -150,6 +150,9 @@
   <data name="Btn_Clear" xml:space="preserve">
     <value>Clear</value>
   </data>
+  <data name="Btn_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="Btn_Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="Btn_TurnOn" xml:space="preserve">
     <value>Turn On</value>
+  </data>
+  <data name="Dashboard_HardwareVaultTasks_Title" xml:space="preserve">
+    <value>Hardware Vault Tasks</value>
   </data>
   <data name="Label_Account" xml:space="preserve">
     <value>Account</value>
@@ -212,6 +218,9 @@
   </data>
   <data name="Label_Company" xml:space="preserve">
     <value>Company</value>
+  </data>
+  <data name="Label_Created" xml:space="preserve">
+    <value>Created</value>
   </data>
   <data name="Label_Dashboard" xml:space="preserve">
     <value>Dashboard</value>
@@ -266,6 +275,9 @@
   </data>
   <data name="Label_Note" xml:space="preserve">
     <value>Note</value>
+  </data>
+  <data name="Label_Operation" xml:space="preserve">
+    <value>Operation</value>
   </data>
   <data name="Label_OrgStructure" xml:space="preserve">
     <value>OrgStructure</value>
@@ -344,6 +356,9 @@
   </data>
   <data name="Title_LockAll" xml:space="preserve">
     <value>Lock all workstations</value>
+  </data>
+  <data name="Title_LongPending" xml:space="preserve">
+    <value>Long Pending</value>
   </data>
   <data name="Title_RefreshTable" xml:space="preserve">
     <value>Refresh table</value>

@@ -357,4 +357,19 @@
   <data name="Summary_PageTitle" xml:space="preserve">
     <value>Звіт</value>
   </data>
+  <data name="Btn_Close" xml:space="preserve">
+    <value>Закрити</value>
+  </data>
+  <data name="Label_Created" xml:space="preserve">
+    <value>Створено</value>
+  </data>
+  <data name="Label_Operation" xml:space="preserve">
+    <value>Операція</value>
+  </data>
+  <data name="Title_LongPending" xml:space="preserve">
+    <value>Довго в очікуванні</value>
+  </data>
+  <data name="Dashboard_HardwareVaultTasks_Title" xml:space="preserve">
+    <value>Завдання апаратних сховищ</value>
+  </data>
 </root>

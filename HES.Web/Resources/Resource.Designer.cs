@@ -160,6 +160,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Close.
+        /// </summary>
+        internal static string Btn_Close {
+            get {
+                return ResourceManager.GetString("Btn_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Confirm.
         /// </summary>
         internal static string Btn_Confirm {
@@ -210,6 +219,15 @@ namespace HES.Web.Resources {
         internal static string Btn_TurnOn {
             get {
                 return ResourceManager.GetString("Btn_TurnOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault Tasks.
+        /// </summary>
+        internal static string Dashboard_HardwareVaultTasks_Title {
+            get {
+                return ResourceManager.GetString("Dashboard_HardwareVaultTasks_Title", resourceCulture);
             }
         }
         
@@ -345,6 +363,15 @@ namespace HES.Web.Resources {
         internal static string Label_Company {
             get {
                 return ResourceManager.GetString("Label_Company", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Created.
+        /// </summary>
+        internal static string Label_Created {
+            get {
+                return ResourceManager.GetString("Label_Created", resourceCulture);
             }
         }
         
@@ -507,6 +534,15 @@ namespace HES.Web.Resources {
         internal static string Label_Note {
             get {
                 return ResourceManager.GetString("Label_Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Operation.
+        /// </summary>
+        internal static string Label_Operation {
+            get {
+                return ResourceManager.GetString("Label_Operation", resourceCulture);
             }
         }
         
@@ -741,6 +777,15 @@ namespace HES.Web.Resources {
         internal static string Title_LockAll {
             get {
                 return ResourceManager.GetString("Title_LockAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long Pending.
+        /// </summary>
+        internal static string Title_LongPending {
+            get {
+                return ResourceManager.GetString("Title_LongPending", resourceCulture);
             }
         }
         
