@@ -31,14 +31,14 @@
     {
         @if (CredentialsNotSet)
         {
-            <Alert Message="To sync users from the active directory, set domain settings on the parameters page." />
+            <Alert Message="@Resource.Employees_SyncEmployeesWithAD_Alert" />
             <div class="text-center  mt-1">
-                <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Close</button>
+                <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Close</button>
             </div>
         }
         else
         {
-            <Button Text="Sync Now" class="btn btn-primary btn-min-w" OnClick="SyncAsync" />
+            <Button Text="@Resource.Btn_SyncNow" OnClick="SyncAsync" class="btn btn-primary btn-min-w" />
         }
     }
 </div>

@@ -8,23 +8,23 @@ else
 {
     @if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="employee" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@Employee.FullName" CloseAction="ModalDialogCancel" />
     }
     else
     {
         @if (EmployeeHasVault)
         {
-            <h5 class="text-gray mb-3 ">The employee @Employee.FullName is tied device, first untie the device to remove the employee.</h5>
+            <h5 class="text-gray mb-3 ">@string.Format(Resource.Employees_DeleteEmployee_UntieDevice, Employee.FullName)</h5>
             <div class="text-end mt-2">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
             </div>
         }
         else
         {
-            <h5 class="text-gray mb-4 text-break">You want to delete employee @Employee.FullName? Also all events and sessions will be deleted.</h5>
+            <h5 class="text-gray mb-4 text-break">@string.Format(Resource.Employees_DeleteEmployee_Body, Employee.FullName)</h5>
             <div class="form-footer">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-                <Button Text="Delete" OnClick="DeleteEmployeeAsync" class="btn btn-danger" />
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                <Button Text="@Resource.Btn_Delete" OnClick="DeleteEmployeeAsync" class="btn btn-danger" />
             </div>
         }
     }

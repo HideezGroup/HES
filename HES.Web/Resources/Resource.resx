@@ -144,6 +144,9 @@
   <data name="Alarm_PageHeader" xml:space="preserve">
     <value>Alarm Button</value>
   </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="Btn_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -156,14 +159,56 @@
   <data name="Btn_Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="Btn_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Btn_Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Btn_CreateEmployee" xml:space="preserve">
+    <value>Create employee</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Btn_Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Btn_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="Btn_Filter" xml:space="preserve">
     <value>Filter</value>
   </data>
   <data name="Btn_Filters" xml:space="preserve">
     <value>Filters</value>
   </data>
+  <data name="Btn_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="Btn_Refresh" xml:space="preserve">
     <value>Refresh</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Btn_SendEmail" xml:space="preserve">
+    <value>Send email</value>
+  </data>
+  <data name="Btn_Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="Btn_Skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="Btn_SyncNow" xml:space="preserve">
+    <value>Sync Now</value>
+  </data>
+  <data name="Btn_SyncWithAD" xml:space="preserve">
+    <value>Sync with AD</value>
   </data>
   <data name="Btn_TurnOff" xml:space="preserve">
     <value>Turn Off</value>
@@ -174,14 +219,65 @@
   <data name="Dashboard_HardwareVaultTasks_Title" xml:space="preserve">
     <value>Hardware Vault Tasks</value>
   </data>
+  <data name="Employees_CreateEmployee_EmployeeAlreadyExists" xml:space="preserve">
+    <value>{0} {1} already exists.</value>
+  </data>
+  <data name="Employees_CreateEmployee_SelectVault" xml:space="preserve">
+    <value>Please, select a vault.</value>
+  </data>
+  <data name="Employees_CreateEmployee_SendEmail" xml:space="preserve">
+    <value>You can send the code to the email</value>
+  </data>
+  <data name="Employees_CreateEmployee_Title" xml:space="preserve">
+    <value>Create Employee</value>
+  </data>
+  <data name="Employees_CreateEmployee_Toast" xml:space="preserve">
+    <value>Employee created.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Body" xml:space="preserve">
+    <value>You want to delete employee {0}? Also all events and sessions will be deleted.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Title" xml:space="preserve">
+    <value>Delete Employee</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Toast" xml:space="preserve">
+    <value>Employee removed.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_UntieDevice" xml:space="preserve">
+    <value>The employee {0} is tied device, first untie the device to remove the employee.</value>
+  </data>
+  <data name="Employees_EditEmployee_Title" xml:space="preserve">
+    <value>Edit Employee</value>
+  </data>
+  <data name="Employees_EditEmployee_Toast" xml:space="preserve">
+    <value>Employee updated.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Alert" xml:space="preserve">
+    <value>To sync users from the active directory, set domain settings on the parameters page.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Title" xml:space="preserve">
+    <value>Sync with Active Directory</value>
+  </data>
   <data name="Label_Account" xml:space="preserve">
     <value>Account</value>
+  </data>
+  <data name="Label_AccountName" xml:space="preserve">
+    <value>Account Name</value>
   </data>
   <data name="Label_AccountType" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="Label_Activation" xml:space="preserve">
+    <value>Activation</value>
+  </data>
+  <data name="Label_ActivationCode" xml:space="preserve">
+    <value>Activation code</value>
+  </data>
   <data name="Label_Active" xml:space="preserve">
     <value>Active</value>
+  </data>
+  <data name="Label_AD" xml:space="preserve">
+    <value>AD</value>
   </data>
   <data name="Label_Administrators" xml:space="preserve">
     <value>Administrators</value>
@@ -237,6 +333,9 @@
   <data name="Label_DisabledBy" xml:space="preserve">
     <value>Disabled by</value>
   </data>
+  <data name="Label_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="Label_Employee" xml:space="preserve">
     <value>Employee</value>
   </data>
@@ -258,6 +357,9 @@
   <data name="Label_Events" xml:space="preserve">
     <value>Events</value>
   </data>
+  <data name="Label_FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
   <data name="Label_Groups" xml:space="preserve">
     <value>Groups</value>
   </data>
@@ -267,8 +369,17 @@
   <data name="Label_HardwareVaults" xml:space="preserve">
     <value>Hardware Vaults</value>
   </data>
+  <data name="Label_LastSeen" xml:space="preserve">
+    <value>Last Seen</value>
+  </data>
   <data name="Label_LicenseOrders" xml:space="preserve">
     <value>License Orders</value>
+  </data>
+  <data name="Label_LoginType" xml:space="preserve">
+    <value>Login Type</value>
+  </data>
+  <data name="Label_Name" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="Label_NeverUsed" xml:space="preserve">
     <value>Never used</value>
@@ -282,11 +393,29 @@
   <data name="Label_OrgStructure" xml:space="preserve">
     <value>OrgStructure</value>
   </data>
+  <data name="Label_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
   <data name="Label_Parameters" xml:space="preserve">
     <value>Parameters</value>
   </data>
+  <data name="Label_PersonalAccount" xml:space="preserve">
+    <value>Personal account</value>
+  </data>
+  <data name="Label_PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="Label_Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Label_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
   <data name="Label_Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Label_SerialNumber" xml:space="preserve">
+    <value>Serial Number</value>
   </data>
   <data name="Label_Session" xml:space="preserve">
     <value>Session</value>
@@ -302,6 +431,9 @@
   </data>
   <data name="Label_Severity" xml:space="preserve">
     <value>Severity</value>
+  </data>
+  <data name="Label_SharedAccount" xml:space="preserve">
+    <value>Shared account</value>
   </data>
   <data name="Label_SharedAccounts" xml:space="preserve">
     <value>Shared Accounts</value>
@@ -330,8 +462,14 @@
   <data name="Label_UnlockedBy" xml:space="preserve">
     <value>Unlocked By</value>
   </data>
+  <data name="Label_UserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
   <data name="Label_VaultAccessProfiles" xml:space="preserve">
     <value>Vault Access Profiles</value>
+  </data>
+  <data name="Label_VaultsCount" xml:space="preserve">
+    <value>Vaults Count</value>
   </data>
   <data name="Label_WorkingDaysCount" xml:space="preserve">
     <value>Working Days Count</value>
@@ -351,8 +489,20 @@
   <data name="Summary_PageTitle" xml:space="preserve">
     <value>Summary</value>
   </data>
+  <data name="Title_DeleteEmployee" xml:space="preserve">
+    <value>Delete employee</value>
+  </data>
+  <data name="Title_EditEmployee" xml:space="preserve">
+    <value>Edit employee</value>
+  </data>
+  <data name="Title_EmployeeDetails" xml:space="preserve">
+    <value>Employee details</value>
+  </data>
   <data name="Title_Filter" xml:space="preserve">
     <value>Filter</value>
+  </data>
+  <data name="Title_ImportedFromActiveDirectory" xml:space="preserve">
+    <value>Imported from Active Directory</value>
   </data>
   <data name="Title_LockAll" xml:space="preserve">
     <value>Lock all workstations</value>

@@ -277,6 +277,24 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Applications (separate by semicolon).
+        /// </summary>
+        public static string Display_Apps {
+            get {
+                return ResourceManager.GetString("Display_Apps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Battery.
+        /// </summary>
+        public static string Display_Battery {
+            get {
+                return ResourceManager.GetString("Display_Battery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Company.
         /// </summary>
         public static string Display_Company {
@@ -286,11 +304,38 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm Password.
+        /// </summary>
+        public static string Display_ConfirmPassword {
+            get {
+                return ResourceManager.GetString("Display_ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Department.
         /// </summary>
         public static string Display_Department {
             get {
                 return ResourceManager.GetString("Display_Department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Domain.
+        /// </summary>
+        public static string Display_Domain {
+            get {
+                return ResourceManager.GetString("Display_Domain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Email.
+        /// </summary>
+        public static string Display_Email {
+            get {
+                return ResourceManager.GetString("Display_Email", resourceCulture);
             }
         }
         
@@ -322,6 +367,24 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Firmware.
+        /// </summary>
+        public static string Display_Firmware {
+            get {
+                return ResourceManager.GetString("Display_Firmware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на First Name.
+        /// </summary>
+        public static string Display_FirstName {
+            get {
+                return ResourceManager.GetString("Display_FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Hardware Vault.
         /// </summary>
         public static string Display_HardwareVault {
@@ -331,11 +394,146 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Last Name.
+        /// </summary>
+        public static string Display_LastName {
+            get {
+                return ResourceManager.GetString("Display_LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Last Seen.
+        /// </summary>
+        public static string Display_LastSeen {
+            get {
+                return ResourceManager.GetString("Display_LastSeen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Last Synced.
+        /// </summary>
+        public static string Display_LastSynced {
+            get {
+                return ResourceManager.GetString("Display_LastSynced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License End Date.
+        /// </summary>
+        public static string Display_LicenseEndDate {
+            get {
+                return ResourceManager.GetString("Display_LicenseEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License Status.
+        /// </summary>
+        public static string Display_LicenseStatus {
+            get {
+                return ResourceManager.GetString("Display_LicenseStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Login.
+        /// </summary>
+        public static string Display_Login {
+            get {
+                return ResourceManager.GetString("Display_Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Login Type.
+        /// </summary>
+        public static string Display_LoginType {
+            get {
+                return ResourceManager.GetString("Display_LoginType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на MAC.
+        /// </summary>
+        public static string Display_MAC {
+            get {
+                return ResourceManager.GetString("Display_MAC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Model.
+        /// </summary>
+        public static string Display_Model {
+            get {
+                return ResourceManager.GetString("Display_Model", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name.
+        /// </summary>
+        public static string Display_Name {
+            get {
+                return ResourceManager.GetString("Display_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Note.
         /// </summary>
         public static string Display_Note {
             get {
                 return ResourceManager.GetString("Display_Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на OTP Secret.
+        /// </summary>
+        public static string Display_OtpSecret {
+            get {
+                return ResourceManager.GetString("Display_OtpSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password.
+        /// </summary>
+        public static string Display_Password {
+            get {
+                return ResourceManager.GetString("Display_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Phone Number.
+        /// </summary>
+        public static string Display_PhoneNumber {
+            get {
+                return ResourceManager.GetString("Display_PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Position.
+        /// </summary>
+        public static string Display_Position {
+            get {
+                return ResourceManager.GetString("Display_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на RFID.
+        /// </summary>
+        public static string Display_RFID {
+            get {
+                return ResourceManager.GetString("Display_RFID", resourceCulture);
             }
         }
         
@@ -358,11 +556,47 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Status.
+        /// </summary>
+        public static string Display_Status {
+            get {
+                return ResourceManager.GetString("Display_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Status Description.
+        /// </summary>
+        public static string Display_StatusDescription {
+            get {
+                return ResourceManager.GetString("Display_StatusDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Status Reason.
+        /// </summary>
+        public static string Display_StatusReason {
+            get {
+                return ResourceManager.GetString("Display_StatusReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Unlocked By.
         /// </summary>
         public static string Display_UnlockedBy {
             get {
                 return ResourceManager.GetString("Display_UnlockedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на URLs (separate by semicolon).
+        /// </summary>
+        public static string Display_Urls {
+            get {
+                return ResourceManager.GetString("Display_Urls", resourceCulture);
             }
         }
         
@@ -381,6 +615,60 @@ namespace HES.Core.Resources {
         public static string Display_Workstation {
             get {
                 return ResourceManager.GetString("Display_Workstation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The new password and confirmation new password do not match..
+        /// </summary>
+        public static string Validation_CompareNewPassword {
+            get {
+                return ResourceManager.GetString("Validation_CompareNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The password and confirmation password do not match..
+        /// </summary>
+        public static string Validation_ComparePassword {
+            get {
+                return ResourceManager.GetString("Validation_ComparePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The {0} field is not a valid e-mail address..
+        /// </summary>
+        public static string Validation_EmailAddress {
+            get {
+                return ResourceManager.GetString("Validation_EmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The {0} field is required..
+        /// </summary>
+        public static string Validation_Required {
+            get {
+                return ResourceManager.GetString("Validation_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The {0} must be at least {2} and at max {1} characters long..
+        /// </summary>
+        public static string Validation_StringLength {
+            get {
+                return ResourceManager.GetString("Validation_StringLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The {0} field is not a valid fully-qualified http, https, or ftp URL..
+        /// </summary>
+        public static string Validation_Url {
+            get {
+                return ResourceManager.GetString("Validation_Url", resourceCulture);
             }
         }
     }

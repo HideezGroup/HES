@@ -6,42 +6,42 @@ namespace HES.Core.Models.Accounts
 {
     public class AccountAddModel
     {
-        [Required]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string EmployeeId { get; set; }
 
-        [Required]
-        [Display(Name = "Name")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Name), ResourceType = typeof(Resources.Resource))]
         public string Name { get; set; }
 
-        [Display(Name = "URLs (separate by semicolon)")]
+        [Display(Name = nameof(Resources.Resource.Display_Urls), ResourceType = typeof(Resources.Resource))]
         public string Urls { get; set; }
 
-        [Display(Name = "Applications (separate by semicolon)")]
+        [Display(Name = nameof(Resources.Resource.Display_Apps), ResourceType = typeof(Resources.Resource))]
         public string Apps { get; set; }
 
-        [Display(Name = "Login Type")]
+        [Display(Name = nameof(Resources.Resource.Display_LoginType), ResourceType = typeof(Resources.Resource))]
         public LoginType LoginType { get; set; }
 
-        [Display(Name = "Login")]
-        [ValidateLogin(nameof(LoginType))]
+        [ValidateLogin(nameof(LoginType), ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Login), ResourceType = typeof(Resources.Resource))]
         public string Login { get; set; }
 
-        [Display(Name = "Domain")]
-        [ValidateDomain(nameof(LoginType), ErrorMessage = "The Domain field is required.")]
+        [ValidateDomain(nameof(LoginType), ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Domain), ResourceType = typeof(Resources.Resource))]
         public string Domain { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Password), ResourceType = typeof(Resources.Resource))]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_ConfirmPassword), ResourceType = typeof(Resources.Resource))]
+        [CompareProperty("Password", ErrorMessageResourceName = nameof(Resources.Resource.Validation_ComparePassword), ErrorMessageResourceType = typeof(Resources.Resource))]
         [DataType(DataType.Password)]
-        [CompareProperty("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "OTP Secret")]
+        [Display(Name = nameof(Resources.Resource.Display_OtpSecret), ResourceType = typeof(Resources.Resource))]
         public string OtpSecret { get; set; }
 
         public bool UpdateInActiveDirectory { get; set; }

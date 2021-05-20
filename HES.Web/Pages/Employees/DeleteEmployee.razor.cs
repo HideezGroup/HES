@@ -52,7 +52,7 @@ namespace HES.Web.Pages.Employees
             try
             {
                 await EmployeeService.DeleteEmployeeAsync(Employee.Id);
-                await ToastService.ShowToastAsync("Employee removed.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Employees_DeleteEmployee_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

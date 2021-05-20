@@ -13,29 +13,35 @@ namespace HES.Core.Entities
         [Key]
         public string Id { get; set; }
 
+        [Display(Name = nameof(Resources.Resource.Display_MAC), ResourceType = typeof(Resources.Resource))]
         [Required]
         public string MAC { get; set; }
 
+        [Display(Name = nameof(Resources.Resource.Display_Model), ResourceType = typeof(Resources.Resource))]
         [Required]
         public string Model { get; set; }
 
+        [Display(Name = nameof(Resources.Resource.Display_RFID), ResourceType = typeof(Resources.Resource))]
         [Required]
         public string RFID { get; set; }
 
+        [Display(Name = nameof(Resources.Resource.Display_Battery), ResourceType = typeof(Resources.Resource))]
         public int Battery { get; set; }
 
+        [Display(Name = nameof(Resources.Resource.Display_Firmware), ResourceType = typeof(Resources.Resource))]
         [Required]
         public string Firmware { get; set; }
 
+        [Display(Name = nameof(Resources.Resource.Display_Status), ResourceType = typeof(Resources.Resource))]
         public VaultStatus Status { get; set; }
 
-        [Display(Name = "Status Reason")]
+        [Display(Name = nameof(Resources.Resource.Display_StatusReason), ResourceType = typeof(Resources.Resource))]
         public VaultStatusReason StatusReason { get; set; }
 
-        [Display(Name = "Status Description")]
+        [Display(Name = nameof(Resources.Resource.Display_StatusDescription), ResourceType = typeof(Resources.Resource))]
         public string StatusDescription { get; set; }
 
-        [Display(Name = "Last Synced")]
+        [Display(Name = nameof(Resources.Resource.Display_LastSynced), ResourceType = typeof(Resources.Resource))]
         public DateTime? LastSynced { get; set; }
 
         public bool NeedSync { get; set; }
@@ -58,10 +64,10 @@ namespace HES.Core.Entities
         public List<HardwareVaultTask> HardwareVaultTasks { get; set; }
 
 
-        [Display(Name = "License Status")]
+        [Display(Name = nameof(Resources.Resource.Display_LicenseStatus), ResourceType = typeof(Resources.Resource))]
         public VaultLicenseStatus LicenseStatus { get; set; }
 
-        [Display(Name = "License End Date")]
+        [Display(Name = nameof(Resources.Resource.Display_LicenseEndDate), ResourceType = typeof(Resources.Resource))]
         public DateTime? LicenseEndDate { get; set; }
 
         [ForeignKey("EmployeeId")]

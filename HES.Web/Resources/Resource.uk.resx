@@ -372,4 +372,154 @@
   <data name="Dashboard_HardwareVaultTasks_Title" xml:space="preserve">
     <value>Завдання апаратних сховищ</value>
   </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Btn_Copy" xml:space="preserve">
+    <value>Копіювати</value>
+  </data>
+  <data name="Btn_Create" xml:space="preserve">
+    <value>Створити</value>
+  </data>
+  <data name="Btn_CreateEmployee" xml:space="preserve">
+    <value>Створити співробітника</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>Видалити</value>
+  </data>
+  <data name="Btn_Details" xml:space="preserve">
+    <value>Деталі</value>
+  </data>
+  <data name="Btn_Done" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>Редагувати</value>
+  </data>
+  <data name="Btn_Next" xml:space="preserve">
+    <value>Далі</value>
+  </data>
+  <data name="Btn_SendEmail" xml:space="preserve">
+    <value>Відправити лист</value>
+  </data>
+  <data name="Btn_Show" xml:space="preserve">
+    <value>Показати</value>
+  </data>
+  <data name="Btn_Skip" xml:space="preserve">
+    <value>Пропустити</value>
+  </data>
+  <data name="Btn_SyncNow" xml:space="preserve">
+    <value>Синхронізувати зараз</value>
+  </data>
+  <data name="Btn_SyncWithAD" xml:space="preserve">
+    <value>Синхронізувати з AD</value>
+  </data>
+  <data name="Employees_CreateEmployee_EmployeeAlreadyExists" xml:space="preserve">
+    <value>{0} {1} вже існує.</value>
+  </data>
+  <data name="Employees_CreateEmployee_SelectVault" xml:space="preserve">
+    <value>Виберіть сховище.</value>
+  </data>
+  <data name="Employees_CreateEmployee_SendEmail" xml:space="preserve">
+    <value>Ви можете надіслати код на електронне повідомлення</value>
+  </data>
+  <data name="Employees_CreateEmployee_Title" xml:space="preserve">
+    <value>Створити співробітника</value>
+  </data>
+  <data name="Employees_CreateEmployee_Toast" xml:space="preserve">
+    <value>Співробітник створений.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Title" xml:space="preserve">
+    <value>Видалити співробітника</value>
+  </data>
+  <data name="Employees_EditEmployee_Title" xml:space="preserve">
+    <value>Редагувати співробітника</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Alert" xml:space="preserve">
+    <value>Щоб синхронізувати користувачів з Active Directory, встановіть параметри домену на сторінці параметрів.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Title" xml:space="preserve">
+    <value>Синхронізація з Active Directory</value>
+  </data>
+  <data name="Label_AccountName" xml:space="preserve">
+    <value>Назва аккаунту</value>
+  </data>
+  <data name="Label_Activation" xml:space="preserve">
+    <value>Активація</value>
+  </data>
+  <data name="Label_ActivationCode" xml:space="preserve">
+    <value>Код активації</value>
+  </data>
+  <data name="Label_AD" xml:space="preserve">
+    <value>AD</value>
+  </data>
+  <data name="Label_Email" xml:space="preserve">
+    <value>Електронна пошта</value>
+  </data>
+  <data name="Label_FullName" xml:space="preserve">
+    <value>Повне ім'я</value>
+  </data>
+  <data name="Label_LastSeen" xml:space="preserve">
+    <value>Востаннє бачили</value>
+  </data>
+  <data name="Label_LoginType" xml:space="preserve">
+    <value>Тип логіну</value>
+  </data>
+  <data name="Label_Name" xml:space="preserve">
+    <value>Ім'я</value>
+  </data>
+  <data name="Label_Overview" xml:space="preserve">
+    <value>Огляд</value>
+  </data>
+  <data name="Label_PersonalAccount" xml:space="preserve">
+    <value>Особистий аккаунт</value>
+  </data>
+  <data name="Label_PhoneNumber" xml:space="preserve">
+    <value>Номер телефону</value>
+  </data>
+  <data name="Label_Position" xml:space="preserve">
+    <value>Посада</value>
+  </data>
+  <data name="Label_Profile" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="Label_SerialNumber" xml:space="preserve">
+    <value>Серійний номер</value>
+  </data>
+  <data name="Label_SharedAccount" xml:space="preserve">
+    <value>Спільний аккаут</value>
+  </data>
+  <data name="Label_UserName" xml:space="preserve">
+    <value>Ім'я користувача</value>
+  </data>
+  <data name="Label_VaultsCount" xml:space="preserve">
+    <value>Кількість сховищь</value>
+  </data>
+  <data name="Title_DeleteEmployee" xml:space="preserve">
+    <value>Видалити співробітника</value>
+  </data>
+  <data name="Title_EditEmployee" xml:space="preserve">
+    <value>Редагувати співробітника</value>
+  </data>
+  <data name="Title_EmployeeDetails" xml:space="preserve">
+    <value>Інформація про співробітника</value>
+  </data>
+  <data name="Title_ImportedFromActiveDirectory" xml:space="preserve">
+    <value>Імпортовано з Active Directory</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>Зберегти</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Body" xml:space="preserve">
+    <value>Ви хочете видалити співробітника {0}? Також усі події та сеанси будуть видалені.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Toast" xml:space="preserve">
+    <value>Співробітника видалено.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_UntieDevice" xml:space="preserve">
+    <value>Співробітник {0} пов’язаний пристрій, спочатку відв’яжіть пристрій, щоб видалити співробітника.</value>
+  </data>
+  <data name="Employees_EditEmployee_Toast" xml:space="preserve">
+    <value>Співробітник оновлений.</value>
+  </data>
 </root>

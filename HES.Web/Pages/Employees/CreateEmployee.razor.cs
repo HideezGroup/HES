@@ -95,7 +95,7 @@ namespace HES.Web.Pages.Employees
                     var employeeNameExist = await EmployeeService.CheckEmployeeNameExistAsync(Employee);
                     if (employeeNameExist)
                     {
-                        EmployeeValidationErrorMessage.DisplayError(nameof(Core.Entities.Employee.FirstName), $"{Employee.FirstName} {Employee.LastName} already exists.");
+                        EmployeeValidationErrorMessage.DisplayError(nameof(Core.Entities.Employee.FirstName), string.Format(Resources.Resource.Employees_CreateEmployee_EmployeeAlreadyExists, Employee.FirstName, Employee.LastName));
                         return;
                     }
                     var employeeIsValid = EmployeeContext.Validate();
@@ -106,7 +106,7 @@ namespace HES.Web.Pages.Employees
                 case WizardStep.HardwareVault:
                     if (SelectedHardwareVault == null)
                     {
-                        WarningMessage = "Please, select a vault.";
+                        WarningMessage = Resources.Resource.Employees_CreateEmployee_SelectVault;
                         break;
                     }
                     WizardStep = WizardStep.WorkstationAccount;
@@ -124,7 +124,7 @@ namespace HES.Web.Pages.Employees
                     await CreateAsync();
                     if (SelectedHardwareVault == null)
                     {
-                        await ToastService.ShowToastAsync("Employee created.", ToastType.Success);
+                        await ToastService.ShowToastAsync(Resources.Resource.Employees_CreateEmployee_Toast, ToastType.Success);
                         await ModalDialogClose();
                         break;
                     }
@@ -133,7 +133,7 @@ namespace HES.Web.Pages.Employees
                     WizardStep = WizardStep.Activation;
                     break;
                 case WizardStep.Activation:
-                    await ToastService.ShowToastAsync("Employee created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Employees_CreateEmployee_Toast, ToastType.Success);
                     await ModalDialogClose();
                     break;
             }

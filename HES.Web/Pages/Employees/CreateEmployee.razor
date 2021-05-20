@@ -17,7 +17,7 @@ else
                     </span>
                 </div>
                 <div class="wizard-item-content">
-                    <div class="wizard-item-title">Profile</div>
+                    <div class="wizard-item-title">@Resource.Label_Profile</div>
                 </div>
             </div>
             <div class="wizard-item wizard-item-wait @(WizardStep == WizardStep.HardwareVault ? "wizard-item-process" : null) @(WizardStep != WizardStep.HardwareVault && WizardStep > WizardStep.HardwareVault ? "wizard-item-finish" : null)">
@@ -29,7 +29,7 @@ else
                     </span>
                 </div>
                 <div class="wizard-item-content">
-                    <div class="wizard-item-title">Hardware Vault</div>
+                    <div class="wizard-item-title">@Resource.Label_HardwareVault</div>
                 </div>
             </div>
             <div class="wizard-item wizard-item-wait @(WizardStep == WizardStep.WorkstationAccount ? "wizard-item-process" : null) @(WizardStep != WizardStep.WorkstationAccount && WizardStep > WizardStep.WorkstationAccount ? "wizard-item-finish" : null)">
@@ -41,7 +41,7 @@ else
                     </span>
                 </div>
                 <div class="wizard-item-content">
-                    <div class="wizard-item-title">Account</div>
+                    <div class="wizard-item-title">@Resource.Label_Account</div>
                 </div>
             </div>
             <div class="wizard-item wizard-item-wait @(WizardStep == WizardStep.Overview ? "wizard-item-process" : null) @(WizardStep != WizardStep.Overview && WizardStep > WizardStep.Overview ? "wizard-item-finish" : null)">
@@ -53,7 +53,7 @@ else
                     </span>
                 </div>
                 <div class="wizard-item-content">
-                    <div class="wizard-item-title">Overview</div>
+                    <div class="wizard-item-title">@Resource.Label_Overview</div>
                 </div>
             </div>
             <div class="wizard-item wizard-item-wait @(WizardStep == WizardStep.Activation ? "wizard-item-process" : null) @(WizardStep != WizardStep.Activation && WizardStep > WizardStep.Activation ? "wizard-item-finish" : null)">
@@ -65,7 +65,7 @@ else
                     </span>
                 </div>
                 <div class="wizard-item-content">
-                    <div class="wizard-item-title">Activation</div>
+                    <div class="wizard-item-title">@Resource.Label_Activation</div>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@ else
             </div>
             <div class="row">
                 <div class="form-group col">
-                    <label class="text-gray">Company</label>
+                    <label class="text-gray">@Resource.Label_Company</label>
                     <select class="form-select" @onchange="CompanyChangedAsync">
                         <option selected></option>
                         @foreach (var item in Companies)
@@ -158,10 +158,10 @@ else
         {
             <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab-accounts" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active ws-account-nav" id="pills-personal-tab" data-bs-toggle="pill" href="#pills-personal" role="tab" @onclick="@(()=> AccountTypeChanged(AccountType.Personal))">Personal account</a>
+                    <a class="nav-link active ws-account-nav" id="pills-personal-tab" data-bs-toggle="pill" href="#pills-personal" role="tab" @onclick="@(()=> AccountTypeChanged(AccountType.Personal))">@Resource.Label_PersonalAccount</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link ws-account-nav" id="pills-shared-tab" data-bs-toggle="pill" href="#pills-shared" role="tab" @onclick="@(()=> AccountTypeChanged(AccountType.Shared))">Shared account</a>
+                    <a class="nav-link ws-account-nav" id="pills-shared-tab" data-bs-toggle="pill" href="#pills-shared" role="tab" @onclick="@(()=> AccountTypeChanged(AccountType.Shared))">@Resource.Label_SharedAccount</a>
                 </li>
             </ul>
         }
@@ -189,7 +189,7 @@ else
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label class="control-label text-gray">Login Type</label>
+                                <label class="control-label text-gray">@Resource.Label_LoginType</label>
                                 <select class="form-select" @bind="PersonalAccount.LoginType">
                                     <option selected value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
                                     <option value="@LoginType.Domain">@EnumHelper.GetDisplayName(LoginType.Domain)</option>
@@ -285,44 +285,44 @@ else
         <div class="row">
             <!-- Employee -->
             <div class="col">
-                <h4 class="mx-2 text-navyblue">Employee</h4>
+                <h4 class="mx-2 text-navyblue">@Resource.Label_Employee</h4>
                 <div class="border rounded py-2 px-3">
-                    <div class="fw-bold">Full Name</div>
+                    <div class="fw-bold">@Resource.Label_FullName</div>
                     <div class="text-break overflow-hidden text-truncate" style="max-width:200px;">@Employee.FullName</div>
-                    <div class="fw-bold">Company</div>
+                    <div class="fw-bold">@Resource.Label_Company</div>
                     <div>@(string.IsNullOrEmpty(Employee.DepartmentId) ? "" : Departments.FirstOrDefault(x=>x.Id == Employee.DepartmentId).Company.Name)</div>
-                    <div class="fw-bold">Department</div>
+                    <div class="fw-bold">@Resource.Label_Department</div>
                     <div>@(string.IsNullOrEmpty(Employee.DepartmentId) ? "" : Departments.FirstOrDefault(x=>x.Id == Employee.DepartmentId).Name)</div>
-                    <div class="fw-bold">Position</div>
+                    <div class="fw-bold">@Resource.Label_Position</div>
                     <div>@(string.IsNullOrEmpty(Employee.PositionId) ? "" : Positions.FirstOrDefault(x=>x.Id == Employee.PositionId).Name)</div>
                 </div>
             </div>
             <!-- Hardware Vault -->
             <div class="col">
-                <h4 class="mx-2 text-navyblue">Hardware Vault</h4>
+                <h4 class="mx-2 text-navyblue">@Resource.Label_HardwareVault</h4>
                 <div class="border rounded py-2 px-3">
-                    <div class="fw-bold">Serial number</div>
+                    <div class="fw-bold">@Resource.Label_SerialNumber</div>
                     <div>@SelectedHardwareVault?.Id</div>
                 </div>
             </div>
             <!-- Workstation Account -->
             <div class="col">
-                <h4 class="mx-2 text-navyblue">Account</h4>
+                <h4 class="mx-2 text-navyblue">@Resource.Label_Account</h4>
                 @if (AccountType == AccountType.Personal)
                 {
                     <div class="border rounded py-2 px-3">
-                        <div class="fw-bold">Account name</div>
+                        <div class="fw-bold">@Resource.Label_AccountName</div>
                         <div>@(AccountSkiped ? "" : PersonalAccount.Name)</div>
-                        <div class="fw-bold">User name</div>
+                        <div class="fw-bold">@Resource.Label_UserName</div>
                         <div>@(AccountSkiped ? "" : PersonalAccount.Login)</div>
                     </div>
                 }
                 else
                 {
                     <div class="border rounded py-2 px-3">
-                        <div class="fw-bold">Account name</div>
+                        <div class="fw-bold">@Resource.Label_AccountName</div>
                         <div>@(SharedAccountId == null ? "" : SharedAccounts.FirstOrDefault(x=>x.Id == SharedAccountId).Name)</div>
-                        <div class="fw-bold">User name</div>
+                        <div class="fw-bold">@Resource.Label_UserName</div>
                         <div>@(SharedAccountId == null ? "" : SharedAccounts.FirstOrDefault(x => x.Id == SharedAccountId).Login)</div>
                     </div>
                 }
@@ -334,29 +334,27 @@ else
         <div class="row justify-content-center">
             <div class="col col-sm-6">
                 <div class="form-group">
-                    <label class="control-label fw-bold">Employee - @Employee.FullName</label>
+                    <label class="control-label fw-bold">@Resource.Label_Employee - @Employee.FullName</label>
                     <br />
-                    <label class="control-label fw-bold">Vault - @SelectedHardwareVault?.Id</label>
+                    <label class="control-label fw-bold">@Resource.Label_HardwareVault - @SelectedHardwareVault?.Id</label>
                 </div>
-                <label class="control-label text-gray">You can send the code to the email</label>
+                <label class="control-label text-gray">@Resource.Employees_CreateEmployee_SendEmail</label>
                 <div class="input-group1 form-group">
                     <EditForm Model="UserEmailModel" OnValidSubmit="SendEmailAsync">
                         <DataAnnotationsValidator />
                         <ValidationErrorMessage @ref="EmailValidationErrorMessage" />
                         <div class="input-group">
-                            <InputText @bind-Value="UserEmailModel.Email" class="form-control text-navyblue" placeholder="Email" />
-                            <Button @ref="ButtonSendEmail" Text="Send email" type="submit" class="btn btn-outline-primary" />
+                            <InputText @bind-Value="UserEmailModel.Email" class="form-control text-navyblue" placeholder="@Resource.Label_Email" />
+                            <Button @ref="ButtonSendEmail" Text="@Resource.Btn_SendEmail" type="submit" class="btn btn-outline-primary" />
                         </div>
                         <ValidationMessage For="@(() => UserEmailModel.Email)" class="text-danger" />
                     </EditForm>
-                    @*<input type="text" class="form-control text-navyblue" @bind="Email" />
-                        <Button class="btn btn-outline-primary" Text="Send email" OnClick="SendEmailAsync" />*@
                 </div>
-                <label class="control-label text-gray">Activation code</label>
+                <label class="control-label text-gray">@Resource.Label_ActivationCode</label>
                 <div class="input-group form-group">
                     <input type="@(InputType)" id="activationCodeInput" value="@Code" readonly class="form-control">
-                    <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
-                    <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">Copy</button>
+                    <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">@Resource.Btn_Show</button>
+                    <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">@Resource.Btn_Copy</button>
                 </div>
             </div>
         </div>
@@ -365,16 +363,16 @@ else
     <div class="form-footer">
         @if (WizardStep == WizardStep.HardwareVault)
         {
-            <button type="button" class="btn btn-outline-secondary me-3" @onclick="SkipVault">Skip</button>
+            <button type="button" class="btn btn-outline-secondary me-3" @onclick="SkipVault">@Resource.Btn_Skip</button>
         }
         @if (WizardStep == WizardStep.WorkstationAccount)
         {
-            <button type="button" class="btn btn-outline-secondary me-3" @onclick="SkipAccount">Skip</button>
+            <button type="button" class="btn btn-outline-secondary me-3" @onclick="SkipAccount">@Resource.Btn_Skip</button>
         }
         @if (WizardStep != WizardStep.Profile && WizardStep != WizardStep.Activation)
         {
-            <button type="button" class="btn btn-secondary me-1" @onclick="Back">Back</button>
+            <button type="button" class="btn btn-secondary me-1" @onclick="Back">@Resource.Btn_Back</button>
         }
-        <Button class="btn btn-primary" OnClick="Next" Text="@(WizardStep == WizardStep.Activation ? "Done" : WizardStep == WizardStep.Overview ? "Create" : "Next")" />
+        <Button class="btn btn-primary" OnClick="Next" Text="@(WizardStep == WizardStep.Activation ? Resource.Btn_Done : WizardStep == WizardStep.Overview ? Resource.Btn_Create : Resource.Btn_Next)" />
     </div>
 }

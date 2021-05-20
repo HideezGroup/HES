@@ -29,7 +29,7 @@ namespace HES.Web.Pages.Employees
 
                 await BreadcrumbsService.SetEmployees();
                 await DataTableService.InitializeAsync(EmployeeService.GetEmployeesAsync, EmployeeService.GetEmployeesCountAsync, StateHasChanged, nameof(Employee.FullName));
-                
+
                 SetInitialized();
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Sync with Active Directory", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Employees_SyncEmployeesWithAD_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -73,7 +73,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Create Employee", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Employees_CreateEmployee_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -92,7 +92,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit Employee", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Employees_EditEmployee_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -111,7 +111,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Employee", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Employees_DeleteEmployee_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)

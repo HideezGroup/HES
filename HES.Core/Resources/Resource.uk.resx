@@ -225,4 +225,100 @@
   <data name="Dashboard_WorkstationsCard_WaitingForApproval" xml:space="preserve">
     <value>В очікуванні схвалення</value>
   </data>
+  <data name="Display_Apps" xml:space="preserve">
+    <value>Програми (розділити крапкою з комою)</value>
+  </data>
+  <data name="Display_Battery" xml:space="preserve">
+    <value>Акумулятор</value>
+  </data>
+  <data name="Display_ConfirmPassword" xml:space="preserve">
+    <value>Підтвердьте пароль</value>
+  </data>
+  <data name="Display_Domain" xml:space="preserve">
+    <value>Домен</value>
+  </data>
+  <data name="Display_Email" xml:space="preserve">
+    <value>Електронна пошта</value>
+  </data>
+  <data name="Display_Firmware" xml:space="preserve">
+    <value>Прошивка</value>
+  </data>
+  <data name="Display_FirstName" xml:space="preserve">
+    <value>Ім'я</value>
+  </data>
+  <data name="Display_LastName" xml:space="preserve">
+    <value>Прізвище</value>
+  </data>
+  <data name="Display_LastSeen" xml:space="preserve">
+    <value>Востаннє бачили</value>
+  </data>
+  <data name="Display_LastSynced" xml:space="preserve">
+    <value>Остання синхронізація</value>
+  </data>
+  <data name="Display_LicenseEndDate" xml:space="preserve">
+    <value>Дата закінчення ліцензії</value>
+  </data>
+  <data name="Display_LicenseStatus" xml:space="preserve">
+    <value>Статус ліцензії</value>
+  </data>
+  <data name="Display_Login" xml:space="preserve">
+    <value>Увійти</value>
+  </data>
+  <data name="Display_LoginType" xml:space="preserve">
+    <value>Тип входу</value>
+  </data>
+  <data name="Display_MAC" xml:space="preserve">
+    <value>МАС</value>
+  </data>
+  <data name="Display_Model" xml:space="preserve">
+    <value>Модель</value>
+  </data>
+  <data name="Display_Name" xml:space="preserve">
+    <value>Ім'я</value>
+  </data>
+  <data name="Display_OtpSecret" xml:space="preserve">
+    <value>OTP Secret</value>
+  </data>
+  <data name="Display_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="Display_PhoneNumber" xml:space="preserve">
+    <value>Номер телефону</value>
+  </data>
+  <data name="Display_Position" xml:space="preserve">
+    <value>Позиція</value>
+  </data>
+  <data name="Display_RFID" xml:space="preserve">
+    <value>RFID</value>
+  </data>
+  <data name="Display_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Display_StatusDescription" xml:space="preserve">
+    <value>Опис стану</value>
+  </data>
+  <data name="Display_StatusReason" xml:space="preserve">
+    <value>Причина статусу</value>
+  </data>
+  <data name="Display_Urls" xml:space="preserve">
+    <value>URL-адреси (розділити крапкою з комою)</value>
+  </data>
+  <data name="Validation_CompareNewPassword" xml:space="preserve">
+    <value>Новий пароль та підтвердження нового пароля не збігаються.</value>
+  </data>
+  <data name="Validation_ComparePassword" xml:space="preserve">
+    <value>Пароль та пароль підтвердження не збігаються.</value>
+  </data>
+  <data name="Validation_EmailAddress" xml:space="preserve">
+    <value>Поле {0} не є дійсною адресою електронної пошти.</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>Поле {0} обов’язкове.</value>
+  </data>
+  <data name="Validation_StringLength" xml:space="preserve">
+    <value>Значення {0} має мати принаймні {2} та максимум {1} символів.</value>
+  </data>
+  <data name="Validation_Url" xml:space="preserve">
+    <value>Поле {0} не є дійсною повноцінною URL-адресою http, https або ftp.</value>
+  </data>
 </root>
