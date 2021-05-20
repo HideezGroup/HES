@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HES.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210517115914_added_firstname_and_lastname")]
+    [Migration("20210520065650_added_firstname_and_lastname")]
     partial class added_firstname_and_lastname
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1034,7 +1034,7 @@ namespace HES.Infrastructure.Migrations
                     b.Property<int>("WorkstationsCount")
                         .HasColumnType("int");
 
-                    b.ToTable("SummaryByDayAndEmployee");
+                    b.ToView("nameof(SummaryByDayAndEmployee)");
                 });
 
             modelBuilder.Entity("HES.Core.Models.Audit.SummaryByDepartments", b =>
@@ -1066,7 +1066,7 @@ namespace HES.Infrastructure.Migrations
                     b.Property<int>("WorkstationsCount")
                         .HasColumnType("int");
 
-                    b.ToTable("SummaryByDepartments");
+                    b.ToView("nameof(SummaryByDepartments)");
                 });
 
             modelBuilder.Entity("HES.Core.Models.Audit.SummaryByEmployees", b =>
@@ -1101,7 +1101,7 @@ namespace HES.Infrastructure.Migrations
                     b.Property<int>("WorkstationsCount")
                         .HasColumnType("int");
 
-                    b.ToTable("SummaryByEmployees");
+                    b.ToView("nameof(SummaryByEmployees)");
                 });
 
             modelBuilder.Entity("HES.Core.Models.Audit.SummaryByWorkstations", b =>
@@ -1127,7 +1127,7 @@ namespace HES.Infrastructure.Migrations
                     b.Property<string>("Workstation")
                         .HasColumnType("longtext");
 
-                    b.ToTable("SummaryByWorkstations");
+                    b.ToView("nameof(SummaryByWorkstations)");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
