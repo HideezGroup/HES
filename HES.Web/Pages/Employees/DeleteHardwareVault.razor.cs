@@ -61,7 +61,7 @@ namespace HES.Web.Pages.Employees
                 await EmployeeService.RemoveHardwareVaultAsync(HardwareVault.Id, Reason, IsNeedBackup);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultStatus(HardwareVault.Id);
                 await SynchronizationService.HardwareVaultStateChanged(HardwareVault.Id);
-                await ToastService.ShowToastAsync("Vault removed.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_DeleteHardwareVault_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

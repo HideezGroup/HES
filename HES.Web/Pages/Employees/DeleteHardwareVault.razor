@@ -8,21 +8,21 @@ else
 {
     @if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@HardwareVault.Id" CloseAction="ModalDialogCancel" />
     }
     else
     {
-        <h5 class="text-gray mb-3 ">You want to remove vault @HardwareVault.Id? When removing the last vault, all accounts will be deleted.</h5>
+        <h5 class="text-gray mb-3 ">@string.Format(Resource.EmployeeDetails_DeleteHardwareVault_Body, HardwareVault.Id)</h5>
         <div class="form-group">
-            <label class="text-gray">Select the reason</label>
+            <label class="text-gray">@Resource.Label_SelectReason</label>
             <select @bind="Reason" class="form-select">
-                <option valut="@VaultStatusReason.Withdrawal" selected>Withdrawal</option>
-                <option valut="@VaultStatusReason.Broken">Broken</option>
+                <option valut="@VaultStatusReason.Withdrawal" selected>@VaultStatusReason.Withdrawal.ToString()</option>
+                <option valut="@VaultStatusReason.Broken">@VaultStatusReason.Broken.ToString()</option>
             </select>
         </div>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-            <Button Text="Delete" class="btn btn-danger" OnClick="DeleteVaultAsync" />
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button Text="@Resource.Btn_Delete" OnClick="DeleteVaultAsync" class="btn btn-danger" />
         </div>
     }
 }

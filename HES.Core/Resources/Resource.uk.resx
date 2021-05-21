@@ -277,7 +277,7 @@
     <value>Ім'я</value>
   </data>
   <data name="Display_OtpSecret" xml:space="preserve">
-    <value>OTP Secret</value>
+    <value>OTP секрет</value>
   </data>
   <data name="Display_Password" xml:space="preserve">
     <value>Пароль</value>
@@ -320,5 +320,41 @@
   </data>
   <data name="Validation_Url" xml:space="preserve">
     <value>Поле {0} не є дійсною повноцінною URL-адресою http, https або ftp.</value>
+  </data>
+  <data name="Display_AccountName" xml:space="preserve">
+    <value>Назва аккаунту</value>
+  </data>
+  <data name="Display_Created" xml:space="preserve">
+    <value>Створено</value>
+  </data>
+  <data name="Display_LastSeenEndDate" xml:space="preserve">
+    <value>Дата останнього бачення дати закінчення</value>
+  </data>
+  <data name="Display_LastSeenStartDate" xml:space="preserve">
+    <value>Дата останнього відвідування</value>
+  </data>
+  <data name="Display_OtpUpdated" xml:space="preserve">
+    <value>OTP оновлено</value>
+  </data>
+  <data name="Display_PasswordUpdated" xml:space="preserve">
+    <value>Пароль оновлений</value>
+  </data>
+  <data name="Display_Profile" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="Display_Updated" xml:space="preserve">
+    <value>Оновлено</value>
+  </data>
+  <data name="Display_VaultsCount" xml:space="preserve">
+    <value>Кількість сховищь</value>
+  </data>
+  <data name="Exception_EmployeeRequiresEmail" xml:space="preserve">
+    <value>Потрібна електронна пошта.</value>
+  </data>
+  <data name="Exception_TheLDAPServerIsUnavailable" xml:space="preserve">
+    <value>Сервер LDAP недоступний.</value>
+  </data>
+  <data name="Exception_EmployeeRequiresLastName" xml:space="preserve">
+    <value>Потрібно прізвище.</value>
   </data>
 </root>

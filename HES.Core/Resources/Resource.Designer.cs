@@ -268,6 +268,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Account Name.
+        /// </summary>
+        public static string Display_AccountName {
+            get {
+                return ResourceManager.GetString("Display_AccountName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Account Type.
         /// </summary>
         public static string Display_AccountType {
@@ -309,6 +318,15 @@ namespace HES.Core.Resources {
         public static string Display_ConfirmPassword {
             get {
                 return ResourceManager.GetString("Display_ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Created.
+        /// </summary>
+        public static string Display_Created {
+            get {
+                return ResourceManager.GetString("Display_Created", resourceCulture);
             }
         }
         
@@ -412,6 +430,24 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Last Seen End Date.
+        /// </summary>
+        public static string Display_LastSeenEndDate {
+            get {
+                return ResourceManager.GetString("Display_LastSeenEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Last Seen Start Date.
+        /// </summary>
+        public static string Display_LastSeenStartDate {
+            get {
+                return ResourceManager.GetString("Display_LastSeenStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Last Synced.
         /// </summary>
         public static string Display_LastSynced {
@@ -502,11 +538,29 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на OTP Updated.
+        /// </summary>
+        public static string Display_OtpUpdated {
+            get {
+                return ResourceManager.GetString("Display_OtpUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Password.
         /// </summary>
         public static string Display_Password {
             get {
                 return ResourceManager.GetString("Display_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password Updated.
+        /// </summary>
+        public static string Display_PasswordUpdated {
+            get {
+                return ResourceManager.GetString("Display_PasswordUpdated", resourceCulture);
             }
         }
         
@@ -525,6 +579,15 @@ namespace HES.Core.Resources {
         public static string Display_Position {
             get {
                 return ResourceManager.GetString("Display_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Profile.
+        /// </summary>
+        public static string Display_Profile {
+            get {
+                return ResourceManager.GetString("Display_Profile", resourceCulture);
             }
         }
         
@@ -592,6 +655,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Updated.
+        /// </summary>
+        public static string Display_Updated {
+            get {
+                return ResourceManager.GetString("Display_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на URLs (separate by semicolon).
         /// </summary>
         public static string Display_Urls {
@@ -610,11 +682,47 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Vaults Count.
+        /// </summary>
+        public static string Display_VaultsCount {
+            get {
+                return ResourceManager.GetString("Display_VaultsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Workstation.
         /// </summary>
         public static string Display_Workstation {
             get {
                 return ResourceManager.GetString("Display_Workstation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Requires email..
+        /// </summary>
+        public static string Exception_EmployeeRequiresEmail {
+            get {
+                return ResourceManager.GetString("Exception_EmployeeRequiresEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Requires last name..
+        /// </summary>
+        public static string Exception_EmployeeRequiresLastName {
+            get {
+                return ResourceManager.GetString("Exception_EmployeeRequiresLastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The LDAP server is unavailable..
+        /// </summary>
+        public static string Exception_TheLDAPServerIsUnavailable {
+            get {
+                return ResourceManager.GetString("Exception_TheLDAPServerIsUnavailable", resourceCulture);
             }
         }
         

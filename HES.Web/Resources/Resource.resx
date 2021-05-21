@@ -144,6 +144,15 @@
   <data name="Alarm_PageHeader" xml:space="preserve">
     <value>Alarm Button</value>
   </data>
+  <data name="Btn_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Btn_AddHardwareVault" xml:space="preserve">
+    <value>Add Hardware Vault</value>
+  </data>
+  <data name="Btn_AddSharedAccount" xml:space="preserve">
+    <value>Add Shared Account</value>
+  </data>
   <data name="Btn_Back" xml:space="preserve">
     <value>Back</value>
   </data>
@@ -168,17 +177,32 @@
   <data name="Btn_CreateEmployee" xml:space="preserve">
     <value>Create employee</value>
   </data>
+  <data name="Btn_CreatePersonalAccount" xml:space="preserve">
+    <value>Create Personal Account</value>
+  </data>
   <data name="Btn_Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="Btn_Details" xml:space="preserve">
     <value>Details</value>
   </data>
+  <data name="Btn_DisableSSO" xml:space="preserve">
+    <value>Disable SSO</value>
+  </data>
   <data name="Btn_Done" xml:space="preserve">
     <value>Done</value>
   </data>
   <data name="Btn_Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="Btn_EditOTP" xml:space="preserve">
+    <value>Edit OTP</value>
+  </data>
+  <data name="Btn_EditPassword" xml:space="preserve">
+    <value>Edit Password</value>
+  </data>
+  <data name="Btn_EnableSSO" xml:space="preserve">
+    <value>Enable SSO</value>
   </data>
   <data name="Btn_Filter" xml:space="preserve">
     <value>Filter</value>
@@ -192,11 +216,17 @@
   <data name="Btn_Refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="Btn_Resend" xml:space="preserve">
+    <value>Resend</value>
+  </data>
   <data name="Btn_Save" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="Btn_SendEmail" xml:space="preserve">
     <value>Send email</value>
+  </data>
+  <data name="Btn_SetAsPrimary" xml:space="preserve">
+    <value>Set as primary</value>
   </data>
   <data name="Btn_Show" xml:space="preserve">
     <value>Show</value>
@@ -219,11 +249,65 @@
   <data name="Dashboard_HardwareVaultTasks_Title" xml:space="preserve">
     <value>Hardware Vault Tasks</value>
   </data>
+  <data name="EmployeeDetails_AddHardwareVault_Title" xml:space="preserve">
+    <value>Add hardware vault</value>
+  </data>
+  <data name="EmployeeDetails_AddHardwareVault_Toast" xml:space="preserve">
+    <value>Hardware Vault added.</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_NoAccounts" xml:space="preserve">
+    <value>There are no accounts, you can create a shared account on the Shared Account page.</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_Title" xml:space="preserve">
+    <value>Add shared account</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_DeleteAccount" xml:space="preserve">
+    <value>Delete account</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_DeleteInvitation" xml:space="preserve">
+    <value>Delete invitation</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccount" xml:space="preserve">
+    <value>Edit personal account</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccountOtp" xml:space="preserve">
+    <value>Edit personal account OTP</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccountPwd" xml:space="preserve">
+    <value>Edit personal account password</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_HardwareVaultDetails" xml:space="preserve">
+    <value>Hardware Vault Details</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_RemoveHardwareVault" xml:space="preserve">
+    <value>Remove hardware vault from employee</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_ResendInvitation" xml:space="preserve">
+    <value>Resend invitation</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_SetAsPrimary" xml:space="preserve">
+    <value>Set as primary account</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_ShowActivationCode" xml:space="preserve">
+    <value>Show activation code</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_SoftwareVaultDetails" xml:space="preserve">
+    <value>Software Vault Details</value>
+  </data>
+  <data name="EmployeeDetails_Label_LicenseNone" xml:space="preserve">
+    <value>License status None</value>
+  </data>
+  <data name="EmployeeDetails_Label_LicenseTill" xml:space="preserve">
+    <value>License till {0}</value>
+  </data>
+  <data name="EmployeeDetails_Label_PrimaryAccount" xml:space="preserve">
+    <value>Primary account</value>
+  </data>
+  <data name="EmployeeDetails_SoftwareVaultInviteSent" xml:space="preserve">
+    <value>Software Vault invite sent</value>
+  </data>
   <data name="Employees_CreateEmployee_EmployeeAlreadyExists" xml:space="preserve">
     <value>{0} {1} already exists.</value>
-  </data>
-  <data name="Employees_CreateEmployee_SelectVault" xml:space="preserve">
-    <value>Please, select a vault.</value>
   </data>
   <data name="Employees_CreateEmployee_SendEmail" xml:space="preserve">
     <value>You can send the code to the email</value>
@@ -264,6 +348,9 @@
   <data name="Label_AccountName" xml:space="preserve">
     <value>Account Name</value>
   </data>
+  <data name="Label_Accounts" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
   <data name="Label_AccountType" xml:space="preserve">
     <value>Type</value>
   </data>
@@ -281,6 +368,9 @@
   </data>
   <data name="Label_Administrators" xml:space="preserve">
     <value>Administrators</value>
+  </data>
+  <data name="Label_Apps" xml:space="preserve">
+    <value>Apps</value>
   </data>
   <data name="Label_Audit" xml:space="preserve">
     <value>Audit</value>
@@ -326,6 +416,12 @@
   </data>
   <data name="Label_Date" xml:space="preserve">
     <value>Date</value>
+  </data>
+  <data name="Label_Day" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="Label_Days" xml:space="preserve">
+    <value>days</value>
   </data>
   <data name="Label_Department" xml:space="preserve">
     <value>Department</value>
@@ -375,11 +471,17 @@
   <data name="Label_LicenseOrders" xml:space="preserve">
     <value>License Orders</value>
   </data>
+  <data name="Label_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
   <data name="Label_LoginType" xml:space="preserve">
     <value>Login Type</value>
   </data>
   <data name="Label_Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="Label_NeedSync" xml:space="preserve">
+    <value>Need Sync</value>
   </data>
   <data name="Label_NeverUsed" xml:space="preserve">
     <value>Never used</value>
@@ -387,11 +489,17 @@
   <data name="Label_Note" xml:space="preserve">
     <value>Note</value>
   </data>
+  <data name="Label_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
   <data name="Label_Operation" xml:space="preserve">
     <value>Operation</value>
   </data>
   <data name="Label_OrgStructure" xml:space="preserve">
     <value>OrgStructure</value>
+  </data>
+  <data name="Label_OtpUpdated" xml:space="preserve">
+    <value>OTP Updated</value>
   </data>
   <data name="Label_Overview" xml:space="preserve">
     <value>Overview</value>
@@ -411,8 +519,17 @@
   <data name="Label_Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+  <data name="Label_PwdUpdated" xml:space="preserve">
+    <value>Password Updated</value>
+  </data>
+  <data name="Label_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
   <data name="Label_Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Label_SecurityKey" xml:space="preserve">
+    <value>Security Key</value>
   </data>
   <data name="Label_SerialNumber" xml:space="preserve">
     <value>Serial Number</value>
@@ -438,8 +555,17 @@
   <data name="Label_SharedAccounts" xml:space="preserve">
     <value>Shared Accounts</value>
   </data>
+  <data name="Label_SingleSignOn" xml:space="preserve">
+    <value>Single Sign On</value>
+  </data>
   <data name="Label_SoftwareVaults" xml:space="preserve">
     <value>Software Vaults</value>
+  </data>
+  <data name="Label_SSODisabled" xml:space="preserve">
+    <value>SSO Disabled</value>
+  </data>
+  <data name="Label_SSOEnabled" xml:space="preserve">
+    <value>SSO Enabled</value>
   </data>
   <data name="Label_StartDate" xml:space="preserve">
     <value>Start Date</value>
@@ -459,14 +585,26 @@
   <data name="Label_TotalSessionsDuration" xml:space="preserve">
     <value>Total Sessions Duration</value>
   </data>
+  <data name="Label_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
   <data name="Label_UnlockedBy" xml:space="preserve">
     <value>Unlocked By</value>
+  </data>
+  <data name="Label_Updated" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="Label_Urls" xml:space="preserve">
+    <value>URLs</value>
   </data>
   <data name="Label_UserName" xml:space="preserve">
     <value>User name</value>
   </data>
   <data name="Label_VaultAccessProfiles" xml:space="preserve">
     <value>Vault Access Profiles</value>
+  </data>
+  <data name="Label_Vaults" xml:space="preserve">
+    <value>Vaults</value>
   </data>
   <data name="Label_VaultsCount" xml:space="preserve">
     <value>Vaults Count</value>
@@ -486,8 +624,14 @@
   <data name="Label_WorkstationsOnline" xml:space="preserve">
     <value>Workstations Online</value>
   </data>
+  <data name="Message_SelectHardwareVault" xml:space="preserve">
+    <value>Please, select a hardware vault.</value>
+  </data>
   <data name="Summary_PageTitle" xml:space="preserve">
     <value>Summary</value>
+  </data>
+  <data name="Title_CannotAddMoreHardwareVault" xml:space="preserve">
+    <value>Cannot add more than one hardware vault.</value>
   </data>
   <data name="Title_DeleteEmployee" xml:space="preserve">
     <value>Delete employee</value>
@@ -521,5 +665,161 @@
   </data>
   <data name="WorkstationSessions_PageTitle" xml:space="preserve">
     <value>Workstation Sessions</value>
+  </data>
+  <data name="Employees_CreateEmployee_SelectVault" xml:space="preserve">
+    <value>Please, select a vault.</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_EnterData" xml:space="preserve">
+    <value>Enter data manually or select from the template:</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_Title" xml:space="preserve">
+    <value>Create personal account</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_Toast" xml:space="preserve">
+    <value>Account created.</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Body" xml:space="preserve">
+    <value>You want to delete {0} account {1}?</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Toast" xml:space="preserve">
+    <value>Account deleted.</value>
+  </data>
+  <data name="Label_Domain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="Label_UserLogonName" xml:space="preserve">
+    <value>User Logon Name</value>
+  </data>
+  <data name="Btn_Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="Btn_Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="Btn_Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Title" xml:space="preserve">
+    <value>Delete Account</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Body" xml:space="preserve">
+    <value>You want to remove vault {0}? When removing the last vault, all accounts will be deleted.</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Title" xml:space="preserve">
+    <value>Delete Hardware Vault</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Toast" xml:space="preserve">
+    <value>Hardware Vault removed.</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Body" xml:space="preserve">
+    <value>Are you sure you want to disable SSO for {0}?</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Title" xml:space="preserve">
+    <value>Disable SSO</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Toast" xml:space="preserve">
+    <value>SSO disabled.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountOtp_Title" xml:space="preserve">
+    <value>Edit personal account OTP</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountOtp_Toast" xml:space="preserve">
+    <value>Account OTP updated.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_CryptographicStrength" xml:space="preserve">
+    <value>Current cryptographic strength</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsLowerCase" xml:space="preserve">
+    <value>Is Lower Case</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsNumeric" xml:space="preserve">
+    <value>Is Numeric</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsSpecChar" xml:space="preserve">
+    <value>Is Spec Char</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsUpperCase" xml:space="preserve">
+    <value>Is Upper Case</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Length" xml:space="preserve">
+    <value>Length {0}</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Title" xml:space="preserve">
+    <value>Edit account password</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Toast" xml:space="preserve">
+    <value>Account password updated.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccount_Title" xml:space="preserve">
+    <value>Edit personal account</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccount_Toast" xml:space="preserve">
+    <value>Account updated.</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Body" xml:space="preserve">
+    <value>Are you sure you want to enable SSO for {0}?</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Title" xml:space="preserve">
+    <value>Enable SSO</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Toast" xml:space="preserve">
+    <value>SSO enabled.</value>
+  </data>
+  <data name="EmployeeDetails_HardwareVaultDetails_Title" xml:space="preserve">
+    <value>Hardware vault details</value>
+  </data>
+  <data name="EmployeeDetails_SetAsWorkstationAccount_Body" xml:space="preserve">
+    <value>Set this account as a primary account?</value>
+  </data>
+  <data name="EmployeeDetails_SetAsWorkstationAccount_Toast" xml:space="preserve">
+    <value>Account setted as primary.</value>
+  </data>
+  <data name="Label_Battery" xml:space="preserve">
+    <value>Battery</value>
+  </data>
+  <data name="Label_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Label_EnterPwd" xml:space="preserve">
+    <value>Enter Pwd</value>
+  </data>
+  <data name="Label_GeneratePwd" xml:space="preserve">
+    <value>Generate Pwd</value>
+  </data>
+  <data name="Label_ImportedAt" xml:space="preserve">
+    <value>Imported At</value>
+  </data>
+  <data name="Label_LastSynced" xml:space="preserve">
+    <value>Last Synced</value>
+  </data>
+  <data name="Label_LicenseEndDate" xml:space="preserve">
+    <value>License End Date</value>
+  </data>
+  <data name="Label_LicenseStatus" xml:space="preserve">
+    <value>License Status</value>
+  </data>
+  <data name="Label_MAC" xml:space="preserve">
+    <value>MAC</value>
+  </data>
+  <data name="Label_Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Label_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Label_Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="Label_RFID" xml:space="preserve">
+    <value>RFID</value>
+  </data>
+  <data name="Label_SelectReason" xml:space="preserve">
+    <value>Select the reason</value>
+  </data>
+  <data name="Label_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_Toast" xml:space="preserve">
+    <value>Account added and will be recorded when the device is connected to the server.</value>
   </data>
 </root>

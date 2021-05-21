@@ -41,7 +41,7 @@ namespace HES.Web.Pages.Employees
                 await EmployeeService.EnableSsoAsync(Employee);
                 var callback = await ApplicationUserService.GenerateEnableSsoCallBackUrlAsync(Employee.Email, NavigationManager.BaseUri);
                 await EmailSenderService.SendEmployeeEnableSsoAsync(Employee.Email, callback);
-                await ToastService.ShowToastAsync($"SSO enabled.", ToastType.Success);         
+                await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_EnableSso_Toast, ToastType.Success);         
                 await ModalDialogClose();
             }
             catch (Exception ex)

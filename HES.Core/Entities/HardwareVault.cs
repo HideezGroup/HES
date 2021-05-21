@@ -73,7 +73,7 @@ namespace HES.Core.Entities
         [ForeignKey("EmployeeId")]
         public Employee Employee { get; set; }
 
-        [Display(Name = "Profile")]
+        [Display(Name = nameof(Resources.Resource.Display_Profile), ResourceType = typeof(Resources.Resource))]
         [ForeignKey("HardwareVaultProfileId")]
         public HardwareVaultProfile HardwareVaultProfile { get; set; }
 

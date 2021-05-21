@@ -142,6 +142,33 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Add.
+        /// </summary>
+        internal static string Btn_Add {
+            get {
+                return ResourceManager.GetString("Btn_Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add Hardware Vault.
+        /// </summary>
+        internal static string Btn_AddHardwareVault {
+            get {
+                return ResourceManager.GetString("Btn_AddHardwareVault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add Shared Account.
+        /// </summary>
+        internal static string Btn_AddSharedAccount {
+            get {
+                return ResourceManager.GetString("Btn_AddSharedAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Back.
         /// </summary>
         internal static string Btn_Back {
@@ -214,6 +241,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Personal Account.
+        /// </summary>
+        internal static string Btn_CreatePersonalAccount {
+            get {
+                return ResourceManager.GetString("Btn_CreatePersonalAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Delete.
         /// </summary>
         internal static string Btn_Delete {
@@ -228,6 +264,24 @@ namespace HES.Web.Resources {
         internal static string Btn_Details {
             get {
                 return ResourceManager.GetString("Btn_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable.
+        /// </summary>
+        internal static string Btn_Disable {
+            get {
+                return ResourceManager.GetString("Btn_Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable SSO.
+        /// </summary>
+        internal static string Btn_DisableSSO {
+            get {
+                return ResourceManager.GetString("Btn_DisableSSO", resourceCulture);
             }
         }
         
@@ -250,6 +304,42 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit OTP.
+        /// </summary>
+        internal static string Btn_EditOTP {
+            get {
+                return ResourceManager.GetString("Btn_EditOTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Password.
+        /// </summary>
+        internal static string Btn_EditPassword {
+            get {
+                return ResourceManager.GetString("Btn_EditPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable.
+        /// </summary>
+        internal static string Btn_Enable {
+            get {
+                return ResourceManager.GetString("Btn_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable SSO.
+        /// </summary>
+        internal static string Btn_EnableSSO {
+            get {
+                return ResourceManager.GetString("Btn_EnableSSO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Filter.
         /// </summary>
         internal static string Btn_Filter {
@@ -264,6 +354,15 @@ namespace HES.Web.Resources {
         internal static string Btn_Filters {
             get {
                 return ResourceManager.GetString("Btn_Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Generate.
+        /// </summary>
+        internal static string Btn_Generate {
+            get {
+                return ResourceManager.GetString("Btn_Generate", resourceCulture);
             }
         }
         
@@ -286,6 +385,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Resend.
+        /// </summary>
+        internal static string Btn_Resend {
+            get {
+                return ResourceManager.GetString("Btn_Resend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Save.
         /// </summary>
         internal static string Btn_Save {
@@ -300,6 +408,15 @@ namespace HES.Web.Resources {
         internal static string Btn_SendEmail {
             get {
                 return ResourceManager.GetString("Btn_SendEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set as primary.
+        /// </summary>
+        internal static string Btn_SetAsPrimary {
+            get {
+                return ResourceManager.GetString("Btn_SetAsPrimary", resourceCulture);
             }
         }
         
@@ -363,6 +480,456 @@ namespace HES.Web.Resources {
         internal static string Dashboard_HardwareVaultTasks_Title {
             get {
                 return ResourceManager.GetString("Dashboard_HardwareVaultTasks_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add hardware vault.
+        /// </summary>
+        internal static string EmployeeDetails_AddHardwareVault_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_AddHardwareVault_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault added..
+        /// </summary>
+        internal static string EmployeeDetails_AddHardwareVault_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_AddHardwareVault_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на There are no accounts, you can create a shared account on the Shared Account page..
+        /// </summary>
+        internal static string EmployeeDetails_AddSharedAccount_NoAccounts {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_AddSharedAccount_NoAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add shared account.
+        /// </summary>
+        internal static string EmployeeDetails_AddSharedAccount_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_AddSharedAccount_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account added and will be recorded when the device is connected to the server..
+        /// </summary>
+        internal static string EmployeeDetails_AddSharedAccount_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_AddSharedAccount_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete account.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_DeleteAccount {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_DeleteAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete invitation.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_DeleteInvitation {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_DeleteInvitation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit personal account.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_EditPersonalAccount {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_EditPersonalAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit personal account OTP.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_EditPersonalAccountOtp {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_EditPersonalAccountOtp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit personal account password.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_EditPersonalAccountPwd {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_EditPersonalAccountPwd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault Details.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_HardwareVaultDetails {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_HardwareVaultDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove hardware vault from employee.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_RemoveHardwareVault {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_RemoveHardwareVault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Resend invitation.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_ResendInvitation {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_ResendInvitation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set as primary account.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_SetAsPrimary {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_SetAsPrimary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show activation code.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_ShowActivationCode {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_ShowActivationCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Software Vault Details.
+        /// </summary>
+        internal static string EmployeeDetails_BtnTitle_SoftwareVaultDetails {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_BtnTitle_SoftwareVaultDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter data manually or select from the template:.
+        /// </summary>
+        internal static string EmployeeDetails_CreatePersonalAccount_EnterData {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_CreatePersonalAccount_EnterData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create personal account.
+        /// </summary>
+        internal static string EmployeeDetails_CreatePersonalAccount_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_CreatePersonalAccount_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account created..
+        /// </summary>
+        internal static string EmployeeDetails_CreatePersonalAccount_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_CreatePersonalAccount_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete {0} account {1}?.
+        /// </summary>
+        internal static string EmployeeDetails_DeleteAccount_Body {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DeleteAccount_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Account.
+        /// </summary>
+        internal static string EmployeeDetails_DeleteAccount_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DeleteAccount_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account deleted..
+        /// </summary>
+        internal static string EmployeeDetails_DeleteAccount_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DeleteAccount_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to remove vault {0}? When removing the last vault, all accounts will be deleted..
+        /// </summary>
+        internal static string EmployeeDetails_DeleteHardwareVault_Body {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DeleteHardwareVault_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Hardware Vault.
+        /// </summary>
+        internal static string EmployeeDetails_DeleteHardwareVault_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DeleteHardwareVault_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault removed..
+        /// </summary>
+        internal static string EmployeeDetails_DeleteHardwareVault_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DeleteHardwareVault_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Are you sure you want to disable SSO for {0}?.
+        /// </summary>
+        internal static string EmployeeDetails_DisableSso_Body {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DisableSso_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable SSO.
+        /// </summary>
+        internal static string EmployeeDetails_DisableSso_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DisableSso_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SSO disabled..
+        /// </summary>
+        internal static string EmployeeDetails_DisableSso_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_DisableSso_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit personal account.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccount_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccount_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account updated..
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccount_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccount_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit personal account OTP.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountOtp_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountOtp_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account OTP updated..
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountOtp_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountOtp_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Current cryptographic strength.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountPwd_CryptographicStrength {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountPwd_CryptographicStrength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Is Lower Case.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountPwd_IsLowerCase {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountPwd_IsLowerCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Is Numeric.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountPwd_IsNumeric {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountPwd_IsNumeric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Is Spec Char.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountPwd_IsSpecChar {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountPwd_IsSpecChar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Is Upper Case.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountPwd_IsUpperCase {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountPwd_IsUpperCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Length {0}.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountPwd_Length {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountPwd_Length", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit account password.
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountPwd_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountPwd_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account password updated..
+        /// </summary>
+        internal static string EmployeeDetails_EditPersonalAccountPwd_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditPersonalAccountPwd_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Are you sure you want to enable SSO for {0}?.
+        /// </summary>
+        internal static string EmployeeDetails_EnableSso_Body {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EnableSso_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable SSO.
+        /// </summary>
+        internal static string EmployeeDetails_EnableSso_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EnableSso_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SSO enabled..
+        /// </summary>
+        internal static string EmployeeDetails_EnableSso_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EnableSso_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware vault details.
+        /// </summary>
+        internal static string EmployeeDetails_HardwareVaultDetails_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_HardwareVaultDetails_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License status None.
+        /// </summary>
+        internal static string EmployeeDetails_Label_LicenseNone {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_Label_LicenseNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License till {0}.
+        /// </summary>
+        internal static string EmployeeDetails_Label_LicenseTill {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_Label_LicenseTill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Primary account.
+        /// </summary>
+        internal static string EmployeeDetails_Label_PrimaryAccount {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_Label_PrimaryAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set this account as a primary account?.
+        /// </summary>
+        internal static string EmployeeDetails_SetAsWorkstationAccount_Body {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_SetAsWorkstationAccount_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account setted as primary..
+        /// </summary>
+        internal static string EmployeeDetails_SetAsWorkstationAccount_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_SetAsWorkstationAccount_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Software Vault invite sent.
+        /// </summary>
+        internal static string EmployeeDetails_SoftwareVaultInviteSent {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_SoftwareVaultInviteSent", resourceCulture);
             }
         }
         
@@ -502,6 +1069,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Accounts.
+        /// </summary>
+        internal static string Label_Accounts {
+            get {
+                return ResourceManager.GetString("Label_Accounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Type.
         /// </summary>
         internal static string Label_AccountType {
@@ -556,6 +1132,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Apps.
+        /// </summary>
+        internal static string Label_Apps {
+            get {
+                return ResourceManager.GetString("Label_Apps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Audit.
         /// </summary>
         internal static string Label_Audit {
@@ -606,6 +1191,15 @@ namespace HES.Web.Resources {
         internal static string Label_AvgWorkingHoursPerDay {
             get {
                 return ResourceManager.GetString("Label_AvgWorkingHoursPerDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Battery.
+        /// </summary>
+        internal static string Label_Battery {
+            get {
+                return ResourceManager.GetString("Label_Battery", resourceCulture);
             }
         }
         
@@ -691,6 +1285,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на day.
+        /// </summary>
+        internal static string Label_Day {
+            get {
+                return ResourceManager.GetString("Label_Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на days.
+        /// </summary>
+        internal static string Label_Days {
+            get {
+                return ResourceManager.GetString("Label_Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Department.
         /// </summary>
         internal static string Label_Department {
@@ -700,11 +1312,29 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Description.
+        /// </summary>
+        internal static string Label_Description {
+            get {
+                return ResourceManager.GetString("Label_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Disabled by.
         /// </summary>
         internal static string Label_DisabledBy {
             get {
                 return ResourceManager.GetString("Label_DisabledBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Domain.
+        /// </summary>
+        internal static string Label_Domain {
+            get {
+                return ResourceManager.GetString("Label_Domain", resourceCulture);
             }
         }
         
@@ -763,6 +1393,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter Pwd.
+        /// </summary>
+        internal static string Label_EnterPwd {
+            get {
+                return ResourceManager.GetString("Label_EnterPwd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Event.
         /// </summary>
         internal static string Label_Event {
@@ -786,6 +1425,15 @@ namespace HES.Web.Resources {
         internal static string Label_FullName {
             get {
                 return ResourceManager.GetString("Label_FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Generate Pwd.
+        /// </summary>
+        internal static string Label_GeneratePwd {
+            get {
+                return ResourceManager.GetString("Label_GeneratePwd", resourceCulture);
             }
         }
         
@@ -817,11 +1465,38 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Imported At.
+        /// </summary>
+        internal static string Label_ImportedAt {
+            get {
+                return ResourceManager.GetString("Label_ImportedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Last Seen.
         /// </summary>
         internal static string Label_LastSeen {
             get {
                 return ResourceManager.GetString("Label_LastSeen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Last Synced.
+        /// </summary>
+        internal static string Label_LastSynced {
+            get {
+                return ResourceManager.GetString("Label_LastSynced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License End Date.
+        /// </summary>
+        internal static string Label_LicenseEndDate {
+            get {
+                return ResourceManager.GetString("Label_LicenseEndDate", resourceCulture);
             }
         }
         
@@ -835,11 +1510,47 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на License Status.
+        /// </summary>
+        internal static string Label_LicenseStatus {
+            get {
+                return ResourceManager.GetString("Label_LicenseStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Login.
+        /// </summary>
+        internal static string Label_Login {
+            get {
+                return ResourceManager.GetString("Label_Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Login Type.
         /// </summary>
         internal static string Label_LoginType {
             get {
                 return ResourceManager.GetString("Label_LoginType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на MAC.
+        /// </summary>
+        internal static string Label_MAC {
+            get {
+                return ResourceManager.GetString("Label_MAC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Model.
+        /// </summary>
+        internal static string Label_Model {
+            get {
+                return ResourceManager.GetString("Label_Model", resourceCulture);
             }
         }
         
@@ -853,6 +1564,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Need Sync.
+        /// </summary>
+        internal static string Label_NeedSync {
+            get {
+                return ResourceManager.GetString("Label_NeedSync", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Never used.
         /// </summary>
         internal static string Label_NeverUsed {
@@ -862,11 +1582,29 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на No.
+        /// </summary>
+        internal static string Label_No {
+            get {
+                return ResourceManager.GetString("Label_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Note.
         /// </summary>
         internal static string Label_Note {
             get {
                 return ResourceManager.GetString("Label_Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Online.
+        /// </summary>
+        internal static string Label_Online {
+            get {
+                return ResourceManager.GetString("Label_Online", resourceCulture);
             }
         }
         
@@ -885,6 +1623,15 @@ namespace HES.Web.Resources {
         internal static string Label_OrgStructure {
             get {
                 return ResourceManager.GetString("Label_OrgStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на OTP Updated.
+        /// </summary>
+        internal static string Label_OtpUpdated {
+            get {
+                return ResourceManager.GetString("Label_OtpUpdated", resourceCulture);
             }
         }
         
@@ -943,11 +1690,65 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Password Updated.
+        /// </summary>
+        internal static string Label_PwdUpdated {
+            get {
+                return ResourceManager.GetString("Label_PwdUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reason.
+        /// </summary>
+        internal static string Label_Reason {
+            get {
+                return ResourceManager.GetString("Label_Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove.
+        /// </summary>
+        internal static string Label_Remove {
+            get {
+                return ResourceManager.GetString("Label_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на RFID.
+        /// </summary>
+        internal static string Label_RFID {
+            get {
+                return ResourceManager.GetString("Label_RFID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Search.
         /// </summary>
         internal static string Label_Search {
             get {
                 return ResourceManager.GetString("Label_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Security Key.
+        /// </summary>
+        internal static string Label_SecurityKey {
+            get {
+                return ResourceManager.GetString("Label_SecurityKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select the reason.
+        /// </summary>
+        internal static string Label_SelectReason {
+            get {
+                return ResourceManager.GetString("Label_SelectReason", resourceCulture);
             }
         }
         
@@ -1024,11 +1825,38 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Single Sign On.
+        /// </summary>
+        internal static string Label_SingleSignOn {
+            get {
+                return ResourceManager.GetString("Label_SingleSignOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Software Vaults.
         /// </summary>
         internal static string Label_SoftwareVaults {
             get {
                 return ResourceManager.GetString("Label_SoftwareVaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SSO Disabled.
+        /// </summary>
+        internal static string Label_SSODisabled {
+            get {
+                return ResourceManager.GetString("Label_SSODisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SSO Enabled.
+        /// </summary>
+        internal static string Label_SSOEnabled {
+            get {
+                return ResourceManager.GetString("Label_SSOEnabled", resourceCulture);
             }
         }
         
@@ -1087,11 +1915,47 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Type.
+        /// </summary>
+        internal static string Label_Type {
+            get {
+                return ResourceManager.GetString("Label_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Unlocked By.
         /// </summary>
         internal static string Label_UnlockedBy {
             get {
                 return ResourceManager.GetString("Label_UnlockedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Updated.
+        /// </summary>
+        internal static string Label_Updated {
+            get {
+                return ResourceManager.GetString("Label_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на URLs.
+        /// </summary>
+        internal static string Label_Urls {
+            get {
+                return ResourceManager.GetString("Label_Urls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User Logon Name.
+        /// </summary>
+        internal static string Label_UserLogonName {
+            get {
+                return ResourceManager.GetString("Label_UserLogonName", resourceCulture);
             }
         }
         
@@ -1110,6 +1974,15 @@ namespace HES.Web.Resources {
         internal static string Label_VaultAccessProfiles {
             get {
                 return ResourceManager.GetString("Label_VaultAccessProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vaults.
+        /// </summary>
+        internal static string Label_Vaults {
+            get {
+                return ResourceManager.GetString("Label_Vaults", resourceCulture);
             }
         }
         
@@ -1168,11 +2041,38 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Yes.
+        /// </summary>
+        internal static string Label_Yes {
+            get {
+                return ResourceManager.GetString("Label_Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Please, select a hardware vault..
+        /// </summary>
+        internal static string Message_SelectHardwareVault {
+            get {
+                return ResourceManager.GetString("Message_SelectHardwareVault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Summary.
         /// </summary>
         internal static string Summary_PageTitle {
             get {
                 return ResourceManager.GetString("Summary_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cannot add more than one hardware vault..
+        /// </summary>
+        internal static string Title_CannotAddMoreHardwareVault {
+            get {
+                return ResourceManager.GetString("Title_CannotAddMoreHardwareVault", resourceCulture);
             }
         }
         

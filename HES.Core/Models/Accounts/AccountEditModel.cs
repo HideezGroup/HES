@@ -15,25 +15,25 @@ namespace HES.Core.Models.Accounts
         [Required]
         public string EmployeeId { get; set; }
 
-        [Required]
-        [Display(Name = "Account Name")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_AccountName), ResourceType = typeof(Resources.Resource))]
         public string Name { get; set; }
-
-        [Display(Name = "URLs (separate by semicolon)")]
+          
+        [Display(Name = nameof(Resources.Resource.Display_Urls), ResourceType = typeof(Resources.Resource))]
         public string Urls { get; set; }
 
-        [Display(Name = "Applications (separate by semicolon)")]
+        [Display(Name = nameof(Resources.Resource.Display_Apps), ResourceType = typeof(Resources.Resource))]
         public string Apps { get; set; }
 
-        [Display(Name = "Login Type")]
+        [Display(Name = nameof(Resources.Resource.Display_LoginType), ResourceType = typeof(Resources.Resource))]
         public LoginType LoginType { get; set; }
 
-        [Display(Name = "Login")]
-        [ValidateLogin(nameof(LoginType))]
+        [Display(Name = nameof(Resources.Resource.Display_Login), ResourceType = typeof(Resources.Resource))]
+        [ValidateLogin(nameof(LoginType), ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string Login { get; set; }
 
-        [Display(Name = "Domain")]
-        [ValidateDomain(nameof(LoginType), ErrorMessage = "The Domain field is required.")]
+        [Display(Name = nameof(Resources.Resource.Display_Domain), ResourceType = typeof(Resources.Resource))]
+        [ValidateDomain(nameof(LoginType), ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string Domain { get; set; }
 
         /// <summary>

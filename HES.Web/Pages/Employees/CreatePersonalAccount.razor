@@ -10,7 +10,7 @@ else
         <DataAnnotationsValidator />
         <ValidationErrorMessage @ref="ValidationErrorMessage" />
         <div class="form-group d-flex flex-row align-items-center">
-            <h6 class="text-navyblue mx-0 me-2 text-nowrap">Enter data manually or select from the template:</h6>
+            <h6 class="text-navyblue mx-0 me-2 text-nowrap">@Resource.EmployeeDetails_CreatePersonalAccount_EnterData</h6>
             <select class="form-select" @onchange="TemplateSelected">
                 <option selected></option>
                 @foreach (var item in Templates)
@@ -40,7 +40,7 @@ else
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label class="control-label text-gray">Login Type</label>
+                    <Label For="@(() => PersonalAccount.LoginType)" class="control-label text-gray" />
                     <select class="form-select" @bind="PersonalAccount.LoginType">
                         <option selected value="@LoginType.WebApp">@EnumHelper.GetDisplayName(LoginType.WebApp)</option>
                         <option value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
@@ -61,7 +61,7 @@ else
                     case LoginType.Local:
                         <div class="form-group">
                             <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
-                            <InputText @bind-Value="PersonalAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
+                            <InputText @bind-Value="PersonalAccount.Login" placeholder="@Resource.Label_UserName" class="form-control text-navyblue" tabindex="4" />
                             <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                         </div>
                         break;
@@ -69,8 +69,8 @@ else
                         <div class="form-group">
                             <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
                             <div class="input-group">
-                                <input type="text" @bind="PersonalAccount.Domain" placeholder="Domain" class="form-control" tabindex="4">
-                                <input type="text" @bind="PersonalAccount.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
+                                <input type="text" @bind="PersonalAccount.Domain" placeholder="@Resource.Label_Domain" class="form-control" tabindex="4">
+                                <input type="text" @bind="PersonalAccount.Login" placeholder="@Resource.Label_UserLogonName" class="form-control" tabindex="5">
                             </div>
                             <ValidationMessage For="@(() => PersonalAccount.Domain)" class="text-danger" />
                             <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
@@ -79,14 +79,14 @@ else
                     case LoginType.AzureAD:
                         <div class="form-group">
                             <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
-                            <InputText @bind-Value="PersonalAccount.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
+                            <InputText @bind-Value="PersonalAccount.Login" placeholder="@Resource.Label_UserName" class="form-control text-navyblue" tabindex="4" />
                             <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                         </div>
                         break;
                     case LoginType.Microsoft:
                         <div class="form-group">
                             <Label For="@(() => PersonalAccount.Login)" class="text-gray" />
-                            <InputText @bind-Value="PersonalAccount.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
+                            <InputText @bind-Value="PersonalAccount.Login" placeholder="@Resource.Label_Email" class="form-control text-navyblue" tabindex="4" />
                             <ValidationMessage For="@(() => PersonalAccount.Login)" class="text-danger" />
                         </div>
                         break;
@@ -113,8 +113,8 @@ else
             </div>
         </div>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-            <Button @ref="ButtonSpinner" Text="Create" type="submit" class="btn btn-primary" />
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button @ref="ButtonSpinner" Text="@Resource.Btn_Create" type="submit" class="btn btn-primary" />
         </div>
     </EditForm>
 }

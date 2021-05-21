@@ -106,7 +106,7 @@ namespace HES.Web.Pages.Employees
                 case WizardStep.HardwareVault:
                     if (SelectedHardwareVault == null)
                     {
-                        WarningMessage = Resources.Resource.Employees_CreateEmployee_SelectVault;
+                        WarningMessage = Resources.Resource.Message_SelectHardwareVault;
                         break;
                     }
                     WizardStep = WizardStep.WorkstationAccount;

@@ -186,6 +186,9 @@
   <data name="Display_Account" xml:space="preserve">
     <value>Account</value>
   </data>
+  <data name="Display_AccountName" xml:space="preserve">
+    <value>Account Name</value>
+  </data>
   <data name="Display_AccountType" xml:space="preserve">
     <value>Account Type</value>
   </data>
@@ -200,6 +203,9 @@
   </data>
   <data name="Display_ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
+  </data>
+  <data name="Display_Created" xml:space="preserve">
+    <value>Created</value>
   </data>
   <data name="Display_Department" xml:space="preserve">
     <value>Department</value>
@@ -234,6 +240,12 @@
   <data name="Display_LastSeen" xml:space="preserve">
     <value>Last Seen</value>
   </data>
+  <data name="Display_LastSeenEndDate" xml:space="preserve">
+    <value>Last Seen End Date</value>
+  </data>
+  <data name="Display_LastSeenStartDate" xml:space="preserve">
+    <value>Last Seen Start Date</value>
+  </data>
   <data name="Display_LastSynced" xml:space="preserve">
     <value>Last Synced</value>
   </data>
@@ -264,14 +276,23 @@
   <data name="Display_OtpSecret" xml:space="preserve">
     <value>OTP Secret</value>
   </data>
+  <data name="Display_OtpUpdated" xml:space="preserve">
+    <value>OTP Updated</value>
+  </data>
   <data name="Display_Password" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="Display_PasswordUpdated" xml:space="preserve">
+    <value>Password Updated</value>
   </data>
   <data name="Display_PhoneNumber" xml:space="preserve">
     <value>Phone Number</value>
   </data>
   <data name="Display_Position" xml:space="preserve">
     <value>Position</value>
+  </data>
+  <data name="Display_Profile" xml:space="preserve">
+    <value>Profile</value>
   </data>
   <data name="Display_RFID" xml:space="preserve">
     <value>RFID</value>
@@ -294,14 +315,29 @@
   <data name="Display_UnlockedBy" xml:space="preserve">
     <value>Unlocked By</value>
   </data>
+  <data name="Display_Updated" xml:space="preserve">
+    <value>Updated</value>
+  </data>
   <data name="Display_Urls" xml:space="preserve">
     <value>URLs (separate by semicolon)</value>
   </data>
   <data name="Display_UserSession" xml:space="preserve">
     <value>User Session</value>
   </data>
+  <data name="Display_VaultsCount" xml:space="preserve">
+    <value>Vaults Count</value>
+  </data>
   <data name="Display_Workstation" xml:space="preserve">
     <value>Workstation</value>
+  </data>
+  <data name="Exception_EmployeeRequiresEmail" xml:space="preserve">
+    <value>Requires email.</value>
+  </data>
+  <data name="Exception_EmployeeRequiresLastName" xml:space="preserve">
+    <value>Requires last name.</value>
+  </data>
+  <data name="Exception_TheLDAPServerIsUnavailable" xml:space="preserve">
+    <value>The LDAP server is unavailable.</value>
   </data>
   <data name="Validation_CompareNewPassword" xml:space="preserve">
     <value>The new password and confirmation new password do not match.</value>

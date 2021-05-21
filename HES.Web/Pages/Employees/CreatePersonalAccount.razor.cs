@@ -60,7 +60,7 @@ namespace HES.Web.Pages.Employees
                 {
                     await EmployeeService.CreatePersonalAccountAsync(PersonalAccount);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(EmployeeId));
-                    await ToastService.ShowToastAsync("Account created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_CreatePersonalAccount_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
