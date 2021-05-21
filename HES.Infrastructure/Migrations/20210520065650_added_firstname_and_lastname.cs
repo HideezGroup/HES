@@ -793,6 +793,8 @@ namespace HES.Infrastructure.Migrations
                 oldNullable: true)
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.Sql("UPDATE AspNetUsers SET FirstName = 'admin', LastName = 'hideez'");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
