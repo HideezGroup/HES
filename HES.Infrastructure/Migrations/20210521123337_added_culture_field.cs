@@ -18,7 +18,7 @@ namespace HES.Infrastructure.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Culture",
-                table: "AspNetUsers");           
+                table: "AspNetUsers");
         }
     }
 }
