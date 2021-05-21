@@ -822,4 +822,124 @@
   <data name="EmployeeDetails_AddSharedAccount_Toast" xml:space="preserve">
     <value>Обліковий запис додано і буде записано, коли пристрій буде підключено до сервера.</value>
   </data>
+  <data name="Btn_Activate" xml:space="preserve">
+    <value>Активувати</value>
+  </data>
+  <data name="Btn_ActivateVault" xml:space="preserve">
+    <value>Активувати сховище</value>
+  </data>
+  <data name="Btn_ActivationCode" xml:space="preserve">
+    <value>Код активації</value>
+  </data>
+  <data name="Btn_Change" xml:space="preserve">
+    <value>Зміна</value>
+  </data>
+  <data name="Btn_ChangeProfile" xml:space="preserve">
+    <value>Змінити профіль</value>
+  </data>
+  <data name="Btn_Compromised" xml:space="preserve">
+    <value>Скомпрометований</value>
+  </data>
+  <data name="Btn_EditRFID" xml:space="preserve">
+    <value>Редагувати RFID</value>
+  </data>
+  <data name="Btn_Suspend" xml:space="preserve">
+    <value>Призупинити</value>
+  </data>
+  <data name="Btn_SuspendVault" xml:space="preserve">
+    <value>Призупинити сховище</value>
+  </data>
+  <data name="Btn_VaultCompromised" xml:space="preserve">
+    <value>Cховище cкомпрометований</value>
+  </data>
+  <data name="HardwareVaults_BtnTitle_ShowActivationCode" xml:space="preserve">
+    <value>Показати код активації</value>
+  </data>
+  <data name="HardwareVaults_BtnTitle_VaultCompromised" xml:space="preserve">
+    <value>Скомпрометований</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Body" xml:space="preserve">
+    <value>Змінити профіль доступу для сховища {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Title" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Toast" xml:space="preserve">
+    <value>Профіль апаратного сховища оновлено.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Activate" xml:space="preserve">
+    <value>Ви впевнені, що хочете активувати сховище {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Compromised" xml:space="preserve">
+    <value>Ви впевнені, що хочете встановити компрометоване сховище {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Suspend" xml:space="preserve">
+    <value>Ви впевнені, що хочете призупинити сховище {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Activate" xml:space="preserve">
+    <value>Активувати</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Compromised" xml:space="preserve">
+    <value>Скомпрометований</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Suspend" xml:space="preserve">
+    <value>Призупинити</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Activate" xml:space="preserve">
+    <value>Сховище очікує на активацію.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Compromised" xml:space="preserve">
+    <value>Сховище порушено.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Suspend" xml:space="preserve">
+    <value>Сховище очікує на призупинення.</value>
+  </data>
+  <data name="HardwareVaults_EditRfid_Title" xml:space="preserve">
+    <value>Редагувати RFID</value>
+  </data>
+  <data name="HardwareVaults_EditRfid_Toast" xml:space="preserve">
+    <value>RFID оновлено.</value>
+  </data>
+  <data name="HardwareVaults_ImportVaults_Toast" xml:space="preserve">
+    <value>Імпортовано апаратні сховища.</value>
+  </data>
+  <data name="HardwareVaults_ShowActivationCode_Title" xml:space="preserve">
+    <value>Код активації</value>
+  </data>
+  <data name="Label_Connected" xml:space="preserve">
+    <value>Підключений</value>
+  </data>
+  <data name="Label_Firmware" xml:space="preserve">
+    <value>Прошивка</value>
+  </data>
+  <data name="Label_HardwareVaultProfile" xml:space="preserve">
+    <value>Профіль апаратного сховища</value>
+  </data>
+  <data name="Label_High" xml:space="preserve">
+    <value>Високий</value>
+  </data>
+  <data name="Label_Id" xml:space="preserve">
+    <value>Ідентифікатор</value>
+  </data>
+  <data name="Label_Low" xml:space="preserve">
+    <value>Низький</value>
+  </data>
+  <data name="Label_StatusReason" xml:space="preserve">
+    <value>Причина статусу</value>
+  </data>
+  <data name="Message_HardwareVaultStateChanged" xml:space="preserve">
+    <value>Змінено стан апаратного сховища {0}.</value>
+  </data>
+  <data name="Message_PleaseTypeToConfirm" xml:space="preserve">
+    <value>Введіть &lt;b&gt;{0}&lt;/b&gt; для підтвердження.</value>
+  </data>
+  <data name="Message_RfidNotChange" xml:space="preserve">
+    <value>RFID не зміниться на апаратном сховищі.</value>
+  </data>
+  <data name="Message_YouCanSendCode" xml:space="preserve">
+    <value>Ви можете відправити код по електронній пошті</value>
+  </data>
+  <data name="Btn_ImportHardwareVaults" xml:space="preserve">
+    <value>Імпортувати апаратні сховища</value>
+  </data>
 </root>

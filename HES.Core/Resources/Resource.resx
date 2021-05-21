@@ -234,6 +234,9 @@
   <data name="Display_HardwareVault" xml:space="preserve">
     <value>Hardware Vault</value>
   </data>
+  <data name="Display_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
   <data name="Display_LastName" xml:space="preserve">
     <value>Last Name</value>
   </data>

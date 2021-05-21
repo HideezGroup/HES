@@ -7,24 +7,24 @@
 else
 {
     <p>
-        Vault - <b>@HardwareVault.Id</b>
+        @Resource.Label_HardwareVault - <b>@HardwareVault.Id</b>
     </p>
     <p>
-        Employee - <b>@HardwareVault.Employee.FullName</b>
+        @Resource.Label_Employee - <b>@HardwareVault.Employee.FullName</b>
     </p>
     @if (!string.IsNullOrWhiteSpace(HardwareVault.Employee?.Email))
     {
         <div class="d-flex justify-content-sm-between align-items-center form-group">
-            <span>You can send the code to the email</span>
-            <Button class="btn btn-outline-primary" Text="Send email" OnClick="SendEmailAsync" />
+            <span>@Resource.Message_YouCanSendCode</span>
+            <Button class="btn btn-outline-primary" Text="@Resource.Btn_SendEmail" OnClick="SendEmailAsync" />
         </div>
     }
     <div class="input-group form-group">
         <input type="@(InputType)" id="activationCodeInput" value="@Code" readonly class="form-control">
-        <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
-        <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">Copy</button>
+        <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">@Resource.Btn_Show</button>
+        <button class="btn btn-outline-secondary" type="button" @onclick="CopyToClipboardAsync">@Resource.Btn_Copy</button>
     </div>
     <div class="text-end">
-        <button class="btn btn-secondary" @onclick="CloseAsync">Close</button>
+        <button class="btn btn-secondary" @onclick="CloseAsync">@Resource.Btn_Close</button>
     </div>
 }

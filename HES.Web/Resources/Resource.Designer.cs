@@ -142,6 +142,33 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Activate.
+        /// </summary>
+        internal static string Btn_Activate {
+            get {
+                return ResourceManager.GetString("Btn_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Activate vault.
+        /// </summary>
+        internal static string Btn_ActivateVault {
+            get {
+                return ResourceManager.GetString("Btn_ActivateVault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Activation code.
+        /// </summary>
+        internal static string Btn_ActivationCode {
+            get {
+                return ResourceManager.GetString("Btn_ActivationCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Add.
         /// </summary>
         internal static string Btn_Add {
@@ -187,6 +214,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Change.
+        /// </summary>
+        internal static string Btn_Change {
+            get {
+                return ResourceManager.GetString("Btn_Change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change profile.
+        /// </summary>
+        internal static string Btn_ChangeProfile {
+            get {
+                return ResourceManager.GetString("Btn_ChangeProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Clear.
         /// </summary>
         internal static string Btn_Clear {
@@ -201,6 +246,15 @@ namespace HES.Web.Resources {
         internal static string Btn_Close {
             get {
                 return ResourceManager.GetString("Btn_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Compromised.
+        /// </summary>
+        internal static string Btn_Compromised {
+            get {
+                return ResourceManager.GetString("Btn_Compromised", resourceCulture);
             }
         }
         
@@ -322,6 +376,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit RFID.
+        /// </summary>
+        internal static string Btn_EditRFID {
+            get {
+                return ResourceManager.GetString("Btn_EditRFID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enable.
         /// </summary>
         internal static string Btn_Enable {
@@ -363,6 +426,15 @@ namespace HES.Web.Resources {
         internal static string Btn_Generate {
             get {
                 return ResourceManager.GetString("Btn_Generate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Import Hardware Vaults.
+        /// </summary>
+        internal static string Btn_ImportHardwareVaults {
+            get {
+                return ResourceManager.GetString("Btn_ImportHardwareVaults", resourceCulture);
             }
         }
         
@@ -439,6 +511,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Suspend.
+        /// </summary>
+        internal static string Btn_Suspend {
+            get {
+                return ResourceManager.GetString("Btn_Suspend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Suspend vault.
+        /// </summary>
+        internal static string Btn_SuspendVault {
+            get {
+                return ResourceManager.GetString("Btn_SuspendVault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Sync Now.
         /// </summary>
         internal static string Btn_SyncNow {
@@ -471,6 +561,15 @@ namespace HES.Web.Resources {
         internal static string Btn_TurnOn {
             get {
                 return ResourceManager.GetString("Btn_TurnOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vault Is Compromised.
+        /// </summary>
+        internal static string Btn_VaultCompromised {
+            get {
+                return ResourceManager.GetString("Btn_VaultCompromised", resourceCulture);
             }
         }
         
@@ -1051,6 +1150,168 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Show activation code.
+        /// </summary>
+        internal static string HardwareVaults_BtnTitle_ShowActivationCode {
+            get {
+                return ResourceManager.GetString("HardwareVaults_BtnTitle_ShowActivationCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Compromised.
+        /// </summary>
+        internal static string HardwareVaults_BtnTitle_VaultCompromised {
+            get {
+                return ResourceManager.GetString("HardwareVaults_BtnTitle_VaultCompromised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change access profile for {0} vault?.
+        /// </summary>
+        internal static string HardwareVaults_ChangeProfile_Body {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeProfile_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Profile.
+        /// </summary>
+        internal static string HardwareVaults_ChangeProfile_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeProfile_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware vault profile updated..
+        /// </summary>
+        internal static string HardwareVaults_ChangeProfile_Toast {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeProfile_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Are you sure you want to activate the vault {0}?.
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Body_Activate {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Body_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Are you sure you want to set compromised vault {0}?.
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Body_Compromised {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Body_Compromised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Are you sure you want to suspend the vault {0}?.
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Body_Suspend {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Body_Suspend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Activate.
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Title_Activate {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Title_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Compromised.
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Title_Compromised {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Title_Compromised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Suspend.
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Title_Suspend {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Title_Suspend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vault pending activate..
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Toast_Activate {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Toast_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vault compromised..
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Toast_Compromised {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Toast_Compromised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vault pending suspend..
+        /// </summary>
+        internal static string HardwareVaults_ChangeStatus_Toast_Suspend {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ChangeStatus_Toast_Suspend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit RFID.
+        /// </summary>
+        internal static string HardwareVaults_EditRfid_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaults_EditRfid_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на RFID updated..
+        /// </summary>
+        internal static string HardwareVaults_EditRfid_Toast {
+            get {
+                return ResourceManager.GetString("HardwareVaults_EditRfid_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vaults imported..
+        /// </summary>
+        internal static string HardwareVaults_ImportVaults_Toast {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ImportVaults_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Activation code.
+        /// </summary>
+        internal static string HardwareVaults_ShowActivationCode_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaults_ShowActivationCode_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Account.
         /// </summary>
         internal static string Label_Account {
@@ -1249,6 +1510,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Connected.
+        /// </summary>
+        internal static string Label_Connected {
+            get {
+                return ResourceManager.GetString("Label_Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Created.
         /// </summary>
         internal static string Label_Created {
@@ -1420,6 +1690,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Firmware.
+        /// </summary>
+        internal static string Label_Firmware {
+            get {
+                return ResourceManager.GetString("Label_Firmware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Full Name.
         /// </summary>
         internal static string Label_FullName {
@@ -1456,11 +1735,38 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware vault profile.
+        /// </summary>
+        internal static string Label_HardwareVaultProfile {
+            get {
+                return ResourceManager.GetString("Label_HardwareVaultProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Hardware Vaults.
         /// </summary>
         internal static string Label_HardwareVaults {
             get {
                 return ResourceManager.GetString("Label_HardwareVaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на High.
+        /// </summary>
+        internal static string Label_High {
+            get {
+                return ResourceManager.GetString("Label_High", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ID.
+        /// </summary>
+        internal static string Label_Id {
+            get {
+                return ResourceManager.GetString("Label_Id", resourceCulture);
             }
         }
         
@@ -1533,6 +1839,15 @@ namespace HES.Web.Resources {
         internal static string Label_LoginType {
             get {
                 return ResourceManager.GetString("Label_LoginType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Low.
+        /// </summary>
+        internal static string Label_Low {
+            get {
+                return ResourceManager.GetString("Label_Low", resourceCulture);
             }
         }
         
@@ -1879,6 +2194,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Status Reason.
+        /// </summary>
+        internal static string Label_StatusReason {
+            get {
+                return ResourceManager.GetString("Label_StatusReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Summaries.
         /// </summary>
         internal static string Label_Summaries {
@@ -2050,11 +2374,47 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault {0} state changed..
+        /// </summary>
+        internal static string Message_HardwareVaultStateChanged {
+            get {
+                return ResourceManager.GetString("Message_HardwareVaultStateChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Please type &lt;b&gt;{0}&lt;/b&gt; to confirm..
+        /// </summary>
+        internal static string Message_PleaseTypeToConfirm {
+            get {
+                return ResourceManager.GetString("Message_PleaseTypeToConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The RFID will not change on the hardware vault..
+        /// </summary>
+        internal static string Message_RfidNotChange {
+            get {
+                return ResourceManager.GetString("Message_RfidNotChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Please, select a hardware vault..
         /// </summary>
         internal static string Message_SelectHardwareVault {
             get {
                 return ResourceManager.GetString("Message_SelectHardwareVault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You can send the code to the email.
+        /// </summary>
+        internal static string Message_YouCanSendCode {
+            get {
+                return ResourceManager.GetString("Message_YouCanSendCode", resourceCulture);
             }
         }
         

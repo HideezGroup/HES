@@ -328,10 +328,10 @@
     <value>Створено</value>
   </data>
   <data name="Display_LastSeenEndDate" xml:space="preserve">
-    <value>Дата останнього бачення дати закінчення</value>
+    <value>Востаннє бачили кінцева дата</value>
   </data>
   <data name="Display_LastSeenStartDate" xml:space="preserve">
-    <value>Дата останнього відвідування</value>
+    <value>Востаннє бачили дата початку</value>
   </data>
   <data name="Display_OtpUpdated" xml:space="preserve">
     <value>OTP оновлено</value>
@@ -356,5 +356,8 @@
   </data>
   <data name="Exception_EmployeeRequiresLastName" xml:space="preserve">
     <value>Потрібно прізвище.</value>
+  </data>
+  <data name="Display_Id" xml:space="preserve">
+    <value>Ідентифікатор</value>
   </data>
 </root>

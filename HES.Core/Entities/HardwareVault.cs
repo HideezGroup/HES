@@ -14,22 +14,22 @@ namespace HES.Core.Entities
         public string Id { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_MAC), ResourceType = typeof(Resources.Resource))]
-        [Required]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string MAC { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_Model), ResourceType = typeof(Resources.Resource))]
-        [Required]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string Model { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_RFID), ResourceType = typeof(Resources.Resource))]
-        [Required]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string RFID { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_Battery), ResourceType = typeof(Resources.Resource))]
         public int Battery { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_Firmware), ResourceType = typeof(Resources.Resource))]
-        [Required]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string Firmware { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_Status), ResourceType = typeof(Resources.Resource))]

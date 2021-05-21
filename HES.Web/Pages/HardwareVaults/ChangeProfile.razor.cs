@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -35,7 +36,7 @@ namespace HES.Web.Pages.HardwareVaults
 
                 HardwareVault = await HardwareVaultService.GetVaultByIdAsync(HardwareVaultId);
                 if (HardwareVault == null)
-                    throw new Exception("HardwareVault not found.");
+                    throw new HESException(HESCode.HardwareVaultNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(HardwareVault.Id, out object _);
                 if (!EntityBeingEdited)
@@ -60,7 +61,7 @@ namespace HES.Web.Pages.HardwareVaults
             {
                 await HardwareVaultService.ChangeVaultProfileAsync(HardwareVault.Id, SelectedVaultProfileId);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(HardwareVault.Id);
-                await ToastService.ShowToastAsync("Vault profile updated", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.HardwareVaults_ChangeProfile_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

@@ -819,7 +819,127 @@
   <data name="Label_Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Btn_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="Btn_ActivateVault" xml:space="preserve">
+    <value>Activate vault</value>
+  </data>
+  <data name="Btn_ActivationCode" xml:space="preserve">
+    <value>Activation code</value>
+  </data>
+  <data name="Btn_Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Btn_ChangeProfile" xml:space="preserve">
+    <value>Change profile</value>
+  </data>
+  <data name="Btn_Compromised" xml:space="preserve">
+    <value>Compromised</value>
+  </data>
+  <data name="Btn_EditRFID" xml:space="preserve">
+    <value>Edit RFID</value>
+  </data>
+  <data name="Btn_Suspend" xml:space="preserve">
+    <value>Suspend</value>
+  </data>
+  <data name="Btn_SuspendVault" xml:space="preserve">
+    <value>Suspend vault</value>
+  </data>
+  <data name="Btn_VaultCompromised" xml:space="preserve">
+    <value>Vault Is Compromised</value>
+  </data>
   <data name="EmployeeDetails_AddSharedAccount_Toast" xml:space="preserve">
     <value>Account added and will be recorded when the device is connected to the server.</value>
+  </data>
+  <data name="HardwareVaults_BtnTitle_ShowActivationCode" xml:space="preserve">
+    <value>Show activation code</value>
+  </data>
+  <data name="HardwareVaults_BtnTitle_VaultCompromised" xml:space="preserve">
+    <value>Compromised</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Body" xml:space="preserve">
+    <value>Change access profile for {0} vault?</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Title" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Toast" xml:space="preserve">
+    <value>Hardware vault profile updated.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Activate" xml:space="preserve">
+    <value>Are you sure you want to activate the vault {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Compromised" xml:space="preserve">
+    <value>Are you sure you want to set compromised vault {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Suspend" xml:space="preserve">
+    <value>Are you sure you want to suspend the vault {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Compromised" xml:space="preserve">
+    <value>Compromised</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Suspend" xml:space="preserve">
+    <value>Suspend</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Activate" xml:space="preserve">
+    <value>Vault pending activate.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Compromised" xml:space="preserve">
+    <value>Vault compromised.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Suspend" xml:space="preserve">
+    <value>Vault pending suspend.</value>
+  </data>
+  <data name="HardwareVaults_EditRfid_Title" xml:space="preserve">
+    <value>Edit RFID</value>
+  </data>
+  <data name="HardwareVaults_EditRfid_Toast" xml:space="preserve">
+    <value>RFID updated.</value>
+  </data>
+  <data name="HardwareVaults_ImportVaults_Toast" xml:space="preserve">
+    <value>Hardware Vaults imported.</value>
+  </data>
+  <data name="HardwareVaults_ShowActivationCode_Title" xml:space="preserve">
+    <value>Activation code</value>
+  </data>
+  <data name="Label_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Label_Firmware" xml:space="preserve">
+    <value>Firmware</value>
+  </data>
+  <data name="Label_HardwareVaultProfile" xml:space="preserve">
+    <value>Hardware vault profile</value>
+  </data>
+  <data name="Label_High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="Label_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Label_Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="Label_StatusReason" xml:space="preserve">
+    <value>Status Reason</value>
+  </data>
+  <data name="Message_HardwareVaultStateChanged" xml:space="preserve">
+    <value>Hardware Vault {0} state changed.</value>
+  </data>
+  <data name="Message_PleaseTypeToConfirm" xml:space="preserve">
+    <value>Please type &lt;b&gt;{0}&lt;/b&gt; to confirm.</value>
+  </data>
+  <data name="Message_RfidNotChange" xml:space="preserve">
+    <value>The RFID will not change on the hardware vault.</value>
+  </data>
+  <data name="Message_YouCanSendCode" xml:space="preserve">
+    <value>You can send the code to the email</value>
+  </data>
+  <data name="Btn_ImportHardwareVaults" xml:space="preserve">
+    <value>Import Hardware Vaults</value>
   </data>
 </root>

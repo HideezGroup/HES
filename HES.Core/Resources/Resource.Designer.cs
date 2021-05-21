@@ -412,6 +412,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на ID.
+        /// </summary>
+        public static string Display_Id {
+            get {
+                return ResourceManager.GetString("Display_Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Last Name.
         /// </summary>
         public static string Display_LastName {
