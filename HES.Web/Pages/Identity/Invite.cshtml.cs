@@ -1,13 +1,14 @@
 using HES.Core.Constants;
 using HES.Core.Entities;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Identity
@@ -35,85 +36,76 @@ namespace HES.Web.Pages.Identity
         public string ErrorMessage { get; set; }
 
         [BindProperty]
-        public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-
-            [Required]
-            [Display(Name = "First Name")]
-            public string FirstName { get; set; }
-
-            [Required]
-            [Display(Name = "Last Name")]
-            public string LastName { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-
-            public string Code { get; set; }
-        }
+        public UserInviteModel Input { get; set; }
 
         public IActionResult OnGet(string code = null, string email = null)
         {
-            if (code == null)
+            try
             {
-                ErrorMessage = "A code must be supplied for invitation.";
-                return Page();
-            }
-            else
-            {
-                Input = new InputModel
+                if (code == null)
                 {
-                    Code = code,
-                    Email = email
-                };
+                    ErrorMessage = Resources.Resource.Identity_Invite_CodeMustBeSupplied;
+                    return Page();
+                }
+                else
+                {
+                    Input = new UserInviteModel
+                    {
+                        Code = code,
+                        Email = email
+                    };
+                    return Page();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                ErrorMessage = ex.Message;
                 return Page();
             }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return Page();
-            }
-
-            var user = await _userManager.FindByEmailAsync(Input.Email);
-            if (user == null)
-            {
-                ErrorMessage = "Email address does not exist.";
-                return Page();
-            }
-
-            var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
-            if (result.Succeeded)
-            {
-                user.EmailConfirmed = true;
-                user.FirstName = Input.FirstName;
-                user.LastName = Input.LastName;
-                await _userManager.UpdateAsync(user);
-                await _synchronizationService.UpdateAdministratorState();
-
-                var login_result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: true);
-                if (login_result.Succeeded)
+                if (!ModelState.IsValid)
                 {
-                    return LocalRedirect(Routes.Dashboard);
+                    return Page();
                 }
-            }
 
-            ErrorMessage = string.Join(". ", result.Errors.Select(x => x.Description).ToArray());
-            return Page();
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user == null)
+                {
+                    ErrorMessage = Resources.Resource.Identity_Invite_EmailAddressDoesNotExist;
+                    return Page();
+                }
+
+                var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
+                if (result.Succeeded)
+                {
+                    user.EmailConfirmed = true;
+                    user.FirstName = Input.FirstName;
+                    user.LastName = Input.LastName;
+                    await _userManager.UpdateAsync(user);
+                    await _synchronizationService.UpdateAdministratorState();
+
+                    var loginResult = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: true);
+                    if (loginResult.Succeeded)
+                    {
+                        return LocalRedirect(Routes.Dashboard);
+                    }
+                }
+
+                ErrorMessage = HESException.GetIdentityResultErrors(result.Errors);
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                ErrorMessage = ex.Message;
+                return Page();
+            }
         }
     }
 }

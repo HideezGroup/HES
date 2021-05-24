@@ -7,15 +7,15 @@ namespace HES.Core.Models.Identity
         [Required]
         public string UserId { get; set; }
 
-        [Required]
-        [Display(Name = "First Name")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_FirstName), ResourceType = typeof(Resources.Resource))]
         public string FirstName { get; set; }
 
-        [Required]
-        [Display(Name = "Last Name")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_LastName), ResourceType = typeof(Resources.Resource))]
         public string LastName { get; set; }
 
-        [Display(Name = "Phone Number")]
+        [Display(Name = nameof(Resources.Resource.Display_PhoneNumber), ResourceType = typeof(Resources.Resource))]
         public string PhoneNumber { get; set; }
     }
 }

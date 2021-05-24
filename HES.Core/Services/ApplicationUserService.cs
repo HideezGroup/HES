@@ -53,6 +53,10 @@ namespace HES.Core.Services
 
         public async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return null;
+            }
             return await _userManager.FindByEmailAsync(email);
         }
 
@@ -220,7 +224,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task ChangeEmailAsync(ChangeEmailModel parameters)
+        public async Task ChangeEmailAsync(UserChangeEmailModel parameters)
         {
             if (parameters == null)
             {
@@ -284,7 +288,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task UpdateAccountPasswordAsync(ChangePasswordModel parameters)
+        public async Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters)
         {
             if (parameters == null)
             {

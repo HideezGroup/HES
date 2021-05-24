@@ -41,8 +41,8 @@ namespace HES.Web.Pages.Identity
                 var samlRequest = NavigationManager.GetQueryValue(Saml2Constants.Message.SamlRequest);
                 if (samlRequest == null)
                 {
-                    ErrorTitle = "Wrong parameters";
-                    ErrorDescription = $"HTTP Query String does not contain {Saml2Constants.Message.SamlRequest}";
+                    ErrorTitle = Resources.Resource.Identity_SingleSignOn_WrongQueryString_Title;
+                    ErrorDescription = string.Format(Resources.Resource.Identity_SingleSignOn_WrongQueryString_Description, Saml2Constants.Message.SamlRequest);
                 }
 
                 SetInitialized();

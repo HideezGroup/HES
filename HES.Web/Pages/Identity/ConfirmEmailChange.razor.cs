@@ -38,7 +38,7 @@ namespace HES.Web.Pages.Identity
 
                 if (userId == null || email == null || code == null)
                 {
-                    SetWrongParameters("Wrong code", "This code is not valid.");
+                    SetWrongParameters(Resources.Resource.Common_WrongCode_Title, Resources.Resource.Common_WrongCode_Description);
                     SetInitialized();
                     return;
                 }
@@ -46,7 +46,7 @@ namespace HES.Web.Pages.Identity
                 var user = await UserManager.FindByIdAsync(userId);
                 if (user == null)
                 {
-                    SetWrongParameters("User not found", "Unable to load user.");
+                    SetWrongParameters(Resources.Resource.Common_UserNotFound_Title, Resources.Resource.Common_UserNotFound_Description);
                     SetInitialized();
                     return;
                 }
@@ -59,7 +59,7 @@ namespace HES.Web.Pages.Identity
                 }
                 catch (Exception ex)
                 {
-                    SetWrongParameters("Error changing email", ex.Message);
+                    SetWrongParameters(Resources.Resource.Common_ErrorChangingEmail_Title, ex.Message);
                     SetInitialized();
                     return;
                 }

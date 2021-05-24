@@ -28,7 +28,7 @@ namespace HES.Web.Pages.Profile
 
         public ApplicationUser User { get; set; }
         public UserProfileModel UserProfileModel { get; set; }
-        public ChangeEmailModel ChangeEmailModel { get; set; }
+        public UserChangeEmailModel ChangeEmailModel { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public Button ButtonUpdateProfile { get; set; }
         public Button ButtonChangeEmail { get; set; }
@@ -55,7 +55,7 @@ namespace HES.Web.Pages.Profile
                     PhoneNumber = User.PhoneNumber
                 };
 
-                ChangeEmailModel = new ChangeEmailModel
+                ChangeEmailModel = new UserChangeEmailModel
                 {
                     CurrentEmail = User.Email
                 };

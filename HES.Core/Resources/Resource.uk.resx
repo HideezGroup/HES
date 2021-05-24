@@ -360,4 +360,31 @@
   <data name="Display_Id" xml:space="preserve">
     <value>Ідентифікатор</value>
   </data>
+  <data name="Display_AuthenticatorCode" xml:space="preserve">
+    <value>Код автентифікатора</value>
+  </data>
+  <data name="Display_ConfirmNewPassword" xml:space="preserve">
+    <value>Підтвердити новий пароль</value>
+  </data>
+  <data name="Display_CurrentEmail" xml:space="preserve">
+    <value>Поточна електронна пошта</value>
+  </data>
+  <data name="Display_CurrentPassword" xml:space="preserve">
+    <value>Поточний пароль</value>
+  </data>
+  <data name="Display_NewEmail" xml:space="preserve">
+    <value>Нова електронна пошта</value>
+  </data>
+  <data name="Display_NewPassword" xml:space="preserve">
+    <value>Новий пароль</value>
+  </data>
+  <data name="Display_RecoveryCode" xml:space="preserve">
+    <value>Код відновлення</value>
+  </data>
+  <data name="Display_RememberMachine" xml:space="preserve">
+    <value>Запам’ятайте машину</value>
+  </data>
+  <data name="Display_RememberMe" xml:space="preserve">
+    <value>Пам'ятай мене</value>
+  </data>
 </root>

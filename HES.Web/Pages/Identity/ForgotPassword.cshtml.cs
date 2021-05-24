@@ -1,11 +1,11 @@
 using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.Interfaces;
+using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -18,22 +18,14 @@ namespace HES.Web.Pages.Identity
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSenderService _emailSender;
 
-        public ForgotPasswordModel(UserManager<ApplicationUser> userManager,
-                                   IEmailSenderService emailSender)
+        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailSenderService emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-        }
+        public UserEmailModel Input { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {

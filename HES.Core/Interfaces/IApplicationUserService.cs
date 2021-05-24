@@ -33,9 +33,9 @@ namespace HES.Core.Interfaces
 
         #region Profile
         Task UpdateProfileInfoAsync(UserProfileModel parameters);
-        Task ChangeEmailAsync(ChangeEmailModel parameters);
+        Task ChangeEmailAsync(UserChangeEmailModel parameters);
         Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters);
-        Task UpdateAccountPasswordAsync(ChangePasswordModel parameters);
+        Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters);
         Task<TwoFactorInfo> GetTwoFactorInfoAsync(HttpClient httpClient);
         Task ForgetBrowserAsync(HttpClient httpClient);
 

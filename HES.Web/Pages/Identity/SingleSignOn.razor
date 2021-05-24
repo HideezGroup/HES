@@ -19,32 +19,32 @@
                 @switch (AuthenticationStep)
                 {
                     case AuthenticationStep.EmailValidation:
-                        <h3 class="text-navyblue my-3">Single Sign On</h3>
+                        <h3 class="text-navyblue my-3">@Resource.Identity_SingleSignOn_Header</h3>
                         <EditForm Model="UserEmailModel" OnValidSubmit="NextAsync">
                             <DataAnnotationsValidator />
                             <ValidationErrorMessage @ref="ValidationErrorMessage" />
                             <div class="form-group">
-                                <InputText @bind-Value="UserEmailModel.Email" class="form-control" placeholder="Email" id="email" autofocus />
+                                <InputText @bind-Value="UserEmailModel.Email" class="form-control" placeholder="@Resource.Label_Email" id="email" autofocus />
                                 <ValidationMessage For="@(() => UserEmailModel.Email)" class="text-danger" />
                             </div>
                             <div class="text-end">
-                                <Button @ref="Button" Text="Next" type="submit" class="btn btn-primary" />
+                                <Button @ref="Button" Text="@Resource.Btn_Next" type="submit" class="btn btn-primary" />
                             </div>
                         </EditForm>
                         break;
                     case AuthenticationStep.SecurityKeyAuthentication:
-                        <h3 class="text-navyblue my-3">Sign in with a security key</h3>
-                        <span>Your PC will open a security window. Follow the instructions there to sign in.</span>
+                        <h3 class="text-navyblue my-3">@Resource.SecurityKey_SignIn_Title</h3>
+                        <span>@Resource.SecurityKey_SignIn_Description</span>
                         <div class="d-flex justify-content-center align-items-center w-100 h-100">
                             <Loader DisableShadow="true" />
                         </div>
                         break;
                     case AuthenticationStep.SecurityKeyError:
-                        <h3 class="text-navyblue my-3">Sign in with a security key</h3>
-                        <span>We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</span>
+                        <h3 class="text-navyblue my-3">@Resource.SecurityKey_SignIn_Title</h3>
+                        <span>@Resource.SecurityKey_Error_Description</span>
                         <div class="text-end mt-3">
-                            <Button Text="Back" OnClick="BackToEmailValidation" class="btn btn-outline-secondary" />
-                            <Button Text="Try Again" OnClick="TryAgainAsync" class="btn btn-primary" />
+                            <Button Text="@Resource.Btn_Back" OnClick="BackToEmailValidation" class="btn btn-outline-secondary" />
+                            <Button Text="@Resource.Btn_TryAgain" OnClick="TryAgainAsync" class="btn btn-primary" />
                         </div>
                         break;
                 }

@@ -195,17 +195,29 @@
   <data name="Display_Apps" xml:space="preserve">
     <value>Applications (separate by semicolon)</value>
   </data>
+  <data name="Display_AuthenticatorCode" xml:space="preserve">
+    <value>Authenticator code</value>
+  </data>
   <data name="Display_Battery" xml:space="preserve">
     <value>Battery</value>
   </data>
   <data name="Display_Company" xml:space="preserve">
     <value>Company</value>
   </data>
+  <data name="Display_ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
   <data name="Display_ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
   </data>
   <data name="Display_Created" xml:space="preserve">
     <value>Created</value>
+  </data>
+  <data name="Display_CurrentEmail" xml:space="preserve">
+    <value>Current Email</value>
+  </data>
+  <data name="Display_CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
   </data>
   <data name="Display_Department" xml:space="preserve">
     <value>Department</value>
@@ -273,6 +285,12 @@
   <data name="Display_Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Display_NewEmail" xml:space="preserve">
+    <value>New Email</value>
+  </data>
+  <data name="Display_NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
   <data name="Display_Note" xml:space="preserve">
     <value>Note</value>
   </data>
@@ -296,6 +314,15 @@
   </data>
   <data name="Display_Profile" xml:space="preserve">
     <value>Profile</value>
+  </data>
+  <data name="Display_RecoveryCode" xml:space="preserve">
+    <value>Recovery Code</value>
+  </data>
+  <data name="Display_RememberMachine" xml:space="preserve">
+    <value>Remember machine</value>
+  </data>
+  <data name="Display_RememberMe" xml:space="preserve">
+    <value>Remember me</value>
   </data>
   <data name="Display_RFID" xml:space="preserve">
     <value>RFID</value>

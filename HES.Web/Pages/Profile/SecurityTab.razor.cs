@@ -31,7 +31,7 @@ namespace HES.Web.Pages.Profile
 
         public List<FidoStoredCredential> StoredCredentials { get; set; }
         public ApplicationUser CurrentUser { get; set; }
-        public ChangePasswordModel ChangePasswordModel { get; set; }
+        public UserChangePasswordModel ChangePasswordModel { get; set; }
         public Button ButtonChangePassword { get; set; }
         public TwoFactorInfo TwoFactorInfo { get; set; }
 
@@ -49,7 +49,7 @@ namespace HES.Web.Pages.Profile
                 }
 
                 // Password
-                ChangePasswordModel = new ChangePasswordModel() { UserId = CurrentUser.Id };
+                ChangePasswordModel = new UserChangePasswordModel() { UserId = CurrentUser.Id };
 
                 // Security Key
                 await LoadStoredCredentialsAsync();
@@ -78,7 +78,7 @@ namespace HES.Web.Pages.Profile
                     await IdentityApiClient.RefreshSignInAsync();
                     await ToastService.ShowToastAsync("Password updated.", ToastType.Success);
 
-                    ChangePasswordModel = new ChangePasswordModel() { UserId = CurrentUser.Id };
+                    ChangePasswordModel = new UserChangePasswordModel() { UserId = CurrentUser.Id };
                 });
             }
             catch (Exception ex)

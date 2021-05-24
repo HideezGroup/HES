@@ -295,6 +295,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Authenticator code.
+        /// </summary>
+        public static string Display_AuthenticatorCode {
+            get {
+                return ResourceManager.GetString("Display_AuthenticatorCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Battery.
         /// </summary>
         public static string Display_Battery {
@@ -313,6 +322,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm New Password.
+        /// </summary>
+        public static string Display_ConfirmNewPassword {
+            get {
+                return ResourceManager.GetString("Display_ConfirmNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Confirm Password.
         /// </summary>
         public static string Display_ConfirmPassword {
@@ -327,6 +345,24 @@ namespace HES.Core.Resources {
         public static string Display_Created {
             get {
                 return ResourceManager.GetString("Display_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Current Email.
+        /// </summary>
+        public static string Display_CurrentEmail {
+            get {
+                return ResourceManager.GetString("Display_CurrentEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Current Password.
+        /// </summary>
+        public static string Display_CurrentPassword {
+            get {
+                return ResourceManager.GetString("Display_CurrentPassword", resourceCulture);
             }
         }
         
@@ -529,6 +565,24 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на New Email.
+        /// </summary>
+        public static string Display_NewEmail {
+            get {
+                return ResourceManager.GetString("Display_NewEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на New Password.
+        /// </summary>
+        public static string Display_NewPassword {
+            get {
+                return ResourceManager.GetString("Display_NewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Note.
         /// </summary>
         public static string Display_Note {
@@ -597,6 +651,33 @@ namespace HES.Core.Resources {
         public static string Display_Profile {
             get {
                 return ResourceManager.GetString("Display_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Recovery Code.
+        /// </summary>
+        public static string Display_RecoveryCode {
+            get {
+                return ResourceManager.GetString("Display_RecoveryCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remember this machine.
+        /// </summary>
+        public static string Display_RememberMachine {
+            get {
+                return ResourceManager.GetString("Display_RememberMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remember me.
+        /// </summary>
+        public static string Display_RememberMe {
+            get {
+                return ResourceManager.GetString("Display_RememberMe", resourceCulture);
             }
         }
         
