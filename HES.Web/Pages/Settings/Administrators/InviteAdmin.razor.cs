@@ -29,7 +29,7 @@ namespace HES.Web.Pages.Settings.Administrators
                 {
                     var callBakcUrl = await ApplicationUserService.InviteAdministratorAsync(Invitation.Email, NavigationManager.BaseUri);
                     await EmailSenderService.SendUserInvitationAsync(Invitation.Email, callBakcUrl);
-                    await ToastService.ShowToastAsync("Administrator invited.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Administrators_InviteAdmin_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

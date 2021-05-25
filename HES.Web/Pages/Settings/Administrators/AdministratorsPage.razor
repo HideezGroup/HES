@@ -9,14 +9,14 @@
         <WrapperHeader>
             <DataTableActions ShowFilterButton="false" RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
                 <ActionButtons>
-                    <button type="button" @onclick="InviteAdminAsync" class="btn btn-primary me-1" title="Invite admin">
-                        Invite admin
+                    <button type="button" @onclick="InviteAdminAsync" class="btn btn-primary me-1">
+                        @Resource.Btn_InviteAdmin
                     </button>
                     @if (DataTableService.SelectedEntity != null)
                     {
                         if (!DataTableService.SelectedEntity.EmailConfirmed)
                         {
-                            <Button Text="Resend invite" class="btn btn-light border ms-1" OnClick="ResendInviteAsync">
+                            <Button Text="@Resource.Btn_ResendInvite" class="btn btn-light border ms-1" OnClick="ResendInviteAsync">
                                 <Image>
                                     <img class="icon-btn" src="/svg/icon-send.svg" />
                                 </Image>
@@ -24,9 +24,9 @@
                         }
                         if (DataTableService.Entities.Count != 1 && AuthenticationState.User.Identity.Name != DataTableService.SelectedEntity.Email)
                         {
-                            <button type="button" @onclick="DeleteAdminAsync" class="btn btn-light border ms-1" title="Delete admin">
+                            <button type="button" @onclick="DeleteAdminAsync" class="btn btn-light border ms-1">
                                 <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                Delete
+                                @Resource.Btn_Delete
                             </button>
                         }
                     }
@@ -36,31 +36,31 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" Loading="DataTableService.Loading">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Email"
+                    <DataTableHeaderItem Title="@Resource.Label_Email"
                                          SortColumn="@nameof(ApplicationUser.Email)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Name"
+                    <DataTableHeaderItem Title="@Resource.Label_Name"
                                          SortColumn="@nameof(ApplicationUser.DisplayName)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Phone Number"
+                    <DataTableHeaderItem Title="@Resource.Label_PhoneNumber"
                                          SortColumn="@nameof(ApplicationUser.PhoneNumber)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Invite Accepted"
+                    <DataTableHeaderItem Title="@Resource.Label_InviteAccepted"
                                          SortColumn="@nameof(ApplicationUser.EmailConfirmed)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Two Factor Enabled"
+                    <DataTableHeaderItem Title="@Resource.Label_TwoFactorEnabled"
                                          SortColumn="@nameof(ApplicationUser.TwoFactorEnabled)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
@@ -80,21 +80,21 @@
                     <td>
                         @if (context.EmailConfirmed)
                             {
-                            <span class="badge bg-success">Yes</span>
+                            <span class="badge bg-success">@Resource.Label_Yes</span>
                             }
                             else
                             {
-                            <span class="badge bg-danger">No</span>
+                            <span class="badge bg-danger">@Resource.Label_No</span>
                             }
                     </td>
                     <td>
                         @if (context.TwoFactorEnabled)
                             {
-                            <span class="badge bg-success">Yes</span>
+                            <span class="badge bg-success">@Resource.Label_Yes</span>
                             }
                             else
                             {
-                            <span class="badge bg-secondary">No</span>
+                            <span class="badge bg-secondary">@Resource.Label_No</span>
                             }
                     </td>
                 </TableRow>

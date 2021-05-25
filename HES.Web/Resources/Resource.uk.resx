@@ -1323,4 +1323,37 @@
   <data name="Profile_Security_SecurityKeys_RegistrationDate" xml:space="preserve">
     <value>Дата Реєстрації</value>
   </data>
+  <data name="Administrators_DeleteAdministrator_Body" xml:space="preserve">
+    <value>Ви хочете видалити адміністратора {0}?</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Title" xml:space="preserve">
+    <value>Видалити адміністратора</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Toast" xml:space="preserve">
+    <value>Адміністратора видалено.</value>
+  </data>
+  <data name="Administrators_InviteAdmin_Title" xml:space="preserve">
+    <value>Запросити адміністратора.</value>
+  </data>
+  <data name="Administrators_InviteAdmin_Toast" xml:space="preserve">
+    <value>Адміністратора запрошений</value>
+  </data>
+  <data name="Administrators_ResendInvite_Toast" xml:space="preserve">
+    <value>Запрошення повторно відправлено.</value>
+  </data>
+  <data name="Btn_Invite" xml:space="preserve">
+    <value>Запросити</value>
+  </data>
+  <data name="Btn_InviteAdmin" xml:space="preserve">
+    <value>Запросити адміністратора</value>
+  </data>
+  <data name="Btn_ResendInvite" xml:space="preserve">
+    <value>Повторно надіслати запрошення</value>
+  </data>
+  <data name="Label_InviteAccepted" xml:space="preserve">
+    <value>Запрошення прийнято</value>
+  </data>
+  <data name="Label_TwoFactorEnabled" xml:space="preserve">
+    <value>Двофактор увімкнено</value>
+  </data>
 </root>

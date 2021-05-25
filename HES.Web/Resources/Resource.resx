@@ -1323,4 +1323,37 @@
   <data name="Profile_Security_SecurityKeys_RegistrationDate" xml:space="preserve">
     <value>Registration Date</value>
   </data>
+  <data name="Administrators_DeleteAdministrator_Body" xml:space="preserve">
+    <value>You want to delete administrator {0}?</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Title" xml:space="preserve">
+    <value>Delete Administrator</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Toast" xml:space="preserve">
+    <value>Administrator deleted.</value>
+  </data>
+  <data name="Administrators_InviteAdmin_Title" xml:space="preserve">
+    <value>Invite Administrator</value>
+  </data>
+  <data name="Administrators_InviteAdmin_Toast" xml:space="preserve">
+    <value>Administrator invited.</value>
+  </data>
+  <data name="Administrators_ResendInvite_Toast" xml:space="preserve">
+    <value>Invitation resent.</value>
+  </data>
+  <data name="Btn_Invite" xml:space="preserve">
+    <value>Invite</value>
+  </data>
+  <data name="Btn_InviteAdmin" xml:space="preserve">
+    <value>Invite admin</value>
+  </data>
+  <data name="Btn_ResendInvite" xml:space="preserve">
+    <value>Resend invite</value>
+  </data>
+  <data name="Label_InviteAccepted" xml:space="preserve">
+    <value>Invite Accepted</value>
+  </data>
+  <data name="Label_TwoFactorEnabled" xml:space="preserve">
+    <value>Two Factor Enabled</value>
+  </data>
 </root>

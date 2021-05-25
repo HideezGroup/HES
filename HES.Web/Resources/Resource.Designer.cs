@@ -61,6 +61,60 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete administrator {0}?.
+        /// </summary>
+        public static string Administrators_DeleteAdministrator_Body {
+            get {
+                return ResourceManager.GetString("Administrators_DeleteAdministrator_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Administrator.
+        /// </summary>
+        public static string Administrators_DeleteAdministrator_Title {
+            get {
+                return ResourceManager.GetString("Administrators_DeleteAdministrator_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Administrator deleted..
+        /// </summary>
+        public static string Administrators_DeleteAdministrator_Toast {
+            get {
+                return ResourceManager.GetString("Administrators_DeleteAdministrator_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invite Administrator.
+        /// </summary>
+        public static string Administrators_InviteAdmin_Title {
+            get {
+                return ResourceManager.GetString("Administrators_InviteAdmin_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Administrator invited..
+        /// </summary>
+        public static string Administrators_InviteAdmin_Toast {
+            get {
+                return ResourceManager.GetString("Administrators_InviteAdmin_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invite resent..
+        /// </summary>
+        public static string Administrators_ResendInvite_Toast {
+            get {
+                return ResourceManager.GetString("Administrators_ResendInvite_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Are you sure you want to turn off the alarm and unlock all workstations?.
         /// </summary>
         public static string Alarm_DisableAlarm_Body {
@@ -358,7 +412,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Disable2FA.
+        ///   Ищет локализованную строку, похожую на Disable 2FA.
         /// </summary>
         public static string Btn_Disable2FA {
             get {
@@ -502,6 +556,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invite.
+        /// </summary>
+        public static string Btn_Invite {
+            get {
+                return ResourceManager.GetString("Btn_Invite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invite admin.
+        /// </summary>
+        public static string Btn_InviteAdmin {
+            get {
+                return ResourceManager.GetString("Btn_InviteAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Login.
         /// </summary>
         public static string Btn_Login {
@@ -543,6 +615,15 @@ namespace HES.Web.Resources {
         public static string Btn_Resend {
             get {
                 return ResourceManager.GetString("Btn_Resend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Resend invite.
+        /// </summary>
+        public static string Btn_ResendInvite {
+            get {
+                return ResourceManager.GetString("Btn_ResendInvite", resourceCulture);
             }
         }
         
@@ -2320,6 +2401,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invite Accepted.
+        /// </summary>
+        public static string Label_InviteAccepted {
+            get {
+                return ResourceManager.GetString("Label_InviteAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Last Seen.
         /// </summary>
         public static string Label_LastSeen {
@@ -2793,6 +2883,15 @@ namespace HES.Web.Resources {
         public static string Label_TotalSessionsDuration {
             get {
                 return ResourceManager.GetString("Label_TotalSessionsDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Two Factor Enabled.
+        /// </summary>
+        public static string Label_TwoFactorEnabled {
+            get {
+                return ResourceManager.GetString("Label_TwoFactorEnabled", resourceCulture);
             }
         }
         
