@@ -1359,6 +1359,9 @@
   <data name="Btn_ChangePassword" xml:space="preserve">
     <value>Change Password</value>
   </data>
+  <data name="Btn_CreateProfile" xml:space="preserve">
+    <value>Create Profile</value>
+  </data>
   <data name="DataProtection_ChangeDataProtectionPassword_Title" xml:space="preserve">
     <value>Change Data Protection Password</value>
   </data>
@@ -1433,5 +1436,92 @@
         &lt;br /&gt;
         An update of the Data Protection password should be done according to the company’s information security regulations.
     &lt;/p&gt;</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_CreateAccessProfile_Title" xml:space="preserve">
+    <value>Create Profile</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_CreateAccessProfile_Toast" xml:space="preserve">
+    <value>Hardware vault profile created.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Body" xml:space="preserve">
+    <value>You want to delete hardware vault access profile {0}?</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Title" xml:space="preserve">
+    <value>Delete Profile</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Toast" xml:space="preserve">
+    <value>Hardware vault profile deleted.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DetailsProfile_Title" xml:space="preserve">
+    <value>Details Profile</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_EditProfile_Title" xml:space="preserve">
+    <value>Edit Profile</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_AuthorizationParameters" xml:space="preserve">
+    <value>Authorization parameters</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button" xml:space="preserve">
+    <value>Button</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_Connection_Title" xml:space="preserve">
+    <value>Request the device button confirmation for connecting the device to the computer that is already bonded with the computer.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_Pairing_Title" xml:space="preserve">
+    <value>Request the device button confirmation for connecting the device to the computer for the first time.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_StorageAccess_Title" xml:space="preserve">
+    <value>Request the device button confirmation when an application is getting access to the device’s storage.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Connection" xml:space="preserve">
+    <value>Connection</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Pairing" xml:space="preserve">
+    <value>Pairing</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN" xml:space="preserve">
+    <value>PIN</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinExpiration" xml:space="preserve">
+    <value>PIN expiration</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinExpiration_Title" xml:space="preserve">
+    <value>After PIN code is expired, the device storage will be locked until the user enters the PIN again.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry" xml:space="preserve">
+    <value>PIN incorrect entry</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry_Title" xml:space="preserve">
+    <value>Maximum number of incorrect PIN code entering. After the number of entries is exceeded, the device is locked.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinLength" xml:space="preserve">
+    <value>PIN length</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinSettings" xml:space="preserve">
+    <value>PIN settings</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_Connection_Title" xml:space="preserve">
+    <value>Request the PIN-code for connecting the device to the computer that is already bonded with the computer.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_Pairing_Title" xml:space="preserve">
+    <value>Request the PIN-code for connecting the device to the computer for the first time.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_StorageAccess_Title" xml:space="preserve">
+    <value>Request the PIN-code when an application is getting access to the device’s storage.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation" xml:space="preserve">
+    <value>Server Confirmation</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title" xml:space="preserve">
+    <value>Require the server confirmation for connecting the device to the computer that is already bonded with the computer.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Pairing_Title" xml:space="preserve">
+    <value>Require the server confirmation for connecting the device to the computer for the first time.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_StorageAccess_Title" xml:space="preserve">
+    <value>Require the server confirmation when an application is getting access to the device’s storage.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_StorageAccess" xml:space="preserve">
+    <value>Storage Access</value>
   </data>
 </root>

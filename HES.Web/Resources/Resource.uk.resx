@@ -805,7 +805,7 @@
     <value>Модель</value>
   </data>
   <data name="Label_No" xml:space="preserve">
-    <value>Немає</value>
+    <value>Ні</value>
   </data>
   <data name="Label_Reason" xml:space="preserve">
     <value>Причина</value>
@@ -1433,5 +1433,95 @@
         &lt;br /&gt;
         Оновлення пароля захисту даних повинно відбуватися відповідно до вимог компанії щодо захисту інформації.
     &lt;/p&gt;</value>
+  </data>
+  <data name="Btn_CreateProfile" xml:space="preserve">
+    <value>Створити профіль</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_CreateAccessProfile_Title" xml:space="preserve">
+    <value>Створити профіль</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_CreateAccessProfile_Toast" xml:space="preserve">
+    <value>Створено профіль апаратного сховища.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Body" xml:space="preserve">
+    <value>Ви хочете видалити профіль доступу до апаратного сховища {0}?</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Title" xml:space="preserve">
+    <value>Видалити профіль</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Toast" xml:space="preserve">
+    <value>Профіль апаратного сховища видалено.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DetailsProfile_Title" xml:space="preserve">
+    <value>Деталі профілю</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_EditProfile_Title" xml:space="preserve">
+    <value>Редагувати профіль</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_AuthorizationParameters" xml:space="preserve">
+    <value>Параметри авторизації</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button" xml:space="preserve">
+    <value>Кнопка</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_Connection_Title" xml:space="preserve">
+    <value>Запит підтвердження кнопки пристрою для підключення пристрою до комп’ютера, який уже пов’язаний із комп’ютером.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_Pairing_Title" xml:space="preserve">
+    <value>Запит підтвердження кнопки пристрою для першого підключення пристрою до комп’ютера.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_StorageAccess_Title" xml:space="preserve">
+    <value>Запит підтвердження кнопки пристрою, коли програма отримує доступ до сховища пристрою.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Connection" xml:space="preserve">
+    <value>Підключення</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Pairing" xml:space="preserve">
+    <value>Сполучення</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN" xml:space="preserve">
+    <value>PIN-код</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinExpiration" xml:space="preserve">
+    <value>Термін дії PIN-коду</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinExpiration_Title" xml:space="preserve">
+    <value>Після закінчення терміну дії PIN-коду пам’ять пристрою буде заблокована, доки користувач знову не введе PIN-код.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry" xml:space="preserve">
+    <value>Неправильний введення PIN-коду</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry_Title" xml:space="preserve">
+    <value>Максимальна кількість неправильного введення PIN-коду. Після перевищення кількості записів пристрій блокується.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinLength" xml:space="preserve">
+    <value>Довжина PIN-коду</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinSettings" xml:space="preserve">
+    <value>Налаштування PIN-коду</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_Connection_Title" xml:space="preserve">
+    <value>Запит PIN-код для підключення пристрою до комп’ютера, який уже зв’язаний із комп’ютером.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_Pairing_Title" xml:space="preserve">
+    <value>Запит PIN-код для першого підключення пристрою до комп’ютера.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_StorageAccess_Title" xml:space="preserve">
+    <value>Запит PIN-код, коли програма отримує доступ до сховища пристрою.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation" xml:space="preserve">
+    <value>Підтвердження сервера</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title" xml:space="preserve">
+    <value>Потрібне підтвердження сервера для підключення пристрою до комп’ютера, який уже зв’язаний із комп’ютером.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Pairing_Title" xml:space="preserve">
+    <value>Потрібне підтвердження сервера для першого підключення пристрою до комп’ютера.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_StorageAccess_Title" xml:space="preserve">
+    <value>Вимагати підтвердження сервера, коли програма отримує доступ до сховища пристрою.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_StorageAccess" xml:space="preserve">
+    <value>Доступ до сховища</value>
   </data>
 </root>

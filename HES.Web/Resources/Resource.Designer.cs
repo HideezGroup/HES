@@ -385,6 +385,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Profile.
+        /// </summary>
+        public static string Btn_CreateProfile {
+            get {
+                return ResourceManager.GetString("Btn_CreateProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Delete.
         /// </summary>
         public static string Btn_Delete {
@@ -1517,6 +1526,267 @@ namespace HES.Web.Resources {
         public static string Employees_SyncEmployeesWithAD_Title {
             get {
                 return ResourceManager.GetString("Employees_SyncEmployeesWithAD_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Profile.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_CreateAccessProfile_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_CreateAccessProfile_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware vault profile created..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_CreateAccessProfile_Toast {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_CreateAccessProfile_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete hardware vault access profile {0}?.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_DeleteProfile_Body {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_DeleteProfile_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Profile.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_DeleteProfile_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_DeleteProfile_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware vault profile deleted..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_DeleteProfile_Toast {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_DeleteProfile_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Details Profile.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_DetailsProfile_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_DetailsProfile_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Profile.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_EditProfile_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_EditProfile_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Authorization parameters.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_AuthorizationParameters {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_AuthorizationParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Button.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_Button {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Request the device button confirmation for connecting the device to the computer that is already bonded with the computer..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_Button_Connection_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_Button_Connection_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Request the device button confirmation for connecting the device to the computer for the first time..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_Button_Pairing_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_Button_Pairing_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Request the device button confirmation when an application is getting access to the device’s storage..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_Button_StorageAccess_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_Button_StorageAccess_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Connection.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_Connection {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_Connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pairing.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_Pairing {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_Pairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на PIN.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PIN {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Request the PIN-code for connecting the device to the computer that is already bonded with the computer..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PIN_Connection_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PIN_Connection_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Request the PIN-code for connecting the device to the computer for the first time..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PIN_Pairing_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PIN_Pairing_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Request the PIN-code when an application is getting access to the device’s storage..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PIN_StorageAccess_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PIN_StorageAccess_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на PIN expiration.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PinExpiration {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PinExpiration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на After PIN code is expired, the device storage will be locked until the user enters the PIN again..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PinExpiration_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PinExpiration_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на PIN incorrect entry.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PinIncorrectEntry {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PinIncorrectEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Maximum number of incorrect PIN code entering. After the number of entries is exceeded, the device is locked..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PinIncorrectEntry_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PinIncorrectEntry_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на PIN length.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PinLength {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PinLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на PIN settings.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_PinSettings {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_PinSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Server Confirmation.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_ServerConfirmation {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_ServerConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Require the server confirmation for connecting the device to the computer that is already bonded with the computer..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Require the server confirmation for connecting the device to the computer for the first time..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_ServerConfirmation_Pairing_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_ServerConfirmation_Pairing_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Require the server confirmation when an application is getting access to the device’s storage..
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_ServerConfirmation_StorageAccess_Title {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_ServerConfirmation_StorageAccess_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Storage Access.
+        /// </summary>
+        public static string HardwareVaultAccessProfile_Label_StorageAccess {
+            get {
+                return ResourceManager.GetString("HardwareVaultAccessProfile_Label_StorageAccess", resourceCulture);
             }
         }
         

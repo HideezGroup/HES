@@ -879,7 +879,7 @@ namespace HES.Core.Services
             var deviceAccessProfile = await _dbContext.HardwareVaultProfiles.FindAsync(profileId);
             if (deviceAccessProfile == null)
             {
-                throw new HESException(HESCode.VaultProfileNotFound);
+                throw new HESException(HESCode.HardwareVaultProfileNotFound);
             }
 
             if (deviceAccessProfile.HardwareVaults.Count > 0)
@@ -917,7 +917,7 @@ namespace HES.Core.Services
             var profile = await _dbContext.HardwareVaultProfiles.FindAsync(profileId);
             if (profile == null)
             {
-                throw new HESException(HESCode.VaultProfileNotFound);
+                throw new HESException(HESCode.HardwareVaultProfileNotFound);
             }
 
             vault.HardwareVaultProfileId = profileId;

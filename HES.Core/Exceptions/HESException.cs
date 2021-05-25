@@ -78,8 +78,8 @@ namespace HES.Core.Exceptions
         // API
         ApiKeyEmpty,
 
-        //Profiles
-        VaultProfileNotFound,
+        // Hardware Vault Profile
+        HardwareVaultProfileNotFound,
         CannotDeleteDefaultProfile,
         ProfileNameAlreadyInUse,
         ActivationCodeNotFound,
@@ -152,7 +152,7 @@ namespace HES.Core.Exceptions
                 { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
                 { HESCode.AppSettingsNotFound,  "Application settings not found." },
 
-                { HESCode.VaultProfileNotFound,  "Vault profile not found" },
+                { HESCode.HardwareVaultProfileNotFound,  "Hardware Vault profile not found" },
                 { HESCode.CannotDeleteDefaultProfile,  "Cannot delete default profile" },
                 { HESCode.ProfileNameAlreadyInUse,  "Profile name already in use" },
                 { HESCode.ActivationCodeNotFound,  "Activation code not found" },
