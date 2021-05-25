@@ -1356,4 +1356,82 @@
   <data name="Label_TwoFactorEnabled" xml:space="preserve">
     <value>Two Factor Enabled</value>
   </data>
+  <data name="Btn_ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="DataProtection_ChangeDataProtectionPassword_Title" xml:space="preserve">
+    <value>Change Data Protection Password</value>
+  </data>
+  <data name="DataProtection_ChangeDataProtectionPassword_Toast" xml:space="preserve">
+    <value>Data protection password updated.</value>
+  </data>
+  <data name="DataProtection_DisableDataProtection_Title" xml:space="preserve">
+    <value>Disable Data Protection</value>
+  </data>
+  <data name="DataProtection_DisableDataProtection_Toast" xml:space="preserve">
+    <value>Data protection disabled.</value>
+  </data>
+  <data name="DataProtection_EnableDataProtection_Title" xml:space="preserve">
+    <value>Enable Data Protection</value>
+  </data>
+  <data name="DataProtection_EnableDataProtection_Toast" xml:space="preserve">
+    <value>Data protection enabled.</value>
+  </data>
+  <data name="DataProtection_IsDisabled" xml:space="preserve">
+    <value>Data protection is disabled.</value>
+  </data>
+  <data name="DataProtection_IsEnabled" xml:space="preserve">
+    <value>Data protection is enabled.</value>
+  </data>
+  <data name="DataProtection_MainDescription" xml:space="preserve">
+    <value>&lt;h5&gt;
+        What is the purpose of Data Protection?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        Data Protection solves the problem of secure data storage in the database (DB).
+    &lt;/p&gt;
+    &lt;h5&gt;
+        What confidential data is stored in the DB?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        The database stores Device Keys – encryption keys that provide access to the information stored on the Hideez Key. Passwords and OTP Secrets that are awaiting transfer to devices are also temporarily stored in the DB.
+        Passwords to the “Shared Account” are permanently stored in the database. If Data Protection is turned off, all passwords and keys are stored in plain text. If you have a Device Key and the device itself, you can read all the content of the Hideez Key memory.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        Do I need to enable Data Protection?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        First of all, you need to evaluate which employees have a direct to potential access to the HES database.
+        If some of them should not have access to the sensitive data listed above than Data Protection must be enabled.
+        Please also note, that the data can be physically read from the HDD/SDD on which it is stored. It is necessary to consider the possibility of both software and physical access to the data.
+        In some cases, for example, if the HES and the database server are running on the same physical server that can be accessed by a limited number of trusted people, then Data Protection can be omitted.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        How does it work?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        All the confidential fields in the DB are encrypted using the AES-256 algorithm. The encryption key (a password) is entered manually by the administrator after the webserver start, and then it is stored only in the server’s RAM.
+        If the server reboots, the encryption key erases, and all the administrators receive an email asking them to enter the Data Protection password. Before the password is entered, the server doesn’t process incoming requests. Once the password is provided, the server switches to the normal mode, and the data is decrypted on the fly.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        The password to Data Protection can be placed in a config file or Environment Variables on the server to avoid manual input. In this case, the server can reboot without administrator involvement. Such a scenario also means that only authorized persons should have access to the server.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        The password to Data Protection can be changed. To do this, enter the current password and a new password twice in the HES interface. All data in the DB will be re-encrypted.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        Risks and best practices
+    &lt;/h5&gt;
+    &lt;p&gt;
+        The main risk of Data Protection use is the password loss for its activation. In such a case, you lose access to the encrypted data on the server, as well as access to all the data on all of your Hideez Key devices.
+        All the devices will have to undergo manual reset procedure with full memory wipe, and then to be bonded again with the employees. All the accounts should be added to the devices from scratch.
+        Therefore we recommend that the password to Data Protection should be known to several employees and preferably stored on a safe physical token (vault).
+        &lt;br /&gt;
+        &lt;br /&gt;
+        In case of using Data Protection, there is a risk that the HES server can be temporarily unavailable due to emergency restart until the activation password to Data Protection is entered. However, it should not affect the company operations, since all the accounts are stored on employees’ devices and can be used without a connection to the HES server.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        An update of the Data Protection password should be done according to the company’s information security regulations.
+    &lt;/p&gt;</value>
+  </data>
 </root>

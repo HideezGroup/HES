@@ -106,7 +106,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Invite resent..
+        ///   Ищет локализованную строку, похожую на Invitation resent..
         /// </summary>
         public static string Administrators_ResendInvite_Toast {
             get {
@@ -291,6 +291,15 @@ namespace HES.Web.Resources {
         public static string Btn_Change {
             get {
                 return ResourceManager.GetString("Btn_Change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change Password.
+        /// </summary>
+        public static string Btn_ChangePassword {
+            get {
+                return ResourceManager.GetString("Btn_ChangePassword", resourceCulture);
             }
         }
         
@@ -849,6 +858,98 @@ namespace HES.Web.Resources {
         public static string Dashboard_HardwareVaultTasks_Title {
             get {
                 return ResourceManager.GetString("Dashboard_HardwareVaultTasks_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change Data Protection Password.
+        /// </summary>
+        public static string DataProtection_ChangeDataProtectionPassword_Title {
+            get {
+                return ResourceManager.GetString("DataProtection_ChangeDataProtectionPassword_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection password updated..
+        /// </summary>
+        public static string DataProtection_ChangeDataProtectionPassword_Toast {
+            get {
+                return ResourceManager.GetString("DataProtection_ChangeDataProtectionPassword_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable Data Protection.
+        /// </summary>
+        public static string DataProtection_DisableDataProtection_Title {
+            get {
+                return ResourceManager.GetString("DataProtection_DisableDataProtection_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection disabled..
+        /// </summary>
+        public static string DataProtection_DisableDataProtection_Toast {
+            get {
+                return ResourceManager.GetString("DataProtection_DisableDataProtection_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable Data Protection.
+        /// </summary>
+        public static string DataProtection_EnableDataProtection_Title {
+            get {
+                return ResourceManager.GetString("DataProtection_EnableDataProtection_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection enabled..
+        /// </summary>
+        public static string DataProtection_EnableDataProtection_Toast {
+            get {
+                return ResourceManager.GetString("DataProtection_EnableDataProtection_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection is disabled..
+        /// </summary>
+        public static string DataProtection_IsDisabled {
+            get {
+                return ResourceManager.GetString("DataProtection_IsDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection is enabled..
+        /// </summary>
+        public static string DataProtection_IsEnabled {
+            get {
+                return ResourceManager.GetString("DataProtection_IsEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на &lt;h5&gt;
+        ///        What is the purpose of Data Protection?
+        ///    &lt;/h5&gt;
+        ///    &lt;p&gt;
+        ///        Data Protection solves the problem of secure data storage in the database (DB).
+        ///    &lt;/p&gt;
+        ///    &lt;h5&gt;
+        ///        What confidential data is stored in the DB?
+        ///    &lt;/h5&gt;
+        ///    &lt;p&gt;
+        ///        The database stores Device Keys – encryption keys that provide access to the information stored on the Hideez Key. Passwords and OTP Secrets that are awaiting transfer to devices are also temporarily stored in the DB.
+        ///        Passwords to the “Sh [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string DataProtection_MainDescription {
+            get {
+                return ResourceManager.GetString("DataProtection_MainDescription", resourceCulture);
             }
         }
         
