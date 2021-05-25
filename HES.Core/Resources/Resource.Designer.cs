@@ -664,7 +664,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Remember this machine.
+        ///   Ищет локализованную строку, похожую на Remember machine.
         /// </summary>
         public static string Display_RememberMachine {
             get {
@@ -777,6 +777,15 @@ namespace HES.Core.Resources {
         public static string Display_VaultsCount {
             get {
                 return ResourceManager.GetString("Display_VaultsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Verification Code.
+        /// </summary>
+        public static string Display_VerificationCode {
+            get {
+                return ResourceManager.GetString("Display_VerificationCode", resourceCulture);
             }
         }
         

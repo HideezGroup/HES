@@ -1,7 +1,7 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -17,7 +17,7 @@ namespace HES.Web.Pages.Settings.Administrators
         [Inject] public ILogger<InviteAdmin> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
 
-        public Invitation Invitation = new Invitation();
+        public UserInvitation Invitation = new UserInvitation();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public Button ButtonSpinner { get; set; }
 

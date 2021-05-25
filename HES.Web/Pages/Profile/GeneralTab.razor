@@ -2,8 +2,8 @@
 
 @if (Initialized)
 {
-    <p class="text-muted text-center">Basic information of your account.</p>
-    <h5>Profile</h5>
+    <p class="text-muted text-center">@Resource.Profile_General_Description</p>
+    <h5>@Resource.Profile_General_Profile_Header</h5>
     <div class="card mb-5">
         <div class="card-body">
             <EditForm Model="UserProfileModel" OnValidSubmit="UpdateProfileInfoAsync">
@@ -24,12 +24,12 @@
                     <ValidationMessage For="@(() => UserProfileModel.PhoneNumber)" class="text-danger" />
                 </div>
                 <div class="text-center py-3">
-                    <Button @ref="ButtonUpdateProfile" Text="Save" type="submit" class="btn btn-primary w-25" />
+                    <Button @ref="ButtonUpdateProfile" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary w-25" />
                 </div>
             </EditForm>
         </div>
     </div>
-    <h5>Change email</h5>
+    <h5>@Resource.Profile_General_ChangeEmail_Header</h5>
     <div class="card mb-5">
         <div class="card-body">
             <EditForm Model="ChangeEmailModel" OnValidSubmit="ChangeEmailAsync">
@@ -46,29 +46,29 @@
                     <ValidationMessage For="@(() => ChangeEmailModel.NewEmail)" class="text-danger" />
                 </div>
                 <div class="text-center py-3">
-                    <Button @ref="ButtonChangeEmail" Text="Change" type="submit" class="btn btn-primary w-25" />
+                    <Button @ref="ButtonChangeEmail" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary w-25" />
                 </div>
             </EditForm>
         </div>
     </div>
-    <h5>Language</h5>
+    <h5>@Resource.Profile_General_Language_Header</h5>
     <div class="card mb-5">
         <div class="card-body">
             <LanguageSelector/>
         </div>
     </div>
-    <h5>Personal Data</h5>
+    <h5>@Resource.Profile_General_PersonalData_Header</h5>
     <div class="card mb-5">
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
-                    <p>Deleting this data will permanently remove your account, and this cannot be recovered.</p>
+                    <p>@Resource.Profile_General_PersonalData_Description1</p>
+                    <p>@Resource.Profile_General_PersonalData_Description2</p>
                 </div>
                 <div class="col-auto d-flex align-items-end">
                     <div>
-                        <button class="btn btn-outline-secondary" type="button" @onclick="DownloadPersonalDataAsync">Download</button>
-                        <button class="btn btn-outline-danger" type="button" @onclick="DeletePersonalDataAsync">Delete</button>
+                        <button class="btn btn-outline-secondary" type="button" @onclick="DownloadPersonalDataAsync">@Resource.Btn_Download</button>
+                        <button class="btn btn-outline-danger" type="button" @onclick="DeletePersonalDataAsync">@Resource.Btn_Delete</button>
                     </div>
                 </div>
             </div>

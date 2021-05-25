@@ -357,6 +357,9 @@
   <data name="Display_VaultsCount" xml:space="preserve">
     <value>Vaults Count</value>
   </data>
+  <data name="Display_VerificationCode" xml:space="preserve">
+    <value>Verification Code</value>
+  </data>
   <data name="Display_Workstation" xml:space="preserve">
     <value>Workstation</value>
   </data>

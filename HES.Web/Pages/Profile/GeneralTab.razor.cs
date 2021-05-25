@@ -51,7 +51,7 @@ namespace HES.Web.Pages.Profile
                 {
                     UserId = User.Id,
                     FirstName = User.FirstName,
-                    LastName = User.LastName,              
+                    LastName = User.LastName,
                     PhoneNumber = User.PhoneNumber
                 };
 
@@ -77,7 +77,7 @@ namespace HES.Web.Pages.Profile
                 {
                     await ApplicationUserService.UpdateProfileInfoAsync(UserProfileModel);
                     await IdentityApiClient.RefreshSignInAsync();
-                    await ToastService.ShowToastAsync("Your profile has been updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Profile_General_Profile_Toast, ToastType.Success);
                 });
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace HES.Web.Pages.Profile
                 await ButtonChangeEmail.SpinAsync(async () =>
                 {
                     await ApplicationUserService.ChangeEmailAsync(ChangeEmailModel);
-                    await ToastService.ShowToastAsync("Email confirmation sent.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Profile_General_ChangeEmail_Toast, ToastType.Success);
                 });
             }
             catch (HESException ex)
@@ -121,7 +121,7 @@ namespace HES.Web.Pages.Profile
                 }
 
                 await JSRuntime.InvokeVoidAsync("downloadPersonalData", JsonConvert.SerializeObject(personalData));
-                await ToastService.ShowToastAsync("Download started.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Profile_General_PersonalData_Toast, ToastType.Success);
             }
             catch (Exception ex)
             {
@@ -141,7 +141,7 @@ namespace HES.Web.Pages.Profile
                     builder.CloseComponent();
                 };
 
-                await ModalDialogService.ShowAsync("Delete Personal Data", body);
+                await ModalDialogService.ShowAsync(Resources.Resource.Profile_DeletePersonalData_Title, body);
             }
             catch (Exception ex)
             {

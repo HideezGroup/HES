@@ -8,10 +8,10 @@
         <div class="d-flex flex-column h-100">
             <ul class="custom-horizontal-pills nav nav-pills mb-3 nav-fill flex-column flex-md-row" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link w-100 @(SetActive(ProfileTabs.General))" @onclick="SetGeneralTab">General</button>
+                    <button class="nav-link w-100 @(SetActive(ProfileTabs.General))" @onclick="SetGeneralTab">@Resource.Profile_General_Title</button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link w-100 @(SetActive(ProfileTabs.Security))" @onclick="SetSecurityTab">Security</button>
+                    <button class="nav-link w-100 @(SetActive(ProfileTabs.Security))" @onclick="SetSecurityTab">@Resource.Profile_Security_Title</button>
                 </li>
             </ul>
             <div class="h-100">

@@ -1,6 +1,6 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Helpers;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -84,11 +84,11 @@ namespace HES.Web.Pages.Profile.TwoFactor
 
                 if (!verifyTwoFactorTokenInfo.IsTwoFactorTokenValid)
                 {
-                    await ToastService.ShowToastAsync("Verification code is invalid.", ToastType.Error);
+                    await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_EnableAuthenticator_Toast_InvalidCode, ToastType.Error);
                     return;
                 }
 
-                await ToastService.ShowToastAsync("Your authenticator app has been verified.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_EnableAuthenticator_Toast_AuthenticatorVerified, ToastType.Success);
 
                 if (verifyTwoFactorTokenInfo.RecoveryCodes != null)
                 {

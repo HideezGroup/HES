@@ -178,11 +178,29 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Add authenticator app.
+        /// </summary>
+        public static string Btn_AddAuthenticatorApp {
+            get {
+                return ResourceManager.GetString("Btn_AddAuthenticatorApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Add Hardware Vault.
         /// </summary>
         public static string Btn_AddHardwareVault {
             get {
                 return ResourceManager.GetString("Btn_AddHardwareVault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add Security Key.
+        /// </summary>
+        public static string Btn_AddSecurityKey {
+            get {
+                return ResourceManager.GetString("Btn_AddSecurityKey", resourceCulture);
             }
         }
         
@@ -313,6 +331,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete data and close my account.
+        /// </summary>
+        public static string Btn_DeleteDataAndCloseMyAccount {
+            get {
+                return ResourceManager.GetString("Btn_DeleteDataAndCloseMyAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Details.
         /// </summary>
         public static string Btn_Details {
@@ -331,6 +358,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable2FA.
+        /// </summary>
+        public static string Btn_Disable2FA {
+            get {
+                return ResourceManager.GetString("Btn_Disable2FA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Disable SSO.
         /// </summary>
         public static string Btn_DisableSSO {
@@ -345,6 +381,15 @@ namespace HES.Web.Resources {
         public static string Btn_Done {
             get {
                 return ResourceManager.GetString("Btn_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Download.
+        /// </summary>
+        public static string Btn_Download {
+            get {
+                return ResourceManager.GetString("Btn_Download", resourceCulture);
             }
         }
         
@@ -421,11 +466,29 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Forget this browser.
+        /// </summary>
+        public static string Btn_ForgetThisBrowser {
+            get {
+                return ResourceManager.GetString("Btn_ForgetThisBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Generate.
         /// </summary>
         public static string Btn_Generate {
             get {
                 return ResourceManager.GetString("Btn_Generate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Generate recovery codes.
+        /// </summary>
+        public static string Btn_GenerateRecoveryCodes {
+            get {
+                return ResourceManager.GetString("Btn_GenerateRecoveryCodes", resourceCulture);
             }
         }
         
@@ -493,6 +556,33 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset authenticator app.
+        /// </summary>
+        public static string Btn_ResetAuthenticatorApp {
+            get {
+                return ResourceManager.GetString("Btn_ResetAuthenticatorApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset authenticator key.
+        /// </summary>
+        public static string Btn_ResetAuthenticatorKey {
+            get {
+                return ResourceManager.GetString("Btn_ResetAuthenticatorKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset recovery codes.
+        /// </summary>
+        public static string Btn_ResetRecoveryCodes {
+            get {
+                return ResourceManager.GetString("Btn_ResetRecoveryCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Save.
         /// </summary>
         public static string Btn_Save {
@@ -516,6 +606,15 @@ namespace HES.Web.Resources {
         public static string Btn_SetAsPrimary {
             get {
                 return ResourceManager.GetString("Btn_SetAsPrimary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Setup authenticator app.
+        /// </summary>
+        public static string Btn_SetupAuthenticatorApp {
+            get {
+                return ResourceManager.GetString("Btn_SetupAuthenticatorApp", resourceCulture);
             }
         }
         
@@ -606,6 +705,15 @@ namespace HES.Web.Resources {
         public static string Btn_VaultCompromised {
             get {
                 return ResourceManager.GetString("Btn_VaultCompromised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Verify.
+        /// </summary>
+        public static string Btn_Verify {
+            get {
+                return ResourceManager.GetString("Btn_Verify", resourceCulture);
             }
         }
         
@@ -2869,6 +2977,528 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Deleting this data will permanently remove your account, and this cannot be recovered..
+        /// </summary>
+        public static string Profile_DeletePersonalData_Body {
+            get {
+                return ResourceManager.GetString("Profile_DeletePersonalData_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Personal Data.
+        /// </summary>
+        public static string Profile_DeletePersonalData_Title {
+            get {
+                return ResourceManager.GetString("Profile_DeletePersonalData_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change email.
+        /// </summary>
+        public static string Profile_General_ChangeEmail_Header {
+            get {
+                return ResourceManager.GetString("Profile_General_ChangeEmail_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Email confirmation sent..
+        /// </summary>
+        public static string Profile_General_ChangeEmail_Toast {
+            get {
+                return ResourceManager.GetString("Profile_General_ChangeEmail_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Basic information of your account..
+        /// </summary>
+        public static string Profile_General_Description {
+            get {
+                return ResourceManager.GetString("Profile_General_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Language.
+        /// </summary>
+        public static string Profile_General_Language_Header {
+            get {
+                return ResourceManager.GetString("Profile_General_Language_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your account contains personal data that you have given us. This page allows you to download or delete that data..
+        /// </summary>
+        public static string Profile_General_PersonalData_Description1 {
+            get {
+                return ResourceManager.GetString("Profile_General_PersonalData_Description1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Deleting this data will permanently remove your account, and this cannot be recovered..
+        /// </summary>
+        public static string Profile_General_PersonalData_Description2 {
+            get {
+                return ResourceManager.GetString("Profile_General_PersonalData_Description2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Personal Data.
+        /// </summary>
+        public static string Profile_General_PersonalData_Header {
+            get {
+                return ResourceManager.GetString("Profile_General_PersonalData_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Download started..
+        /// </summary>
+        public static string Profile_General_PersonalData_Toast {
+            get {
+                return ResourceManager.GetString("Profile_General_PersonalData_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Profile.
+        /// </summary>
+        public static string Profile_General_Profile_Header {
+            get {
+                return ResourceManager.GetString("Profile_General_Profile_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your profile has been updated..
+        /// </summary>
+        public static string Profile_General_Profile_Toast {
+            get {
+                return ResourceManager.GetString("Profile_General_Profile_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на General.
+        /// </summary>
+        public static string Profile_General_Title {
+            get {
+                return ResourceManager.GetString("Profile_General_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You can generate a new set of recovery codes..
+        /// </summary>
+        public static string Profile_Security_2FA_1RecoveryCodes_Description {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_1RecoveryCodes_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You have 1 recovery code left..
+        /// </summary>
+        public static string Profile_Security_2FA_1RecoveryCodes_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_1RecoveryCodes_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You should generate a new set of recovery codes..
+        /// </summary>
+        public static string Profile_Security_2FA_HaveRecoveryCodes_Description {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_HaveRecoveryCodes_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You have {0} recovery codes left..
+        /// </summary>
+        public static string Profile_Security_2FA_HaveRecoveryCodes_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_HaveRecoveryCodes_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Two-factor authentication (2FA).
+        /// </summary>
+        public static string Profile_Security_2FA_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You must generate a new set of recovery codes before you can log in with a recovery code..
+        /// </summary>
+        public static string Profile_Security_2FA_NoRecoveryCodes_Description {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_NoRecoveryCodes_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You have no recovery codes left..
+        /// </summary>
+        public static string Profile_Security_2FA_NoRecoveryCodes_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_NoRecoveryCodes_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Authenticator app.
+        /// </summary>
+        public static string Profile_Security_2FA_SubHeader_AuthenticatorApp {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_SubHeader_AuthenticatorApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Manage 2FA.
+        /// </summary>
+        public static string Profile_Security_2FA_SubHeader_Manage2FA {
+            get {
+                return ResourceManager.GetString("Profile_Security_2FA_SubHeader_Manage2FA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Security Key Name.
+        /// </summary>
+        public static string Profile_Security_AddSecurityKey_KeyName {
+            get {
+                return ResourceManager.GetString("Profile_Security_AddSecurityKey_KeyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add new security key.
+        /// </summary>
+        public static string Profile_Security_AddSecurityKey_Title {
+            get {
+                return ResourceManager.GetString("Profile_Security_AddSecurityKey_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Security key added..
+        /// </summary>
+        public static string Profile_Security_AddSecurityKey_Toast {
+            get {
+                return ResourceManager.GetString("Profile_Security_AddSecurityKey_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change Password.
+        /// </summary>
+        public static string Profile_Security_ChangePassword_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_ChangePassword_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password updated..
+        /// </summary>
+        public static string Profile_Security_ChangePassword_Toast {
+            get {
+                return ResourceManager.GetString("Profile_Security_ChangePassword_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete security key? If you delete this security key, you will not be able to use it to sign in with your account..
+        /// </summary>
+        public static string Profile_Security_DeleteSecurityKey_Body {
+            get {
+                return ResourceManager.GetString("Profile_Security_DeleteSecurityKey_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete security key.
+        /// </summary>
+        public static string Profile_Security_DeleteSecurityKey_Title {
+            get {
+                return ResourceManager.GetString("Profile_Security_DeleteSecurityKey_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your account security settings..
+        /// </summary>
+        public static string Profile_Security_Description {
+            get {
+                return ResourceManager.GetString("Profile_Security_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should reset your authenticator keys..
+        /// </summary>
+        public static string Profile_Security_Disable2fa_Description {
+            get {
+                return ResourceManager.GetString("Profile_Security_Disable2fa_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This action only disables 2FA..
+        /// </summary>
+        public static string Profile_Security_Disable2fa_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_Disable2fa_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable two-factor authentication (2FA).
+        /// </summary>
+        public static string Profile_Security_Disable2fa_Title {
+            get {
+                return ResourceManager.GetString("Profile_Security_Disable2fa_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 2FA has been disabled. You can reenable 2fa when you setup an authenticator app..
+        /// </summary>
+        public static string Profile_Security_Disable2fa_Toast {
+            get {
+                return ResourceManager.GetString("Profile_Security_Disable2fa_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change security key name.
+        /// </summary>
+        public static string Profile_Security_EditSecurityKey_Title {
+            get {
+                return ResourceManager.GetString("Profile_Security_EditSecurityKey_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Security key updated..
+        /// </summary>
+        public static string Profile_Security_EditSecurityKey_Toast {
+            get {
+                return ResourceManager.GetString("Profile_Security_EditSecurityKey_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Configure authenticator app.
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на If you lose your device and don&apos;t have the recovery codes you will lose access to your account..
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_RecoveryCodes_Description {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_RecoveryCodes_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Put these codes in a safe place..
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_RecoveryCodes_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_RecoveryCodes_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Download a two-factor authenticator app like Microsoft Authenticator for &lt;a href=&quot;https://go.microsoft.com/fwlink/?Linkid=825071&quot;&gt;Windows&lt;/a&gt;, &lt;a href=&quot;https://go.microsoft.com/fwlink/?Linkid=825072&quot;&gt;Android&lt;/a&gt; and &lt;a href=&quot;https://go.microsoft.com/fwlink/?Linkid=825073&quot;&gt;iOS&lt;/a&gt; or Google Authenticator for &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;amp;hl=en&quot;&gt;Android&lt;/a&gt; and &lt;a href=&quot;https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8&quot;&gt;iO [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_Step1_Download2FA {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_Step1_Download2FA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Scan the QR Code or enter this key &lt;kbd&gt;{0}&lt;/kbd&gt; into your two factor authenticator app. Spaces and casing do not matter..
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_Step2_ScanQR {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_Step2_ScanQR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below..
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_Step3_EnterCode {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_Step3_EnterCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable Authenticator.
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_Title {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your authenticator app has been verified..
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_Toast_AuthenticatorVerified {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_Toast_AuthenticatorVerified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Verification code is invalid..
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_Toast_InvalidCode {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_Toast_InvalidCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на To use an authenticator app go through the following steps:.
+        /// </summary>
+        public static string Profile_Security_EnableAuthenticator_ToUse {
+            get {
+                return ResourceManager.GetString("Profile_Security_EnableAuthenticator_ToUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The current browser has been forgotten. When you login again from this browser you will be prompted for your 2FA code..
+        /// </summary>
+        public static string Profile_Security_ForgetBrowser_Toast {
+            get {
+                return ResourceManager.GetString("Profile_Security_ForgetBrowser_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на If you lose your device and don&apos;t have the recovery codes you will lose access to your account..
+        /// </summary>
+        public static string Profile_Security_GenerateRecoveryCodes_Description {
+            get {
+                return ResourceManager.GetString("Profile_Security_GenerateRecoveryCodes_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Put these codes in a safe place..
+        /// </summary>
+        public static string Profile_Security_GenerateRecoveryCodes_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_GenerateRecoveryCodes_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should reset your authenticator keys..
+        /// </summary>
+        public static string Profile_Security_GenerateRecoveryCodes_NotExists_SubDescription {
+            get {
+                return ResourceManager.GetString("Profile_Security_GenerateRecoveryCodes_NotExists_SubDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Generate two-factor authentication (2FA) recovery codes.
+        /// </summary>
+        public static string Profile_Security_GenerateRecoveryCodes_Title {
+            get {
+                return ResourceManager.GetString("Profile_Security_GenerateRecoveryCodes_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на If you reset your authenticator key your authenticator app will not work until you reconfigure it..
+        /// </summary>
+        public static string Profile_Security_ResetAuthenticator_Description {
+            get {
+                return ResourceManager.GetString("Profile_Security_ResetAuthenticator_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This process disables 2FA until you verify your authenticator app. If you do not complete your authenticator app configuration you may lose access to your account..
+        /// </summary>
+        public static string Profile_Security_ResetAuthenticator_SubDescription {
+            get {
+                return ResourceManager.GetString("Profile_Security_ResetAuthenticator_SubDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset Authenticator.
+        /// </summary>
+        public static string Profile_Security_ResetAuthenticator_Title {
+            get {
+                return ResourceManager.GetString("Profile_Security_ResetAuthenticator_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your authenticator app key has been reset, you will need to configure your authenticator app using the new key..
+        /// </summary>
+        public static string Profile_Security_ResetAuthenticator_Toast {
+            get {
+                return ResourceManager.GetString("Profile_Security_ResetAuthenticator_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Security Keys.
+        /// </summary>
+        public static string Profile_Security_SecurityKeys_Header {
+            get {
+                return ResourceManager.GetString("Profile_Security_SecurityKeys_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Registration Date.
+        /// </summary>
+        public static string Profile_Security_SecurityKeys_RegistrationDate {
+            get {
+                return ResourceManager.GetString("Profile_Security_SecurityKeys_RegistrationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Security.
+        /// </summary>
+        public static string Profile_Security_Title {
+            get {
+                return ResourceManager.GetString("Profile_Security_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на You have successfully completed the security key registration process. Thanks!.
         /// </summary>
         public static string SecurityKey_Done_Description {
@@ -2883,6 +3513,15 @@ namespace HES.Web.Resources {
         public static string SecurityKey_Error_Description {
             get {
                 return ResourceManager.GetString("SecurityKey_Error_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Something went wrong. Try again..
+        /// </summary>
+        public static string SecurityKey_Error_Title {
+            get {
+                return ResourceManager.GetString("SecurityKey_Error_Title", resourceCulture);
             }
         }
         
@@ -2914,7 +3553,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на When you choose Next, you woll be promoted to plug your security key. Your PC will open a security window. Follow the instructions there to register..
+        ///   Ищет локализованную строку, похожую на When you choose Next, you will be promoted to plug your security key. Your PC will open a security window. Follow the instructions there to register..
         /// </summary>
         public static string SecurityKey_Start_Description {
             get {

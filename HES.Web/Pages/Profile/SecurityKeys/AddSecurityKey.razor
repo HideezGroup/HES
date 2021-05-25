@@ -4,34 +4,34 @@
 {
     if (AddingStep == SecurityKeyAddingStep.Start || AddingStep == SecurityKeyAddingStep.Configuration)
     {
-        <p>When you choose Next, you woll be promoted to plug your security key. Then, touch the button or the sensor on your security key to finish up your device. For more detailed instructions, visit your key manufacturer’s website.</p>
+        <p>@Resource.SecurityKey_Start_Description</p>
     }
     if (AddingStep == SecurityKeyAddingStep.Done)
     {
         <div class="form-group">
-            <label class="form-label">Security Key Name</label>
+            <label class="form-label">@Resource.Profile_Security_AddSecurityKey_KeyName</label>
             <input type="text" class="form-control" @bind-value="SecurityKeyName" @bind-value:event="oninput" />
         </div>
         <div class="form-footer">
-            <button type="button" @onclick="SaveSecurityKeyAsync" class="btn btn-primary">Done</button>
+            <button type="button" @onclick="SaveSecurityKeyAsync" class="btn btn-primary">@Resource.Btn_Done</button>
         </div>
     }
     if (AddingStep == SecurityKeyAddingStep.Error)
     {
         <div class="alert alert-warning" role="alert">
-            <h6 class="alert-heading">Something went wrong. Try again.</h6>
-            <p class="mb-0">We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</p>
+            <h6 class="alert-heading">@Resource.SecurityKey_Error_Title</h6>
+            <p class="mb-0">@Resource.SecurityKey_Error_Description</p>
         </div>
         <div class="form-footer">
-            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
-            <button type="button" @onclick="ConfigureSecurityKeyAsync" class="btn btn-primary">Try Again</button>
+            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">@Resource.Btn_Cancel</button>
+            <button type="button" @onclick="ConfigureSecurityKeyAsync" class="btn btn-primary">@Resource.Btn_TryAgain</button>
         </div>
     }
     if (AddingStep == SecurityKeyAddingStep.Start)
     {
         <div class="form-footer">
-            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
-            <button type="button" @onclick="ConfigureSecurityKeyAsync" class="btn btn-primary">Next</button>
+            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">@Resource.Btn_Cancel</button>
+            <button type="button" @onclick="ConfigureSecurityKeyAsync" class="btn btn-primary">@Resource.Btn_Next</button>
         </div>
     }
     if (AddingStep == SecurityKeyAddingStep.Configuration)

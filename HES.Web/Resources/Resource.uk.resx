@@ -1110,4 +1110,217 @@
   <data name="SecurityKey_Start_Description" xml:space="preserve">
     <value>Коли ви вибираєте Далі, вам буде запропоновано підключити ключ безпеки. Ваш ПК відкриє вікно безпеки. Дотримуйтесь інструкцій там, щоб зареєструватися.</value>
   </data>
+  <data name="Btn_AddAuthenticatorApp" xml:space="preserve">
+    <value>Додати додаток автентифікатора</value>
+  </data>
+  <data name="Btn_AddSecurityKey" xml:space="preserve">
+    <value>Додати ключ безпеки</value>
+  </data>
+  <data name="Btn_DeleteDataAndCloseMyAccount" xml:space="preserve">
+    <value>Видалити дані та закрити мій аккаунт</value>
+  </data>
+  <data name="Btn_Download" xml:space="preserve">
+    <value>Завантажити</value>
+  </data>
+  <data name="Btn_ForgetThisBrowser" xml:space="preserve">
+    <value>Забути цей браузер</value>
+  </data>
+  <data name="Btn_ResetAuthenticatorApp" xml:space="preserve">
+    <value>Скинути додаток автентифікатора</value>
+  </data>
+  <data name="Btn_SetupAuthenticatorApp" xml:space="preserve">
+    <value>Налаштувати додаток автентифікатора</value>
+  </data>
+  <data name="Profile_DeletePersonalData_Body" xml:space="preserve">
+    <value>Видалення цих даних назавжди видалить ваш обліковий запис, і відновити їх не вдасться.</value>
+  </data>
+  <data name="Profile_DeletePersonalData_Title" xml:space="preserve">
+    <value>Видалити персональні дані</value>
+  </data>
+  <data name="Profile_General_ChangeEmail_Header" xml:space="preserve">
+    <value>Змінити електронну адресу</value>
+  </data>
+  <data name="Profile_General_ChangeEmail_Toast" xml:space="preserve">
+    <value>Підтвердження електронною поштою надіслано.</value>
+  </data>
+  <data name="Profile_General_Description" xml:space="preserve">
+    <value>Основна інформація про ваш аккаунт.</value>
+  </data>
+  <data name="Profile_General_Language_Header" xml:space="preserve">
+    <value>Мова</value>
+  </data>
+  <data name="Profile_General_PersonalData_Description1" xml:space="preserve">
+    <value>Ваш обліковий запис містить особисті дані, які ви нам надали. Ця сторінка дозволяє завантажувати або видаляти ці дані.</value>
+  </data>
+  <data name="Profile_General_PersonalData_Description2" xml:space="preserve">
+    <value>Видалення цих даних назавжди видалить ваш обліковий запис, і відновити їх не вдасться.</value>
+  </data>
+  <data name="Profile_General_PersonalData_Header" xml:space="preserve">
+    <value>Особисті дані</value>
+  </data>
+  <data name="Profile_General_PersonalData_Toast" xml:space="preserve">
+    <value>Завантаження розпочато.</value>
+  </data>
+  <data name="Profile_General_Profile_Header" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="Profile_General_Profile_Toast" xml:space="preserve">
+    <value>Ваш профіль був оновлений.</value>
+  </data>
+  <data name="Profile_General_Title" xml:space="preserve">
+    <value>Загальні</value>
+  </data>
+  <data name="Profile_Security_2FA_Header" xml:space="preserve">
+    <value>Двофакторна автентифікація (2FA)</value>
+  </data>
+  <data name="Profile_Security_2FA_SubHeader_AuthenticatorApp" xml:space="preserve">
+    <value>Програма автентифікатора</value>
+  </data>
+  <data name="Profile_Security_2FA_SubHeader_Manage2FA" xml:space="preserve">
+    <value>Управління 2FA</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_KeyName" xml:space="preserve">
+    <value>Назва ключа безпеки</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_Title" xml:space="preserve">
+    <value>Додайти новий ключ безпеки</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_Toast" xml:space="preserve">
+    <value>Ключ безпеки додано.</value>
+  </data>
+  <data name="Profile_Security_ChangePassword_Header" xml:space="preserve">
+    <value>Змінити пароль</value>
+  </data>
+  <data name="Profile_Security_ChangePassword_Toast" xml:space="preserve">
+    <value>Пароль оновлено.</value>
+  </data>
+  <data name="Profile_Security_DeleteSecurityKey_Body" xml:space="preserve">
+    <value>Видалити ключ безпеки? Якщо ви видалите цей ключ безпеки, ви не зможете використовувати його для входу зі своїм обліковим записом.</value>
+  </data>
+  <data name="Profile_Security_DeleteSecurityKey_Title" xml:space="preserve">
+    <value>Видаліть ключ безпеки</value>
+  </data>
+  <data name="Profile_Security_Description" xml:space="preserve">
+    <value>Налаштування безпеки вашого облікового запису.</value>
+  </data>
+  <data name="Profile_Security_EditSecurityKey_Title" xml:space="preserve">
+    <value>Змінити назву ключа безпеки</value>
+  </data>
+  <data name="Profile_Security_EditSecurityKey_Toast" xml:space="preserve">
+    <value>Ключ безпеки оновлений.</value>
+  </data>
+  <data name="Profile_Security_SecurityKeys_Header" xml:space="preserve">
+    <value>Ключі безпеки</value>
+  </data>
+  <data name="Profile_Security_Title" xml:space="preserve">
+    <value>Безпека</value>
+  </data>
+  <data name="SecurityKey_Error_Title" xml:space="preserve">
+    <value>Щось пішло не так. Спробуйте ще раз.</value>
+  </data>
+  <data name="Btn_Disable2FA" xml:space="preserve">
+    <value>Вимкнути 2FA</value>
+  </data>
+  <data name="Btn_GenerateRecoveryCodes" xml:space="preserve">
+    <value>Створіть коди відновлення</value>
+  </data>
+  <data name="Btn_ResetAuthenticatorKey" xml:space="preserve">
+    <value>Скинути ключ автентифікації</value>
+  </data>
+  <data name="Btn_ResetRecoveryCodes" xml:space="preserve">
+    <value>Скинути коди відновлення</value>
+  </data>
+  <data name="Btn_Verify" xml:space="preserve">
+    <value>Перевірити</value>
+  </data>
+  <data name="Profile_Security_2FA_1RecoveryCodes_Description" xml:space="preserve">
+    <value>Ви можете створити новий набір кодів відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_1RecoveryCodes_Header" xml:space="preserve">
+    <value>У вас залишився 1 код відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_HaveRecoveryCodes_Description" xml:space="preserve">
+    <value>Вам слід створити новий набір кодів відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_HaveRecoveryCodes_Header" xml:space="preserve">
+    <value>У вас залишилось {0} кодів відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_NoRecoveryCodes_Description" xml:space="preserve">
+    <value>Ви повинні створити новий набір кодів відновлення, перш ніж зможете ввійти в систему за допомогою коду відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_NoRecoveryCodes_Header" xml:space="preserve">
+    <value>У вас не залишилось кодів відновлення.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Description" xml:space="preserve">
+    <value>Вимкнення 2FA не змінює ключі, що використовуються в програмах автентифікації. Якщо ви хочете змінити ключ, який використовується в програмі автентифікації, вам слід скинути ключі автентифікатора.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Header" xml:space="preserve">
+    <value>Ця дія вимикає лише 2FA.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Title" xml:space="preserve">
+    <value>Вимкнути двофакторну автентифікацію (2FA)</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Toast" xml:space="preserve">
+    <value>2FA вимкнено. Ви можете знову активувати 2fa під час налаштування програми автентифікації.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Header" xml:space="preserve">
+    <value>Налаштування програми автентифікації</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_RecoveryCodes_Description" xml:space="preserve">
+    <value>Якщо ви загубите пристрій і не маєте кодів відновлення, ви втратите доступ до свого облікового запису.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_RecoveryCodes_Header" xml:space="preserve">
+    <value>Покладіть ці коди в безпечне місце.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step1_Download2FA" xml:space="preserve">
+    <value>Завантажте двофакторну програму автентифікації, як Microsoft Authenticator, для &lt;a href="https://go.microsoft.com/fwlink/?Linkid=825071"&gt;Windows&lt;/a&gt;, &lt;a href="https://go.microsoft.com/fwlink/?Linkid=25072"&gt;Android&lt;/a&gt; і &lt;a href="https://go.microsoft.com/fwlink/?Linkid=825073"&gt;iOS&lt;/a&gt; або Google Authenticator для &lt;a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;amp;hl=uk"&gt;Android&lt;/a&gt; та &lt;a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"&gt;iOS&lt;/a&gt;.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step2_ScanQR" xml:space="preserve">
+    <value>Відскануйте QR-код або введіть цей ключ &lt;kbd&gt;{0}&lt;/kbd&gt; у свою програму автентифікації з двома факторами. Відстань і кожух не мають значення.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step3_EnterCode" xml:space="preserve">
+    <value>Після сканування QR-коду або введення ключа вище, ваш двофакторний додаток автентифікації надасть вам унікальний код. Введіть код у поле для підтвердження нижче.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Title" xml:space="preserve">
+    <value>Увімкнути автентифікатор</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Toast_AuthenticatorVerified" xml:space="preserve">
+    <value>Ваш додаток для автентифікації підтверджено.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Toast_InvalidCode" xml:space="preserve">
+    <value>Код підтвердження недійсний.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_ToUse" xml:space="preserve">
+    <value>Для використання програми автентифікатора виконайте такі дії:</value>
+  </data>
+  <data name="Profile_Security_ForgetBrowser_Toast" xml:space="preserve">
+    <value>Поточний браузер забутий. Коли ви знову ввійдете з цього браузера, вам буде запропоновано ввести код 2FA.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Description" xml:space="preserve">
+    <value>Якщо ви загубите пристрій і не маєте кодів відновлення, ви втратите доступ до свого облікового запису.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Header" xml:space="preserve">
+    <value>Покладіть ці коди в безпечне місце.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_NotExists_SubDescription" xml:space="preserve">
+    <value>Створення нових кодів відновлення не змінює ключі, що використовуються в програмах автентифікації. Якщо ви хочете змінити ключ, який використовується в програмі автентифікації, вам слід скинути ключі автентифікатора.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Title" xml:space="preserve">
+    <value>Створіть коди відновлення двофакторної автентифікації (2FA)</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Description" xml:space="preserve">
+    <value>Якщо скинути ключ автентифікації, програма автентифікатора не працюватиме, доки ви не налаштуєте його.</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_SubDescription" xml:space="preserve">
+    <value>Цей процес вимикає 2FA, доки ви не підтвердите додаток для автентифікації. Якщо ви не завершите налаштування програми автентифікації, ви можете втратити доступ до свого облікового запису.</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Title" xml:space="preserve">
+    <value>Скинути автентифікатор</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Toast" xml:space="preserve">
+    <value>Ключ програми автентифікатора скинутий, вам потрібно буде налаштувати програму автентифікації за допомогою нового ключа.</value>
+  </data>
+  <data name="Profile_Security_SecurityKeys_RegistrationDate" xml:space="preserve">
+    <value>Дата Реєстрації</value>
+  </data>
 </root>

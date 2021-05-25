@@ -9,6 +9,7 @@ namespace HES.Core.Models.Identity
         public string CurrentEmail { get; set; }
 
         [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_NewEmail), ResourceType = typeof(Resources.Resource))]
         [EmailAddress(ErrorMessageResourceName = nameof(Resources.Resource.Display_NewEmail), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string NewEmail { get; set; }
     }

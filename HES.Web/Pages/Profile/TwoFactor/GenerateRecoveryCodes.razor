@@ -7,19 +7,18 @@
         <div class="alert alert-warning" role="alert">
             <p>
                 <span class="glyphicon glyphicon-warning-sign"></span>
-                <strong>Put these codes in a safe place.</strong>
+                <strong>@Resource.Profile_Security_GenerateRecoveryCodes_Header</strong>
             </p>
             <p>
-                If you lose your device and don't have the recovery codes you will lose access to your account.
+                @Resource.Profile_Security_GenerateRecoveryCodes_Description
             </p>
             <p>
-                Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key
-                used in an authenticator app you should reset your authenticator keys.
+                @Resource.Profile_Security_GenerateRecoveryCodes_NotExists_SubDescription
             </p>
         </div>
         <div class="text-end">
-            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Close</button>
-            <button class="btn btn-danger" type="button" @onclick="GenerateRecoveryCodesAsync">Generate Recovery Codes</button>
+            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">@Resource.Btn_Close</button>
+            <button class="btn btn-danger" type="button" @onclick="GenerateRecoveryCodesAsync">@Resource.Btn_GenerateRecoveryCodes</button>
         </div>
     }
     else
@@ -28,10 +27,10 @@
             <div class="alert alert-warning" role="alert">
                 <p>
                     <span class="glyphicon glyphicon-warning-sign"></span>
-                    <strong>Put these codes in a safe place.</strong>
+                    <strong>@Resource.Profile_Security_GenerateRecoveryCodes_Header</strong>
                 </p>
                 <p>
-                    If you lose your device and don't have the recovery codes you will lose access to your account.
+                    @Resource.Profile_Security_GenerateRecoveryCodes_Description
                 </p>
             </div>
             <div class="row">
@@ -44,7 +43,7 @@
             </div>
         </div>
         <div class="text-end">
-            <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Close</button>    
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Close</button>
         </div>
     }
 }

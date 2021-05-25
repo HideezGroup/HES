@@ -3,7 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Helpers;
 using HES.Core.Interfaces;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Pages.Profile.SecurityKeys;
@@ -76,7 +76,7 @@ namespace HES.Web.Pages.Profile
                 {
                     await ApplicationUserService.UpdateAccountPasswordAsync(ChangePasswordModel);
                     await IdentityApiClient.RefreshSignInAsync();
-                    await ToastService.ShowToastAsync("Password updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_ChangePassword_Toast, ToastType.Success);
 
                     ChangePasswordModel = new UserChangePasswordModel() { UserId = CurrentUser.Id };
                 });
@@ -106,7 +106,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Add new security key", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Profile_Security_AddSecurityKey_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -124,7 +124,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Remove security key", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Profile_Security_DeleteSecurityKey_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -142,7 +142,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Change security key name", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Profile_Security_EditSecurityKey_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -168,8 +168,8 @@ namespace HES.Web.Pages.Profile
                 builder.OpenComponent(0, typeof(EnableAuthenticator));
                 builder.CloseComponent();
             };
-                   
-            var instance = await ModalDialogService.ShowAsync("Enable Authenticator", body, ModalDialogSize.Large);
+
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Profile_Security_EnableAuthenticator_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -185,8 +185,8 @@ namespace HES.Web.Pages.Profile
                 builder.OpenComponent(0, typeof(ResetAuthenticator));
                 builder.CloseComponent();
             };
-     
-            var instance = await ModalDialogService.ShowAsync("Reset Authenticator", body, ModalDialogSize.Large);
+
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Profile_Security_ResetAuthenticator_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -202,8 +202,8 @@ namespace HES.Web.Pages.Profile
                 builder.OpenComponent(0, typeof(Disable2fa));
                 builder.CloseComponent();
             };
-        
-            var instance = await ModalDialogService.ShowAsync("Disable two-factor authentication (2FA)", body, ModalDialogSize.Large);
+
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Profile_Security_Disable2fa_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -220,7 +220,7 @@ namespace HES.Web.Pages.Profile
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Generate two-factor authentication (2FA) recovery codes", body, ModalDialogSize.Large);        
+            await ModalDialogService.ShowAsync(Resources.Resource.Profile_Security_GenerateRecoveryCodes_Title, body, ModalDialogSize.Large);
         }
 
         private async Task ForgetBrowserAsync()
@@ -229,7 +229,7 @@ namespace HES.Web.Pages.Profile
             {
                 var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
                 await ApplicationUserService.ForgetBrowserAsync(client);
-                await ToastService.ShowToastAsync("The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_ForgetBrowser_Toast, ToastType.Success);
             }
             catch (Exception ex)
             {

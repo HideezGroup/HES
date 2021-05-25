@@ -2,7 +2,7 @@
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;

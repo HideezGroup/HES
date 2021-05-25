@@ -387,4 +387,7 @@
   <data name="Display_RememberMe" xml:space="preserve">
     <value>Пам'ятай мене</value>
   </data>
+  <data name="Display_VerificationCode" xml:space="preserve">
+    <value>Код підтвердження</value>
+  </data>
 </root>

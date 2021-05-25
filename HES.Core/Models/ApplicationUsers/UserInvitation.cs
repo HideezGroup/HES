@@ -1,14 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HES.Core.Models.AppUsers
+namespace HES.Core.Models.ApplicationUsers
 {
-    public class ProfileInfo
+    public class UserInvitation
     {
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Phone]
-        public string PhoneNumber { get; set; }
     }
 }

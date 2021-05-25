@@ -4,7 +4,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using HES.Core.Models.Identity;
