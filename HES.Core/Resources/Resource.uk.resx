@@ -390,4 +390,31 @@
   <data name="Display_VerificationCode" xml:space="preserve">
     <value>Код підтвердження</value>
   </data>
+  <data name="Display_ContactEmail" xml:space="preserve">
+    <value>Контактна електронна адреса</value>
+  </data>
+  <data name="Display_CreatedAtDateFrom" xml:space="preserve">
+    <value>Замовлення створено від</value>
+  </data>
+  <data name="Display_CreatedAtDateTo" xml:space="preserve">
+    <value>Замовлення створено до</value>
+  </data>
+  <data name="Display_LicenseEndDateFrom" xml:space="preserve">
+    <value>Дата закінчення ліцензії від</value>
+  </data>
+  <data name="Display_LicenseEndDateTo" xml:space="preserve">
+    <value>Дата закінчення ліцензії до</value>
+  </data>
+  <data name="Display_LicenseStartDateFrom" xml:space="preserve">
+    <value> Дата початку ліцензії від</value>
+  </data>
+  <data name="Display_LicenseStartDateTo" xml:space="preserve">
+    <value>Дата початку ліцензії до</value>
+  </data>
+  <data name="Display_OrderStatus" xml:space="preserve">
+    <value>Статус замовлення</value>
+  </data>
+  <data name="Display_ProlongLicense" xml:space="preserve">
+    <value>Продовжити ліцензію</value>
+  </data>
 </root>

@@ -210,8 +210,17 @@
   <data name="Display_ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
   </data>
+  <data name="Display_ContactEmail" xml:space="preserve">
+    <value>Contact Email</value>
+  </data>
   <data name="Display_Created" xml:space="preserve">
     <value>Created</value>
+  </data>
+  <data name="Display_CreatedAtDateFrom" xml:space="preserve">
+    <value>Order Created At From</value>
+  </data>
+  <data name="Display_CreatedAtDateTo" xml:space="preserve">
+    <value>Order Created At To</value>
   </data>
   <data name="Display_CurrentEmail" xml:space="preserve">
     <value>Current Email</value>
@@ -267,6 +276,18 @@
   <data name="Display_LicenseEndDate" xml:space="preserve">
     <value>License End Date</value>
   </data>
+  <data name="Display_LicenseEndDateFrom" xml:space="preserve">
+    <value>License End Date From</value>
+  </data>
+  <data name="Display_LicenseEndDateTo" xml:space="preserve">
+    <value>License End Date To</value>
+  </data>
+  <data name="Display_LicenseStartDateFrom" xml:space="preserve">
+    <value>License Start Date From</value>
+  </data>
+  <data name="Display_LicenseStartDateTo" xml:space="preserve">
+    <value>License Start Date To</value>
+  </data>
   <data name="Display_LicenseStatus" xml:space="preserve">
     <value>License Status</value>
   </data>
@@ -294,6 +315,9 @@
   <data name="Display_Note" xml:space="preserve">
     <value>Note</value>
   </data>
+  <data name="Display_OrderStatus" xml:space="preserve">
+    <value>Order Status</value>
+  </data>
   <data name="Display_OtpSecret" xml:space="preserve">
     <value>OTP Secret</value>
   </data>
@@ -314,6 +338,9 @@
   </data>
   <data name="Display_Profile" xml:space="preserve">
     <value>Profile</value>
+  </data>
+  <data name="Display_ProlongLicense" xml:space="preserve">
+    <value>Prolong License</value>
   </data>
   <data name="Display_RecoveryCode" xml:space="preserve">
     <value>Recovery Code</value>

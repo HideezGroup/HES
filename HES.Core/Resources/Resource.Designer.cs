@@ -340,11 +340,38 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Contact Email.
+        /// </summary>
+        public static string Display_ContactEmail {
+            get {
+                return ResourceManager.GetString("Display_ContactEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Created.
         /// </summary>
         public static string Display_Created {
             get {
                 return ResourceManager.GetString("Display_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Order Created At From.
+        /// </summary>
+        public static string Display_CreatedAtDateFrom {
+            get {
+                return ResourceManager.GetString("Display_CreatedAtDateFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Order Created At To.
+        /// </summary>
+        public static string Display_CreatedAtDateTo {
+            get {
+                return ResourceManager.GetString("Display_CreatedAtDateTo", resourceCulture);
             }
         }
         
@@ -511,6 +538,42 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на License End Date From.
+        /// </summary>
+        public static string Display_LicenseEndDateFrom {
+            get {
+                return ResourceManager.GetString("Display_LicenseEndDateFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License End Date To.
+        /// </summary>
+        public static string Display_LicenseEndDateTo {
+            get {
+                return ResourceManager.GetString("Display_LicenseEndDateTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License Start Date From.
+        /// </summary>
+        public static string Display_LicenseStartDateFrom {
+            get {
+                return ResourceManager.GetString("Display_LicenseStartDateFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License Start Date To.
+        /// </summary>
+        public static string Display_LicenseStartDateTo {
+            get {
+                return ResourceManager.GetString("Display_LicenseStartDateTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на License Status.
         /// </summary>
         public static string Display_LicenseStatus {
@@ -592,6 +655,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Order Status.
+        /// </summary>
+        public static string Display_OrderStatus {
+            get {
+                return ResourceManager.GetString("Display_OrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на OTP Secret.
         /// </summary>
         public static string Display_OtpSecret {
@@ -651,6 +723,15 @@ namespace HES.Core.Resources {
         public static string Display_Profile {
             get {
                 return ResourceManager.GetString("Display_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Prolong License.
+        /// </summary>
+        public static string Display_ProlongLicense {
+            get {
+                return ResourceManager.GetString("Display_ProlongLicense", resourceCulture);
             }
         }
         

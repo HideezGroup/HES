@@ -1524,4 +1524,88 @@
   <data name="HardwareVaultAccessProfile_Label_StorageAccess" xml:space="preserve">
     <value>Storage Access</value>
   </data>
+  <data name="Btn_NewOrder" xml:space="preserve">
+    <value>New Order</value>
+  </data>
+  <data name="Btn_RefreshLicenses" xml:space="preserve">
+    <value>Refresh Licenses</value>
+  </data>
+  <data name="Btn_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Label_ContactEmail" xml:space="preserve">
+    <value>Contact Email</value>
+  </data>
+  <data name="Label_OrderStatus" xml:space="preserve">
+    <value>Order Status</value>
+  </data>
+  <data name="Label_Prolong" xml:space="preserve">
+    <value>Prolong</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_AlreadryHaveLicense" xml:space="preserve">
+    <value>All of your devices already have a license. If you want to renew them, go to the "Renew License" tab.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_DontHaveDevices" xml:space="preserve">
+    <value>You don't have any Hideez devices yet. You can place an order at &lt;a href="https://hideez.com/pages/hideez-enterprise" role="button"&gt;hideez.com&lt;/a&gt;</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_DontHaveLicenseToRenew" xml:space="preserve">
+    <value>You don't have any licenses that can be renewed. To purchase new licenses, go to the "New License" tab.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_LessThanMaxEndDate" xml:space="preserve">
+    <value>The selected {0} less than max end date for selected hardware vaults.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_MustBeAtLeast" xml:space="preserve">
+    <value>{0} must be at least current date.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess" xml:space="preserve">
+    <value>{0} must not be less than {1}.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne" xml:space="preserve">
+    <value>Select at least one hardware vault.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_NewLicense" xml:space="preserve">
+    <value>New license</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_RenewLicense" xml:space="preserve">
+    <value>Renew license</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Title" xml:space="preserve">
+    <value>Create License Order</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Toast" xml:space="preserve">
+    <value>Order created.</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Body" xml:space="preserve">
+    <value>Are you sure you want to delete this order?</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Title" xml:space="preserve">
+    <value>Delete License Order</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Toast" xml:space="preserve">
+    <value>License order deleted.</value>
+  </data>
+  <data name="LicenseOrders_DetailsLicenseOrder_Title" xml:space="preserve">
+    <value>License Order Details</value>
+  </data>
+  <data name="LicenseOrders_EditLicenseOrder_Title" xml:space="preserve">
+    <value>Edit License Order</value>
+  </data>
+  <data name="LicenseOrders_EditLicenseOrder_Toast" xml:space="preserve">
+    <value>Order updated.</value>
+  </data>
+  <data name="LicenseOrders_EntityName" xml:space="preserve">
+    <value>license order</value>
+  </data>
+  <data name="LicenseOrders_RefreshLicenseInfo_Toast" xml:space="preserve">
+    <value>License info refreshed.</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Body" xml:space="preserve">
+    <value>Confirm sending order.</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Title" xml:space="preserve">
+    <value>Send License Order</value>
+  </data>
+  <data name="LicenseOrders_ValidTo" xml:space="preserve">
+    <value>Valid to</value>
+  </data>
 </root>

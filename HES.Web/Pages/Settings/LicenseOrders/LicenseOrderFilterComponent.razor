@@ -8,50 +8,48 @@ else
         <DataAnnotationsValidator />
         <div class="row">
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">License Start Date From</label>
-                <InputDate class="form-control" @bind-Value="Filter.LicenseStartDateStart" />
+                <Label For="@(() => Filter.LicenseStartDateFrom)" class="form-label text-gray" />
+                <InputDate class="form-control" @bind-Value="Filter.LicenseStartDateFrom" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">License Start Date To</label>
-                <InputDate class="form-control" @bind-Value="Filter.LicenseStartDateEnd" />
+                <Label For="@(() => Filter.LicenseStartDateTo)" class="form-label text-gray" />
+                <InputDate class="form-control" @bind-Value="Filter.LicenseStartDateTo" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">License End Date From</label>
-                <InputDate class="form-control" @bind-Value="Filter.LicenseEndDateStart" />
+                <Label For="@(() => Filter.LicenseEndDateFrom)" class="form-label text-gray" />
+                <InputDate class="form-control" @bind-Value="Filter.LicenseEndDateFrom" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">License End Date To</label>
-                <InputDate class="form-control" @bind-Value="Filter.LicenseEndDateEnd" />
+                <Label For="@(() => Filter.LicenseEndDateTo)" class="form-label text-gray" />
+                <InputDate class="form-control" @bind-Value="Filter.LicenseEndDateTo" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Order Created At From</label>
-                <DateTimePicker @bind-Value="Filter.CreatedDateStart" />
+                <Label For="@(() => Filter.CreatedAtDateFrom)" class="form-label text-gray" />
+                <DateTimePicker @bind-Value="Filter.CreatedAtDateFrom" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Order Created At To</label>
-                <DateTimePicker @bind-Value="Filter.CreatedDateEnd" />
+                <Label For="@(() => Filter.CreatedAtDateTo)" class="form-label text-gray" />
+                <DateTimePicker @bind-Value="Filter.CreatedAtDateTo" />
             </div>
-
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Contact Email</label>
+                <Label For="@(() => Filter.ContactEmail)" class="form-label text-gray" />
                 <InputText class="form-control" @bind-Value="Filter.ContactEmail" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Note</label>
+                <Label For="@(() => Filter.Note)" class="form-label text-gray" />
                 <InputText class="form-control" @bind-Value="Filter.Note" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Prolong License</label>
+                <Label For="@(() => Filter.ProlongLicense)" class="form-label text-gray" />
                 <select @onchange="OnChange_ProlongLicense" class="form-select">
                     <option selected></option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                    <option value="Yes">@Resource.Label_Yes</option>
+                    <option value="No">@Resource.Label_No</option>
                 </select>
             </div>
-
             <div class="col align-self-end text-end form-group">
-                <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync" />
-                <Button @ref="Button" type="submit" Text="Filter" class="btn btn-primary" />
+                <Button Text="@Resource.Btn_Clear" OnClick="ClearAsync" class="btn btn-secondary" />
+                <Button @ref="Button" Text="@Resource.Btn_Filter" type="submit" class="btn btn-primary" />
             </div>
         </div>
     </EditForm>

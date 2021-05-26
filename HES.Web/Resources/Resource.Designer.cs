@@ -610,6 +610,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на New Order.
+        /// </summary>
+        public static string Btn_NewOrder {
+            get {
+                return ResourceManager.GetString("Btn_NewOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Next.
         /// </summary>
         public static string Btn_Next {
@@ -624,6 +633,15 @@ namespace HES.Web.Resources {
         public static string Btn_Refresh {
             get {
                 return ResourceManager.GetString("Btn_Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Refresh Licenses.
+        /// </summary>
+        public static string Btn_RefreshLicenses {
+            get {
+                return ResourceManager.GetString("Btn_RefreshLicenses", resourceCulture);
             }
         }
         
@@ -687,6 +705,15 @@ namespace HES.Web.Resources {
         public static string Btn_Save {
             get {
                 return ResourceManager.GetString("Btn_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Send.
+        /// </summary>
+        public static string Btn_Send {
+            get {
+                return ResourceManager.GetString("Btn_Send", resourceCulture);
             }
         }
         
@@ -2502,6 +2529,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Contact Email.
+        /// </summary>
+        public static string Label_ContactEmail {
+            get {
+                return ResourceManager.GetString("Label_ContactEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Created.
         /// </summary>
         public static string Label_Created {
@@ -2934,6 +2970,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Order Status.
+        /// </summary>
+        public static string Label_OrderStatus {
+            get {
+                return ResourceManager.GetString("Label_OrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на OrgStructure.
         /// </summary>
         public static string Label_OrgStructure {
@@ -3011,6 +3056,15 @@ namespace HES.Web.Resources {
         public static string Label_Profile {
             get {
                 return ResourceManager.GetString("Label_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Prolong.
+        /// </summary>
+        public static string Label_Prolong {
+            get {
+                return ResourceManager.GetString("Label_Prolong", resourceCulture);
             }
         }
         
@@ -3398,6 +3452,204 @@ namespace HES.Web.Resources {
         public static string Label_Yes {
             get {
                 return ResourceManager.GetString("Label_Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на All of your devices already have a license. If you want to renew them, go to the &quot;Renew License&quot; tab..
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_AlreadryHaveLicense {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_AlreadryHaveLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You don&apos;t have any Hideez devices yet. You can place an order at &lt;a href=&quot;https://hideez.com/pages/hideez-enterprise&quot; role=&quot;button&quot;&gt;hideez.com&lt;/a&gt;.
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_DontHaveDevices {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_DontHaveDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You don&apos;t have any licenses that can be renewed. To purchase new licenses, go to the &quot;New License&quot; tab..
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_DontHaveLicenseToRenew {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_DontHaveLicenseToRenew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The selected {0} less than max end date for selected hardware vaults..
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_Error_LessThanMaxEndDate {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_Error_LessThanMaxEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0} must be at least current date..
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_Error_MustBeAtLeast {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_Error_MustBeAtLeast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0} must not be less than {1}..
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select at least one hardware vault..
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на New license.
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_NewLicense {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_NewLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Renew license.
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_RenewLicense {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_RenewLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create License Order.
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_Title {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Order created..
+        /// </summary>
+        public static string LicenseOrders_CreateLicenseOrder_Toast {
+            get {
+                return ResourceManager.GetString("LicenseOrders_CreateLicenseOrder_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Are you sure you want to delete this order?.
+        /// </summary>
+        public static string LicenseOrders_DeleteLicenseOrder_Body {
+            get {
+                return ResourceManager.GetString("LicenseOrders_DeleteLicenseOrder_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete License Order.
+        /// </summary>
+        public static string LicenseOrders_DeleteLicenseOrder_Title {
+            get {
+                return ResourceManager.GetString("LicenseOrders_DeleteLicenseOrder_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License order deleted..
+        /// </summary>
+        public static string LicenseOrders_DeleteLicenseOrder_Toast {
+            get {
+                return ResourceManager.GetString("LicenseOrders_DeleteLicenseOrder_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License Order Details.
+        /// </summary>
+        public static string LicenseOrders_DetailsLicenseOrder_Title {
+            get {
+                return ResourceManager.GetString("LicenseOrders_DetailsLicenseOrder_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit License Order.
+        /// </summary>
+        public static string LicenseOrders_EditLicenseOrder_Title {
+            get {
+                return ResourceManager.GetString("LicenseOrders_EditLicenseOrder_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Order updated..
+        /// </summary>
+        public static string LicenseOrders_EditLicenseOrder_Toast {
+            get {
+                return ResourceManager.GetString("LicenseOrders_EditLicenseOrder_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на license order.
+        /// </summary>
+        public static string LicenseOrders_EntityName {
+            get {
+                return ResourceManager.GetString("LicenseOrders_EntityName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License info refreshed..
+        /// </summary>
+        public static string LicenseOrders_RefreshLicenseInfo_Toast {
+            get {
+                return ResourceManager.GetString("LicenseOrders_RefreshLicenseInfo_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm sending order..
+        /// </summary>
+        public static string LicenseOrders_SendLicenseOrder_Body {
+            get {
+                return ResourceManager.GetString("LicenseOrders_SendLicenseOrder_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Send License Order.
+        /// </summary>
+        public static string LicenseOrders_SendLicenseOrder_Title {
+            get {
+                return ResourceManager.GetString("LicenseOrders_SendLicenseOrder_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Valid to.
+        /// </summary>
+        public static string LicenseOrders_ValidTo {
+            get {
+                return ResourceManager.GetString("LicenseOrders_ValidTo", resourceCulture);
             }
         }
         

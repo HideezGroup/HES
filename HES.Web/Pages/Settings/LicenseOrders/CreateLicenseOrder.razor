@@ -8,16 +8,16 @@ else
 {
     @if (_newLicenseOrder.HardwareVaults.Count == 0 && _renewLicenseOrder.HardwareVaults.Count == 0)
     {
-        <h5>You don't have any Hideez devices yet. You can place an order at <a href="https://hideez.com/pages/hideez-enterprise" role="button">hideez.com</a></h5>
+        <h5>@((MarkupString)Resource.LicenseOrders_CreateLicenseOrder_DontHaveDevices)</h5>
     }
     else
     {
         <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="pills-new-license-tab" data-bs-toggle="pill" href="#pills-new-license" role="tab" aria-controls="pills-new-license" aria-selected="true">New license</a>
+                <a class="nav-link active" id="pills-new-license-tab" data-bs-toggle="pill" href="#pills-new-license" role="tab" aria-controls="pills-new-license" aria-selected="true">@Resource.LicenseOrders_CreateLicenseOrder_NewLicense</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="pills-renew-license-tab" data-bs-toggle="pill" href="#pills-renew-license" role="tab" aria-controls="pills-renew-license" aria-selected="false">Renew license</a>
+                <a class="nav-link" id="pills-renew-license-tab" data-bs-toggle="pill" href="#pills-renew-license" role="tab" aria-controls="pills-renew-license" aria-selected="false">@Resource.LicenseOrders_CreateLicenseOrder_RenewLicense</a>
             </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
@@ -50,7 +50,7 @@ else
                                 </div>
                             </div>
                             <div class="col-6">
-                                <input type="text" @bind-value="_newLicenseOrder.SearchText" @bind-value:event="oninput" class="form-control is-search mb-2" placeholder="Search" />
+                                <input type="text" @bind-value="_newLicenseOrder.SearchText" @bind-value:event="oninput" class="form-control is-search mb-2" placeholder="@Resource.Label_Search" />
                                 <div style="max-height:344px;overflow:auto" class="border">
                                     <table class="table table-hover w-100 disable-selection mb-0">
                                         <thead>
@@ -62,7 +62,7 @@ else
                                                     </div>
                                                 </th>
                                                 <th>
-                                                    Serial Number
+                                                    @Resource.Label_SerialNumber
                                                 </th>
                                             </tr>
                                         </thead>
@@ -91,15 +91,15 @@ else
                         </div>
                         <div class="mt-3">
                             <div class="form-footer">
-                                <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Cancel</button>
-                                <Button @ref="ButtonNewOrder" type="submit" Text="Create" class="btn btn-primary" />
+                                <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                                <Button @ref="ButtonNewOrder" Text="@Resource.Btn_Create" type="submit" class="btn btn-primary" />
                             </div>
                         </div>
                     </EditForm>
                 }
                 else
                 {
-                    <h5>All of your devices already have a license. If you want to renew them, go to the "Renew License" tab.</h5>
+                    <h5>@Resource.LicenseOrders_CreateLicenseOrder_AlreadryHaveLicense</h5>
                 }
             </div>
             <div class="tab-pane fade" id="pills-renew-license" role="tabpanel" aria-labelledby="pills-renew-license-tab">
@@ -126,7 +126,7 @@ else
                                 </div>
                             </div>
                             <div class="col-6">
-                                <input type="text" @bind-value="_renewLicenseOrder.SearchText" @bind-value:event="oninput" class="form-control is-search mb-2" placeholder="Search" />
+                                <input type="text" @bind-value="_renewLicenseOrder.SearchText" @bind-value:event="oninput" class="form-control is-search mb-2" placeholder="@Resource.Label_Search" />
                                 <div style="max-height:344px;overflow:auto" class="border">
                                     <table class="table table-hover w-100 disable-selection mb-0">
                                         <thead>
@@ -138,7 +138,7 @@ else
                                                     </div>
                                                 </th>
                                                 <th>
-                                                    Serial Number
+                                                    @Resource.Label_SerialNumber
                                                 </th>
                                             </tr>
                                         </thead>
@@ -154,7 +154,7 @@ else
                                                     </td>
                                                     <td>
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            @hardwareVault.Id<span class="badge bg-secondary">Valid to @hardwareVault.LicenseEndDate.Value.ToShortDateString()</span>
+                                                            @hardwareVault.Id<span class="badge bg-secondary">@Resource.LicenseOrders_ValidTo @hardwareVault.LicenseEndDate.Value.ToShortDateString()</span>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -169,15 +169,15 @@ else
                         </div>
                         <div class="row mt-3">
                             <div class="form-footer">
-                                <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Cancel</button>
-                                <Button @ref="ButtonRenewOrder" type="submit" Text="Create" class="btn btn-primary" />
+                                <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                                <Button @ref="ButtonRenewOrder" Text="@Resource.Btn_Create" type="submit" class="btn btn-primary" />
                             </div>
                         </div>
                     </EditForm>
                 }
                 else
                 {
-                    <h5>You don't have any licenses that can be renewed. To purchase new licenses, go to the "New License" tab.</h5>
+                    <h5>@Resource.LicenseOrders_CreateLicenseOrder_DontHaveLicenseToRenew</h5>
                 }
             </div>
         </div>

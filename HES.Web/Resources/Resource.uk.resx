@@ -1524,4 +1524,88 @@
   <data name="HardwareVaultAccessProfile_Label_StorageAccess" xml:space="preserve">
     <value>Доступ до сховища</value>
   </data>
+  <data name="Btn_NewOrder" xml:space="preserve">
+    <value>Нове замовлення</value>
+  </data>
+  <data name="Btn_RefreshLicenses" xml:space="preserve">
+    <value>Оновити ліцензії</value>
+  </data>
+  <data name="Btn_Send" xml:space="preserve">
+    <value>Надіслати</value>
+  </data>
+  <data name="Label_ContactEmail" xml:space="preserve">
+    <value>Контактна електронна адреса</value>
+  </data>
+  <data name="Label_OrderStatus" xml:space="preserve">
+    <value>Статус замовлення</value>
+  </data>
+  <data name="Label_Prolong" xml:space="preserve">
+    <value>Продовжувати</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_AlreadryHaveLicense" xml:space="preserve">
+    <value>Усі ваші пристрої вже мають ліцензію. Якщо ви хочете їх поновити, перейдіть на вкладку "Поновити ліцензію".</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_DontHaveDevices" xml:space="preserve">
+    <value>У вас ще немає пристроїв Hideez. Ви можете зробити замовлення за адресою &lt;a href="https://hideez.com/pages/hideez-enterprise" role="button"&gt;hideez.com&lt;/a&gt;</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_DontHaveLicenseToRenew" xml:space="preserve">
+    <value>У вас немає ліцензій, які можна поновити. Щоб придбати нові ліцензії, перейдіть на вкладку "Нова ліцензія".</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_LessThanMaxEndDate" xml:space="preserve">
+    <value>Вибрана {0} дата закінчення, яка не перевищує максимальну для вибраних апаратных сховищ.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_MustBeAtLeast" xml:space="preserve">
+    <value>{0} має мати принаймні поточну дату.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess" xml:space="preserve">
+    <value>Значення {0} не повинно бути менше {1}.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne" xml:space="preserve">
+    <value>Виберіть принаймні одне сховище обладнання.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_NewLicense" xml:space="preserve">
+    <value>Нова ліцензія</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_RenewLicense" xml:space="preserve">
+    <value>Поновити ліцензію</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Title" xml:space="preserve">
+    <value>Створити замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Toast" xml:space="preserve">
+    <value>Замовлення створено.</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Body" xml:space="preserve">
+    <value>Ви впевнені, що хочете видалити це замовлення?</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Title" xml:space="preserve">
+    <value>Видалити замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Toast" xml:space="preserve">
+    <value>Замовлення ліцензії видалено.</value>
+  </data>
+  <data name="LicenseOrders_DetailsLicenseOrder_Title" xml:space="preserve">
+    <value>Деталі замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_EditLicenseOrder_Title" xml:space="preserve">
+    <value>Редагувати замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_EditLicenseOrder_Toast" xml:space="preserve">
+    <value>Замовлення оновлено.</value>
+  </data>
+  <data name="LicenseOrders_EntityName" xml:space="preserve">
+    <value>ліцензійне замовлення</value>
+  </data>
+  <data name="LicenseOrders_RefreshLicenseInfo_Toast" xml:space="preserve">
+    <value>Інформацію про ліцензію оновлено.</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Body" xml:space="preserve">
+    <value>Підтвердьте відправлення замовлення.</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Title" xml:space="preserve">
+    <value>Надіслати замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_ValidTo" xml:space="preserve">
+    <value>Діє до</value>
+  </data>
 </root>
