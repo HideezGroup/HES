@@ -346,7 +346,7 @@
     <value>Оновлено</value>
   </data>
   <data name="Display_VaultsCount" xml:space="preserve">
-    <value>Кількість сховищь</value>
+    <value>Кількість сховищ</value>
   </data>
   <data name="Exception_EmployeeRequiresEmail" xml:space="preserve">
     <value>Потрібна електронна пошта.</value>
@@ -416,5 +416,20 @@
   </data>
   <data name="Display_ProlongLicense" xml:space="preserve">
     <value>Продовжити ліцензію</value>
+  </data>
+  <data name="Display_HardwareVaultsCount" xml:space="preserve">
+    <value>Кількість апаратних сховищ</value>
+  </data>
+  <data name="Display_OrderCreatedAtDateFrom" xml:space="preserve">
+    <value>Замовлення створено вiд</value>
+  </data>
+  <data name="Display_OrderCreatedAtDateTo" xml:space="preserve">
+    <value>Замовлення створено до</value>
+  </data>
+  <data name="Display_UpdatedAtFrom" xml:space="preserve">
+    <value>Оновлено вiд</value>
+  </data>
+  <data name="Display_UpdatedAtTo" xml:space="preserve">
+    <value>Оновлено до</value>
   </data>
 </root>

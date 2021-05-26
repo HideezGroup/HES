@@ -217,10 +217,10 @@
     <value>Created</value>
   </data>
   <data name="Display_CreatedAtDateFrom" xml:space="preserve">
-    <value>Order Created At From</value>
+    <value>Created At From</value>
   </data>
   <data name="Display_CreatedAtDateTo" xml:space="preserve">
-    <value>Order Created At To</value>
+    <value>Created At To</value>
   </data>
   <data name="Display_CurrentEmail" xml:space="preserve">
     <value>Current Email</value>
@@ -254,6 +254,9 @@
   </data>
   <data name="Display_HardwareVault" xml:space="preserve">
     <value>Hardware Vault</value>
+  </data>
+  <data name="Display_HardwareVaultsCount" xml:space="preserve">
+    <value>Hardware Vaults Count</value>
   </data>
   <data name="Display_Id" xml:space="preserve">
     <value>ID</value>
@@ -315,6 +318,12 @@
   <data name="Display_Note" xml:space="preserve">
     <value>Note</value>
   </data>
+  <data name="Display_OrderCreatedAtDateFrom" xml:space="preserve">
+    <value>Order Created At From</value>
+  </data>
+  <data name="Display_OrderCreatedAtDateTo" xml:space="preserve">
+    <value>Order Created At To</value>
+  </data>
   <data name="Display_OrderStatus" xml:space="preserve">
     <value>Order Status</value>
   </data>
@@ -374,6 +383,12 @@
   </data>
   <data name="Display_Updated" xml:space="preserve">
     <value>Updated</value>
+  </data>
+  <data name="Display_UpdatedAtFrom" xml:space="preserve">
+    <value>Updated At From</value>
+  </data>
+  <data name="Display_UpdatedAtTo" xml:space="preserve">
+    <value>Updated At To</value>
   </data>
   <data name="Display_Urls" xml:space="preserve">
     <value>URLs (separate by semicolon)</value>

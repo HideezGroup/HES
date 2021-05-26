@@ -742,9 +742,9 @@ namespace HES.Core.Services
                 {
                     query = query.Where(x => x.CreatedAt >= dataLoadingOptions.Filter.CreatedAtFrom.Value.Date.ToUniversalTime());
                 }
-                if (dataLoadingOptions.Filter.CreateddAtTo != null)
+                if (dataLoadingOptions.Filter.CreatedAtTo != null)
                 {
-                    query = query.Where(x => x.CreatedAt <= dataLoadingOptions.Filter.CreateddAtTo.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59).ToUniversalTime());
+                    query = query.Where(x => x.CreatedAt <= dataLoadingOptions.Filter.CreatedAtTo.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59).ToUniversalTime());
                 }
                 if (dataLoadingOptions.Filter.UpdatedAtFrom != null)
                 {

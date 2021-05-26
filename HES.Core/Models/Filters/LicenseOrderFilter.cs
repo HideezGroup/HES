@@ -27,10 +27,10 @@ namespace HES.Core.Models.Filters
         [Display(Name = nameof(Resources.Resource.Display_LicenseEndDateTo), ResourceType = typeof(Resources.Resource))]
         public DateTime? LicenseEndDateTo { get; set; }
 
-        [Display(Name = nameof(Resources.Resource.Display_CreatedAtDateFrom), ResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_OrderCreatedAtDateFrom), ResourceType = typeof(Resources.Resource))]
         public DateTime? CreatedAtDateFrom { get; set; }
 
-        [Display(Name = nameof(Resources.Resource.Display_CreatedAtDateTo), ResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_OrderCreatedAtDateTo), ResourceType = typeof(Resources.Resource))]
         public DateTime? CreatedAtDateTo { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_OrderStatus), ResourceType = typeof(Resources.Resource))]

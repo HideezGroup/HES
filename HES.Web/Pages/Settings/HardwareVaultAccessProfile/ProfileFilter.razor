@@ -7,27 +7,27 @@ else
     <EditForm Model="Filter" OnValidSubmit="FilteredAsync">
         <div class="row">
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Name</label>
+                <Label For="@(() => Filter.Name)" class="form-label text-gray" />
                 <InputText class="form-control" @bind-Value="Filter.Name" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Created At From</label>
+                <Label For="@(() => Filter.CreatedAtFrom)" class="form-label text-gray" />
                 <InputDate class="form-control" @bind-Value="Filter.CreatedAtFrom" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Created At To</label>
-                <InputDate class="form-control" @bind-Value="Filter.CreateddAtTo" />
+                <Label For="@(() => Filter.CreatedAtTo)" class="form-label text-gray" />
+                <InputDate class="form-control" @bind-Value="Filter.CreatedAtTo" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Updated At From</label>
+                <Label For="@(() => Filter.UpdatedAtFrom)" class="form-label text-gray" />
                 <InputDate class="form-control" @bind-Value="Filter.UpdatedAtFrom" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Updated At To</label>
+                <Label For="@(() => Filter.UpdatedAtTo)" class="form-label text-gray" />
                 <InputDate class="form-control" @bind-Value="Filter.UpdatedAtTo" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Hardware Vaults Count</label>
+                <Label For="@(() => Filter.HardwareVaultsCount)" class="form-label text-gray" />
                 <InputNumber class="form-control" @bind-Value="Filter.HardwareVaultsCount" />
             </div>
             <div class="col align-self-end text-end form-group">
