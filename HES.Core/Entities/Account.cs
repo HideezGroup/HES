@@ -16,10 +16,10 @@ namespace HES.Core.Entities
         [Display(Name = nameof(Resources.Resource.Display_AccountName), ResourceType = typeof(Resources.Resource))]
         public string Name { get; set; }
 
-        [Display(Name = nameof(Resources.Resource.Display_Urls), ResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_UrlsSeparate), ResourceType = typeof(Resources.Resource))]
         public string Urls { get; set; }
 
-        [Display(Name = nameof(Resources.Resource.Display_Apps), ResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_AppsSeparate), ResourceType = typeof(Resources.Resource))]
         public string Apps { get; set; }
 
         [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]

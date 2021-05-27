@@ -59,7 +59,7 @@ namespace HES.Web.Pages.SharedAccounts
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Create Shared Account", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.SharedAccounts_CreateSharedAccount_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -78,7 +78,7 @@ namespace HES.Web.Pages.SharedAccounts
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Shared Account", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.SharedAccounts_DeleteSharedAccount_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -97,7 +97,7 @@ namespace HES.Web.Pages.SharedAccounts
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit Shared Account OTP", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.SharedAccounts_EditSharedAccountOtp_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -116,7 +116,7 @@ namespace HES.Web.Pages.SharedAccounts
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit Shared Account", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.SharedAccounts_EditSharedAccount_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -135,7 +135,7 @@ namespace HES.Web.Pages.SharedAccounts
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit Shared Account Password", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.SharedAccounts_EditSharedAccountPassword_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

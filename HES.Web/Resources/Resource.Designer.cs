@@ -421,6 +421,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create shared account.
+        /// </summary>
+        public static string Btn_CreateSharedAccount {
+            get {
+                return ResourceManager.GetString("Btn_CreateSharedAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Delete.
         /// </summary>
         public static string Btn_Delete {
@@ -3114,6 +3123,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Password updated.
+        /// </summary>
+        public static string Label_PasswordUpdated {
+            get {
+                return ResourceManager.GetString("Label_PasswordUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Personal account.
         /// </summary>
         public static string Label_PersonalAccount {
@@ -3164,15 +3182,6 @@ namespace HES.Web.Resources {
         public static string Label_Prolong {
             get {
                 return ResourceManager.GetString("Label_Prolong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Password Updated.
-        /// </summary>
-        public static string Label_PwdUpdated {
-            get {
-                return ResourceManager.GetString("Label_PwdUpdated", resourceCulture);
             }
         }
         
@@ -4793,6 +4802,114 @@ namespace HES.Web.Resources {
         public static string SecurityKey_Start_Description {
             get {
                 return ResourceManager.GetString("SecurityKey_Start_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter data manually or select from the template:.
+        /// </summary>
+        public static string SharedAccounts_CreateSharedAccount_EnterData {
+            get {
+                return ResourceManager.GetString("SharedAccounts_CreateSharedAccount_EnterData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Shared Account.
+        /// </summary>
+        public static string SharedAccounts_CreateSharedAccount_Title {
+            get {
+                return ResourceManager.GetString("SharedAccounts_CreateSharedAccount_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account created..
+        /// </summary>
+        public static string SharedAccounts_CreateSharedAccount_Toast {
+            get {
+                return ResourceManager.GetString("SharedAccounts_CreateSharedAccount_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete account {0}?.
+        /// </summary>
+        public static string SharedAccounts_DeleteSharedAccount_Body {
+            get {
+                return ResourceManager.GetString("SharedAccounts_DeleteSharedAccount_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Shared Account.
+        /// </summary>
+        public static string SharedAccounts_DeleteSharedAccount_Title {
+            get {
+                return ResourceManager.GetString("SharedAccounts_DeleteSharedAccount_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shared Account deleted..
+        /// </summary>
+        public static string SharedAccounts_DeleteSharedAccount_Toast {
+            get {
+                return ResourceManager.GetString("SharedAccounts_DeleteSharedAccount_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Shared Account.
+        /// </summary>
+        public static string SharedAccounts_EditSharedAccount_Title {
+            get {
+                return ResourceManager.GetString("SharedAccounts_EditSharedAccount_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shared account updated..
+        /// </summary>
+        public static string SharedAccounts_EditSharedAccount_Toast {
+            get {
+                return ResourceManager.GetString("SharedAccounts_EditSharedAccount_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Shared Account OTP.
+        /// </summary>
+        public static string SharedAccounts_EditSharedAccountOtp_Title {
+            get {
+                return ResourceManager.GetString("SharedAccounts_EditSharedAccountOtp_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shared Account OTP updated..
+        /// </summary>
+        public static string SharedAccounts_EditSharedAccountOtp_Toast {
+            get {
+                return ResourceManager.GetString("SharedAccounts_EditSharedAccountOtp_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Shared Account password.
+        /// </summary>
+        public static string SharedAccounts_EditSharedAccountPassword_Title {
+            get {
+                return ResourceManager.GetString("SharedAccounts_EditSharedAccountPassword_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shared Account password updated..
+        /// </summary>
+        public static string SharedAccounts_EditSharedAccountPassword_Toast {
+            get {
+                return ResourceManager.GetString("SharedAccounts_EditSharedAccountPassword_Toast", resourceCulture);
             }
         }
         

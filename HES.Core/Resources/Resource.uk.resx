@@ -225,7 +225,7 @@
   <data name="Dashboard_WorkstationsCard_WaitingForApproval" xml:space="preserve">
     <value>В очікуванні схвалення</value>
   </data>
-  <data name="Display_Apps" xml:space="preserve">
+  <data name="Display_AppsSeparate" xml:space="preserve">
     <value>Програми (розділити крапкою з комою)</value>
   </data>
   <data name="Display_Battery" xml:space="preserve">
@@ -262,7 +262,7 @@
     <value>Статус ліцензії</value>
   </data>
   <data name="Display_Login" xml:space="preserve">
-    <value>Увійти</value>
+    <value>Логiн</value>
   </data>
   <data name="Display_LoginType" xml:space="preserve">
     <value>Тип входу</value>
@@ -300,7 +300,7 @@
   <data name="Display_StatusReason" xml:space="preserve">
     <value>Причина статусу</value>
   </data>
-  <data name="Display_Urls" xml:space="preserve">
+  <data name="Display_UrlsSeparate" xml:space="preserve">
     <value>URL-адреси (розділити крапкою з комою)</value>
   </data>
   <data name="Validation_CompareNewPassword" xml:space="preserve">
@@ -455,5 +455,11 @@
   </data>
   <data name="Validation_Range" xml:space="preserve">
     <value>Поле {0} має бути між {1} та {2}.</value>
+  </data>
+  <data name="Display_Apps" xml:space="preserve">
+    <value>Програми</value>
+  </data>
+  <data name="Display_Urls" xml:space="preserve">
+    <value>URL-адреси</value>
   </data>
 </root>

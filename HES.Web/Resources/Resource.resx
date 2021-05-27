@@ -519,8 +519,8 @@
   <data name="Label_Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
-  <data name="Label_PwdUpdated" xml:space="preserve">
-    <value>Password Updated</value>
+  <data name="Label_PasswordUpdated" xml:space="preserve">
+    <value>Password updated</value>
   </data>
   <data name="Label_Remove" xml:space="preserve">
     <value>Remove</value>
@@ -1778,5 +1778,44 @@
   </data>
   <data name="Parameters_DeleteSplunkSettings_Toast" xml:space="preserve">
     <value>Splunk settings deleted.</value>
+  </data>
+  <data name="Btn_CreateSharedAccount" xml:space="preserve">
+    <value>Create shared account</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_EnterData" xml:space="preserve">
+    <value>Enter data manually or select from the template:</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_Title" xml:space="preserve">
+    <value>Create Shared Account</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_Toast" xml:space="preserve">
+    <value>Account created.</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Body" xml:space="preserve">
+    <value>You want to delete account {0}?</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Title" xml:space="preserve">
+    <value>Delete Shared Account</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Toast" xml:space="preserve">
+    <value>Shared Account deleted.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountOtp_Title" xml:space="preserve">
+    <value>Edit Shared Account OTP</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountOtp_Toast" xml:space="preserve">
+    <value>Shared Account OTP updated.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountPassword_Title" xml:space="preserve">
+    <value>Edit Shared Account password</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountPassword_Toast" xml:space="preserve">
+    <value>Shared Account password updated.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccount_Title" xml:space="preserve">
+    <value>Edit Shared Account</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccount_Toast" xml:space="preserve">
+    <value>Shared account updated.</value>
   </data>
 </root>

@@ -349,11 +349,20 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Applications (separate by semicolon).
+        ///   Ищет локализованную строку, похожую на Applications.
         /// </summary>
         public static string Display_Apps {
             get {
                 return ResourceManager.GetString("Display_Apps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Applications (separate by semicolon).
+        /// </summary>
+        public static string Display_AppsSeparate {
+            get {
+                return ResourceManager.GetString("Display_AppsSeparate", resourceCulture);
             }
         }
         
@@ -943,11 +952,20 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на URLs (separate by semicolon).
+        ///   Ищет локализованную строку, похожую на URLs.
         /// </summary>
         public static string Display_Urls {
             get {
                 return ResourceManager.GetString("Display_Urls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на URLs (separate by semicolon).
+        /// </summary>
+        public static string Display_UrlsSeparate {
+            get {
+                return ResourceManager.GetString("Display_UrlsSeparate", resourceCulture);
             }
         }
         
