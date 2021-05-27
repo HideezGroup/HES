@@ -8,14 +8,14 @@ else
 {
     @if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="position" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@Position.Name" CloseAction="ModalDialogCancel" />
     }
     else
     {
-        <h5 class="text-gray mb-4 text-break">You want to delete position @Position.Name?</h5>
-        <div class="foorm-footer">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-            <Button Text="Delete" class="btn btn-danger" OnClick="DeleteAsync" />
+        <h5 class="text-gray mb-4 text-break">@string.Format(Resource.OrgStructure_DeletePosition_Body, Position.Name)</h5>
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button Text="@Resource.Btn_Delete" OnClick="DeleteAsync" class="btn btn-danger" />
         </div>
     }
 }

@@ -29,7 +29,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Department = await OrgStructureService.GetDepartmentByIdAsync(DepartmentId);
                 if (Department == null)
-                    throw new Exception("Department not found.");
+                    throw new HESException(HESCode.DepartmentNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Department.Id, out object _);
                 if (!EntityBeingEdited)
@@ -58,7 +58,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.EditDepartmentAsync(Department);
-                    await ToastService.ShowToastAsync("Department updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.OrgStructure_EditDepartment_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

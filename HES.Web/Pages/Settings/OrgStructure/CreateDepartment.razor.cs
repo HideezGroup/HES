@@ -32,7 +32,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.CreateDepartmentAsync(Department);
-                    await ToastService.ShowToastAsync("Department created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.OrgStructure_CreateDepartment_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

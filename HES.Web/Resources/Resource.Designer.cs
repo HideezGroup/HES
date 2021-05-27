@@ -367,6 +367,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Company.
+        /// </summary>
+        public static string Btn_CreateCompany {
+            get {
+                return ResourceManager.GetString("Btn_CreateCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Department.
+        /// </summary>
+        public static string Btn_CreateDepartment {
+            get {
+                return ResourceManager.GetString("Btn_CreateDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Create employee.
         /// </summary>
         public static string Btn_CreateEmployee {
@@ -381,6 +399,15 @@ namespace HES.Web.Resources {
         public static string Btn_CreatePersonalAccount {
             get {
                 return ResourceManager.GetString("Btn_CreatePersonalAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Position.
+        /// </summary>
+        public static string Btn_CreatePosition {
+            get {
+                return ResourceManager.GetString("Btn_CreatePosition", resourceCulture);
             }
         }
         
@@ -2511,6 +2538,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Companies.
+        /// </summary>
+        public static string Label_Companies {
+            get {
+                return ResourceManager.GetString("Label_Companies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Company.
         /// </summary>
         public static string Label_Company {
@@ -2597,6 +2633,15 @@ namespace HES.Web.Resources {
         public static string Label_Department {
             get {
                 return ResourceManager.GetString("Label_Department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Departments.
+        /// </summary>
+        public static string Label_Departments {
+            get {
+                return ResourceManager.GetString("Label_Departments", resourceCulture);
             }
         }
         
@@ -3047,6 +3092,15 @@ namespace HES.Web.Resources {
         public static string Label_Position {
             get {
                 return ResourceManager.GetString("Label_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Positions.
+        /// </summary>
+        public static string Label_Positions {
+            get {
+                return ResourceManager.GetString("Label_Positions", resourceCulture);
             }
         }
         
@@ -3695,6 +3749,195 @@ namespace HES.Web.Resources {
         public static string Message_YouCanSendCode {
             get {
                 return ResourceManager.GetString("Message_YouCanSendCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Company.
+        /// </summary>
+        public static string OrgStructure_CreateCompany_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_CreateCompany_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Company created..
+        /// </summary>
+        public static string OrgStructure_CreateCompany_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_CreateCompany_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Department.
+        /// </summary>
+        public static string OrgStructure_CreateDepartment_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_CreateDepartment_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Department created..
+        /// </summary>
+        public static string OrgStructure_CreateDepartment_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_CreateDepartment_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Position.
+        /// </summary>
+        public static string OrgStructure_CreatePosition_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_CreatePosition_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Position created..
+        /// </summary>
+        public static string OrgStructure_CreatePosition_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_CreatePosition_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete company {0}?.
+        /// </summary>
+        public static string OrgStructure_DeleteCompany_Body {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeleteCompany_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Company.
+        /// </summary>
+        public static string OrgStructure_DeleteCompany_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeleteCompany_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Company deleted..
+        /// </summary>
+        public static string OrgStructure_DeleteCompany_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeleteCompany_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete department {0}?.
+        /// </summary>
+        public static string OrgStructure_DeleteDepartment_Body {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeleteDepartment_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Department.
+        /// </summary>
+        public static string OrgStructure_DeleteDepartment_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeleteDepartment_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Department deleted..
+        /// </summary>
+        public static string OrgStructure_DeleteDepartment_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeleteDepartment_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete position {0}?.
+        /// </summary>
+        public static string OrgStructure_DeletePosition_Body {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeletePosition_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Position.
+        /// </summary>
+        public static string OrgStructure_DeletePosition_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeletePosition_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Position deleted..
+        /// </summary>
+        public static string OrgStructure_DeletePosition_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_DeletePosition_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Company.
+        /// </summary>
+        public static string OrgStructure_EditCompany_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_EditCompany_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Company updated..
+        /// </summary>
+        public static string OrgStructure_EditCompany_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_EditCompany_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Department.
+        /// </summary>
+        public static string OrgStructure_EditDepartment_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_EditDepartment_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Department updated..
+        /// </summary>
+        public static string OrgStructure_EditDepartment_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_EditDepartment_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Position.
+        /// </summary>
+        public static string OrgStructure_EditPosition_Title {
+            get {
+                return ResourceManager.GetString("OrgStructure_EditPosition_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Position updated..
+        /// </summary>
+        public static string OrgStructure_EditPosition_Toast {
+            get {
+                return ResourceManager.GetString("OrgStructure_EditPosition_Toast", resourceCulture);
             }
         }
         

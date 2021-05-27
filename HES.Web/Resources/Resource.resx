@@ -1608,4 +1608,85 @@
   <data name="LicenseOrders_ValidTo" xml:space="preserve">
     <value>Valid to</value>
   </data>
+  <data name="Btn_CreateCompany" xml:space="preserve">
+    <value>Create Company</value>
+  </data>
+  <data name="Btn_CreateDepartment" xml:space="preserve">
+    <value>Create Department</value>
+  </data>
+  <data name="Btn_CreatePosition" xml:space="preserve">
+    <value>Create Position</value>
+  </data>
+  <data name="Label_Companies" xml:space="preserve">
+    <value>Companies</value>
+  </data>
+  <data name="Label_Departments" xml:space="preserve">
+    <value>Departments</value>
+  </data>
+  <data name="Label_Positions" xml:space="preserve">
+    <value>Positions</value>
+  </data>
+  <data name="OrgStructure_CreateCompany_Title" xml:space="preserve">
+    <value>Create Company</value>
+  </data>
+  <data name="OrgStructure_CreateCompany_Toast" xml:space="preserve">
+    <value>Company created.</value>
+  </data>
+  <data name="OrgStructure_CreateDepartment_Title" xml:space="preserve">
+    <value>Create Department</value>
+  </data>
+  <data name="OrgStructure_CreateDepartment_Toast" xml:space="preserve">
+    <value>Department created.</value>
+  </data>
+  <data name="OrgStructure_CreatePosition_Title" xml:space="preserve">
+    <value>Create Position</value>
+  </data>
+  <data name="OrgStructure_CreatePosition_Toast" xml:space="preserve">
+    <value>Position created.</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Body" xml:space="preserve">
+    <value>You want to delete company {0}?</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Title" xml:space="preserve">
+    <value>Delete Company</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Toast" xml:space="preserve">
+    <value>Company deleted.</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Body" xml:space="preserve">
+    <value>You want to delete department {0}?</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Title" xml:space="preserve">
+    <value>Delete Department</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Toast" xml:space="preserve">
+    <value>Department deleted.</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Body" xml:space="preserve">
+    <value>You want to delete position {0}?</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Title" xml:space="preserve">
+    <value>Delete Position</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Toast" xml:space="preserve">
+    <value>Position deleted.</value>
+  </data>
+  <data name="OrgStructure_EditCompany_Title" xml:space="preserve">
+    <value>Edit Company</value>
+  </data>
+  <data name="OrgStructure_EditCompany_Toast" xml:space="preserve">
+    <value>Company updated.</value>
+  </data>
+  <data name="OrgStructure_EditDepartment_Title" xml:space="preserve">
+    <value>Edit Department</value>
+  </data>
+  <data name="OrgStructure_EditDepartment_Toast" xml:space="preserve">
+    <value>Department updated.</value>
+  </data>
+  <data name="OrgStructure_EditPosition_Title" xml:space="preserve">
+    <value>Edit Position</value>
+  </data>
+  <data name="OrgStructure_EditPosition_Toast" xml:space="preserve">
+    <value>Position updated.</value>
+  </data>
 </root>

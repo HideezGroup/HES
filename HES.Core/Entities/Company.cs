@@ -9,8 +9,11 @@ namespace HES.Core.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        [Required]
+
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Name), ResourceType = typeof(Resources.Resource))]
         public string Name { get; set; }
+
         public List<Department> Departments { get; set; }
     }
 }
