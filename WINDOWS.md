@@ -21,9 +21,9 @@ You can perform a simple test by opening a web browser and browsing `http://<you
 
 ### 4. Download and install .NET Core SDK 5.0:
 
-- [.NET Core SDK 5.0](https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-5.0.201-windows-x64-installer) 
+- [.NET Core SDK 5.0](https://dotnet.microsoft.com/download/dotnet-core/thank-you/sdk-5.0.300-windows-x64-installer) 
 
-- [Windows Hosting Bundle, which includes the .NET Core Runtime and IIS support](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-aspnetcore-5.0.4-windows-hosting-bundle-installer)
+- [Windows Hosting Bundle, which includes the .NET Core Runtime and IIS support](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-aspnetcore-5.0.6-windows-hosting-bundle-installer)
 
 You can download the latest versions of this applications. They can be found at https://dotnet.microsoft.com/download/dotnet-core/5.0
 
@@ -31,7 +31,7 @@ You can download the latest versions of this applications. They can be found at 
 
 ### 5. Download and install 
 
-- [MySQL](https://dev.mysql.com/get/Downloads/MySQLInstaller/mysql-installer-community-8.0.23.0.msi)
+- [MySQL](https://dev.mysql.com/get/Downloads/MySQLInstaller/mysql-installer-community-8.0.25.0.msi)
 
 Alternatively, You can also go to https://dev.mysql.com/downloads/installer and  download the latest versions of this applications 
  
