@@ -183,6 +183,27 @@
   <data name="Dashboard_WorkstationsCard_WaitingForApproval" xml:space="preserve">
     <value>Waiting for approval</value>
   </data>
+  <data name="Dispaly_ApiAddress" xml:space="preserve">
+    <value>Api Address</value>
+  </data>
+  <data name="Dispaly_ApiKey" xml:space="preserve">
+    <value>Api Key</value>
+  </data>
+  <data name="Dispaly_AutoPasswordChange" xml:space="preserve">
+    <value>Auto Password Change</value>
+  </data>
+  <data name="Dispaly_DomainName" xml:space="preserve">
+    <value>Domain Name</value>
+  </data>
+  <data name="Dispaly_Host" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Dispaly_Token" xml:space="preserve">
+    <value>Token</value>
+  </data>
+  <data name="Dispaly_UserLogonName" xml:space="preserve">
+    <value>User Logon Name</value>
+  </data>
   <data name="Display_Account" xml:space="preserve">
     <value>Account</value>
   </data>
@@ -422,6 +443,9 @@
   </data>
   <data name="Validation_EmailAddress" xml:space="preserve">
     <value>The {0} field is not a valid e-mail address.</value>
+  </data>
+  <data name="Validation_Range" xml:space="preserve">
+    <value>The field {0} must be between {1} and {2}.</value>
   </data>
   <data name="Validation_Required" xml:space="preserve">
     <value>The {0} field is required.</value>

@@ -5,9 +5,9 @@
 
 @if (Initialized)
 {
-    <SettingsCard Title="Licensing" Description="API authentication key for ordering licenses and the address of the licensing server.">
+    <SettingsCard Title="@Resource.Parameters_Licensing_Title" Description="@Resource.Parameters_Licensing_Description">
         <div class="form-group">
-            <label class="control-label text-gray">Api Address</label>
+            <Label For="@(() => LicensingSettings.ApiAddress)" class="control-label text-gray" />
             @if (LicensingSettings?.ApiAddress != null)
             {
                 <div class="alert alert-secondary" role="alert">
@@ -17,21 +17,21 @@
             else
             {
                 <div class="alert alert-danger" role="alert">
-                    Not set
+                    @Resource.Label_NotConfigured
                 </div>
             }
         </div>
         <div class="mt-4">
-            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLicensingSettingsAsync">Set Licensing Settings</button>
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLicensingSettingsAsync">@Resource.Btn_SetLicensingSettings</button>
             @if (LicensingSettings != null)
             {
-                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLicenseSettingsAsync">Delete Settings</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLicenseSettingsAsync">@Resource.Btn_DeleteSettings</button>
             }
         </div>
     </SettingsCard>
-    <SettingsCard Title="Domain" Description="To connect to the domain and import groups and users.">
+    <SettingsCard Title="@Resource.Parameters_Domain_Title" Description="@Resource.Parameters_Domain_Description">
         <div class="form-group">
-            <label class="control-label text-gray">Domain Name</label>
+            <Label For="@(() => LdapSettings.Host)" class="control-label text-gray" />
             @if (LdapSettings != null)
             {
                 <div class="alert alert-secondary" role="alert">
@@ -41,21 +41,21 @@
             else
             {
                 <div class="alert alert-danger" role="alert">
-                    Not set
+                    @Resource.Label_NotConfigured
                 </div>
             }
         </div>
         <div class="mt-4">
-            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLdapSettingsAsync">Set Domain Settings</button>
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLdapSettingsAsync">@Resource.Btn_SetDomainSettings</button>
             @if (LdapSettings != null)
             {
-                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLdapSettingsAsync">Delete Settings</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLdapSettingsAsync">@Resource.Btn_DeleteSettings</button>
             }
         </div>
     </SettingsCard>
-    <SettingsCard Title="Splunk" Description="Settings for sending events to the Splank.">
+    <SettingsCard Title="@Resource.Parameters_Splunk_Title" Description="@Resource.Parameters_Splunk_Description">
         <div class="form-group">
-            <label class="control-label text-gray">Host</label>
+            <Label For="@(() => SplunkSettings.Host)" class="control-label text-gray" />
             @if (SplunkSettings != null)
             {
                 <div class="alert alert-secondary" role="alert">
@@ -65,15 +65,15 @@
             else
             {
                 <div class="alert alert-danger" role="alert">
-                    Not set
+                    @Resource.Label_NotConfigured
                 </div>
             }
         </div>
         <div class="mt-4">
-            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogSplunkSettingsAsync">Set Splunk Settings</button>
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogSplunkSettingsAsync">@Resource.Btn_SetSplunkSettings</button>
             @if (SplunkSettings != null)
             {
-                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteSplunkSettingsAsync">Delete Settings</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteSplunkSettingsAsync">@Resource.Btn_DeleteSettings</button>
             }
         </div>
     </SettingsCard>

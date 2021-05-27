@@ -1617,11 +1617,26 @@
   <data name="Btn_CreatePosition" xml:space="preserve">
     <value>Create Position</value>
   </data>
+  <data name="Btn_DeleteSettings" xml:space="preserve">
+    <value>Delete Settings</value>
+  </data>
+  <data name="Btn_SetDomainSettings" xml:space="preserve">
+    <value>Set Domain Settings</value>
+  </data>
+  <data name="Btn_SetLicensingSettings" xml:space="preserve">
+    <value>Set Licensing Settings</value>
+  </data>
+  <data name="Btn_SetSplunkSettings" xml:space="preserve">
+    <value>Set Splunk Settings</value>
+  </data>
   <data name="Label_Companies" xml:space="preserve">
     <value>Companies</value>
   </data>
   <data name="Label_Departments" xml:space="preserve">
     <value>Departments</value>
+  </data>
+  <data name="Label_NotConfigured" xml:space="preserve">
+    <value>Not configured</value>
   </data>
   <data name="Label_Positions" xml:space="preserve">
     <value>Positions</value>
@@ -1688,5 +1703,80 @@
   </data>
   <data name="OrgStructure_EditPosition_Toast" xml:space="preserve">
     <value>Position updated.</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Description" xml:space="preserve">
+    <value>These credentials will be used to connect to Active Directory via LDAPS</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Header" xml:space="preserve">
+    <value>Enter your credentials</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_InvalidCredentials" xml:space="preserve">
+    <value>Invalid password</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Placeholder" xml:space="preserve">
+    <value>my.company.com</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Title" xml:space="preserve">
+    <value>Domain Settings</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Toast" xml:space="preserve">
+    <value>Domain settings updated.</value>
+  </data>
+  <data name="Parameters_AddLicenseSettings_Title" xml:space="preserve">
+    <value>License Settings</value>
+  </data>
+  <data name="Parameters_AddLicenseSettings_Toast" xml:space="preserve">
+    <value>License settings updated.</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Body" xml:space="preserve">
+    <value>Confirm deleting domain settings.</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Title" xml:space="preserve">
+    <value>Delete domain settings</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Toast" xml:space="preserve">
+    <value>Domain settings deleted.</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Body" xml:space="preserve">
+    <value>Confirm deleting license settings.</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Title" xml:space="preserve">
+    <value>Delete license settings</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Toast" xml:space="preserve">
+    <value>License settings deleted.</value>
+  </data>
+  <data name="Parameters_Domain_Description" xml:space="preserve">
+    <value>To connect to the domain and import groups and users.</value>
+  </data>
+  <data name="Parameters_Domain_Title" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="Parameters_Licensing_Description" xml:space="preserve">
+    <value>API authentication key for ordering licenses and the address of the licensing server.</value>
+  </data>
+  <data name="Parameters_Licensing_Title" xml:space="preserve">
+    <value>Licensing</value>
+  </data>
+  <data name="Parameters_Splunk_Description" xml:space="preserve">
+    <value>Settings for sending events to the Splank.</value>
+  </data>
+  <data name="Parameters_Splunk_Title" xml:space="preserve">
+    <value>Splunk</value>
+  </data>
+  <data name="Parameters_AddSplunkSettings_Title" xml:space="preserve">
+    <value>Splunk Settings</value>
+  </data>
+  <data name="Parameters_AddSplunkSettings_Toast" xml:space="preserve">
+    <value>Splunk settings updated.</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Body" xml:space="preserve">
+    <value>Confirm deleting splunk settings.</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Title" xml:space="preserve">
+    <value>Delete splunk settings</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Toast" xml:space="preserve">
+    <value>Splunk settings deleted.</value>
   </data>
 </root>

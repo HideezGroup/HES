@@ -16,12 +16,12 @@ else
         <Label For="@(() => LicensingSettings.ApiKey)" class="text-gray" />
         <div class="input-group form-group">
             <InputText @bind-Value="LicensingSettings.ApiKey" class="form-control text-navyblue" type="@InputType" />
-            <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">Show</button>
+            <button class="btn btn-outline-secondary" type="button" @onmousedown="@(() => InputType = "Text")" @onmouseup="@(() => InputType = "Password")">@Resource.Btn_Show</button>
         </div>
         <ValidationMessage For="@(() => LicensingSettings.ApiKey)" class="text-danger" />
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-            <Button @ref="Button" Text="Save" type="submit" class="btn btn-primary" />
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button @ref="Button" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
         </div>
     </EditForm>
 }

@@ -1689,4 +1689,94 @@
   <data name="OrgStructure_EditPosition_Toast" xml:space="preserve">
     <value>Позиція оновлена.</value>
   </data>
+  <data name="Btn_DeleteSettings" xml:space="preserve">
+    <value>Видалити налаштування</value>
+  </data>
+  <data name="Btn_SetDomainSettings" xml:space="preserve">
+    <value>Встановіть налаштування домену</value>
+  </data>
+  <data name="Btn_SetLicensingSettings" xml:space="preserve">
+    <value>Встановіть параметри ліцензування</value>
+  </data>
+  <data name="Btn_SetSplunkSettings" xml:space="preserve">
+    <value>Встановіть налаштування Splunk</value>
+  </data>
+  <data name="Label_NotConfigured" xml:space="preserve">
+    <value>Не налаштовано</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Description" xml:space="preserve">
+    <value>Ці облікові дані будуть використані для підключення до Active Directory через LDAPS</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Header" xml:space="preserve">
+    <value>Введіть свої дані</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_InvalidCredentials" xml:space="preserve">
+    <value>Недійсний пароль</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Placeholder" xml:space="preserve">
+    <value>my.company.com</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Title" xml:space="preserve">
+    <value>Налаштування домену</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Toast" xml:space="preserve">
+    <value>Налаштування домену оновлено.</value>
+  </data>
+  <data name="Parameters_AddLicenseSettings_Title" xml:space="preserve">
+    <value>Налаштування ліцензії</value>
+  </data>
+  <data name="Parameters_AddLicenseSettings_Toast" xml:space="preserve">
+    <value>Налаштування ліцензії оновлено.</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Body" xml:space="preserve">
+    <value>Підтвердьте видалення налаштувань домену.</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Title" xml:space="preserve">
+    <value>Видаліть налаштування домену</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Toast" xml:space="preserve">
+    <value>Налаштування домену видалено.</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Body" xml:space="preserve">
+    <value>Підтвердьте видалення налаштувань ліцензії.</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Title" xml:space="preserve">
+    <value>Видаліть налаштування ліцензії</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Toast" xml:space="preserve">
+    <value>Налаштування ліцензії видалено.</value>
+  </data>
+  <data name="Parameters_Domain_Description" xml:space="preserve">
+    <value>Для підключення до домену та імпорту групи та користувачів.</value>
+  </data>
+  <data name="Parameters_Domain_Title" xml:space="preserve">
+    <value>Домен</value>
+  </data>
+  <data name="Parameters_Licensing_Description" xml:space="preserve">
+    <value>Ключ автентифікації API для замовлення ліцензій та адреси сервера ліцензування.</value>
+  </data>
+  <data name="Parameters_Licensing_Title" xml:space="preserve">
+    <value>Ліцензування</value>
+  </data>
+  <data name="Parameters_Splunk_Description" xml:space="preserve">
+    <value>Налаштування надсилання подій на Splank.</value>
+  </data>
+  <data name="Parameters_Splunk_Title" xml:space="preserve">
+    <value>Спанкл</value>
+  </data>
+  <data name="Parameters_AddSplunkSettings_Title" xml:space="preserve">
+    <value>Налаштування Splunk</value>
+  </data>
+  <data name="Parameters_AddSplunkSettings_Toast" xml:space="preserve">
+    <value>Налаштування Splunk оновлено.</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Body" xml:space="preserve">
+    <value>Підтвердьте видалення налаштувань.</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Title" xml:space="preserve">
+    <value>Видаліть налаштування виходу</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Toast" xml:space="preserve">
+    <value>Налаштування Splunk видалено.</value>
+  </data>
 </root>

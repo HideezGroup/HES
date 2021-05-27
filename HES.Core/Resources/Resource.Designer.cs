@@ -259,6 +259,69 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Api Address.
+        /// </summary>
+        public static string Dispaly_ApiAddress {
+            get {
+                return ResourceManager.GetString("Dispaly_ApiAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Api Key.
+        /// </summary>
+        public static string Dispaly_ApiKey {
+            get {
+                return ResourceManager.GetString("Dispaly_ApiKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Auto Password Change.
+        /// </summary>
+        public static string Dispaly_AutoPasswordChange {
+            get {
+                return ResourceManager.GetString("Dispaly_AutoPasswordChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Domain Name.
+        /// </summary>
+        public static string Dispaly_DomainName {
+            get {
+                return ResourceManager.GetString("Dispaly_DomainName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Host.
+        /// </summary>
+        public static string Dispaly_Host {
+            get {
+                return ResourceManager.GetString("Dispaly_Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Token.
+        /// </summary>
+        public static string Dispaly_Token {
+            get {
+                return ResourceManager.GetString("Dispaly_Token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User Logon Name.
+        /// </summary>
+        public static string Dispaly_UserLogonName {
+            get {
+                return ResourceManager.GetString("Dispaly_UserLogonName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Account.
         /// </summary>
         public static string Display_Account {
@@ -975,6 +1038,15 @@ namespace HES.Core.Resources {
         public static string Validation_EmailAddress {
             get {
                 return ResourceManager.GetString("Validation_EmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The field {0} must be between {1} and {2}..
+        /// </summary>
+        public static string Validation_Range {
+            get {
+                return ResourceManager.GetString("Validation_Range", resourceCulture);
             }
         }
         

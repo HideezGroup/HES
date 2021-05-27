@@ -439,6 +439,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Settings.
+        /// </summary>
+        public static string Btn_DeleteSettings {
+            get {
+                return ResourceManager.GetString("Btn_DeleteSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Details.
         /// </summary>
         public static string Btn_Details {
@@ -759,6 +768,33 @@ namespace HES.Web.Resources {
         public static string Btn_SetAsPrimary {
             get {
                 return ResourceManager.GetString("Btn_SetAsPrimary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set Domain Settings.
+        /// </summary>
+        public static string Btn_SetDomainSettings {
+            get {
+                return ResourceManager.GetString("Btn_SetDomainSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set Licensing Settings.
+        /// </summary>
+        public static string Btn_SetLicensingSettings {
+            get {
+                return ResourceManager.GetString("Btn_SetLicensingSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set Splunk Settings.
+        /// </summary>
+        public static string Btn_SetSplunkSettings {
+            get {
+                return ResourceManager.GetString("Btn_SetSplunkSettings", resourceCulture);
             }
         }
         
@@ -2988,6 +3024,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Not configured.
+        /// </summary>
+        public static string Label_NotConfigured {
+            get {
+                return ResourceManager.GetString("Label_NotConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Note.
         /// </summary>
         public static string Label_Note {
@@ -3938,6 +3983,231 @@ namespace HES.Web.Resources {
         public static string OrgStructure_EditPosition_Toast {
             get {
                 return ResourceManager.GetString("OrgStructure_EditPosition_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на These credentials will be used to connect to Active Directory via LDAPS.
+        /// </summary>
+        public static string Parameters_AddLdapSettings_Description {
+            get {
+                return ResourceManager.GetString("Parameters_AddLdapSettings_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter your credentials.
+        /// </summary>
+        public static string Parameters_AddLdapSettings_Header {
+            get {
+                return ResourceManager.GetString("Parameters_AddLdapSettings_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid password.
+        /// </summary>
+        public static string Parameters_AddLdapSettings_InvalidCredentials {
+            get {
+                return ResourceManager.GetString("Parameters_AddLdapSettings_InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на my.company.com.
+        /// </summary>
+        public static string Parameters_AddLdapSettings_Placeholder {
+            get {
+                return ResourceManager.GetString("Parameters_AddLdapSettings_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Domain Settings.
+        /// </summary>
+        public static string Parameters_AddLdapSettings_Title {
+            get {
+                return ResourceManager.GetString("Parameters_AddLdapSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Domain settings updated..
+        /// </summary>
+        public static string Parameters_AddLdapSettings_Toast {
+            get {
+                return ResourceManager.GetString("Parameters_AddLdapSettings_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License Settings.
+        /// </summary>
+        public static string Parameters_AddLicenseSettings_Title {
+            get {
+                return ResourceManager.GetString("Parameters_AddLicenseSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License settings updated..
+        /// </summary>
+        public static string Parameters_AddLicenseSettings_Toast {
+            get {
+                return ResourceManager.GetString("Parameters_AddLicenseSettings_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Splunk Settings.
+        /// </summary>
+        public static string Parameters_AddSplunkSettings_Title {
+            get {
+                return ResourceManager.GetString("Parameters_AddSplunkSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Splunk settings updated..
+        /// </summary>
+        public static string Parameters_AddSplunkSettings_Toast {
+            get {
+                return ResourceManager.GetString("Parameters_AddSplunkSettings_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm deleting domain settings..
+        /// </summary>
+        public static string Parameters_DeleteLdapSettings_Body {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteLdapSettings_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete domain settings.
+        /// </summary>
+        public static string Parameters_DeleteLdapSettings_Title {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteLdapSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Domain settings deleted..
+        /// </summary>
+        public static string Parameters_DeleteLdapSettings_Toast {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteLdapSettings_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm deleting license settings..
+        /// </summary>
+        public static string Parameters_DeleteLicenseSettings_Body {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteLicenseSettings_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete license settings.
+        /// </summary>
+        public static string Parameters_DeleteLicenseSettings_Title {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteLicenseSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License settings deleted..
+        /// </summary>
+        public static string Parameters_DeleteLicenseSettings_Toast {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteLicenseSettings_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm deleting splunk settings..
+        /// </summary>
+        public static string Parameters_DeleteSplunkSettings_Body {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteSplunkSettings_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete splunk settings.
+        /// </summary>
+        public static string Parameters_DeleteSplunkSettings_Title {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteSplunkSettings_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Splunk settings deleted..
+        /// </summary>
+        public static string Parameters_DeleteSplunkSettings_Toast {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteSplunkSettings_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на To connect to the domain and import groups and users..
+        /// </summary>
+        public static string Parameters_Domain_Description {
+            get {
+                return ResourceManager.GetString("Parameters_Domain_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Domain.
+        /// </summary>
+        public static string Parameters_Domain_Title {
+            get {
+                return ResourceManager.GetString("Parameters_Domain_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на API authentication key for ordering licenses and the address of the licensing server..
+        /// </summary>
+        public static string Parameters_Licensing_Description {
+            get {
+                return ResourceManager.GetString("Parameters_Licensing_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Licensing.
+        /// </summary>
+        public static string Parameters_Licensing_Title {
+            get {
+                return ResourceManager.GetString("Parameters_Licensing_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings for sending events to the Splank..
+        /// </summary>
+        public static string Parameters_Splunk_Description {
+            get {
+                return ResourceManager.GetString("Parameters_Splunk_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Splunk.
+        /// </summary>
+        public static string Parameters_Splunk_Title {
+            get {
+                return ResourceManager.GetString("Parameters_Splunk_Title", resourceCulture);
             }
         }
         

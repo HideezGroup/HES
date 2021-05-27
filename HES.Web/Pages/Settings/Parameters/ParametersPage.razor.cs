@@ -70,7 +70,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("License Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_AddLicenseSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -88,7 +88,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_DeleteLicenseSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -110,7 +110,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Domain Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_AddLdapSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -128,7 +128,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_DeleteLdapSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -150,7 +150,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Splunk Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_AddSplunkSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -168,7 +168,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_DeleteSplunkSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

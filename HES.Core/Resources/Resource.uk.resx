@@ -432,4 +432,28 @@
   <data name="Display_UpdatedAtTo" xml:space="preserve">
     <value>Оновлено до</value>
   </data>
+  <data name="Dispaly_ApiAddress" xml:space="preserve">
+    <value>Api Адреса</value>
+  </data>
+  <data name="Dispaly_ApiKey" xml:space="preserve">
+    <value>Api Ключ</value>
+  </data>
+  <data name="Dispaly_AutoPasswordChange" xml:space="preserve">
+    <value>Автоматична зміна пароля</value>
+  </data>
+  <data name="Dispaly_DomainName" xml:space="preserve">
+    <value>Доменне ім'я</value>
+  </data>
+  <data name="Dispaly_Host" xml:space="preserve">
+    <value>Хост</value>
+  </data>
+  <data name="Dispaly_Token" xml:space="preserve">
+    <value>Токен</value>
+  </data>
+  <data name="Dispaly_UserLogonName" xml:space="preserve">
+    <value>Ім'я входу користувача</value>
+  </data>
+  <data name="Validation_Range" xml:space="preserve">
+    <value>Поле {0} має бути між {1} та {2}.</value>
+  </data>
 </root>
