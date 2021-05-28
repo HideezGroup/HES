@@ -28,6 +28,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace HES.Web
@@ -92,7 +93,7 @@ namespace HES.Web
             #region SAML
 
             Saml2Enabled = SamlHelper.IsEnabled(configuration);
-       
+
             #endregion
 
             Configuration = configuration;
@@ -249,7 +250,7 @@ namespace HES.Web
             {
                 services.Configure<Saml2Configuration>(saml2Configuration =>
                 {
-                    saml2Configuration.SigningCertificate = CertificateUtil.Load(Env.MapToPhysicalFilePath(Configuration["Saml2:SigningCertificateFile"]), Configuration["Saml2:SigningCertificatePassword"]);
+                    saml2Configuration.SigningCertificate = CertificateUtil.Load(Env.MapToPhysicalFilePath(Configuration["Saml2:SigningCertificateFile"]), Configuration["Saml2:SigningCertificatePassword"], X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.EphemeralKeySet);
                     saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
                 });
                 services.AddSaml2();
