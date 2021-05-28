@@ -406,7 +406,7 @@
     <value>Дата закінчення ліцензії до</value>
   </data>
   <data name="Display_LicenseStartDateFrom" xml:space="preserve">
-    <value> Дата початку ліцензії від</value>
+    <value>Дата початку ліцензії від</value>
   </data>
   <data name="Display_LicenseStartDateTo" xml:space="preserve">
     <value>Дата початку ліцензії до</value>
@@ -476,5 +476,173 @@
   </data>
   <data name="Display_OS" xml:space="preserve">
     <value>ОС</value>
+  </data>
+  <data name="Exception_AccountExist" xml:space="preserve">
+    <value>Обліковий запис з таким іменем та логіном існує.</value>
+  </data>
+  <data name="Exception_AccountLockout" xml:space="preserve">
+    <value>Блокування облікового запису</value>
+  </data>
+  <data name="Exception_AccountNotFound" xml:space="preserve">
+    <value>Обліковий запис не знайдено.</value>
+  </data>
+  <data name="Exception_ActivationCodeNotFound" xml:space="preserve">
+    <value>Код активації не знайдено</value>
+  </data>
+  <data name="Exception_ActiveDirectoryUserNotFound" xml:space="preserve">
+    <value>Цього працівника було видалено з активного каталогу, тому його змінили на локального користувача.</value>
+  </data>
+  <data name="Exception_ApiKeyEmpty" xml:space="preserve">
+    <value>Api ключ порожній.</value>
+  </data>
+  <data name="Exception_AppSettingsNotFound" xml:space="preserve">
+    <value>Налаштування програми не знайдено.</value>
+  </data>
+  <data name="Exception_AuthenticatorNotFIDO2" xml:space="preserve">
+    <value>Аутентифікатор не FIDO2.</value>
+  </data>
+  <data name="Exception_CannotDeleteDefaultProfile" xml:space="preserve">
+    <value>Не вдається видалити профіль за замовчуванням</value>
+  </data>
+  <data name="Exception_CompanyNameAlreadyInUse" xml:space="preserve">
+    <value>Назва компанії вже використовується.</value>
+  </data>
+  <data name="Exception_CompanyNotFound" xml:space="preserve">
+    <value>Компанію не знайдено</value>
+  </data>
+  <data name="Exception_DataProtectionIsAlreadyActivated" xml:space="preserve">
+    <value>Захист даних уже активовано.</value>
+  </data>
+  <data name="Exception_DataProtectionIsAlreadyEnabled" xml:space="preserve">
+    <value>Захист даних уже ввімкнено.</value>
+  </data>
+  <data name="Exception_DataProtectionIsBusy" xml:space="preserve">
+    <value>Захист даних зайнятий.</value>
+  </data>
+  <data name="Exception_DataProtectionNotActivated" xml:space="preserve">
+    <value>Захист даних не активовано.</value>
+  </data>
+  <data name="Exception_DataProtectionNotEnabled" xml:space="preserve">
+    <value>Захист даних не ввімкнено.</value>
+  </data>
+  <data name="Exception_DataProtectionNotFinishedPasswordChange" xml:space="preserve">
+    <value>Захист даних не завершена зміна пароля.</value>
+  </data>
+  <data name="Exception_DataProtectionParametersIsEmpty" xml:space="preserve">
+    <value>Параметри захисту даних порожні.</value>
+  </data>
+  <data name="Exception_DataProtectionParametersNotFound" xml:space="preserve">
+    <value>Параметри захисту даних не знайдено.</value>
+  </data>
+  <data name="Exception_DepartmentNameAlreadyInUse" xml:space="preserve">
+    <value>Назва відділу вже використовується</value>
+  </data>
+  <data name="Exception_DepartmentNotFound" xml:space="preserve">
+    <value>Відділ не знайдено.</value>
+  </data>
+  <data name="Exception_EmailAlreadyTaken" xml:space="preserve">
+    <value>Цей електронний лист уже прийнято.</value>
+  </data>
+  <data name="Exception_EmployeeAlreadyExist" xml:space="preserve">
+    <value>Працівник з таким прізвищем уже існує.</value>
+  </data>
+  <data name="Exception_EmployeeNotFound" xml:space="preserve">
+    <value>Співробітника не знайдено.</value>
+  </data>
+  <data name="Exception_HardwareVaultCannotReserve" xml:space="preserve">
+    <value>Апаратне сховище у статусі, який не дозволяє резервувати.</value>
+  </data>
+  <data name="Exception_HardwareVaultNotFound" xml:space="preserve">
+    <value>Апаратне сховище не знайдено.</value>
+  </data>
+  <data name="Exception_HardwareVaultNotFoundWithParam" xml:space="preserve">
+    <value>Апаратне сховище {0} не знайдено.</value>
+  </data>
+  <data name="Exception_HardwareVaultProfileNotFound" xml:space="preserve">
+    <value>Профіль апаратного сховища не знайдено</value>
+  </data>
+  <data name="Exception_HardwareVaultUntieBeforeRemove" xml:space="preserve">
+    <value>Спочатку відв'язати апаратне сховище перед видаленням.</value>
+  </data>
+  <data name="Exception_HardwareVaultВoesNotAllowToRemove" xml:space="preserve">
+    <value>Апаратне сховище у статусі, який не дозволяє видалити.</value>
+  </data>
+  <data name="Exception_IncorrectCurrentPassword" xml:space="preserve">
+    <value>Неправильний поточний пароль.</value>
+  </data>
+  <data name="Exception_IncorrectOldPassword" xml:space="preserve">
+    <value>Неправильний старий пароль.</value>
+  </data>
+  <data name="Exception_IncorrectOtp" xml:space="preserve">
+    <value>Неправильний секрет OTP.</value>
+  </data>
+  <data name="Exception_IncorrectPassword" xml:space="preserve">
+    <value>Неправильний пароль.</value>
+  </data>
+  <data name="Exception_IncorrectUrl" xml:space="preserve">
+    <value>Неправильна URL-адреса.</value>
+  </data>
+  <data name="Exception_InvalidLoginAttempt" xml:space="preserve">
+    <value>Неправильна спроба входу.</value>
+  </data>
+  <data name="Exception_LdapSettingsNotSet" xml:space="preserve">
+    <value>Налаштування LDAP не встановлено.</value>
+  </data>
+  <data name="Exception_LicenseForHardwareVaultNotFound" xml:space="preserve">
+    <value>Ліцензій на сховище обладнання не знайдено.</value>
+  </data>
+  <data name="Exception_LicenseOrderNotFound" xml:space="preserve">
+    <value>Замовлення ліцензії не знайдено.</value>
+  </data>
+  <data name="Exception_None" xml:space="preserve">
+    <value>Щось пішло не так.</value>
+  </data>
+  <data name="Exception_OneHardwareVaultConstraint" xml:space="preserve">
+    <value>Не можна додати більше одного апаратного сховища.</value>
+  </data>
+  <data name="Exception_PositionNameAlreadyInUse" xml:space="preserve">
+    <value>Назва посади вже використовується.</value>
+  </data>
+  <data name="Exception_PositionNotFound" xml:space="preserve">
+    <value>Позиції не знайдено.</value>
+  </data>
+  <data name="Exception_ProfileNameAlreadyInUse" xml:space="preserve">
+    <value>Назва профілю вже використовується</value>
+  </data>
+  <data name="Exception_RequiresRelogin" xml:space="preserve">
+    <value>Потрібен релогін</value>
+  </data>
+  <data name="Exception_RequiresTwoFactor" xml:space="preserve">
+    <value>Потрібен два фактори.</value>
+  </data>
+  <data name="Exception_SecurityKeyNotFound" xml:space="preserve">
+    <value>Ключ безпеки не знайдено.</value>
+  </data>
+  <data name="Exception_SharedAccountExist" xml:space="preserve">
+    <value>Спільний обліковий запис з однаковим ім’ям та логіном існує.</value>
+  </data>
+  <data name="Exception_SharedAccountNotFound" xml:space="preserve">
+    <value>Спільний рахунок не знайдено.</value>
+  </data>
+  <data name="Exception_TemplateExist" xml:space="preserve">
+    <value>Шаблон із поточною назвою вже існує.</value>
+  </data>
+  <data name="Exception_TemplateNotFound" xml:space="preserve">
+    <value>Шаблон не знайдено.</value>
+  </data>
+  <data name="Exception_UserNotFound" xml:space="preserve">
+    <value>Користувач не знайдений.</value>
+  </data>
+  <data name="Exception_WorkstationHardwareVaultPairAlreadyExist" xml:space="preserve">
+    <value>Апаратне сховище вже додано в робочу станцію.</value>
+  </data>
+  <data name="Exception_WorkstationHardwareVaultPairNotFound" xml:space="preserve">
+    <value>Пара робочої станції та апаратного сховища не знайдена.</value>
+  </data>
+  <data name="Exception_WorkstationNotFound" xml:space="preserve">
+    <value>Робоча станція не знайдена.</value>
+  </data>
+  <data name="Exception_WorkstationNotFoundWithParam" xml:space="preserve">
+    <value>Робочу станцію {0} не знайдено.</value>
   </data>
 </root>

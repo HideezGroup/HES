@@ -1051,6 +1051,222 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Account with the same name and login exist..
+        /// </summary>
+        public static string Exception_AccountExist {
+            get {
+                return ResourceManager.GetString("Exception_AccountExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account lockout.
+        /// </summary>
+        public static string Exception_AccountLockout {
+            get {
+                return ResourceManager.GetString("Exception_AccountLockout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Account not found..
+        /// </summary>
+        public static string Exception_AccountNotFound {
+            get {
+                return ResourceManager.GetString("Exception_AccountNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Activation code not found.
+        /// </summary>
+        public static string Exception_ActivationCodeNotFound {
+            get {
+                return ResourceManager.GetString("Exception_ActivationCodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This employee was removed from active directory so it was changed to local user..
+        /// </summary>
+        public static string Exception_ActiveDirectoryUserNotFound {
+            get {
+                return ResourceManager.GetString("Exception_ActiveDirectoryUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Api Key is empty..
+        /// </summary>
+        public static string Exception_ApiKeyEmpty {
+            get {
+                return ResourceManager.GetString("Exception_ApiKeyEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Application settings not found..
+        /// </summary>
+        public static string Exception_AppSettingsNotFound {
+            get {
+                return ResourceManager.GetString("Exception_AppSettingsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Authenticator not FIDO2..
+        /// </summary>
+        public static string Exception_AuthenticatorNotFIDO2 {
+            get {
+                return ResourceManager.GetString("Exception_AuthenticatorNotFIDO2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cannot delete default profile.
+        /// </summary>
+        public static string Exception_CannotDeleteDefaultProfile {
+            get {
+                return ResourceManager.GetString("Exception_CannotDeleteDefaultProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Company name already in use..
+        /// </summary>
+        public static string Exception_CompanyNameAlreadyInUse {
+            get {
+                return ResourceManager.GetString("Exception_CompanyNameAlreadyInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Company not found..
+        /// </summary>
+        public static string Exception_CompanyNotFound {
+            get {
+                return ResourceManager.GetString("Exception_CompanyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection is already activated..
+        /// </summary>
+        public static string Exception_DataProtectionIsAlreadyActivated {
+            get {
+                return ResourceManager.GetString("Exception_DataProtectionIsAlreadyActivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection is already enabled..
+        /// </summary>
+        public static string Exception_DataProtectionIsAlreadyEnabled {
+            get {
+                return ResourceManager.GetString("Exception_DataProtectionIsAlreadyEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection is busy..
+        /// </summary>
+        public static string Exception_DataProtectionIsBusy {
+            get {
+                return ResourceManager.GetString("Exception_DataProtectionIsBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection is not activated..
+        /// </summary>
+        public static string Exception_DataProtectionNotActivated {
+            get {
+                return ResourceManager.GetString("Exception_DataProtectionNotActivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection is not enabled..
+        /// </summary>
+        public static string Exception_DataProtectionNotEnabled {
+            get {
+                return ResourceManager.GetString("Exception_DataProtectionNotEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection not finished password change..
+        /// </summary>
+        public static string Exception_DataProtectionNotFinishedPasswordChange {
+            get {
+                return ResourceManager.GetString("Exception_DataProtectionNotFinishedPasswordChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data Protection parameters is empty..
+        /// </summary>
+        public static string Exception_DataProtectionParametersIsEmpty {
+            get {
+                return ResourceManager.GetString("Exception_DataProtectionParametersIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data protection parameters not found..
+        /// </summary>
+        public static string Exception_DataProtectionParametersNotFound {
+            get {
+                return ResourceManager.GetString("Exception_DataProtectionParametersNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Department name already in use.
+        /// </summary>
+        public static string Exception_DepartmentNameAlreadyInUse {
+            get {
+                return ResourceManager.GetString("Exception_DepartmentNameAlreadyInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Department not found..
+        /// </summary>
+        public static string Exception_DepartmentNotFound {
+            get {
+                return ResourceManager.GetString("Exception_DepartmentNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This email already taken..
+        /// </summary>
+        public static string Exception_EmailAlreadyTaken {
+            get {
+                return ResourceManager.GetString("Exception_EmailAlreadyTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Employee with current name already exists..
+        /// </summary>
+        public static string Exception_EmployeeAlreadyExist {
+            get {
+                return ResourceManager.GetString("Exception_EmployeeAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Employee not found..
+        /// </summary>
+        public static string Exception_EmployeeNotFound {
+            get {
+                return ResourceManager.GetString("Exception_EmployeeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Requires email..
         /// </summary>
         public static string Exception_EmployeeRequiresEmail {
@@ -1069,11 +1285,299 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Vault in a status that does not allow to reserve..
+        /// </summary>
+        public static string Exception_HardwareVaultCannotReserve {
+            get {
+                return ResourceManager.GetString("Exception_HardwareVaultCannotReserve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault not found..
+        /// </summary>
+        public static string Exception_HardwareVaultNotFound {
+            get {
+                return ResourceManager.GetString("Exception_HardwareVaultNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault {0} not found..
+        /// </summary>
+        public static string Exception_HardwareVaultNotFoundWithParam {
+            get {
+                return ResourceManager.GetString("Exception_HardwareVaultNotFoundWithParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault profile not found.
+        /// </summary>
+        public static string Exception_HardwareVaultProfileNotFound {
+            get {
+                return ResourceManager.GetString("Exception_HardwareVaultProfileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на First untie the hardware vault before removing..
+        /// </summary>
+        public static string Exception_HardwareVaultUntieBeforeRemove {
+            get {
+                return ResourceManager.GetString("Exception_HardwareVaultUntieBeforeRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vault in a status that does not allow to remove..
+        /// </summary>
+        public static string Exception_HardwareVaultВoesNotAllowToRemove {
+            get {
+                return ResourceManager.GetString("Exception_HardwareVaultВoesNotAllowToRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incorrect current password..
+        /// </summary>
+        public static string Exception_IncorrectCurrentPassword {
+            get {
+                return ResourceManager.GetString("Exception_IncorrectCurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incorrect old password..
+        /// </summary>
+        public static string Exception_IncorrectOldPassword {
+            get {
+                return ResourceManager.GetString("Exception_IncorrectOldPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incorrect OTP secret..
+        /// </summary>
+        public static string Exception_IncorrectOtp {
+            get {
+                return ResourceManager.GetString("Exception_IncorrectOtp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incorrect password..
+        /// </summary>
+        public static string Exception_IncorrectPassword {
+            get {
+                return ResourceManager.GetString("Exception_IncorrectPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incorrect URL address..
+        /// </summary>
+        public static string Exception_IncorrectUrl {
+            get {
+                return ResourceManager.GetString("Exception_IncorrectUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid login attempt..
+        /// </summary>
+        public static string Exception_InvalidLoginAttempt {
+            get {
+                return ResourceManager.GetString("Exception_InvalidLoginAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на LDAP settings not set..
+        /// </summary>
+        public static string Exception_LdapSettingsNotSet {
+            get {
+                return ResourceManager.GetString("Exception_LdapSettingsNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware vault licenses not found..
+        /// </summary>
+        public static string Exception_LicenseForHardwareVaultNotFound {
+            get {
+                return ResourceManager.GetString("Exception_LicenseForHardwareVaultNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License Order not found..
+        /// </summary>
+        public static string Exception_LicenseOrderNotFound {
+            get {
+                return ResourceManager.GetString("Exception_LicenseOrderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Something went wrong..
+        /// </summary>
+        public static string Exception_None {
+            get {
+                return ResourceManager.GetString("Exception_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cannot add more than one hardware vault..
+        /// </summary>
+        public static string Exception_OneHardwareVaultConstraint {
+            get {
+                return ResourceManager.GetString("Exception_OneHardwareVaultConstraint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Position name already in use..
+        /// </summary>
+        public static string Exception_PositionNameAlreadyInUse {
+            get {
+                return ResourceManager.GetString("Exception_PositionNameAlreadyInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Position not found..
+        /// </summary>
+        public static string Exception_PositionNotFound {
+            get {
+                return ResourceManager.GetString("Exception_PositionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Profile name already in use.
+        /// </summary>
+        public static string Exception_ProfileNameAlreadyInUse {
+            get {
+                return ResourceManager.GetString("Exception_ProfileNameAlreadyInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Requires relogin.
+        /// </summary>
+        public static string Exception_RequiresRelogin {
+            get {
+                return ResourceManager.GetString("Exception_RequiresRelogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Requires two factor..
+        /// </summary>
+        public static string Exception_RequiresTwoFactor {
+            get {
+                return ResourceManager.GetString("Exception_RequiresTwoFactor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Security key not found..
+        /// </summary>
+        public static string Exception_SecurityKeyNotFound {
+            get {
+                return ResourceManager.GetString("Exception_SecurityKeyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shared Account with the same name and login exist..
+        /// </summary>
+        public static string Exception_SharedAccountExist {
+            get {
+                return ResourceManager.GetString("Exception_SharedAccountExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shared Account not found..
+        /// </summary>
+        public static string Exception_SharedAccountNotFound {
+            get {
+                return ResourceManager.GetString("Exception_SharedAccountNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Template with current name already exists..
+        /// </summary>
+        public static string Exception_TemplateExist {
+            get {
+                return ResourceManager.GetString("Exception_TemplateExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Template not found..
+        /// </summary>
+        public static string Exception_TemplateNotFound {
+            get {
+                return ResourceManager.GetString("Exception_TemplateNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на The LDAP server is unavailable..
         /// </summary>
         public static string Exception_TheLDAPServerIsUnavailable {
             get {
                 return ResourceManager.GetString("Exception_TheLDAPServerIsUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на User not found..
+        /// </summary>
+        public static string Exception_UserNotFound {
+            get {
+                return ResourceManager.GetString("Exception_UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault already added to workstation..
+        /// </summary>
+        public static string Exception_WorkstationHardwareVaultPairAlreadyExist {
+            get {
+                return ResourceManager.GetString("Exception_WorkstationHardwareVaultPairAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation and Hardware Vault pair not found..
+        /// </summary>
+        public static string Exception_WorkstationHardwareVaultPairNotFound {
+            get {
+                return ResourceManager.GetString("Exception_WorkstationHardwareVaultPairNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation not found..
+        /// </summary>
+        public static string Exception_WorkstationNotFound {
+            get {
+                return ResourceManager.GetString("Exception_WorkstationNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation {0} not found..
+        /// </summary>
+        public static string Exception_WorkstationNotFoundWithParam {
+            get {
+                return ResourceManager.GetString("Exception_WorkstationNotFoundWithParam", resourceCulture);
             }
         }
         

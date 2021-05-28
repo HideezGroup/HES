@@ -447,14 +447,182 @@
   <data name="Display_Workstation" xml:space="preserve">
     <value>Workstation</value>
   </data>
+  <data name="Exception_AccountExist" xml:space="preserve">
+    <value>Account with the same name and login exist.</value>
+  </data>
+  <data name="Exception_AccountLockout" xml:space="preserve">
+    <value>Account lockout</value>
+  </data>
+  <data name="Exception_AccountNotFound" xml:space="preserve">
+    <value>Account not found.</value>
+  </data>
+  <data name="Exception_ActivationCodeNotFound" xml:space="preserve">
+    <value>Activation code not found</value>
+  </data>
+  <data name="Exception_ActiveDirectoryUserNotFound" xml:space="preserve">
+    <value>This employee was removed from active directory so it was changed to local user.</value>
+  </data>
+  <data name="Exception_ApiKeyEmpty" xml:space="preserve">
+    <value>Api Key is empty.</value>
+  </data>
+  <data name="Exception_AppSettingsNotFound" xml:space="preserve">
+    <value>Application settings not found.</value>
+  </data>
+  <data name="Exception_AuthenticatorNotFIDO2" xml:space="preserve">
+    <value>Authenticator not FIDO2.</value>
+  </data>
+  <data name="Exception_CannotDeleteDefaultProfile" xml:space="preserve">
+    <value>Cannot delete default profile</value>
+  </data>
+  <data name="Exception_CompanyNameAlreadyInUse" xml:space="preserve">
+    <value>Company name already in use.</value>
+  </data>
+  <data name="Exception_CompanyNotFound" xml:space="preserve">
+    <value>Company not found.</value>
+  </data>
+  <data name="Exception_DataProtectionIsAlreadyActivated" xml:space="preserve">
+    <value>Data protection is already activated.</value>
+  </data>
+  <data name="Exception_DataProtectionIsAlreadyEnabled" xml:space="preserve">
+    <value>Data protection is already enabled.</value>
+  </data>
+  <data name="Exception_DataProtectionIsBusy" xml:space="preserve">
+    <value>Data protection is busy.</value>
+  </data>
+  <data name="Exception_DataProtectionNotActivated" xml:space="preserve">
+    <value>Data protection is not activated.</value>
+  </data>
+  <data name="Exception_DataProtectionNotEnabled" xml:space="preserve">
+    <value>Data protection is not enabled.</value>
+  </data>
+  <data name="Exception_DataProtectionNotFinishedPasswordChange" xml:space="preserve">
+    <value>Data protection not finished password change.</value>
+  </data>
+  <data name="Exception_DataProtectionParametersIsEmpty" xml:space="preserve">
+    <value>Data Protection parameters is empty.</value>
+  </data>
+  <data name="Exception_DataProtectionParametersNotFound" xml:space="preserve">
+    <value>Data protection parameters not found.</value>
+  </data>
+  <data name="Exception_DepartmentNameAlreadyInUse" xml:space="preserve">
+    <value>Department name already in use</value>
+  </data>
+  <data name="Exception_DepartmentNotFound" xml:space="preserve">
+    <value>Department not found.</value>
+  </data>
+  <data name="Exception_EmailAlreadyTaken" xml:space="preserve">
+    <value>This email already taken.</value>
+  </data>
+  <data name="Exception_EmployeeAlreadyExist" xml:space="preserve">
+    <value>Employee with current name already exists.</value>
+  </data>
+  <data name="Exception_EmployeeNotFound" xml:space="preserve">
+    <value>Employee not found.</value>
+  </data>
   <data name="Exception_EmployeeRequiresEmail" xml:space="preserve">
     <value>Requires email.</value>
   </data>
   <data name="Exception_EmployeeRequiresLastName" xml:space="preserve">
     <value>Requires last name.</value>
   </data>
+  <data name="Exception_HardwareVaultCannotReserve" xml:space="preserve">
+    <value>Vault in a status that does not allow to reserve.</value>
+  </data>
+  <data name="Exception_HardwareVaultNotFound" xml:space="preserve">
+    <value>Hardware Vault not found.</value>
+  </data>
+  <data name="Exception_HardwareVaultNotFoundWithParam" xml:space="preserve">
+    <value>Hardware Vault {0} not found.</value>
+  </data>
+  <data name="Exception_HardwareVaultProfileNotFound" xml:space="preserve">
+    <value>Hardware Vault profile not found</value>
+  </data>
+  <data name="Exception_HardwareVaultUntieBeforeRemove" xml:space="preserve">
+    <value>First untie the hardware vault before removing.</value>
+  </data>
+  <data name="Exception_HardwareVaultВoesNotAllowToRemove" xml:space="preserve">
+    <value>Vault in a status that does not allow to remove.</value>
+  </data>
+  <data name="Exception_IncorrectCurrentPassword" xml:space="preserve">
+    <value>Incorrect current password.</value>
+  </data>
+  <data name="Exception_IncorrectOldPassword" xml:space="preserve">
+    <value>Incorrect old password.</value>
+  </data>
+  <data name="Exception_IncorrectOtp" xml:space="preserve">
+    <value>Incorrect OTP secret.</value>
+  </data>
+  <data name="Exception_IncorrectPassword" xml:space="preserve">
+    <value>Incorrect password.</value>
+  </data>
+  <data name="Exception_IncorrectUrl" xml:space="preserve">
+    <value>Incorrect URL address.</value>
+  </data>
+  <data name="Exception_InvalidLoginAttempt" xml:space="preserve">
+    <value>Invalid login attempt.</value>
+  </data>
+  <data name="Exception_LdapSettingsNotSet" xml:space="preserve">
+    <value>LDAP settings not set.</value>
+  </data>
+  <data name="Exception_LicenseForHardwareVaultNotFound" xml:space="preserve">
+    <value>Hardware vault licenses not found.</value>
+  </data>
+  <data name="Exception_LicenseOrderNotFound" xml:space="preserve">
+    <value>License Order not found.</value>
+  </data>
+  <data name="Exception_None" xml:space="preserve">
+    <value>Something went wrong.</value>
+  </data>
+  <data name="Exception_OneHardwareVaultConstraint" xml:space="preserve">
+    <value>Cannot add more than one hardware vault.</value>
+  </data>
+  <data name="Exception_PositionNameAlreadyInUse" xml:space="preserve">
+    <value>Position name already in use.</value>
+  </data>
+  <data name="Exception_PositionNotFound" xml:space="preserve">
+    <value>Position not found.</value>
+  </data>
+  <data name="Exception_ProfileNameAlreadyInUse" xml:space="preserve">
+    <value>Profile name already in use</value>
+  </data>
+  <data name="Exception_RequiresRelogin" xml:space="preserve">
+    <value>Requires relogin</value>
+  </data>
+  <data name="Exception_RequiresTwoFactor" xml:space="preserve">
+    <value>Requires two factor.</value>
+  </data>
+  <data name="Exception_SecurityKeyNotFound" xml:space="preserve">
+    <value>Security key not found.</value>
+  </data>
+  <data name="Exception_SharedAccountExist" xml:space="preserve">
+    <value>Shared Account with the same name and login exist.</value>
+  </data>
+  <data name="Exception_SharedAccountNotFound" xml:space="preserve">
+    <value>Shared Account not found.</value>
+  </data>
+  <data name="Exception_TemplateExist" xml:space="preserve">
+    <value>Template with current name already exists.</value>
+  </data>
+  <data name="Exception_TemplateNotFound" xml:space="preserve">
+    <value>Template not found.</value>
+  </data>
   <data name="Exception_TheLDAPServerIsUnavailable" xml:space="preserve">
     <value>The LDAP server is unavailable.</value>
+  </data>
+  <data name="Exception_UserNotFound" xml:space="preserve">
+    <value>User not found.</value>
+  </data>
+  <data name="Exception_WorkstationHardwareVaultPairAlreadyExist" xml:space="preserve">
+    <value>Hardware Vault already added to workstation.</value>
+  </data>
+  <data name="Exception_WorkstationHardwareVaultPairNotFound" xml:space="preserve">
+    <value>Workstation and Hardware Vault pair not found.</value>
+  </data>
+  <data name="Exception_WorkstationNotFound" xml:space="preserve">
+    <value>Workstation not found.</value>
+  </data>
+  <data name="Exception_WorkstationNotFoundWithParam" xml:space="preserve">
+    <value>Workstation {0} not found.</value>
   </data>
   <data name="Validation_CompareNewPassword" xml:space="preserve">
     <value>The new password and confirmation new password do not match.</value>
