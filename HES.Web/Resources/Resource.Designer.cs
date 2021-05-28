@@ -2772,6 +2772,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The {0} is currently being edited by another admin..
+        /// </summary>
+        public static string Label_EditedByAnother {
+            get {
+                return ResourceManager.GetString("Label_EditedByAnother", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Email.
         /// </summary>
         public static string Label_Email {
@@ -3038,6 +3047,15 @@ namespace HES.Web.Resources {
         public static string Label_LoginType {
             get {
                 return ResourceManager.GetString("Label_LoginType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Logout.
+        /// </summary>
+        public static string Label_Logout {
+            get {
+                return ResourceManager.GetString("Label_Logout", resourceCulture);
             }
         }
         
@@ -3609,6 +3627,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Version.
+        /// </summary>
+        public static string Label_Version {
+            get {
+                return ResourceManager.GetString("Label_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Working Days Count.
         /// </summary>
         public static string Label_WorkingDaysCount {
@@ -3861,6 +3888,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на An error occurred while processing your request..
+        /// </summary>
+        public static string LoadingFailed_Description {
+            get {
+                return ResourceManager.GetString("LoadingFailed_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Error..
+        /// </summary>
+        public static string LoadingFailed_Title {
+            get {
+                return ResourceManager.GetString("LoadingFailed_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Hardware Vault {0} state changed..
         /// </summary>
         public static string Message_HardwareVaultStateChanged {
@@ -3902,6 +3947,24 @@ namespace HES.Web.Resources {
         public static string Message_YouCanSendCode {
             get {
                 return ResourceManager.GetString("Message_YouCanSendCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на We&apos;re sorry, we couldn&apos;t find the page you requested..
+        /// </summary>
+        public static string NotFound_Description {
+            get {
+                return ResourceManager.GetString("NotFound_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Page not found.
+        /// </summary>
+        public static string NotFound_Title {
+            get {
+                return ResourceManager.GetString("NotFound_Title", resourceCulture);
             }
         }
         
@@ -5022,6 +5085,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Show entries.
+        /// </summary>
+        public static string Table_Footer_ShowEntries {
+            get {
+                return ResourceManager.GetString("Table_Footer_ShowEntries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Showing {0} to {1} of {2} entries.
+        /// </summary>
+        public static string Table_Footer_Showing {
+            get {
+                return ResourceManager.GetString("Table_Footer_Showing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Create Template.
         /// </summary>
         public static string Templates_CreateTemplate_Title {
@@ -5171,6 +5252,33 @@ namespace HES.Web.Resources {
         public static string Title_UnlockAll {
             get {
                 return ResourceManager.GetString("Title_UnlockAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Error.
+        /// </summary>
+        public static string Toast_TitleError {
+            get {
+                return ResourceManager.GetString("Toast_TitleError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Notification.
+        /// </summary>
+        public static string Toast_TitleNotification {
+            get {
+                return ResourceManager.GetString("Toast_TitleNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Success.
+        /// </summary>
+        public static string Toast_TitleSuccess {
+            get {
+                return ResourceManager.GetString("Toast_TitleSuccess", resourceCulture);
             }
         }
         

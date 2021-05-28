@@ -1836,11 +1836,17 @@
   <data name="Label_ClientVersion" xml:space="preserve">
     <value>Client Version</value>
   </data>
+  <data name="Label_EditedByAnother" xml:space="preserve">
+    <value>The {0} is currently being edited by another admin.</value>
+  </data>
   <data name="Label_HasRFID" xml:space="preserve">
     <value>Has RFID</value>
   </data>
   <data name="Label_IP" xml:space="preserve">
     <value>IP</value>
+  </data>
+  <data name="Label_Logout" xml:space="preserve">
+    <value>Logout</value>
   </data>
   <data name="Label_OS" xml:space="preserve">
     <value>OS</value>
@@ -1850,6 +1856,27 @@
   </data>
   <data name="Label_UnlockSettings" xml:space="preserve">
     <value>Unlock settings</value>
+  </data>
+  <data name="Label_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="LoadingFailed_Description" xml:space="preserve">
+    <value>An error occurred while processing your request.</value>
+  </data>
+  <data name="LoadingFailed_Title" xml:space="preserve">
+    <value>Error.</value>
+  </data>
+  <data name="NotFound_Description" xml:space="preserve">
+    <value>We're sorry, we couldn't find the page you requested.</value>
+  </data>
+  <data name="NotFound_Title" xml:space="preserve">
+    <value>Page not found</value>
+  </data>
+  <data name="Table_Footer_ShowEntries" xml:space="preserve">
+    <value>Show entries</value>
+  </data>
+  <data name="Table_Footer_Showing" xml:space="preserve">
+    <value>Showing {0} to {1} of {2} entries</value>
   </data>
   <data name="Templates_CreateTemplate_Title" xml:space="preserve">
     <value>Create Template</value>
@@ -1871,6 +1898,15 @@
   </data>
   <data name="Templates_EditTemplate_Toast" xml:space="preserve">
     <value>Template updated.</value>
+  </data>
+  <data name="Toast_TitleError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Toast_TitleNotification" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="Toast_TitleSuccess" xml:space="preserve">
+    <value>Success</value>
   </data>
   <data name="Workstations_AddProximityVault_Title" xml:space="preserve">
     <value>Add Proximity Vault</value>

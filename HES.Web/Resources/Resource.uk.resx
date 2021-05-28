@@ -1923,4 +1923,40 @@
   <data name="Workstations_UnapproveWorkstation_Toast" xml:space="preserve">
     <value>Робоча станція не затверджена.</value>
   </data>
+  <data name="Label_EditedByAnother" xml:space="preserve">
+    <value>Наразі {0} редагується іншим адміністратором.</value>
+  </data>
+  <data name="Label_Logout" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="Label_Version" xml:space="preserve">
+    <value>Версія</value>
+  </data>
+  <data name="LoadingFailed_Description" xml:space="preserve">
+    <value>Сталася помилка при обробці вашого запиту.</value>
+  </data>
+  <data name="LoadingFailed_Title" xml:space="preserve">
+    <value>Помилка.</value>
+  </data>
+  <data name="NotFound_Description" xml:space="preserve">
+    <value>На жаль, ми не змогли знайти потрібну вам сторінку.</value>
+  </data>
+  <data name="NotFound_Title" xml:space="preserve">
+    <value>Сторінку не знайдено</value>
+  </data>
+  <data name="Table_Footer_ShowEntries" xml:space="preserve">
+    <value>Показати записи</value>
+  </data>
+  <data name="Table_Footer_Showing" xml:space="preserve">
+    <value>Показ записів від {0} до {1} з {2}</value>
+  </data>
+  <data name="Toast_TitleError" xml:space="preserve">
+    <value>Помилка</value>
+  </data>
+  <data name="Toast_TitleNotification" xml:space="preserve">
+    <value>Повідомлення</value>
+  </data>
+  <data name="Toast_TitleSuccess" xml:space="preserve">
+    <value>Успіх</value>
+  </data>
 </root>

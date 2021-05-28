@@ -5,7 +5,7 @@
     @if (DisplayRecordsSelector)
     {
         <div class="d-flex">
-            <label class="col-form-label me-2">Show entries</label>
+            <label class="col-form-label me-2">@Resource.Table_Footer_ShowEntries</label>
             <div>
                 <select @oninput="OnChangeShowEntries" class="form-select">
                     <option selected value="10">10</option>
@@ -20,7 +20,7 @@
     {
         <div class="d-flex text-secondary">
             <label class="col-form-label">
-                @string.Format("Showing {0} to {1} of {2} entries", GetShowing(), GetShowingTo(), TotalRecords)
+                @string.Format(Resource.Table_Footer_Showing, GetShowing(), GetShowingTo(), TotalRecords)
             </label>
         </div>
     }
