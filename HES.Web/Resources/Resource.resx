@@ -1818,4 +1818,28 @@
   <data name="SharedAccounts_EditSharedAccount_Toast" xml:space="preserve">
     <value>Shared account updated.</value>
   </data>
+  <data name="Btn_CreateTemplate" xml:space="preserve">
+    <value>Create template</value>
+  </data>
+  <data name="Templates_CreateTemplate_Title" xml:space="preserve">
+    <value>Create Template</value>
+  </data>
+  <data name="Templates_CreateTemplate_Toast" xml:space="preserve">
+    <value>Template created.</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Body" xml:space="preserve">
+    <value>You want to delete template {0}?</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Title" xml:space="preserve">
+    <value>Delete Template</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Toast" xml:space="preserve">
+    <value>Template deleted.</value>
+  </data>
+  <data name="Templates_EditTemplate_Title" xml:space="preserve">
+    <value>Edit Template</value>
+  </data>
+  <data name="Templates_EditTemplate_Toast" xml:space="preserve">
+    <value>Template updated.</value>
+  </data>
 </root>

@@ -430,6 +430,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create template.
+        /// </summary>
+        public static string Btn_CreateTemplate {
+            get {
+                return ResourceManager.GetString("Btn_CreateTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Delete.
         /// </summary>
         public static string Btn_Delete {
@@ -4919,6 +4928,69 @@ namespace HES.Web.Resources {
         public static string Summary_PageTitle {
             get {
                 return ResourceManager.GetString("Summary_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Create Template.
+        /// </summary>
+        public static string Templates_CreateTemplate_Title {
+            get {
+                return ResourceManager.GetString("Templates_CreateTemplate_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Template created..
+        /// </summary>
+        public static string Templates_CreateTemplate_Toast {
+            get {
+                return ResourceManager.GetString("Templates_CreateTemplate_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete template {0}?.
+        /// </summary>
+        public static string Templates_DeleteTemplate_Body {
+            get {
+                return ResourceManager.GetString("Templates_DeleteTemplate_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Template.
+        /// </summary>
+        public static string Templates_DeleteTemplate_Title {
+            get {
+                return ResourceManager.GetString("Templates_DeleteTemplate_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Template deleted..
+        /// </summary>
+        public static string Templates_DeleteTemplate_Toast {
+            get {
+                return ResourceManager.GetString("Templates_DeleteTemplate_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Template.
+        /// </summary>
+        public static string Templates_EditTemplate_Title {
+            get {
+                return ResourceManager.GetString("Templates_EditTemplate_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Template updated..
+        /// </summary>
+        public static string Templates_EditTemplate_Toast {
+            get {
+                return ResourceManager.GetString("Templates_EditTemplate_Toast", resourceCulture);
             }
         }
         

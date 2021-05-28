@@ -7,20 +7,20 @@ else
     <EditForm Model="Filter" OnValidSubmit="FilteredAsync">
         <div class="row">
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Name</label>
+                <Label For="@(() => Filter.Name)" class="form-label text-gray" />
                 <InputText class="form-control" @bind-Value="Filter.Name" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Urls</label>
+                <Label For="@(() => Filter.Urls)" class="form-label text-gray" />
                 <InputText class="form-control" @bind-Value="Filter.Urls" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="text-gray">Apps</label>
+                <Label For="@(() => Filter.Apps)" class="form-label text-gray" />
                 <InputText class="form-control" @bind-Value="Filter.Apps" />
             </div>
             <div class="col align-self-end text-end form-group">
-                <Button Text="Clear" OnClick="ClearAsync" class="btn btn-secondary" />
-                <Button @ref="ButtonSpinner" Text="Filter" type="submit" class="btn btn-primary" />
+                <Button Text="@Resource.Btn_Clear" OnClick="ClearAsync" class="btn btn-secondary" />
+                <Button @ref="ButtonSpinner" Text="@Resource.Btn_Filter" type="submit" class="btn btn-primary" />
             </div>
         </div>
     </EditForm>

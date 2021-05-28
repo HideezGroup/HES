@@ -1818,4 +1818,28 @@
   <data name="SharedAccounts_EditSharedAccount_Toast" xml:space="preserve">
     <value>Спільний обліковий запис оновлено.</value>
   </data>
+  <data name="Btn_CreateTemplate" xml:space="preserve">
+    <value>Создать шаблон</value>
+  </data>
+  <data name="Templates_CreateTemplate_Title" xml:space="preserve">
+    <value>Создать шаблон</value>
+  </data>
+  <data name="Templates_CreateTemplate_Toast" xml:space="preserve">
+    <value>Шаблон создан.</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Body" xml:space="preserve">
+    <value>Вы хотите удалить шаблон {0}?</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Title" xml:space="preserve">
+    <value>Удалить шаблон</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Toast" xml:space="preserve">
+    <value>Шаблон удален.</value>
+  </data>
+  <data name="Templates_EditTemplate_Title" xml:space="preserve">
+    <value>Редактировать шаблон</value>
+  </data>
+  <data name="Templates_EditTemplate_Toast" xml:space="preserve">
+    <value>Шаблон обновлен.</value>
+  </data>
 </root>
