@@ -349,6 +349,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Approved.
+        /// </summary>
+        public static string Display_Approved {
+            get {
+                return ResourceManager.GetString("Display_Approved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Applications.
         /// </summary>
         public static string Display_Apps {
@@ -381,6 +390,15 @@ namespace HES.Core.Resources {
         public static string Display_Battery {
             get {
                 return ResourceManager.GetString("Display_Battery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Client Version.
+        /// </summary>
+        public static string Display_ClientVersion {
+            get {
+                return ResourceManager.GetString("Display_ClientVersion", resourceCulture);
             }
         }
         
@@ -565,6 +583,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на IP.
+        /// </summary>
+        public static string Display_IP {
+            get {
+                return ResourceManager.GetString("Display_IP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Last Name.
         /// </summary>
         public static string Display_LastName {
@@ -736,6 +763,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Online.
+        /// </summary>
+        public static string Display_Online {
+            get {
+                return ResourceManager.GetString("Display_Online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Order Created At From.
         /// </summary>
         public static string Display_OrderCreatedAtDateFrom {
@@ -759,6 +795,15 @@ namespace HES.Core.Resources {
         public static string Display_OrderStatus {
             get {
                 return ResourceManager.GetString("Display_OrderStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на OS.
+        /// </summary>
+        public static string Display_OS {
+            get {
+                return ResourceManager.GetString("Display_OS", resourceCulture);
             }
         }
         

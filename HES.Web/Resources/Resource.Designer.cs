@@ -268,6 +268,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Approve.
+        /// </summary>
+        public static string Btn_Approve {
+            get {
+                return ResourceManager.GetString("Btn_Approve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Back.
         /// </summary>
         public static string Btn_Back {
@@ -453,6 +462,15 @@ namespace HES.Web.Resources {
         public static string Btn_DeleteDataAndCloseMyAccount {
             get {
                 return ResourceManager.GetString("Btn_DeleteDataAndCloseMyAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Hardware Vault.
+        /// </summary>
+        public static string Btn_DeleteHardwareVault {
+            get {
+                return ResourceManager.GetString("Btn_DeleteHardwareVault", resourceCulture);
             }
         }
         
@@ -903,6 +921,15 @@ namespace HES.Web.Resources {
         public static string Btn_TurnOn {
             get {
                 return ResourceManager.GetString("Btn_TurnOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unapprove.
+        /// </summary>
+        public static string Btn_Unapprove {
+            get {
+                return ResourceManager.GetString("Btn_Unapprove", resourceCulture);
             }
         }
         
@@ -2484,6 +2511,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Approved.
+        /// </summary>
+        public static string Label_Approved {
+            get {
+                return ResourceManager.GetString("Label_Approved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Apps.
         /// </summary>
         public static string Label_Apps {
@@ -2588,6 +2624,15 @@ namespace HES.Web.Resources {
         public static string Label_ByWorkstations {
             get {
                 return ResourceManager.GetString("Label_ByWorkstations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Client Version.
+        /// </summary>
+        public static string Label_ClientVersion {
+            get {
+                return ResourceManager.GetString("Label_ClientVersion", resourceCulture);
             }
         }
         
@@ -2880,6 +2925,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Has RFID.
+        /// </summary>
+        public static string Label_HasRFID {
+            get {
+                return ResourceManager.GetString("Label_HasRFID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на High.
         /// </summary>
         public static string Label_High {
@@ -2912,6 +2966,15 @@ namespace HES.Web.Resources {
         public static string Label_InviteAccepted {
             get {
                 return ResourceManager.GetString("Label_InviteAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на IP.
+        /// </summary>
+        public static string Label_IP {
+            get {
+                return ResourceManager.GetString("Label_IP", resourceCulture);
             }
         }
         
@@ -3096,6 +3159,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на OS.
+        /// </summary>
+        public static string Label_OS {
+            get {
+                return ResourceManager.GetString("Label_OS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на OTP Updated.
         /// </summary>
         public static string Label_OtpUpdated {
@@ -3191,6 +3263,15 @@ namespace HES.Web.Resources {
         public static string Label_Prolong {
             get {
                 return ResourceManager.GetString("Label_Prolong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Proximity Vaults.
+        /// </summary>
+        public static string Label_ProximityVaults {
+            get {
+                return ResourceManager.GetString("Label_ProximityVaults", resourceCulture);
             }
         }
         
@@ -3452,6 +3533,15 @@ namespace HES.Web.Resources {
         public static string Label_UnlockedBy {
             get {
                 return ResourceManager.GetString("Label_UnlockedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unlock settings.
+        /// </summary>
+        public static string Label_UnlockSettings {
+            get {
+                return ResourceManager.GetString("Label_UnlockSettings", resourceCulture);
             }
         }
         
@@ -5090,6 +5180,159 @@ namespace HES.Web.Resources {
         public static string WorkstationEvents_PageTitle {
             get {
                 return ResourceManager.GetString("WorkstationEvents_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add Proximity Vault.
+        /// </summary>
+        public static string Workstations_AddProximityVault_Title {
+            get {
+                return ResourceManager.GetString("Workstations_AddProximityVault_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault added..
+        /// </summary>
+        public static string Workstations_AddProximityVault_Toast {
+            get {
+                return ResourceManager.GetString("Workstations_AddProximityVault_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Warning! You are trying to allow proximity on more than one device. This can lead to unstable system behavior..
+        /// </summary>
+        public static string Workstations_AddProximityVault_Warning {
+            get {
+                return ResourceManager.GetString("Workstations_AddProximityVault_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to approve workstation {0}?.
+        /// </summary>
+        public static string Workstations_ApproveWorkstation_Body {
+            get {
+                return ResourceManager.GetString("Workstations_ApproveWorkstation_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Approve Workstation.
+        /// </summary>
+        public static string Workstations_ApproveWorkstation_Title {
+            get {
+                return ResourceManager.GetString("Workstations_ApproveWorkstation_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation approved..
+        /// </summary>
+        public static string Workstations_ApproveWorkstation_Toast {
+            get {
+                return ResourceManager.GetString("Workstations_ApproveWorkstation_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete vault {0} from this workstation?.
+        /// </summary>
+        public static string Workstations_DeleteProximityVault_Body {
+            get {
+                return ResourceManager.GetString("Workstations_DeleteProximityVault_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Proximity Vault.
+        /// </summary>
+        public static string Workstations_DeleteProximityVault_Title {
+            get {
+                return ResourceManager.GetString("Workstations_DeleteProximityVault_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault deleted..
+        /// </summary>
+        public static string Workstations_DeleteProximityVault_Toast {
+            get {
+                return ResourceManager.GetString("Workstations_DeleteProximityVault_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to delete workstation {0}?.
+        /// </summary>
+        public static string Workstations_DeleteWorkstation_Body {
+            get {
+                return ResourceManager.GetString("Workstations_DeleteWorkstation_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete Workstation.
+        /// </summary>
+        public static string Workstations_DeleteWorkstation_Title {
+            get {
+                return ResourceManager.GetString("Workstations_DeleteWorkstation_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation deleted..
+        /// </summary>
+        public static string Workstations_DeleteWorkstation_Toast {
+            get {
+                return ResourceManager.GetString("Workstations_DeleteWorkstation_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Workstation.
+        /// </summary>
+        public static string Workstations_EditWorkstation_Title {
+            get {
+                return ResourceManager.GetString("Workstations_EditWorkstation_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation updated..
+        /// </summary>
+        public static string Workstations_EditWorkstation_Toast {
+            get {
+                return ResourceManager.GetString("Workstations_EditWorkstation_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You want to unapprove workstation {0}?.
+        /// </summary>
+        public static string Workstations_UnapproveWorkstation_Body {
+            get {
+                return ResourceManager.GetString("Workstations_UnapproveWorkstation_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unapprove Workstation.
+        /// </summary>
+        public static string Workstations_UnapproveWorkstation_Title {
+            get {
+                return ResourceManager.GetString("Workstations_UnapproveWorkstation_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation unapproved..
+        /// </summary>
+        public static string Workstations_UnapproveWorkstation_Toast {
+            get {
+                return ResourceManager.GetString("Workstations_UnapproveWorkstation_Toast", resourceCulture);
             }
         }
         

@@ -1842,4 +1842,85 @@
   <data name="Templates_EditTemplate_Toast" xml:space="preserve">
     <value>Шаблон обновлен.</value>
   </data>
+  <data name="Btn_Approve" xml:space="preserve">
+    <value>Затвердити</value>
+  </data>
+  <data name="Btn_DeleteHardwareVault" xml:space="preserve">
+    <value>Видалити aпаратне сховище</value>
+  </data>
+  <data name="Btn_Unapprove" xml:space="preserve">
+    <value>Відхилити</value>
+  </data>
+  <data name="Label_Approved" xml:space="preserve">
+    <value>Затверджено</value>
+  </data>
+  <data name="Label_ClientVersion" xml:space="preserve">
+    <value>Клієнтська версія</value>
+  </data>
+  <data name="Label_HasRFID" xml:space="preserve">
+    <value>Має RFID</value>
+  </data>
+  <data name="Label_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="Label_OS" xml:space="preserve">
+    <value>ОС</value>
+  </data>
+  <data name="Label_ProximityVaults" xml:space="preserve">
+    <value>Близькі сховища</value>
+  </data>
+  <data name="Label_UnlockSettings" xml:space="preserve">
+    <value>Налаштування розблокування </value>
+  </data>
+  <data name="Workstations_AddProximityVault_Title" xml:space="preserve">
+    <value>Додайте сховище Proximity</value>
+  </data>
+  <data name="Workstations_AddProximityVault_Toast" xml:space="preserve">
+    <value>Додано апаратне сховище.</value>
+  </data>
+  <data name="Workstations_AddProximityVault_Warning" xml:space="preserve">
+    <value>Увага! Ви намагаєтеся дозволити близькість на кількох пристроях. Це може призвести до нестабільної поведінки системи.</value>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Body" xml:space="preserve">
+    <value>Ви хочете затвердити робочу станцію {0}?</value>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Title" xml:space="preserve">
+    <value>Затвердити робочу станцію</value>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Toast" xml:space="preserve">
+    <value>Робоча станція затверджена.</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Body" xml:space="preserve">
+    <value>Ви хочете видалити сховище {0} з цієї робочої станції?</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Title" xml:space="preserve">
+    <value>Видалити сховище</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Toast" xml:space="preserve">
+    <value>Сховище обладнання видалено.</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Body" xml:space="preserve">
+    <value>Ви хочете видалити робочу станцію {0}?</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Title" xml:space="preserve">
+    <value>Видалити робочу станцію</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Toast" xml:space="preserve">
+    <value>Робоча станція видалена.</value>
+  </data>
+  <data name="Workstations_EditWorkstation_Title" xml:space="preserve">
+    <value>Редагувати робочу станцію</value>
+  </data>
+  <data name="Workstations_EditWorkstation_Toast" xml:space="preserve">
+    <value>Робоча станція оновлена.</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Body" xml:space="preserve">
+    <value>Ви хочете відхилити робочу станцію {0}?</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Title" xml:space="preserve">
+    <value>Відхилити робочу станцію</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Toast" xml:space="preserve">
+    <value>Робоча станція не затверджена.</value>
+  </data>
 </root>

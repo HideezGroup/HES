@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -33,7 +34,7 @@ namespace HES.Web.Pages.Workstations
                 Workstation = await WorkstationService.GetWorkstationByIdAsync(WorkstationId);
 
                 if (Workstation == null)
-                    throw new Exception("Workstation not found.");
+                    throw new HESException(HESCode.WorkstationNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Workstation.Id, out object _);
                 if (!EntityBeingEdited)
@@ -55,7 +56,7 @@ namespace HES.Web.Pages.Workstations
             {
                 await WorkstationService.UnapproveWorkstationAsync(Workstation.Id);
                 await RemoteWorkstationConnectionsService.UpdateWorkstationApprovedAsync(Workstation.Id, isApproved: false);
-                await ToastService.ShowToastAsync("Workstation unapproved.", ToastType.Success);             
+                await ToastService.ShowToastAsync(Resources.Resource.Workstations_UnapproveWorkstation_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

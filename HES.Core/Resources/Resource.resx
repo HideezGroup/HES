@@ -213,6 +213,9 @@
   <data name="Display_AccountType" xml:space="preserve">
     <value>Account Type</value>
   </data>
+  <data name="Display_Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
   <data name="Display_Apps" xml:space="preserve">
     <value>Applications</value>
   </data>
@@ -224,6 +227,9 @@
   </data>
   <data name="Display_Battery" xml:space="preserve">
     <value>Battery</value>
+  </data>
+  <data name="Display_ClientVersion" xml:space="preserve">
+    <value>Client Version</value>
   </data>
   <data name="Display_Company" xml:space="preserve">
     <value>Company</value>
@@ -285,6 +291,9 @@
   <data name="Display_Id" xml:space="preserve">
     <value>ID</value>
   </data>
+  <data name="Display_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
   <data name="Display_LastName" xml:space="preserve">
     <value>Last Name</value>
   </data>
@@ -342,6 +351,9 @@
   <data name="Display_Note" xml:space="preserve">
     <value>Note</value>
   </data>
+  <data name="Display_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
   <data name="Display_OrderCreatedAtDateFrom" xml:space="preserve">
     <value>Order Created At From</value>
   </data>
@@ -350,6 +362,9 @@
   </data>
   <data name="Display_OrderStatus" xml:space="preserve">
     <value>Order Status</value>
+  </data>
+  <data name="Display_OS" xml:space="preserve">
+    <value>OS</value>
   </data>
   <data name="Display_OtpSecret" xml:space="preserve">
     <value>OTP Secret</value>

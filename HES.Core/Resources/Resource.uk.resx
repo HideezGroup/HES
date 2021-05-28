@@ -462,4 +462,19 @@
   <data name="Display_Urls" xml:space="preserve">
     <value>URL-адреси</value>
   </data>
+  <data name="Display_Approved" xml:space="preserve">
+    <value>Затверджено</value>
+  </data>
+  <data name="Display_ClientVersion" xml:space="preserve">
+    <value>Клієнтська версія</value>
+  </data>
+  <data name="Display_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="Display_Online" xml:space="preserve">
+    <value>Онлайн</value>
+  </data>
+  <data name="Display_OS" xml:space="preserve">
+    <value>ОС</value>
+  </data>
 </root>
