@@ -33,7 +33,7 @@ namespace HES.Core.Interfaces
 
         #region Profile
         Task UpdateProfileInfoAsync(UserProfileModel parameters);
-        Task ChangeEmailAsync(UserChangeEmailModel parameters);
+        Task<string> ChangeEmailAsync(UserChangeEmailModel parameters, string baseUri);
         Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters);
         Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters);
         Task<TwoFactorInfo> GetTwoFactorInfoAsync(HttpClient httpClient);

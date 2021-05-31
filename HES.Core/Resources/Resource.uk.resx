@@ -705,4 +705,94 @@
   <data name="Breadcrumbs_WorkstationSessions" xml:space="preserve">
     <value>Сесії робочих станцій</value>
   </data>
+  <data name="Email_ActivateDataProtection_Body" xml:space="preserve">
+    <value>Ваш сервер Hideez Enterprise перезапущений. Будь ласка, активуйте захист даних на сервері, натиснувши цю кнопку:</value>
+  </data>
+  <data name="Email_ActivateDataProtection_Subject" xml:space="preserve">
+    <value>Потрібна дія - оновлення статусу сервера Hideez Enterprise</value>
+  </data>
+  <data name="Email_Common_Admin" xml:space="preserve">
+    <value>Адміністратор</value>
+  </data>
+  <data name="Email_Common_Btn_Activate" xml:space="preserve">
+    <value>Активувати</value>
+  </data>
+  <data name="Email_Common_Btn_Confirm" xml:space="preserve">
+    <value>Підтвердьте</value>
+  </data>
+  <data name="Email_Common_Btn_ResetPassword" xml:space="preserve">
+    <value>Скинути пароль</value>
+  </data>
+  <data name="Email_Common_DaysRemainin" xml:space="preserve">
+    <value>днів залишились</value>
+  </data>
+  <data name="Email_Common_Dear" xml:space="preserve">
+    <value>Шановний {0},</value>
+  </data>
+  <data name="Email_Common_Link" xml:space="preserve">
+    <value>посилання</value>
+  </data>
+  <data name="Email_Common_YourServer" xml:space="preserve">
+    <value>Ваш сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_EmployeeDisableSso_Body" xml:space="preserve">
+    <value>Ви вимкнули опцію SSO через сервер Hideez Enterprise.</value>
+  </data>
+  <data name="Email_EmployeeDisableSso_Subject" xml:space="preserve">
+    <value>SSO вимкнено для сервера Hideez Enterprise</value>
+  </data>
+  <data name="Email_EmployeeEnableSso_Body" xml:space="preserve">
+    <value>Ви ввімкнули опцію SSO через Hideez Enterprise Server. Будь ласка, завершіть налаштування, додавши за допомогою цього ключа безпеки</value>
+  </data>
+  <data name="Email_EmployeeEnableSso_Subject" xml:space="preserve">
+    <value>SSO увімкнено для сервера Hideez Enterprise</value>
+  </data>
+  <data name="Email_HardwareVaultActivationCode_Body" xml:space="preserve">
+    <value>Код активації вашого сховища обладнання:</value>
+  </data>
+  <data name="Email_HardwareVaultActivationCode_Subject" xml:space="preserve">
+    <value>Активувати сховище обладнання - сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_HardwareVaultLicenseStatus_Body" xml:space="preserve">
+    <value>Деякі з ваших пристроїв Hideez Key змінюють статус ліцензії. Будь ласка, перегляньте наведений нижче список і вживайте заходів, якщо потрібно.</value>
+  </data>
+  <data name="Email_HardwareVaultLicenseStatus_Subject" xml:space="preserve">
+    <value>Оновлення статусу ліцензії Hideez</value>
+  </data>
+  <data name="Email_LicenseChanged_Body" xml:space="preserve">
+    <value>Дякуємо за розміщення замовлення на ліцензіях Hideez.</value>
+  </data>
+  <data name="Email_LicenseChanged_Description" xml:space="preserve">
+    <value>Статус вашого замовлення ліцензії Hideez від {0} змінено на {1}</value>
+  </data>
+  <data name="Email_LicenseChanged_Subject" xml:space="preserve">
+    <value>Оновлення статусу замовлення ліцензії Hideez</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Body" xml:space="preserve">
+    <value>Ваш пароль для облікового запису домену {0} було автоматично змінено та завантажено на пристрій Hideez Key {1}.</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Description" xml:space="preserve">
+    <value>Будь ласка, використовуйте його при наступному вході в систему. Зверніть увагу, що для синхронізації даних ваш комп’ютер потребуватиме з’єднання з сервером.</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Subject" xml:space="preserve">
+    <value>Автоматично змінений пароль - сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_UserConfirmEmail_Body" xml:space="preserve">
+    <value>Підтвердьте свій аккаунт, натиснувши на кнопку:</value>
+  </data>
+  <data name="Email_UserConfirmEmail_Subject" xml:space="preserve">
+    <value>Потрібні дії - Підтвердьте свою електронну адресу на сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_UserInvitation_Body" xml:space="preserve">
+    <value>Вас запросили на сервер Hideez Enterprise. Будь ласка, підтвердьте запрошення, ввівши новий пароль за допомогою цього</value>
+  </data>
+  <data name="Email_UserInvitation_Subject" xml:space="preserve">
+    <value>Потрібна дія - запрошення на сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_UserResetPassword_Body" xml:space="preserve">
+    <value>Щоб захистити свій рахунок, скиньте пароль, натиснувши кнопку:</value>
+  </data>
+  <data name="Email_UserResetPassword_Subject" xml:space="preserve">
+    <value>Потрібна дія - скидання пароля до сервера Hideez Enterprise</value>
+  </data>
 </root>

@@ -224,7 +224,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task ChangeEmailAsync(UserChangeEmailModel parameters)
+        public async Task<string> ChangeEmailAsync(UserChangeEmailModel parameters, string baseUri)
         {
             if (parameters == null)
             {
@@ -246,7 +246,9 @@ namespace HES.Core.Services
             var code = await _userManager.GenerateChangeEmailTokenAsync(user, parameters.NewEmail);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            await _emailSenderService.SendUserConfirmEmailAsync(user.Id, parameters.NewEmail, code);
+            var callbackUrl = HtmlEncoder.Default.Encode($"{baseUri}/{Routes.ConfirmEmailChange}?userId={user.Id}&code={code}&email={parameters.NewEmail}");
+
+            return callbackUrl;
         }
 
         public async Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters)
@@ -349,7 +351,7 @@ namespace HES.Core.Services
         public async Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults)
         {
             var administrators = await GetAllAdministratorsAsync();
-            await _emailSenderService.SendHardwareVaultLicenseStatus(vaults, administrators);
+            await _emailSenderService.SendHardwareVaultLicenseStatusAsync(vaults, administrators);
         }
 
         public async Task SendActivateDataProtectionAsync()

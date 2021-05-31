@@ -36,7 +36,7 @@ namespace HES.Web.Pages.Employees
             try
             {
                 await EmployeeService.DisableSsoAsync(Employee);
-                await EmailSenderService.SendEmployeeDisableSsoAsync(Employee.Email);
+                await EmailSenderService.SendEmployeeDisableSsoAsync(Employee);
                 await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_DisableSso_Toast, ToastType.Success);
                 await ModalDialogClose();
             }

@@ -218,7 +218,7 @@ namespace HES.Core.Services
                     }
 
                     // Send notification when pasword changed
-                    await _emailSenderService.NotifyWhenPasswordAutoChangedAsync(employee, memberLogonName);
+                    await _emailSenderService.SendNotifyWhenPasswordAutoChangedAsync(employee, memberLogonName);
                 }
                 else
                 {
@@ -242,7 +242,7 @@ namespace HES.Core.Services
                         }
 
                         // Send notification when password changed
-                        await _emailSenderService.NotifyWhenPasswordAutoChangedAsync(employee, memberLogonName);
+                        await _emailSenderService.SendNotifyWhenPasswordAutoChangedAsync(employee, memberLogonName);
                     }
                 }
             }

@@ -1231,6 +1231,276 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Your Hideez Enterprise Server has been restarted. Please activate the data protection on the server by clicking this button:.
+        /// </summary>
+        public static string Email_ActivateDataProtection_Body {
+            get {
+                return ResourceManager.GetString("Email_ActivateDataProtection_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Action required - Hideez Enterprise Server Status Update.
+        /// </summary>
+        public static string Email_ActivateDataProtection_Subject {
+            get {
+                return ResourceManager.GetString("Email_ActivateDataProtection_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Administrator.
+        /// </summary>
+        public static string Email_Common_Admin {
+            get {
+                return ResourceManager.GetString("Email_Common_Admin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Activate.
+        /// </summary>
+        public static string Email_Common_Btn_Activate {
+            get {
+                return ResourceManager.GetString("Email_Common_Btn_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm.
+        /// </summary>
+        public static string Email_Common_Btn_Confirm {
+            get {
+                return ResourceManager.GetString("Email_Common_Btn_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset Password.
+        /// </summary>
+        public static string Email_Common_Btn_ResetPassword {
+            get {
+                return ResourceManager.GetString("Email_Common_Btn_ResetPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на days remainin.
+        /// </summary>
+        public static string Email_Common_DaysRemainin {
+            get {
+                return ResourceManager.GetString("Email_Common_DaysRemainin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dear {0},.
+        /// </summary>
+        public static string Email_Common_Dear {
+            get {
+                return ResourceManager.GetString("Email_Common_Dear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на link.
+        /// </summary>
+        public static string Email_Common_Link {
+            get {
+                return ResourceManager.GetString("Email_Common_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your Hideez Enterprise Server.
+        /// </summary>
+        public static string Email_Common_YourServer {
+            get {
+                return ResourceManager.GetString("Email_Common_YourServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You&apos;ve turned off the option SSO via Hideez Enterprise Server..
+        /// </summary>
+        public static string Email_EmployeeDisableSso_Body {
+            get {
+                return ResourceManager.GetString("Email_EmployeeDisableSso_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SSO Disabled to Hideez Enterprise Server.
+        /// </summary>
+        public static string Email_EmployeeDisableSso_Subject {
+            get {
+                return ResourceManager.GetString("Email_EmployeeDisableSso_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You&apos;ve turned on the option SSO via Hideez Enterprise Server. Please complete the setup by adding a security key using this.
+        /// </summary>
+        public static string Email_EmployeeEnableSso_Body {
+            get {
+                return ResourceManager.GetString("Email_EmployeeEnableSso_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SSO Enabled to Hideez Enterprise Server.
+        /// </summary>
+        public static string Email_EmployeeEnableSso_Subject {
+            get {
+                return ResourceManager.GetString("Email_EmployeeEnableSso_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your hardware vault activation code:.
+        /// </summary>
+        public static string Email_HardwareVaultActivationCode_Body {
+            get {
+                return ResourceManager.GetString("Email_HardwareVaultActivationCode_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Activate Hardware Vault - Hideez Enterprise Server.
+        /// </summary>
+        public static string Email_HardwareVaultActivationCode_Subject {
+            get {
+                return ResourceManager.GetString("Email_HardwareVaultActivationCode_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Some of your Hideez Key devices have changes in their license status. Please review the list below and take action if required..
+        /// </summary>
+        public static string Email_HardwareVaultLicenseStatus_Body {
+            get {
+                return ResourceManager.GetString("Email_HardwareVaultLicenseStatus_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hideez License Status Update.
+        /// </summary>
+        public static string Email_HardwareVaultLicenseStatus_Subject {
+            get {
+                return ResourceManager.GetString("Email_HardwareVaultLicenseStatus_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Thank you for placing the order on Hideez licenses..
+        /// </summary>
+        public static string Email_LicenseChanged_Body {
+            get {
+                return ResourceManager.GetString("Email_LicenseChanged_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The status of your Hideez License order of {0} has been changed to {1}.
+        /// </summary>
+        public static string Email_LicenseChanged_Description {
+            get {
+                return ResourceManager.GetString("Email_LicenseChanged_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hideez License Order Status Update.
+        /// </summary>
+        public static string Email_LicenseChanged_Subject {
+            get {
+                return ResourceManager.GetString("Email_LicenseChanged_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your password for your domain account {0} has been automatically changed and uploaded to your Hideez Key device {1}..
+        /// </summary>
+        public static string Email_NotifyWhenPasswordAutoChanged_Body {
+            get {
+                return ResourceManager.GetString("Email_NotifyWhenPasswordAutoChanged_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Please use it at the next login. Please note that your computer will need a connection to the server to sync data..
+        /// </summary>
+        public static string Email_NotifyWhenPasswordAutoChanged_Description {
+            get {
+                return ResourceManager.GetString("Email_NotifyWhenPasswordAutoChanged_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password Auto Changed - Hideez Enterprise Server.
+        /// </summary>
+        public static string Email_NotifyWhenPasswordAutoChanged_Subject {
+            get {
+                return ResourceManager.GetString("Email_NotifyWhenPasswordAutoChanged_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Please confirm your account by clicking on the button:.
+        /// </summary>
+        public static string Email_UserConfirmEmail_Body {
+            get {
+                return ResourceManager.GetString("Email_UserConfirmEmail_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Action required - Confirm your email to Hideez Enterprise Server.
+        /// </summary>
+        public static string Email_UserConfirmEmail_Subject {
+            get {
+                return ResourceManager.GetString("Email_UserConfirmEmail_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You&apos;ve been invited to Hideez Enterprise Server. Please confirm the invitation by entering a new password using this.
+        /// </summary>
+        public static string Email_UserInvitation_Body {
+            get {
+                return ResourceManager.GetString("Email_UserInvitation_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Action required - Invitation to Hideez Enterprise Server.
+        /// </summary>
+        public static string Email_UserInvitation_Subject {
+            get {
+                return ResourceManager.GetString("Email_UserInvitation_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на To secure your account, please reset your password by clicking on the button:.
+        /// </summary>
+        public static string Email_UserResetPassword_Body {
+            get {
+                return ResourceManager.GetString("Email_UserResetPassword_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Action required - Password Reset to Hideez Enterprise Server.
+        /// </summary>
+        public static string Email_UserResetPassword_Subject {
+            get {
+                return ResourceManager.GetString("Email_UserResetPassword_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Account with the same name and login exist..
         /// </summary>
         public static string Exception_AccountExist {

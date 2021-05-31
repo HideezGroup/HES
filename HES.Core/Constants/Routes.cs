@@ -12,6 +12,7 @@
         public const string ForgotPassword = "/forgot-password";
         public const string ForgotPasswordConfirmation = "/forgot-password-confirmation";
         public const string ResetPassword = "/reset-password";   
+        public const string ConfirmEmailChange = "/confirm-email-change";   
 
         public const string Profile = "/profile";
 

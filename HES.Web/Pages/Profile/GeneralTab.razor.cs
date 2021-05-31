@@ -22,9 +22,11 @@ namespace HES.Web.Pages.Profile
     public partial class GeneralTab : HESPageBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
+        public IEmailSenderService EmailSenderService { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<ProfilePage> Logger { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public ApplicationUser User { get; set; }
         public UserProfileModel UserProfileModel { get; set; }
@@ -38,6 +40,7 @@ namespace HES.Web.Pages.Profile
             try
             {
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
+                EmailSenderService = ScopedServices.GetRequiredService<IEmailSenderService>();
 
                 var email = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.Name;
 
@@ -93,7 +96,8 @@ namespace HES.Web.Pages.Profile
             {
                 await ButtonChangeEmail.SpinAsync(async () =>
                 {
-                    await ApplicationUserService.ChangeEmailAsync(ChangeEmailModel);
+                    var callbackUrl = await ApplicationUserService.ChangeEmailAsync(ChangeEmailModel, NavigationManager.BaseUri);
+                    await EmailSenderService.SendUserConfirmEmailAsync(User, ChangeEmailModel.NewEmail, callbackUrl);
                     await ToastService.ShowToastAsync(Resources.Resource.Profile_General_ChangeEmail_Toast, ToastType.Success);
                 });
             }
