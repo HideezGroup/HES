@@ -645,4 +645,64 @@
   <data name="Exception_WorkstationNotFoundWithParam" xml:space="preserve">
     <value>Робочу станцію {0} не знайдено.</value>
   </data>
+  <data name="Breadcrumbs_Administrators" xml:space="preserve">
+    <value>Адміністратори</value>
+  </data>
+  <data name="Breadcrumbs_Alarm" xml:space="preserve">
+    <value>Сигналізація</value>
+  </data>
+  <data name="Breadcrumbs_Audit" xml:space="preserve">
+    <value>Аудит</value>
+  </data>
+  <data name="Breadcrumbs_Dashboard" xml:space="preserve">
+    <value>Панель моніторингу</value>
+  </data>
+  <data name="Breadcrumbs_DataProtection" xml:space="preserve">
+    <value>Захист даних</value>
+  </data>
+  <data name="Breadcrumbs_Employees" xml:space="preserve">
+    <value>Співробітники</value>
+  </data>
+  <data name="Breadcrumbs_Groups" xml:space="preserve">
+    <value>Групи</value>
+  </data>
+  <data name="Breadcrumbs_HardwareVaultAccessProfiles" xml:space="preserve">
+    <value>Профілі доступу до апаратного сховища</value>
+  </data>
+  <data name="Breadcrumbs_HardwareVaults" xml:space="preserve">
+    <value>Апаратні сховища</value>
+  </data>
+  <data name="Breadcrumbs_LicenseOrders" xml:space="preserve">
+    <value>Замовлення ліцензій</value>
+  </data>
+  <data name="Breadcrumbs_OrgStructure" xml:space="preserve">
+    <value>Структура організації</value>
+  </data>
+  <data name="Breadcrumbs_Parameters" xml:space="preserve">
+    <value>Параметри</value>
+  </data>
+  <data name="Breadcrumbs_Profile" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="Breadcrumbs_Settings" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="Breadcrumbs_SharedAccounts" xml:space="preserve">
+    <value>Спільні аккаунти</value>
+  </data>
+  <data name="Breadcrumbs_Summaries" xml:space="preserve">
+    <value>Звіти</value>
+  </data>
+  <data name="Breadcrumbs_Templates" xml:space="preserve">
+    <value>Шаблони</value>
+  </data>
+  <data name="Breadcrumbs_WorkstationEvents" xml:space="preserve">
+    <value>Події робочої станції</value>
+  </data>
+  <data name="Breadcrumbs_Workstations" xml:space="preserve">
+    <value>Робочі станції</value>
+  </data>
+  <data name="Breadcrumbs_WorkstationSessions" xml:space="preserve">
+    <value>Сесії робочих станцій</value>
+  </data>
 </root>

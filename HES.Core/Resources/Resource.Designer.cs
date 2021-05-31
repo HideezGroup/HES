@@ -61,6 +61,186 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Administrators.
+        /// </summary>
+        public static string Breadcrumbs_Administrators {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Administrators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Alarm.
+        /// </summary>
+        public static string Breadcrumbs_Alarm {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Alarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Audit.
+        /// </summary>
+        public static string Breadcrumbs_Audit {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Audit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dashboard.
+        /// </summary>
+        public static string Breadcrumbs_Dashboard {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Dashboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data Protection.
+        /// </summary>
+        public static string Breadcrumbs_DataProtection {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_DataProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Employees.
+        /// </summary>
+        public static string Breadcrumbs_Employees {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Employees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Groups.
+        /// </summary>
+        public static string Breadcrumbs_Groups {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vault Access Profiles.
+        /// </summary>
+        public static string Breadcrumbs_HardwareVaultAccessProfiles {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_HardwareVaultAccessProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hardware Vaults.
+        /// </summary>
+        public static string Breadcrumbs_HardwareVaults {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_HardwareVaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на License Orders.
+        /// </summary>
+        public static string Breadcrumbs_LicenseOrders {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_LicenseOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на OrgStructure.
+        /// </summary>
+        public static string Breadcrumbs_OrgStructure {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_OrgStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Parameters.
+        /// </summary>
+        public static string Breadcrumbs_Parameters {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Parameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Profile.
+        /// </summary>
+        public static string Breadcrumbs_Profile {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings.
+        /// </summary>
+        public static string Breadcrumbs_Settings {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shared Accounts.
+        /// </summary>
+        public static string Breadcrumbs_SharedAccounts {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_SharedAccounts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Summaries.
+        /// </summary>
+        public static string Breadcrumbs_Summaries {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Summaries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Templates.
+        /// </summary>
+        public static string Breadcrumbs_Templates {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Templates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation Events.
+        /// </summary>
+        public static string Breadcrumbs_WorkstationEvents {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_WorkstationEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstations.
+        /// </summary>
+        public static string Breadcrumbs_Workstations {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_Workstations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Workstation Sessions.
+        /// </summary>
+        public static string Breadcrumbs_WorkstationSessions {
+            get {
+                return ResourceManager.GetString("Breadcrumbs_WorkstationSessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Registered.
         /// </summary>
         public static string Dashboard_EmployeesCard_LeftText {

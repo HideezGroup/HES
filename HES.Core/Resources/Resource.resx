@@ -117,6 +117,66 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Breadcrumbs_Administrators" xml:space="preserve">
+    <value>Administrators</value>
+  </data>
+  <data name="Breadcrumbs_Alarm" xml:space="preserve">
+    <value>Alarm</value>
+  </data>
+  <data name="Breadcrumbs_Audit" xml:space="preserve">
+    <value>Audit</value>
+  </data>
+  <data name="Breadcrumbs_Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Breadcrumbs_DataProtection" xml:space="preserve">
+    <value>Data Protection</value>
+  </data>
+  <data name="Breadcrumbs_Employees" xml:space="preserve">
+    <value>Employees</value>
+  </data>
+  <data name="Breadcrumbs_Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="Breadcrumbs_HardwareVaultAccessProfiles" xml:space="preserve">
+    <value>Hardware Vault Access Profiles</value>
+  </data>
+  <data name="Breadcrumbs_HardwareVaults" xml:space="preserve">
+    <value>Hardware Vaults</value>
+  </data>
+  <data name="Breadcrumbs_LicenseOrders" xml:space="preserve">
+    <value>License Orders</value>
+  </data>
+  <data name="Breadcrumbs_OrgStructure" xml:space="preserve">
+    <value>OrgStructure</value>
+  </data>
+  <data name="Breadcrumbs_Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="Breadcrumbs_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Breadcrumbs_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Breadcrumbs_SharedAccounts" xml:space="preserve">
+    <value>Shared Accounts</value>
+  </data>
+  <data name="Breadcrumbs_Summaries" xml:space="preserve">
+    <value>Summaries</value>
+  </data>
+  <data name="Breadcrumbs_Templates" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="Breadcrumbs_WorkstationEvents" xml:space="preserve">
+    <value>Workstation Events</value>
+  </data>
+  <data name="Breadcrumbs_Workstations" xml:space="preserve">
+    <value>Workstations</value>
+  </data>
+  <data name="Breadcrumbs_WorkstationSessions" xml:space="preserve">
+    <value>Workstation Sessions</value>
+  </data>
   <data name="Dashboard_EmployeesCard_LeftText" xml:space="preserve">
     <value>Registered</value>
   </data>
