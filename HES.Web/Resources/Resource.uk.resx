@@ -1693,13 +1693,13 @@
     <value>Видалити налаштування</value>
   </data>
   <data name="Btn_SetDomainSettings" xml:space="preserve">
-    <value>Встановіть налаштування домену</value>
+    <value>Налаштувати домен</value>
   </data>
   <data name="Btn_SetLicensingSettings" xml:space="preserve">
-    <value>Встановіть параметри ліцензування</value>
+    <value>Налаштувати ліцензування</value>
   </data>
   <data name="Btn_SetSplunkSettings" xml:space="preserve">
-    <value>Встановіть налаштування Splunk</value>
+    <value>Налаштувати Splunk</value>
   </data>
   <data name="Label_NotConfigured" xml:space="preserve">
     <value>Не налаштовано</value>
@@ -1762,7 +1762,7 @@
     <value>Налаштування надсилання подій на Splank.</value>
   </data>
   <data name="Parameters_Splunk_Title" xml:space="preserve">
-    <value>Спанкл</value>
+    <value>Splunk</value>
   </data>
   <data name="Parameters_AddSplunkSettings_Title" xml:space="preserve">
     <value>Налаштування Splunk</value>

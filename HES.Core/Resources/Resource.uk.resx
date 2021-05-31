@@ -124,7 +124,7 @@
     <value>Аккаунт</value>
   </data>
   <data name="Display_AccountType" xml:space="preserve">
-    <value>Тип рахунку</value>
+    <value>Тип аккаунту</value>
   </data>
   <data name="Display_Company" xml:space="preserve">
     <value>Компанія</value>

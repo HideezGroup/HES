@@ -26,7 +26,7 @@ namespace HES.Core.Models.Filters
         [Display(Name = nameof(Resources.Resource.Display_LastSeenStartDate), ResourceType = typeof(Resources.Resource))]
         public DateTime? LastSeenStartDate { get; set; }
 
-        [Display(Name = nameof(Resources.Resource.Display_Name), ResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_LastSeenEndDate), ResourceType = typeof(Resources.Resource))]
         public DateTime? LastSeenEndDate { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_VaultsCount), ResourceType = typeof(Resources.Resource))]
