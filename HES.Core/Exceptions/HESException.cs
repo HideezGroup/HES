@@ -93,6 +93,11 @@ namespace HES.Core.Exceptions
         DataProtectionIsAlreadyActivated,
         DataProtectionIsAlreadyEnabled,
         DataProtectionIsBusy,
+
+        InvalidCertificate,
+
+        Saml2RelyingPartyNotFound,
+        Saml2IssuerAlreadyExist
     }
 
     public class HESException : Exception
@@ -170,6 +175,11 @@ namespace HES.Core.Exceptions
             { HESCode.DataProtectionIsAlreadyActivated, "Data protection is already activated." },
             { HESCode.DataProtectionIsAlreadyEnabled, "Data protection is already enabled." },
             { HESCode.DataProtectionIsBusy, "Data protection is busy." },
+
+            { HESCode.InvalidCertificate, "Invalid certificate." },
+
+            { HESCode.Saml2RelyingPartyNotFound, "Service provider not found." },
+            { HESCode.Saml2IssuerAlreadyExist, "Issuer already exist." }
         };
 
         public HESCode Code { get; set; }

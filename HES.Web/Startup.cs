@@ -6,7 +6,6 @@ using HES.Core.HostedServices;
 using HES.Core.Hubs;
 using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
-using HES.Core.Models.Saml;
 using HES.Core.Services;
 using HES.Infrastructure;
 using HES.Web.Components;
@@ -244,7 +243,6 @@ namespace HES.Web
             #region SAML
 
             services.Configure<Saml2Configuration>(Configuration.GetSection("Saml2"));
-            services.Configure<Saml2RelyingParties>(Configuration.GetSection("Saml2Sp"));
 
             if (Saml2Enabled)
             {
