@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HES.Web.Controllers
@@ -116,7 +117,7 @@ namespace HES.Web.Controllers
         }
 
         [HttpGet("Metadata")]
-        public IActionResult Metadata()
+        public IActionResult Metadata(bool download)
         {
             try
             {
@@ -141,11 +142,39 @@ namespace HES.Web.Controllers
                     }
                 };
 
-                return new Saml2Metadata(entityDescriptor).CreateMetadata().ToActionResult();
+                if (download)
+                {
+                    Response.Headers.Add("Content-Disposition", $"attachment; filename=metadata.xml");
+                    return File(Encoding.ASCII.GetBytes(new Saml2Metadata(entityDescriptor).CreateMetadata().ToXml()), "application/octet-stream");
+                }
+                else
+                {
+                    return new Saml2Metadata(entityDescriptor).CreateMetadata().ToActionResult();
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("Cert")]
+        public IActionResult Cert()
+        {
+            try
+            {
+                var builder = new StringBuilder();
+
+                builder.AppendLine("-----BEGIN CERTIFICATE-----");
+                builder.AppendLine(Convert.ToBase64String(_saml2Configuration.SigningCertificate.Export(X509ContentType.Cert), Base64FormattingOptions.InsertLineBreaks));
+                builder.AppendLine("-----END CERTIFICATE-----");
+
+                Response.Headers.Add("Content-Disposition", $"attachment; filename=signing.cer");
+                return File(Encoding.ASCII.GetBytes(builder.ToString()), "application/octet-stream");
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }
