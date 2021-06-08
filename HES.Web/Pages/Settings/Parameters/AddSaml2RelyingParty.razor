@@ -6,6 +6,12 @@
 }
 else
 {
+    <div class="border rounded bg-light p-2 mb-3 d-flex align-items-center">
+        <div class="text-nowrap me-2">Configure settings manually or use a metadata file</div>
+        <div class="w-100">
+            <InputFile OnChange="@OnInputFileChangeAsync" class="form-control" />
+        </div>
+    </div>
     <EditForm Model="RelyingParty" OnValidSubmit="AddAsync">
         <DataAnnotationsValidator />
         <ValidationErrorMessage @ref="ValidationErrorMessage" />

@@ -15,8 +15,9 @@ namespace HES.Core.Entities
         [Display(Name = "Issuer")]
         public string Issuer { get; set; }
 
-        [Url]
+        [Required]
         [Display(Name = "Assertion Consumer Service")]
+        [Url]
         public string SingleSignOnDestination { get; set; }
 
         [Url]
