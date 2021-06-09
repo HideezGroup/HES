@@ -282,6 +282,9 @@
   <data name="Display_AppsSeparate" xml:space="preserve">
     <value>Applications (separate by semicolon)</value>
   </data>
+  <data name="Display_AssertionConsumerService" xml:space="preserve">
+    <value>Assertion Consumer Service</value>
+  </data>
   <data name="Display_AuthenticatorCode" xml:space="preserve">
     <value>Authenticator code</value>
   </data>
@@ -353,6 +356,9 @@
   </data>
   <data name="Display_IP" xml:space="preserve">
     <value>IP</value>
+  </data>
+  <data name="Display_Issuer" xml:space="preserve">
+    <value>Issuer</value>
   </data>
   <data name="Display_LastName" xml:space="preserve">
     <value>Last Name</value>
@@ -450,6 +456,9 @@
   <data name="Display_ProlongLicense" xml:space="preserve">
     <value>Prolong License</value>
   </data>
+  <data name="Display_PublicX509Certificate" xml:space="preserve">
+    <value>Public x509 Certificate</value>
+  </data>
   <data name="Display_RecoveryCode" xml:space="preserve">
     <value>Recovery Code</value>
   </data>
@@ -464,6 +473,9 @@
   </data>
   <data name="Display_Severity" xml:space="preserve">
     <value>Severity</value>
+  </data>
+  <data name="Display_SingleLogoutService" xml:space="preserve">
+    <value>Single Logout Service</value>
   </data>
   <data name="Display_StartDate" xml:space="preserve">
     <value>Start Date</value>
@@ -708,6 +720,9 @@
   <data name="Exception_IncorrectUrl" xml:space="preserve">
     <value>Incorrect URL address.</value>
   </data>
+  <data name="Exception_InvalidCertificate" xml:space="preserve">
+    <value>Invalid certificate.</value>
+  </data>
   <data name="Exception_InvalidLoginAttempt" xml:space="preserve">
     <value>Invalid login attempt.</value>
   </data>
@@ -740,6 +755,15 @@
   </data>
   <data name="Exception_RequiresTwoFactor" xml:space="preserve">
     <value>Requires two factor.</value>
+  </data>
+  <data name="Exception_Saml2IssuerAlreadyExist" xml:space="preserve">
+    <value>Issuer already exist.</value>
+  </data>
+  <data name="Exception_Saml2RelyingPartyNotFound" xml:space="preserve">
+    <value>Service provider not found.</value>
+  </data>
+  <data name="Exception_Saml2SPDescriptorNotLoaded" xml:space="preserve">
+    <value>Service Provider descriptor not loaded from metadata.</value>
   </data>
   <data name="Exception_SecurityKeyNotFound" xml:space="preserve">
     <value>Security key not found.</value>

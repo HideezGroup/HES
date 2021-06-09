@@ -1911,12 +1911,14 @@
   </data>
   <data name="Workstations_AddProximityVault_Title" xml:space="preserve">
     <value>Add Proximity Vault</value>
+    <comment>?</comment>
   </data>
   <data name="Workstations_AddProximityVault_Toast" xml:space="preserve">
     <value>The Hardware Vault has been added.</value>
   </data>
   <data name="Workstations_AddProximityVault_Warning" xml:space="preserve">
     <value>Warning! You are trying to allow proximity on more than one device. This can lead to unstable system behavior.</value>
+    <comment>?</comment>
   </data>
   <data name="Workstations_ApproveWorkstation_Body" xml:space="preserve">
     <value>Do you want to approve workstation {0}?</value>
@@ -1959,5 +1961,47 @@
   </data>
   <data name="Workstations_UnapproveWorkstation_Toast" xml:space="preserve">
     <value>The Workstation has been unapproved.</value>
+  </data>
+  <data name="Btn_AddServiceProvider" xml:space="preserve">
+    <value>Add service provider</value>
+  </data>
+  <data name="Btn_DownloadCertificate" xml:space="preserve">
+    <value>Download certificate</value>
+  </data>
+  <data name="Btn_DownloadMetadata" xml:space="preserve">
+    <value>Download metadata</value>
+  </data>
+  <data name="Btn_ViewMetadata" xml:space="preserve">
+    <value>View metadata</value>
+  </data>
+  <data name="Label_IdPMetadata" xml:space="preserve">
+    <value>IdP metadata</value>
+  </data>
+  <data name="Label_ServiceProviders" xml:space="preserve">
+    <value>Service Providers</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Configure" xml:space="preserve">
+    <value>Configure settings manually or use a metadata file</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Add Service Provider</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Toast" xml:space="preserve">
+    <value>Service provider added.</value>
+  </data>
+  <data name="Parameters_DeleteSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Delete Service Provider</value>
+  </data>
+  <data name="Parameters_EditSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Edit Service Provider</value>
+  </data>
+  <data name="Parameters_EditSaml2RelyingParty_Toasat" xml:space="preserve">
+    <value>Service provider updated.</value>
+  </data>
+  <data name="Parameters_Saml_Description" xml:space="preserve">
+    <value>Configuring service providers.</value>
+  </data>
+  <data name="Parameters_Saml_Title" xml:space="preserve">
+    <value>SAML</value>
   </data>
 </root>

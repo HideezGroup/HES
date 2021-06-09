@@ -795,4 +795,28 @@
   <data name="Email_UserResetPassword_Subject" xml:space="preserve">
     <value>Потрібна дія - скидання пароля до сервера Hideez Enterprise</value>
   </data>
+  <data name="Display_AssertionConsumerService" xml:space="preserve">
+    <value>Ствердження споживчої служби</value>
+  </data>
+  <data name="Display_Issuer" xml:space="preserve">
+    <value>Емітент</value>
+  </data>
+  <data name="Display_PublicX509Certificate" xml:space="preserve">
+    <value>Публічний сертифікат x509</value>
+  </data>
+  <data name="Display_SingleLogoutService" xml:space="preserve">
+    <value>Служба єдиного виходу</value>
+  </data>
+  <data name="Exception_InvalidCertificate" xml:space="preserve">
+    <value>Недійсний сертифікат.</value>
+  </data>
+  <data name="Exception_Saml2IssuerAlreadyExist" xml:space="preserve">
+    <value>Емітент вже існує.</value>
+  </data>
+  <data name="Exception_Saml2RelyingPartyNotFound" xml:space="preserve">
+    <value>Постачальника послуг не знайдено.</value>
+  </data>
+  <data name="Exception_Saml2SPDescriptorNotLoaded" xml:space="preserve">
+    <value>Дескриптор постачальника послуг не завантажений із метаданих.</value>
+  </data>
 </root>

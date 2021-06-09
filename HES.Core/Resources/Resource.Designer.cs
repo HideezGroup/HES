@@ -151,7 +151,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на OrgStructure.
+        ///   Ищет локализованную строку, похожую на Organization Structure.
         /// </summary>
         public static string Breadcrumbs_OrgStructure {
             get {
@@ -439,7 +439,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Api Address.
+        ///   Ищет локализованную строку, похожую на API Address.
         /// </summary>
         public static string Dispaly_ApiAddress {
             get {
@@ -448,7 +448,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Api Key.
+        ///   Ищет локализованную строку, похожую на API Key.
         /// </summary>
         public static string Dispaly_ApiKey {
             get {
@@ -552,6 +552,15 @@ namespace HES.Core.Resources {
         public static string Display_AppsSeparate {
             get {
                 return ResourceManager.GetString("Display_AppsSeparate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Assertion Consumer Service.
+        /// </summary>
+        public static string Display_AssertionConsumerService {
+            get {
+                return ResourceManager.GetString("Display_AssertionConsumerService", resourceCulture);
             }
         }
         
@@ -768,6 +777,15 @@ namespace HES.Core.Resources {
         public static string Display_IP {
             get {
                 return ResourceManager.GetString("Display_IP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Issuer.
+        /// </summary>
+        public static string Display_Issuer {
+            get {
+                return ResourceManager.GetString("Display_Issuer", resourceCulture);
             }
         }
         
@@ -1060,6 +1078,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Public x509 Certificate.
+        /// </summary>
+        public static string Display_PublicX509Certificate {
+            get {
+                return ResourceManager.GetString("Display_PublicX509Certificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Recovery Code.
         /// </summary>
         public static string Display_RecoveryCode {
@@ -1101,6 +1128,15 @@ namespace HES.Core.Resources {
         public static string Display_Severity {
             get {
                 return ResourceManager.GetString("Display_Severity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Single Logout Service.
+        /// </summary>
+        public static string Display_SingleLogoutService {
+            get {
+                return ResourceManager.GetString("Display_SingleLogoutService", resourceCulture);
             }
         }
         
@@ -1528,7 +1564,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Activation code not found.
+        ///   Ищет локализованную строку, похожую на Activation Code not found.
         /// </summary>
         public static string Exception_ActivationCodeNotFound {
             get {
@@ -1537,7 +1573,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на This employee was removed from active directory so it was changed to local user..
+        ///   Ищет локализованную строку, похожую на This employee was removed from Active Directory so it was changed to local user..
         /// </summary>
         public static string Exception_ActiveDirectoryUserNotFound {
             get {
@@ -1546,7 +1582,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Api Key is empty..
+        ///   Ищет локализованную строку, похожую на API Key is empty..
         /// </summary>
         public static string Exception_ApiKeyEmpty {
             get {
@@ -1834,6 +1870,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid certificate..
+        /// </summary>
+        public static string Exception_InvalidCertificate {
+            get {
+                return ResourceManager.GetString("Exception_InvalidCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Invalid login attempt..
         /// </summary>
         public static string Exception_InvalidLoginAttempt {
@@ -1929,6 +1974,33 @@ namespace HES.Core.Resources {
         public static string Exception_RequiresTwoFactor {
             get {
                 return ResourceManager.GetString("Exception_RequiresTwoFactor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Issuer already exist..
+        /// </summary>
+        public static string Exception_Saml2IssuerAlreadyExist {
+            get {
+                return ResourceManager.GetString("Exception_Saml2IssuerAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Service provider not found..
+        /// </summary>
+        public static string Exception_Saml2RelyingPartyNotFound {
+            get {
+                return ResourceManager.GetString("Exception_Saml2RelyingPartyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Service Provider descriptor not loaded from metadata..
+        /// </summary>
+        public static string Exception_Saml2SPDescriptorNotLoaded {
+            get {
+                return ResourceManager.GetString("Exception_Saml2SPDescriptorNotLoaded", resourceCulture);
             }
         }
         

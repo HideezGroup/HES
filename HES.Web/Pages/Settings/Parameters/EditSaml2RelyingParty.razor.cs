@@ -50,7 +50,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 await Button.SpinAsync(async () =>
                 {
                     await AppSettingsService.EditSaml2RelyingPartyAsync(RelyingParty);
-                    await ToastService.ShowToastAsync("Service provider updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Parameters_EditSaml2RelyingParty_Toasat, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

@@ -79,7 +79,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Administrator deleted..
+        ///   Ищет локализованную строку, похожую на The administrator has been deleted..
         /// </summary>
         public static string Administrators_DeleteAdministrator_Toast {
             get {
@@ -97,7 +97,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Administrator invited..
+        ///   Ищет локализованную строку, похожую на The administrator has been invited..
         /// </summary>
         public static string Administrators_InviteAdmin_Toast {
             get {
@@ -106,7 +106,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Invitation resent..
+        ///   Ищет локализованную строку, похожую на The invitation has been resent..
         /// </summary>
         public static string Administrators_ResendInvite_Toast {
             get {
@@ -142,7 +142,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на All workstations are unlocked..
+        ///   Ищет локализованную строку, похожую на All workstations have been unlocked..
         /// </summary>
         public static string Alarm_DisableAlarm_Toast {
             get {
@@ -169,7 +169,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на All workstations are locked..
+        ///   Ищет локализованную строку, похожую на All workstations have been locked..
         /// </summary>
         public static string Alarm_EnableAlarm_Toast {
             get {
@@ -259,6 +259,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Add service provider.
+        /// </summary>
+        public static string Btn_AddServiceProvider {
+            get {
+                return ResourceManager.GetString("Btn_AddServiceProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Add Shared Account.
         /// </summary>
         public static string Btn_AddSharedAccount {
@@ -313,7 +322,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Change profile.
+        ///   Ищет локализованную строку, похожую на Change Profile.
         /// </summary>
         public static string Btn_ChangeProfile {
             get {
@@ -394,7 +403,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Create employee.
+        ///   Ищет локализованную строку, похожую на Create Employee.
         /// </summary>
         public static string Btn_CreateEmployee {
             get {
@@ -430,7 +439,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Create shared account.
+        ///   Ищет локализованную строку, похожую на Create Shared Account.
         /// </summary>
         public static string Btn_CreateSharedAccount {
             get {
@@ -439,7 +448,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Create template.
+        ///   Ищет локализованную строку, похожую на Create Template.
         /// </summary>
         public static string Btn_CreateTemplate {
             get {
@@ -534,6 +543,24 @@ namespace HES.Web.Resources {
         public static string Btn_Download {
             get {
                 return ResourceManager.GetString("Btn_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Download certificate.
+        /// </summary>
+        public static string Btn_DownloadCertificate {
+            get {
+                return ResourceManager.GetString("Btn_DownloadCertificate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Download metadata.
+        /// </summary>
+        public static string Btn_DownloadMetadata {
+            get {
+                return ResourceManager.GetString("Btn_DownloadMetadata", resourceCulture);
             }
         }
         
@@ -880,7 +907,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Sync Now.
+        ///   Ищет локализованную строку, похожую на Sync now.
         /// </summary>
         public static string Btn_SyncNow {
             get {
@@ -898,7 +925,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Try Again.
+        ///   Ищет локализованную строку, похожую на Try again.
         /// </summary>
         public static string Btn_TryAgain {
             get {
@@ -948,6 +975,15 @@ namespace HES.Web.Resources {
         public static string Btn_Verify {
             get {
                 return ResourceManager.GetString("Btn_Verify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на View metadata.
+        /// </summary>
+        public static string Btn_ViewMetadata {
+            get {
+                return ResourceManager.GetString("Btn_ViewMetadata", resourceCulture);
             }
         }
         
@@ -1015,7 +1051,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Data protection password updated..
+        ///   Ищет локализованную строку, похожую на The data protection password has been updated..
         /// </summary>
         public static string DataProtection_ChangeDataProtectionPassword_Toast {
             get {
@@ -1033,7 +1069,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Data protection disabled..
+        ///   Ищет локализованную строку, похожую на Data protection has been disabled..
         /// </summary>
         public static string DataProtection_DisableDataProtection_Toast {
             get {
@@ -1051,7 +1087,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Data protection enabled..
+        ///   Ищет локализованную строку, похожую на Data protection has been enabled..
         /// </summary>
         public static string DataProtection_EnableDataProtection_Toast {
             get {
@@ -1107,7 +1143,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware Vault added..
+        ///   Ищет локализованную строку, похожую на Hardware Vault has been added..
         /// </summary>
         public static string EmployeeDetails_AddHardwareVault_Toast {
             get {
@@ -1116,7 +1152,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на There are no accounts, you can create a shared account on the Shared Account page..
+        ///   Ищет локализованную строку, похожую на There are no accounts yet, you can create a shared account on the Shared Account page..
         /// </summary>
         public static string EmployeeDetails_AddSharedAccount_NoAccounts {
             get {
@@ -1125,7 +1161,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Add shared account.
+        ///   Ищет локализованную строку, похожую на Add a shared account.
         /// </summary>
         public static string EmployeeDetails_AddSharedAccount_Title {
             get {
@@ -1134,7 +1170,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Account added and will be recorded when the device is connected to the server..
+        ///   Ищет локализованную строку, похожую на The account has been added and will be uploaded to the device once it is connected to the server..
         /// </summary>
         public static string EmployeeDetails_AddSharedAccount_Toast {
             get {
@@ -1215,7 +1251,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Set as primary account.
+        ///   Ищет локализованную строку, похожую на Set as a primary account.
         /// </summary>
         public static string EmployeeDetails_BtnTitle_SetAsPrimary {
             get {
@@ -1224,7 +1260,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Show activation code.
+        ///   Ищет локализованную строку, похожую на Show Activation Code.
         /// </summary>
         public static string EmployeeDetails_BtnTitle_ShowActivationCode {
             get {
@@ -1260,7 +1296,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Account created..
+        ///   Ищет локализованную строку, похожую на Account has been created..
         /// </summary>
         public static string EmployeeDetails_CreatePersonalAccount_Toast {
             get {
@@ -1269,7 +1305,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete {0} account {1}?.
+        ///   Ищет локализованную строку, похожую на Do you want to delete {0} account {1}?.
         /// </summary>
         public static string EmployeeDetails_DeleteAccount_Body {
             get {
@@ -1287,7 +1323,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Account deleted..
+        ///   Ищет локализованную строку, похожую на The account has been deleted..
         /// </summary>
         public static string EmployeeDetails_DeleteAccount_Toast {
             get {
@@ -1296,7 +1332,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to remove vault {0}? When removing the last vault, all accounts will be deleted..
+        ///   Ищет локализованную строку, похожую на Do you want to remove vault {0}? When removing the last vault, all accounts will be deleted..
         /// </summary>
         public static string EmployeeDetails_DeleteHardwareVault_Body {
             get {
@@ -1314,7 +1350,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware Vault removed..
+        ///   Ищет локализованную строку, похожую на The Hardware Vault has been deleted..
         /// </summary>
         public static string EmployeeDetails_DeleteHardwareVault_Toast {
             get {
@@ -1341,7 +1377,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на SSO disabled..
+        ///   Ищет локализованную строку, похожую на The SSO has been disabled..
         /// </summary>
         public static string EmployeeDetails_DisableSso_Toast {
             get {
@@ -1359,7 +1395,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Account updated..
+        ///   Ищет локализованную строку, похожую на The account has been updated..
         /// </summary>
         public static string EmployeeDetails_EditPersonalAccount_Toast {
             get {
@@ -1377,7 +1413,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Account OTP updated..
+        ///   Ищет локализованную строку, похожую на The Account&apos;s OTP secret has been updated..
         /// </summary>
         public static string EmployeeDetails_EditPersonalAccountOtp_Toast {
             get {
@@ -1449,7 +1485,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Account password updated..
+        ///   Ищет локализованную строку, похожую на The account password has been updated..
         /// </summary>
         public static string EmployeeDetails_EditPersonalAccountPwd_Toast {
             get {
@@ -1476,7 +1512,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на SSO enabled..
+        ///   Ищет локализованную строку, похожую на The SSO has been enabled..
         /// </summary>
         public static string EmployeeDetails_EnableSso_Toast {
             get {
@@ -1530,7 +1566,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Account setted as primary..
+        ///   Ищет локализованную строку, похожую на Account has been set as a primary..
         /// </summary>
         public static string EmployeeDetails_SetAsWorkstationAccount_Toast {
             get {
@@ -1539,7 +1575,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Software Vault invite sent.
+        ///   Ищет локализованную строку, похожую на Software Vault invite has been sent.
         /// </summary>
         public static string EmployeeDetails_SoftwareVaultInviteSent {
             get {
@@ -1584,7 +1620,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Employee created..
+        ///   Ищет локализованную строку, похожую на The employee has been created..
         /// </summary>
         public static string Employees_CreateEmployee_Toast {
             get {
@@ -1593,7 +1629,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete employee {0}? Also all events and sessions will be deleted..
+        ///   Ищет локализованную строку, похожую на Do you want to delete employee {0}? Also, the history of all events and sessions will be deleted..
         /// </summary>
         public static string Employees_DeleteEmployee_Body {
             get {
@@ -1611,7 +1647,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Employee removed..
+        ///   Ищет локализованную строку, похожую на The Employee has been deleted..
         /// </summary>
         public static string Employees_DeleteEmployee_Toast {
             get {
@@ -1638,7 +1674,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Employee updated..
+        ///   Ищет локализованную строку, похожую на The Employee has been updated..
         /// </summary>
         public static string Employees_EditEmployee_Toast {
             get {
@@ -1647,7 +1683,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на To sync users from the active directory, set domain settings on the parameters page..
+        ///   Ищет локализованную строку, похожую на To sync users from the Active Directory, set domain settings on the Parameters page..
         /// </summary>
         public static string Employees_SyncEmployeesWithAD_Alert {
             get {
@@ -1674,7 +1710,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware vault profile created..
+        ///   Ищет локализованную строку, похожую на The hardware vault profile has been created..
         /// </summary>
         public static string HardwareVaultAccessProfile_CreateAccessProfile_Toast {
             get {
@@ -1683,7 +1719,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete hardware vault access profile {0}?.
+        ///   Ищет локализованную строку, похожую на Do you want to delete hardware vault access profile {0}?.
         /// </summary>
         public static string HardwareVaultAccessProfile_DeleteProfile_Body {
             get {
@@ -1701,7 +1737,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware vault profile deleted..
+        ///   Ищет локализованную строку, похожую на The hardware vault profile has been deleted..
         /// </summary>
         public static string HardwareVaultAccessProfile_DeleteProfile_Toast {
             get {
@@ -1746,7 +1782,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Request the device button confirmation for connecting the device to the computer that is already bonded with the computer..
+        ///   Ищет локализованную строку, похожую на Request the device button confirmation for connecting the device to the computer that is already paired with the computer..
         /// </summary>
         public static string HardwareVaultAccessProfile_Label_Button_Connection_Title {
             get {
@@ -1800,7 +1836,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Request the PIN-code for connecting the device to the computer that is already bonded with the computer..
+        ///   Ищет локализованную строку, похожую на Request the PIN-code for connecting the device to the computer that is already paired with the computer..
         /// </summary>
         public static string HardwareVaultAccessProfile_Label_PIN_Connection_Title {
             get {
@@ -1890,7 +1926,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Require the server confirmation for connecting the device to the computer that is already bonded with the computer..
+        ///   Ищет локализованную строку, похожую на Require the server confirmation for connecting the device to the computer that is already paired with the computer..
         /// </summary>
         public static string HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title {
             get {
@@ -1926,7 +1962,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Show activation code.
+        ///   Ищет локализованную строку, похожую на Show Activation Code.
         /// </summary>
         public static string HardwareVaults_BtnTitle_ShowActivationCode {
             get {
@@ -1962,7 +1998,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware vault profile updated..
+        ///   Ищет локализованную строку, похожую на The hardware vault profile has been updated..
         /// </summary>
         public static string HardwareVaults_ChangeProfile_Toast {
             get {
@@ -1980,7 +2016,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Are you sure you want to set compromised vault {0}?.
+        ///   Ищет локализованную строку, похожую на Are you sure you want to set the vault {0} as a compromised?.
         /// </summary>
         public static string HardwareVaults_ChangeStatus_Body_Compromised {
             get {
@@ -2025,7 +2061,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Vault pending activate..
+        ///   Ищет локализованную строку, похожую на The Vault activation is pending..
         /// </summary>
         public static string HardwareVaults_ChangeStatus_Toast_Activate {
             get {
@@ -2034,7 +2070,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Vault compromised..
+        ///   Ищет локализованную строку, похожую на Vault has been set as a compromised..
         /// </summary>
         public static string HardwareVaults_ChangeStatus_Toast_Compromised {
             get {
@@ -2043,7 +2079,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Vault pending suspend..
+        ///   Ищет локализованную строку, похожую на Vault pending suspension..
         /// </summary>
         public static string HardwareVaults_ChangeStatus_Toast_Suspend {
             get {
@@ -2061,7 +2097,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на RFID updated..
+        ///   Ищет локализованную строку, похожую на The RFID has been updated..
         /// </summary>
         public static string HardwareVaults_EditRfid_Toast {
             get {
@@ -2070,7 +2106,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware Vaults imported..
+        ///   Ищет локализованную строку, похожую на The Hardware Vaults have been imported..
         /// </summary>
         public static string HardwareVaults_ImportVaults_Toast {
             get {
@@ -2106,7 +2142,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You confirmed change email for your account..
+        ///   Ищет локализованную строку, похожую на You confirmed the email change for your account..
         /// </summary>
         public static string Identity_ConfirmEmailChange_Description {
             get {
@@ -2115,7 +2151,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Thank you for email confirmation.
+        ///   Ищет локализованную строку, похожую на Thanks for confirming your email address..
         /// </summary>
         public static string Identity_ConfirmEmailChange_Header {
             get {
@@ -2187,7 +2223,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Invite administrator.
+        ///   Ищет локализованную строку, похожую на Invite Administrator.
         /// </summary>
         public static string Identity_Invite_Title {
             get {
@@ -2376,7 +2412,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на A code must be supplied password reset..
+        ///   Ищет локализованную строку, похожую на A code must be supplied for a password reset..
         /// </summary>
         public static string Identity_ResetPassword_CodeMustBeSupplied {
             get {
@@ -2475,7 +2511,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Activation code.
+        ///   Ищет локализованную строку, похожую на Activation Code.
         /// </summary>
         public static string Label_ActivationCode {
             get {
@@ -2961,6 +2997,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на IdP metadata.
+        /// </summary>
+        public static string Label_IdPMetadata {
+            get {
+                return ResourceManager.GetString("Label_IdPMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Imported At.
         /// </summary>
         public static string Label_ImportedAt {
@@ -3168,7 +3213,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на OrgStructure.
+        ///   Ищет локализованную строку, похожую на Organization Structure.
         /// </summary>
         public static string Label_OrgStructure {
             get {
@@ -3366,6 +3411,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Service Providers.
+        /// </summary>
+        public static string Label_ServiceProviders {
+            get {
+                return ResourceManager.GetString("Label_ServiceProviders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Session.
         /// </summary>
         public static string Label_Session {
@@ -3411,7 +3465,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Shared account.
+        ///   Ищет локализованную строку, похожую на Shared Account.
         /// </summary>
         public static string Label_SharedAccount {
             get {
@@ -3591,7 +3645,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на User name.
+        ///   Ищет локализованную строку, похожую на User Name.
         /// </summary>
         public static string Label_UserName {
             get {
@@ -3753,7 +3807,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на New license.
+        ///   Ищет локализованную строку, похожую на New License.
         /// </summary>
         public static string LicenseOrders_CreateLicenseOrder_NewLicense {
             get {
@@ -3762,7 +3816,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Renew license.
+        ///   Ищет локализованную строку, похожую на Renew License.
         /// </summary>
         public static string LicenseOrders_CreateLicenseOrder_RenewLicense {
             get {
@@ -3780,7 +3834,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Order created..
+        ///   Ищет локализованную строку, похожую на The license order has been created..
         /// </summary>
         public static string LicenseOrders_CreateLicenseOrder_Toast {
             get {
@@ -3807,7 +3861,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на License order deleted..
+        ///   Ищет локализованную строку, похожую на The License Order has been deleted..
         /// </summary>
         public static string LicenseOrders_DeleteLicenseOrder_Toast {
             get {
@@ -3834,7 +3888,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Order updated..
+        ///   Ищет локализованную строку, похожую на The License Order has been updated..
         /// </summary>
         public static string LicenseOrders_EditLicenseOrder_Toast {
             get {
@@ -3861,7 +3915,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Confirm sending order..
+        ///   Ищет локализованную строку, похожую на Please confirm sending the order..
         /// </summary>
         public static string LicenseOrders_SendLicenseOrder_Body {
             get {
@@ -3978,7 +4032,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Company created..
+        ///   Ищет локализованную строку, похожую на The Company has been created..
         /// </summary>
         public static string OrgStructure_CreateCompany_Toast {
             get {
@@ -3996,7 +4050,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Department created..
+        ///   Ищет локализованную строку, похожую на The Department has been created..
         /// </summary>
         public static string OrgStructure_CreateDepartment_Toast {
             get {
@@ -4014,7 +4068,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Position created..
+        ///   Ищет локализованную строку, похожую на The Position has been created..
         /// </summary>
         public static string OrgStructure_CreatePosition_Toast {
             get {
@@ -4023,7 +4077,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete company {0}?.
+        ///   Ищет локализованную строку, похожую на Do you want to delete company {0}?.
         /// </summary>
         public static string OrgStructure_DeleteCompany_Body {
             get {
@@ -4041,7 +4095,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Company deleted..
+        ///   Ищет локализованную строку, похожую на The Company has been deleted..
         /// </summary>
         public static string OrgStructure_DeleteCompany_Toast {
             get {
@@ -4050,7 +4104,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete department {0}?.
+        ///   Ищет локализованную строку, похожую на Do you want to delete department {0}?.
         /// </summary>
         public static string OrgStructure_DeleteDepartment_Body {
             get {
@@ -4068,7 +4122,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Department deleted..
+        ///   Ищет локализованную строку, похожую на The Department has been deleted..
         /// </summary>
         public static string OrgStructure_DeleteDepartment_Toast {
             get {
@@ -4077,7 +4131,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete position {0}?.
+        ///   Ищет локализованную строку, похожую на Do you want to delete position {0}?.
         /// </summary>
         public static string OrgStructure_DeletePosition_Body {
             get {
@@ -4095,7 +4149,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Position deleted..
+        ///   Ищет локализованную строку, похожую на The Position has been deleted..
         /// </summary>
         public static string OrgStructure_DeletePosition_Toast {
             get {
@@ -4113,7 +4167,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Company updated..
+        ///   Ищет локализованную строку, похожую на The Company has been updated..
         /// </summary>
         public static string OrgStructure_EditCompany_Toast {
             get {
@@ -4131,7 +4185,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Department updated..
+        ///   Ищет локализованную строку, похожую на The Department has been updated..
         /// </summary>
         public static string OrgStructure_EditDepartment_Toast {
             get {
@@ -4149,7 +4203,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Position updated..
+        ///   Ищет локализованную строку, похожую на The Position has been updated..
         /// </summary>
         public static string OrgStructure_EditPosition_Toast {
             get {
@@ -4203,7 +4257,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Domain settings updated..
+        ///   Ищет локализованную строку, похожую на The Domain settings have been updated..
         /// </summary>
         public static string Parameters_AddLdapSettings_Toast {
             get {
@@ -4221,11 +4275,38 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на License settings updated..
+        ///   Ищет локализованную строку, похожую на The License settings have been updated..
         /// </summary>
         public static string Parameters_AddLicenseSettings_Toast {
             get {
                 return ResourceManager.GetString("Parameters_AddLicenseSettings_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Configure settings manually or use a metadata file.
+        /// </summary>
+        public static string Parameters_AddSaml2RelyingParty_Configure {
+            get {
+                return ResourceManager.GetString("Parameters_AddSaml2RelyingParty_Configure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add Service Provider.
+        /// </summary>
+        public static string Parameters_AddSaml2RelyingParty_Title {
+            get {
+                return ResourceManager.GetString("Parameters_AddSaml2RelyingParty_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Service provider added..
+        /// </summary>
+        public static string Parameters_AddSaml2RelyingParty_Toast {
+            get {
+                return ResourceManager.GetString("Parameters_AddSaml2RelyingParty_Toast", resourceCulture);
             }
         }
         
@@ -4239,7 +4320,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Splunk settings updated..
+        ///   Ищет локализованную строку, похожую на The Splunk settings have been updated..
         /// </summary>
         public static string Parameters_AddSplunkSettings_Toast {
             get {
@@ -4248,7 +4329,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Confirm deleting domain settings..
+        ///   Ищет локализованную строку, похожую на Please confirm deleting domain settings..
         /// </summary>
         public static string Parameters_DeleteLdapSettings_Body {
             get {
@@ -4266,7 +4347,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Domain settings deleted..
+        ///   Ищет локализованную строку, похожую на The Domain settings have been deleted..
         /// </summary>
         public static string Parameters_DeleteLdapSettings_Toast {
             get {
@@ -4275,7 +4356,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Confirm deleting license settings..
+        ///   Ищет локализованную строку, похожую на Please confirm deleting license settings..
         /// </summary>
         public static string Parameters_DeleteLicenseSettings_Body {
             get {
@@ -4293,7 +4374,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на License settings deleted..
+        ///   Ищет локализованную строку, похожую на The License settings have been deleted..
         /// </summary>
         public static string Parameters_DeleteLicenseSettings_Toast {
             get {
@@ -4302,7 +4383,16 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Confirm deleting splunk settings..
+        ///   Ищет локализованную строку, похожую на Delete Service Provider.
+        /// </summary>
+        public static string Parameters_DeleteSaml2RelyingParty_Title {
+            get {
+                return ResourceManager.GetString("Parameters_DeleteSaml2RelyingParty_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Please confirm deleting the Splunk settings..
         /// </summary>
         public static string Parameters_DeleteSplunkSettings_Body {
             get {
@@ -4311,7 +4401,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Delete splunk settings.
+        ///   Ищет локализованную строку, похожую на Delete Splunk settings.
         /// </summary>
         public static string Parameters_DeleteSplunkSettings_Title {
             get {
@@ -4320,7 +4410,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Splunk settings deleted..
+        ///   Ищет локализованную строку, похожую на The Splunk settings have been deleted..
         /// </summary>
         public static string Parameters_DeleteSplunkSettings_Toast {
             get {
@@ -4347,6 +4437,24 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit Service Provider.
+        /// </summary>
+        public static string Parameters_EditSaml2RelyingParty_Title {
+            get {
+                return ResourceManager.GetString("Parameters_EditSaml2RelyingParty_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Service provider updated..
+        /// </summary>
+        public static string Parameters_EditSaml2RelyingParty_Toasat {
+            get {
+                return ResourceManager.GetString("Parameters_EditSaml2RelyingParty_Toasat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на API authentication key for ordering licenses and the address of the licensing server..
         /// </summary>
         public static string Parameters_Licensing_Description {
@@ -4365,7 +4473,25 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Settings for sending events to the Splank..
+        ///   Ищет локализованную строку, похожую на Configuring service providers..
+        /// </summary>
+        public static string Parameters_Saml_Description {
+            get {
+                return ResourceManager.GetString("Parameters_Saml_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SAML.
+        /// </summary>
+        public static string Parameters_Saml_Title {
+            get {
+                return ResourceManager.GetString("Parameters_Saml_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings for sending events to Splunk..
         /// </summary>
         public static string Parameters_Splunk_Description {
             get {
@@ -4599,7 +4725,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Security key added..
+        ///   Ищет локализованную строку, похожую на The Security Key has been added..
         /// </summary>
         public static string Profile_Security_AddSecurityKey_Toast {
             get {
@@ -4617,7 +4743,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Password updated..
+        ///   Ищет локализованную строку, похожую на The Password has been updated..
         /// </summary>
         public static string Profile_Security_ChangePassword_Toast {
             get {
@@ -4635,7 +4761,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Delete security key.
+        ///   Ищет локализованную строку, похожую на Delete Security Key.
         /// </summary>
         public static string Profile_Security_DeleteSecurityKey_Title {
             get {
@@ -4698,7 +4824,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Security key updated..
+        ///   Ищет локализованную строку, похожую на The Security Key has been updated..
         /// </summary>
         public static string Profile_Security_EditSecurityKey_Toast {
             get {
@@ -5013,7 +5139,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Shared Account deleted..
+        ///   Ищет локализованную строку, похожую на The Shared Account has been deleted..
         /// </summary>
         public static string SharedAccounts_DeleteSharedAccount_Toast {
             get {
@@ -5031,7 +5157,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Shared account updated..
+        ///   Ищет локализованную строку, похожую на The Shared Account has been updated..
         /// </summary>
         public static string SharedAccounts_EditSharedAccount_Toast {
             get {
@@ -5049,7 +5175,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Shared Account OTP updated..
+        ///   Ищет локализованную строку, похожую на The Shared Account&apos;s OTP secret has been updated..
         /// </summary>
         public static string SharedAccounts_EditSharedAccountOtp_Toast {
             get {
@@ -5067,7 +5193,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Shared Account password updated..
+        ///   Ищет локализованную строку, похожую на The Shared Account password has been updated..
         /// </summary>
         public static string SharedAccounts_EditSharedAccountPassword_Toast {
             get {
@@ -5112,7 +5238,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Template created..
+        ///   Ищет локализованную строку, похожую на The template has been created..
         /// </summary>
         public static string Templates_CreateTemplate_Toast {
             get {
@@ -5121,7 +5247,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete template {0}?.
+        ///   Ищет локализованную строку, похожую на Do you want to delete template {0}?.
         /// </summary>
         public static string Templates_DeleteTemplate_Body {
             get {
@@ -5139,7 +5265,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Template deleted..
+        ///   Ищет локализованную строку, похожую на The template has been deleted..
         /// </summary>
         public static string Templates_DeleteTemplate_Toast {
             get {
@@ -5157,7 +5283,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Template updated..
+        ///   Ищет локализованную строку, похожую на The template has been updated..
         /// </summary>
         public static string Templates_EditTemplate_Toast {
             get {
@@ -5301,7 +5427,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware Vault added..
+        ///   Ищет локализованную строку, похожую на The Hardware Vault has been added..
         /// </summary>
         public static string Workstations_AddProximityVault_Toast {
             get {
@@ -5319,7 +5445,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to approve workstation {0}?.
+        ///   Ищет локализованную строку, похожую на Do you want to approve workstation {0}?.
         /// </summary>
         public static string Workstations_ApproveWorkstation_Body {
             get {
@@ -5337,7 +5463,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Workstation approved..
+        ///   Ищет локализованную строку, похожую на The workstation has been approved..
         /// </summary>
         public static string Workstations_ApproveWorkstation_Toast {
             get {
@@ -5346,7 +5472,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete vault {0} from this workstation?.
+        ///   Ищет локализованную строку, похожую на Do you want to delete vault {0} from this workstation?.
         /// </summary>
         public static string Workstations_DeleteProximityVault_Body {
             get {
@@ -5364,7 +5490,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware Vault deleted..
+        ///   Ищет локализованную строку, похожую на The Hardware Vault has been deleted..
         /// </summary>
         public static string Workstations_DeleteProximityVault_Toast {
             get {
@@ -5373,7 +5499,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to delete workstation {0}?.
+        ///   Ищет локализованную строку, похожую на Do you want to delete workstation {0}?.
         /// </summary>
         public static string Workstations_DeleteWorkstation_Body {
             get {
@@ -5391,7 +5517,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Workstation deleted..
+        ///   Ищет локализованную строку, похожую на The Workstation has been deleted..
         /// </summary>
         public static string Workstations_DeleteWorkstation_Toast {
             get {
@@ -5409,7 +5535,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Workstation updated..
+        ///   Ищет локализованную строку, похожую на The Workstation has been updated..
         /// </summary>
         public static string Workstations_EditWorkstation_Toast {
             get {
@@ -5418,7 +5544,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You want to unapprove workstation {0}?.
+        ///   Ищет локализованную строку, похожую на Do you want to unapprove workstation {0}?.
         /// </summary>
         public static string Workstations_UnapproveWorkstation_Body {
             get {
@@ -5436,7 +5562,7 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Workstation unapproved..
+        ///   Ищет локализованную строку, похожую на The Workstation has been unapproved..
         /// </summary>
         public static string Workstations_UnapproveWorkstation_Toast {
             get {

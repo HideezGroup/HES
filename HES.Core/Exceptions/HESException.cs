@@ -100,11 +100,12 @@ namespace HES.Core.Exceptions
         // SAML
         InvalidCertificate,
         Saml2RelyingPartyNotFound,
-        Saml2IssuerAlreadyExist
+        Saml2IssuerAlreadyExist,
+        Saml2SPDescriptorNotLoaded,
     }
 
     public class HESException : Exception
-    {              
+    {
         public HESCode Code { get; set; }
 
         public HESException(HESCode code) : base(GetMessage(code))
@@ -200,9 +201,10 @@ namespace HES.Core.Exceptions
 
                 { HESCode.TheLDAPServerIsUnavailable, Resources.Resource.Exception_TheLDAPServerIsUnavailable },
 
-                { HESCode.InvalidCertificate, "Invalid certificate." },
-                { HESCode.Saml2RelyingPartyNotFound, "Service provider not found." },
-                { HESCode.Saml2IssuerAlreadyExist, "Issuer already exist." }
+                { HESCode.InvalidCertificate, Resources.Resource.Exception_InvalidCertificate },
+                { HESCode.Saml2RelyingPartyNotFound, Resources.Resource.Exception_Saml2RelyingPartyNotFound },
+                { HESCode.Saml2IssuerAlreadyExist, Resources.Resource.Exception_Saml2IssuerAlreadyExist },
+                { HESCode.Saml2SPDescriptorNotLoaded, Resources.Resource.Exception_Saml2SPDescriptorNotLoaded }
             };
         }
 
