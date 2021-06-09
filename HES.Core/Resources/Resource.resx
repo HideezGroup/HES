@@ -622,7 +622,7 @@
     <value>Activation Code not found</value>
   </data>
   <data name="Exception_ActiveDirectoryUserNotFound" xml:space="preserve">
-    <value>This employee was removed from Active Directory so it was changed to local user.</value>
+    <value>This employee was removed from Active Directory so it was changed to a local user.</value>
   </data>
   <data name="Exception_ApiKeyEmpty" xml:space="preserve">
     <value>API Key is empty.</value>
@@ -631,7 +631,7 @@
     <value>Application settings not found.</value>
   </data>
   <data name="Exception_AuthenticatorNotFIDO2" xml:space="preserve">
-    <value>Authenticator not FIDO2.</value>
+    <value>The authenticator is not supporting FIDO2.</value>
   </data>
   <data name="Exception_CannotDeleteDefaultProfile" xml:space="preserve">
     <value>Cannot delete default profile</value>
@@ -658,7 +658,7 @@
     <value>Data protection is not enabled.</value>
   </data>
   <data name="Exception_DataProtectionNotFinishedPasswordChange" xml:space="preserve">
-    <value>Data protection not finished password change.</value>
+    <value>The password change for Data Protection is not finished.</value>
   </data>
   <data name="Exception_DataProtectionParametersIsEmpty" xml:space="preserve">
     <value>Data Protection parameters is empty.</value>
@@ -673,7 +673,7 @@
     <value>Department not found.</value>
   </data>
   <data name="Exception_EmailAlreadyTaken" xml:space="preserve">
-    <value>This email already taken.</value>
+    <value>This email address is already taken</value>
   </data>
   <data name="Exception_EmployeeAlreadyExist" xml:space="preserve">
     <value>Employee with current name already exists.</value>
@@ -730,7 +730,7 @@
     <value>LDAP settings not set.</value>
   </data>
   <data name="Exception_LicenseForHardwareVaultNotFound" xml:space="preserve">
-    <value>Hardware vault licenses not found.</value>
+    <value>Hardware Vault licenses not found.</value>
   </data>
   <data name="Exception_LicenseOrderNotFound" xml:space="preserve">
     <value>License Order not found.</value>
@@ -739,7 +739,7 @@
     <value>Something went wrong.</value>
   </data>
   <data name="Exception_OneHardwareVaultConstraint" xml:space="preserve">
-    <value>Cannot add more than one hardware vault.</value>
+    <value>Cannot add more than one Hardware Vault.</value>
   </data>
   <data name="Exception_PositionNameAlreadyInUse" xml:space="preserve">
     <value>Position name already in use.</value>
@@ -772,7 +772,7 @@
     <value>Security key not found.</value>
   </data>
   <data name="Exception_SharedAccountExist" xml:space="preserve">
-    <value>Shared Account with the same name and login exist.</value>
+    <value>Shared Account with the same name and login exists.</value>
   </data>
   <data name="Exception_SharedAccountNotFound" xml:space="preserve">
     <value>Shared Account not found.</value>
@@ -802,10 +802,10 @@
     <value>Workstation {0} not found.</value>
   </data>
   <data name="Validation_CompareNewPassword" xml:space="preserve">
-    <value>The new password and confirmation new password do not match.</value>
+    <value>The new password and password confirmation do not match.</value>
   </data>
   <data name="Validation_ComparePassword" xml:space="preserve">
-    <value>The password and confirmation password do not match.</value>
+    <value>The password and password confirmation do not match.</value>
   </data>
   <data name="Validation_EmailAddress" xml:space="preserve">
     <value>The {0} field is not a valid e-mail address.</value>
