@@ -38,6 +38,7 @@ namespace HES.Core.Interfaces
         DbSet<SummaryByEmployees> SummaryByEmployees { get; set; }
         DbSet<SummaryByDepartments> SummaryByDepartments { get; set; }
         DbSet<SummaryByWorkstations> SummaryByWorkstations { get; set; }
+        DbSet<SamlRelyingParty> SamlRelyingParties { get; set; }
 
         Task SaveChangesAsync();
         void Unchanged<T>(T entity);

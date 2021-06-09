@@ -1,6 +1,6 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
-using HES.Core.Models.Saml;
+using HES.Core.Interfaces;
 using ITfoxtec.Identity.Saml2;
 using ITfoxtec.Identity.Saml2.MvcCore;
 using ITfoxtec.Identity.Saml2.Schemas;
@@ -14,9 +14,9 @@ using Microsoft.IdentityModel.Tokens.Saml2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HES.Web.Controllers
@@ -25,16 +25,17 @@ namespace HES.Web.Controllers
     [Route("Saml")]
     public class SamlController : Controller
     {
-        private readonly Saml2RelyingParties _saml2RelyingParties;
-        private readonly Saml2Configuration _saml2Configuration;
+
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly Saml2Configuration _saml2Configuration;
+        private readonly IAppSettingsService _appSettingsService;
         private readonly ILogger<SamlController> _logger;
 
-        public SamlController(SignInManager<ApplicationUser> signInManager, IOptions<Saml2RelyingParties> saml2RelyingParties, IOptions<Saml2Configuration> saml2Configuration, ILogger<SamlController> logger)
+        public SamlController(SignInManager<ApplicationUser> signInManager, IAppSettingsService appSettingsService, IOptions<Saml2Configuration> saml2Configuration, ILogger<SamlController> logger)
         {
-            _saml2RelyingParties = saml2RelyingParties.Value;
-            _saml2Configuration = saml2Configuration.Value;
             _signInManager = signInManager;
+            _saml2Configuration = saml2Configuration.Value;
+            _appSettingsService = appSettingsService;
             _logger = logger;
         }
 
@@ -47,7 +48,7 @@ namespace HES.Web.Controllers
             }
 
             Saml2RedirectBinding requestBinding;
-            RelyingParty relyingParty;
+            SamlRelyingParty relyingParty;
             Saml2AuthnRequest saml2AuthnRequest;
 
             try
@@ -56,11 +57,10 @@ namespace HES.Web.Controllers
                 relyingParty = await ValidateRelyingParty(ReadRelyingPartyFromLoginRequest(requestBinding));
                 saml2AuthnRequest = new Saml2AuthnRequest(_saml2Configuration);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var message = "Relying party validation failed";
-                _logger.LogError(message);
-                return BadRequest(message);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
 
             try
@@ -83,7 +83,7 @@ namespace HES.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             Saml2PostBinding requestBinding;
-            RelyingParty relyingParty;
+            SamlRelyingParty relyingParty;
             Saml2LogoutRequest saml2LogoutRequest;
 
             try
@@ -95,11 +95,10 @@ namespace HES.Web.Controllers
                     SignatureValidationCertificates = new X509Certificate2[] { relyingParty.SignatureValidationCertificate }
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var message = "Relying party validation failed";
-                _logger.LogError(message);
-                return BadRequest(message);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
 
             try
@@ -118,39 +117,66 @@ namespace HES.Web.Controllers
         }
 
         [HttpGet("Metadata")]
-        public IActionResult Metadata()
+        public IActionResult Metadata(bool download)
         {
-            var entityDescriptor = new EntityDescriptor(_saml2Configuration)
+            try
             {
-                ValidUntil = 365,
-                IdPSsoDescriptor = new IdPSsoDescriptor
+                var entityDescriptor = new EntityDescriptor(_saml2Configuration)
                 {
-                    SigningCertificates = new X509Certificate2[]
-                {
+                    ValidUntil = 365,
+                    IdPSsoDescriptor = new IdPSsoDescriptor
+                    {
+                        SigningCertificates = new X509Certificate2[]
+                    {
                     _saml2Configuration.SigningCertificate
-                },
-                    SingleSignOnServices = new SingleSignOnService[]
-                {
+                    },
+                        SingleSignOnServices = new SingleSignOnService[]
+                    {
                     new SingleSignOnService { Binding = ProtocolBindings.HttpRedirect, Location = _saml2Configuration.SingleSignOnDestination }
-                },
-                    SingleLogoutServices = new SingleLogoutService[]
-                {
+                    },
+                        SingleLogoutServices = new SingleLogoutService[]
+                    {
                     new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = _saml2Configuration.SingleLogoutDestination }
-                },
-                    NameIDFormats = new Uri[] { NameIdentifierFormats.X509SubjectName },
+                    },
+                        NameIDFormats = new Uri[] { NameIdentifierFormats.X509SubjectName },
+                    }
+                };
+
+                if (download)
+                {
+                    Response.Headers.Add("Content-Disposition", $"attachment; filename=metadata.xml");
+                    return File(Encoding.ASCII.GetBytes(new Saml2Metadata(entityDescriptor).CreateMetadata().ToXml()), "application/octet-stream");
                 }
-            };
+                else
+                {
+                    return new Saml2Metadata(entityDescriptor).CreateMetadata().ToActionResult();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
 
-            //entityDescriptor.ContactPerson = new ContactPerson(ContactTypes.Administrative)
-            //{
-            //    Company = "company",
-            //    GivenName = "given name",
-            //    SurName = "sur name",
-            //    EmailAddress = "example@domain.com",
-            //    TelephoneNumber = "tel",
-            //};
+        [HttpGet("Cert")]
+        public IActionResult Cert()
+        {
+            try
+            {
+                var builder = new StringBuilder();
 
-            return new Saml2Metadata(entityDescriptor).CreateMetadata().ToActionResult();
+                builder.AppendLine("-----BEGIN CERTIFICATE-----");
+                builder.AppendLine(Convert.ToBase64String(_saml2Configuration.SigningCertificate.Export(X509ContentType.Cert), Base64FormattingOptions.InsertLineBreaks));
+                builder.AppendLine("-----END CERTIFICATE-----");
+
+                Response.Headers.Add("Content-Disposition", $"attachment; filename=signing.cer");
+                return File(Encoding.ASCII.GetBytes(builder.ToString()), "application/octet-stream");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         private string ReadRelyingPartyFromLoginRequest<T>(Saml2Binding<T> binding)
@@ -163,7 +189,7 @@ namespace HES.Web.Controllers
             return binding.ReadSamlRequest(Request.ToGenericHttpRequest(), new Saml2LogoutRequest(_saml2Configuration))?.Issuer;
         }
 
-        private IActionResult LoginResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, RelyingParty relyingParty, string sessionIndex = null, IEnumerable<Claim> claims = null)
+        private IActionResult LoginResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, SamlRelyingParty relyingParty, string sessionIndex = null, IEnumerable<Claim> claims = null)
         {
             var responsebinding = new Saml2PostBinding
             {
@@ -174,7 +200,7 @@ namespace HES.Web.Controllers
             {
                 InResponseTo = inResponseTo,
                 Status = status,
-                Destination = relyingParty.SingleSignOnDestination,
+                Destination = new Uri(relyingParty.SingleSignOnDestination)
             };
 
             if (status == Saml2StatusCodes.Success && claims != null)
@@ -191,7 +217,7 @@ namespace HES.Web.Controllers
             return responsebinding.Bind(saml2AuthnResponse).ToActionResult();
         }
 
-        private IActionResult LogoutResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, string sessionIndex, RelyingParty relyingParty)
+        private IActionResult LogoutResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, string sessionIndex, SamlRelyingParty relyingParty)
         {
             var responsebinding = new Saml2PostBinding
             {
@@ -202,59 +228,29 @@ namespace HES.Web.Controllers
             {
                 InResponseTo = inResponseTo,
                 Status = status,
-                Destination = relyingParty.SingleLogoutResponseDestination,
+                Destination = new Uri(relyingParty.SingleLogoutResponseDestination),
                 SessionIndex = sessionIndex
             };
 
             return responsebinding.Bind(saml2LogoutResponse).ToActionResult();
         }
 
-        private async Task<RelyingParty> ValidateRelyingParty(string issuer)
+        private async Task<SamlRelyingParty> ValidateRelyingParty(string issuer)
         {
-            foreach (var rp in _saml2RelyingParties.RelyingParties)
+            var saml2RelyingParties = await _appSettingsService.GetSaml2RelyingPartiesAsync();
+
+            var relyingParty = saml2RelyingParties.FirstOrDefault(x => x.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase));
+
+            if (relyingParty == null)
             {
-                try
-                {
-                    if (string.IsNullOrEmpty(rp.Issuer))
-                    {
-                        var clientHandler = new HttpClientHandler
-                        {
-                            ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
-                        };
-                        using var client = new HttpClient(clientHandler);
-                        var result = await client.GetStringAsync(rp.Metadata);
-
-                        var entityDescriptor = new EntityDescriptor();
-                        entityDescriptor = entityDescriptor.ReadSPSsoDescriptor(result);
-
-                        //var entityDescriptor = new EntityDescriptor();
-                        //entityDescriptor.ReadSPSsoDescriptorFromUrl(new Uri(rp.Metadata));
-
-                        if (entityDescriptor.SPSsoDescriptor != null)
-                        {
-                            rp.Issuer = entityDescriptor.EntityId;
-                            rp.SingleSignOnDestination = entityDescriptor.SPSsoDescriptor.AssertionConsumerServices.First().Location;
-                            var singleLogoutService = entityDescriptor.SPSsoDescriptor.SingleLogoutServices.First();
-                            rp.SingleLogoutResponseDestination = singleLogoutService.ResponseLocation ?? singleLogoutService.Location;
-                            rp.SignatureValidationCertificate = entityDescriptor.SPSsoDescriptor.SigningCertificates.First();
-                        }
-                        else
-                        {
-                            throw new Exception($"SP SSO Descriptor not loaded from metadata '{rp.Metadata}'.");
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message);
-                }
+                throw new Exception($"Relying party not found by {issuer}");
             }
 
-            return _saml2RelyingParties.RelyingParties.Where(rp => rp.Issuer != null && rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
+            return relyingParty;
         }
 
         private IEnumerable<Claim> GetUserClaims(ApplicationUser user)
-        {         
+        {
             yield return new Claim(ClaimTypes.NameIdentifier, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
             yield return new Claim(ClaimTypes.Email, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
             yield return new Claim(ClaimTypes.Name, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value);
