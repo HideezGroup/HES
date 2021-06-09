@@ -1987,6 +1987,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Not metadata or descriptor element not found..
+        /// </summary>
+        public static string Exception_Saml2NotMetadataOrDescriptorElementNotFound {
+            get {
+                return ResourceManager.GetString("Exception_Saml2NotMetadataOrDescriptorElementNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Service provider not found..
         /// </summary>
         public static string Exception_Saml2RelyingPartyNotFound {

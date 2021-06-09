@@ -819,4 +819,7 @@
   <data name="Exception_Saml2SPDescriptorNotLoaded" xml:space="preserve">
     <value>Дескриптор постачальника послуг не завантажений із метаданих.</value>
   </data>
+  <data name="Exception_Saml2NotMetadataOrDescriptorElementNotFound" xml:space="preserve">
+    <value>Не знайдено метаданих або елемента дескриптора.</value>
+  </data>
 </root>

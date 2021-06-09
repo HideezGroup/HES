@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
+using ITfoxtec.Identity.Saml2;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -73,7 +74,14 @@ namespace HES.Web.Pages.Settings.Parameters
                 var metadata = Encoding.UTF8.GetString(ms.ToArray());
 
                 var entityDescriptor = new EntityDescriptor();
-                entityDescriptor = entityDescriptor.ReadSPSsoDescriptor(metadata);
+                try
+                {
+                    entityDescriptor = entityDescriptor.ReadSPSsoDescriptor(metadata);
+                }
+                catch (Saml2RequestException)
+                {
+                    throw new HESException(HESCode.Saml2NotMetadataOrDescriptorElementNotFound);
+                }
 
                 if (entityDescriptor.SPSsoDescriptor == null)
                 {

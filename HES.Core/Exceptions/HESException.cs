@@ -102,6 +102,7 @@ namespace HES.Core.Exceptions
         Saml2RelyingPartyNotFound,
         Saml2IssuerAlreadyExist,
         Saml2SPDescriptorNotLoaded,
+        Saml2NotMetadataOrDescriptorElementNotFound,
     }
 
     public class HESException : Exception
@@ -204,7 +205,8 @@ namespace HES.Core.Exceptions
                 { HESCode.InvalidCertificate, Resources.Resource.Exception_InvalidCertificate },
                 { HESCode.Saml2RelyingPartyNotFound, Resources.Resource.Exception_Saml2RelyingPartyNotFound },
                 { HESCode.Saml2IssuerAlreadyExist, Resources.Resource.Exception_Saml2IssuerAlreadyExist },
-                { HESCode.Saml2SPDescriptorNotLoaded, Resources.Resource.Exception_Saml2SPDescriptorNotLoaded }
+                { HESCode.Saml2SPDescriptorNotLoaded, Resources.Resource.Exception_Saml2SPDescriptorNotLoaded },
+                { HESCode.Saml2NotMetadataOrDescriptorElementNotFound, Resources.Resource.Exception_Saml2NotMetadataOrDescriptorElementNotFound },
             };
         }
 
