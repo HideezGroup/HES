@@ -319,10 +319,10 @@
     <value>Середня тривалість сеансів</value>
   </data>
   <data name="Label_AvgTotalDuartionByEmployee" xml:space="preserve">
-    <value>Середня загальна тривалість співробітника</value>
+    <value>Середня загальна тривалість по співробітникам</value>
   </data>
   <data name="Label_AvgTotalSessionsCountByEmployee" xml:space="preserve">
-    <value>Середня загальна кількість сеансів за співробітником</value>
+    <value>Середня загальна кількість сеансів по співробітникам</value>
   </data>
   <data name="Label_AvgWorkingHoursPerDay" xml:space="preserve">
     <value>Середній робочий час на день</value>
@@ -511,13 +511,13 @@
     <value>Зберегти</value>
   </data>
   <data name="Employees_DeleteEmployee_Body" xml:space="preserve">
-    <value>Ви хочете видалити співробітника {0}? Також усі події та сеанси будуть видалені.</value>
+    <value>Ви дійсно хочете видалити співробітника {0}? Також усі події та сеанси будуть видалені.</value>
   </data>
   <data name="Employees_DeleteEmployee_Toast" xml:space="preserve">
     <value>Співробітника видалено.</value>
   </data>
   <data name="Employees_DeleteEmployee_UntieDevice" xml:space="preserve">
-    <value>Співробітник {0} пов’язаний пристрій, спочатку відв’яжіть пристрій, щоб видалити співробітника.</value>
+    <value>Співробітник {0} має пов’язаний пристрій, спочатку відв’яжіть пристрій, щоб видалити співробітника.</value>
   </data>
   <data name="Employees_EditEmployee_Toast" xml:space="preserve">
     <value>Співробітник оновлений.</value>
@@ -559,7 +559,7 @@
     <value>Редагувати особистий аккаунт</value>
   </data>
   <data name="EmployeeDetails_BtnTitle_EditPersonalAccountOtp" xml:space="preserve">
-    <value>Редагувати OTP особистого аккаунту</value>
+    <value>Редагувати OTP секрет особистого аккаунту</value>
   </data>
   <data name="EmployeeDetails_BtnTitle_EditPersonalAccountPwd" xml:space="preserve">
     <value>Редагувати пароль особистого кабінету</value>
@@ -661,7 +661,7 @@
     <value>Додано апаратне сховище.</value>
   </data>
   <data name="EmployeeDetails_AddSharedAccount_NoAccounts" xml:space="preserve">
-    <value>Облікових записів немає, ви можете створити спільний обліковий запис на сторінці Спільний обліковий запис.</value>
+    <value>Облікових записів немає, ви можете створити спільний обліковий запис на сторінці Спільні Облікові Записи.</value>
   </data>
   <data name="EmployeeDetails_AddSharedAccount_Title" xml:space="preserve">
     <value>Додати спільний обліковий запис</value>
@@ -673,13 +673,13 @@
     <value>Введіть дані вручну або виберіть із шаблону:</value>
   </data>
   <data name="EmployeeDetails_CreatePersonalAccount_Title" xml:space="preserve">
-    <value>Створіть особистий кабінет</value>
+    <value>Створіть особистий обліковий запис</value>
   </data>
   <data name="EmployeeDetails_CreatePersonalAccount_Toast" xml:space="preserve">
     <value>Обліковий запис створено.</value>
   </data>
   <data name="EmployeeDetails_DeleteAccount_Body" xml:space="preserve">
-    <value>Ви хочете видалити {0} обліковий запис {1}?</value>
+    <value>Ви дійсно хочете видалити {0} обліковий запис {1}?</value>
   </data>
   <data name="EmployeeDetails_DeleteAccount_Toast" xml:space="preserve">
     <value>Обліковий запис видалено.</value>
@@ -703,13 +703,13 @@
     <value>Видалити аккаунт</value>
   </data>
   <data name="EmployeeDetails_DeleteHardwareVault_Body" xml:space="preserve">
-    <value>Ви хочете видалити сховище {0}? При видаленні останнього сховища всі облікові записи будуть видалені.</value>
+    <value>Ви дійсно хочете видалити сховище {0}? При видаленні останнього сховища всі облікові записи будуть видалені.</value>
   </data>
   <data name="EmployeeDetails_DeleteHardwareVault_Title" xml:space="preserve">
     <value>Видалити апаратне сховище</value>
   </data>
   <data name="EmployeeDetails_DeleteHardwareVault_Toast" xml:space="preserve">
-    <value>Вилучено апаратне сховище.</value>
+    <value>Апаратне сховище видалено.</value>
   </data>
   <data name="EmployeeDetails_DisableSso_Body" xml:space="preserve">
     <value>Ви впевнені, що хочете вимкнути систему єдиного входу для {0}?</value>
@@ -721,10 +721,10 @@
     <value>Єдиний вхід вимкнено.</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccountOtp_Title" xml:space="preserve">
-    <value>Редагувати особистий рахунок OTP</value>
+    <value>Редагувати особистий секрет OTP</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccountOtp_Toast" xml:space="preserve">
-    <value>OTP облікового запису оновлено.</value>
+    <value>OTP секрет облікового запису оновлено.</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccountPwd_CryptographicStrength" xml:space="preserve">
     <value>Поточна криптографічна сила</value>
@@ -769,7 +769,7 @@
     <value>Деталі апаратного сховища</value>
   </data>
   <data name="EmployeeDetails_SetAsWorkstationAccount_Body" xml:space="preserve">
-    <value>Встановити цей аккаунт запис як основний?</value>
+    <value>Встановити цей аккаунт як основний?</value>
   </data>
   <data name="EmployeeDetails_SetAsWorkstationAccount_Toast" xml:space="preserve">
     <value>Обліковий запис встановлено як основний.</value>
@@ -889,7 +889,7 @@
     <value>Сховище очікує на активацію.</value>
   </data>
   <data name="HardwareVaults_ChangeStatus_Toast_Compromised" xml:space="preserve">
-    <value>Сховище порушено.</value>
+    <value>Сховище скомпрометовано</value>
   </data>
   <data name="HardwareVaults_ChangeStatus_Toast_Suspend" xml:space="preserve">
     <value>Сховище очікує на призупинення.</value>
@@ -1063,7 +1063,7 @@
     <value>Реєстрація ключа безпеки</value>
   </data>
   <data name="Identity_RegisterSecurityKey_UserNotFound" xml:space="preserve">
-    <value>Нам не вдалося знайти користувача з таким електронним листом, зв’яжіться з адміністратором.</value>
+    <value>Нам не вдалося знайти користувача з таким імейлом, зв’яжіться з адміністратором.</value>
   </data>
   <data name="Identity_ResetPassword_CodeMustBeSupplied" xml:space="preserve">
     <value>Код повинен бути наданий для скидання пароля.</value>
@@ -1090,7 +1090,7 @@
     <value>Пароль</value>
   </data>
   <data name="Label_RememberMe" xml:space="preserve">
-    <value>Пам'ятай мене</value>
+    <value>Запам'ятати мене</value>
   </data>
   <data name="SecurityKey_Done_Description" xml:space="preserve">
     <value>Ви успішно завершили процес реєстрації ключа безпеки. Дякую!</value>
@@ -1142,6 +1142,7 @@
   </data>
   <data name="Profile_General_ChangeEmail_Toast" xml:space="preserve">
     <value>Підтвердження електронною поштою надіслано.</value>
+    <comment>?</comment>
   </data>
   <data name="Profile_General_Description" xml:space="preserve">
     <value>Основна інформація про ваш аккаунт.</value>
@@ -1324,7 +1325,7 @@
     <value>Дата Реєстрації</value>
   </data>
   <data name="Administrators_DeleteAdministrator_Body" xml:space="preserve">
-    <value>Ви хочете видалити адміністратора {0}?</value>
+    <value>Ви дійсно  хочете видалити адміністратора {0}?</value>
   </data>
   <data name="Administrators_DeleteAdministrator_Title" xml:space="preserve">
     <value>Видалити адміністратора</value>
@@ -1444,7 +1445,7 @@
     <value>Створено профіль апаратного сховища.</value>
   </data>
   <data name="HardwareVaultAccessProfile_DeleteProfile_Body" xml:space="preserve">
-    <value>Ви хочете видалити профіль доступу до апаратного сховища {0}?</value>
+    <value>Ви дійсно хочете видалити профіль доступу до апаратного сховища {0}?</value>
   </data>
   <data name="HardwareVaultAccessProfile_DeleteProfile_Title" xml:space="preserve">
     <value>Видалити профіль</value>
@@ -1561,7 +1562,7 @@
     <value>Значення {0} не повинно бути менше {1}.</value>
   </data>
   <data name="LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne" xml:space="preserve">
-    <value>Виберіть принаймні одне сховище обладнання.</value>
+    <value>Виберіть принаймні один пристрій</value>
   </data>
   <data name="LicenseOrders_CreateLicenseOrder_NewLicense" xml:space="preserve">
     <value>Нова ліцензія</value>
@@ -1645,7 +1646,7 @@
     <value>Позиція створена.</value>
   </data>
   <data name="OrgStructure_DeleteCompany_Body" xml:space="preserve">
-    <value>Ви хочете видалити компанію {0}?</value>
+    <value>Ви дійсно хочете видалити компанію {0}?</value>
   </data>
   <data name="OrgStructure_DeleteCompany_Title" xml:space="preserve">
     <value>Видалити компанію</value>
@@ -1654,7 +1655,7 @@
     <value>Компанію видалено.</value>
   </data>
   <data name="OrgStructure_DeleteDepartment_Body" xml:space="preserve">
-    <value>Ви хочете видалити відділ {0}?</value>
+    <value>Ви дійсно хочете видалити відділ {0}?</value>
   </data>
   <data name="OrgStructure_DeleteDepartment_Title" xml:space="preserve">
     <value>Видалити відділ</value>
@@ -1663,7 +1664,7 @@
     <value>Відділ видалено.</value>
   </data>
   <data name="OrgStructure_DeletePosition_Body" xml:space="preserve">
-    <value>Ви хочете видалити позицію {0}?</value>
+    <value>Ви дійсно хочете видалити позицію {0}?</value>
   </data>
   <data name="OrgStructure_DeletePosition_Title" xml:space="preserve">
     <value>Видалити позицію</value>
@@ -1759,7 +1760,7 @@
     <value>Ліцензування</value>
   </data>
   <data name="Parameters_Splunk_Description" xml:space="preserve">
-    <value>Налаштування надсилання подій на Splank.</value>
+    <value>Налаштування надсилання подій на Splunk.</value>
   </data>
   <data name="Parameters_Splunk_Title" xml:space="preserve">
     <value>Splunk</value>
@@ -1792,7 +1793,7 @@
     <value>обліковий запис створено.</value>
   </data>
   <data name="SharedAccounts_DeleteSharedAccount_Body" xml:space="preserve">
-    <value>Ви хочете видалити обліковий запис {0}?</value>
+    <value>Ви дійсно хочете видалити обліковий запис {0}?</value>
   </data>
   <data name="SharedAccounts_DeleteSharedAccount_Title" xml:space="preserve">
     <value>Видалити обліковий запис</value>
@@ -1819,28 +1820,28 @@
     <value>Спільний обліковий запис оновлено.</value>
   </data>
   <data name="Btn_CreateTemplate" xml:space="preserve">
-    <value>Создать шаблон</value>
+    <value>Створити шаблон</value>
   </data>
   <data name="Templates_CreateTemplate_Title" xml:space="preserve">
-    <value>Создать шаблон</value>
+    <value>Створити шаблон</value>
   </data>
   <data name="Templates_CreateTemplate_Toast" xml:space="preserve">
-    <value>Шаблон создан.</value>
+    <value>Шаблон створений.</value>
   </data>
   <data name="Templates_DeleteTemplate_Body" xml:space="preserve">
-    <value>Вы хотите удалить шаблон {0}?</value>
+    <value>Ви дійсно хочете видалити шаблон {0}?</value>
   </data>
   <data name="Templates_DeleteTemplate_Title" xml:space="preserve">
-    <value>Удалить шаблон</value>
+    <value>Видалити шаблон</value>
   </data>
   <data name="Templates_DeleteTemplate_Toast" xml:space="preserve">
-    <value>Шаблон удален.</value>
+    <value>Шаблон видалений.</value>
   </data>
   <data name="Templates_EditTemplate_Title" xml:space="preserve">
-    <value>Редактировать шаблон</value>
+    <value>Редагувати шаблон</value>
   </data>
   <data name="Templates_EditTemplate_Toast" xml:space="preserve">
-    <value>Шаблон обновлен.</value>
+    <value>Шаблон оновлено.</value>
   </data>
   <data name="Btn_Approve" xml:space="preserve">
     <value>Затвердити</value>
@@ -1874,15 +1875,17 @@
   </data>
   <data name="Workstations_AddProximityVault_Title" xml:space="preserve">
     <value>Додайте сховище Proximity</value>
+    <comment>?</comment>
   </data>
   <data name="Workstations_AddProximityVault_Toast" xml:space="preserve">
     <value>Додано апаратне сховище.</value>
   </data>
   <data name="Workstations_AddProximityVault_Warning" xml:space="preserve">
     <value>Увага! Ви намагаєтеся дозволити близькість на кількох пристроях. Це може призвести до нестабільної поведінки системи.</value>
+    <comment>?</comment>
   </data>
   <data name="Workstations_ApproveWorkstation_Body" xml:space="preserve">
-    <value>Ви хочете затвердити робочу станцію {0}?</value>
+    <value>Ви дійсно хочете затвердити робочу станцію {0}?</value>
   </data>
   <data name="Workstations_ApproveWorkstation_Title" xml:space="preserve">
     <value>Затвердити робочу станцію</value>
@@ -1891,7 +1894,7 @@
     <value>Робоча станція затверджена.</value>
   </data>
   <data name="Workstations_DeleteProximityVault_Body" xml:space="preserve">
-    <value>Ви хочете видалити сховище {0} з цієї робочої станції?</value>
+    <value>Ви дійсно хочете видалити сховище {0} з цієї робочої станції?</value>
   </data>
   <data name="Workstations_DeleteProximityVault_Title" xml:space="preserve">
     <value>Видалити сховище</value>
@@ -1900,7 +1903,7 @@
     <value>Сховище обладнання видалено.</value>
   </data>
   <data name="Workstations_DeleteWorkstation_Body" xml:space="preserve">
-    <value>Ви хочете видалити робочу станцію {0}?</value>
+    <value>Ви дійсно хочете видалити робочу станцію {0}?</value>
   </data>
   <data name="Workstations_DeleteWorkstation_Title" xml:space="preserve">
     <value>Видалити робочу станцію</value>
@@ -1915,7 +1918,7 @@
     <value>Робоча станція оновлена.</value>
   </data>
   <data name="Workstations_UnapproveWorkstation_Body" xml:space="preserve">
-    <value>Ви хочете відхилити робочу станцію {0}?</value>
+    <value>Ви дійсно хочете відхилити робочу станцію {0}?</value>
   </data>
   <data name="Workstations_UnapproveWorkstation_Title" xml:space="preserve">
     <value>Відхилити робочу станцію</value>

@@ -148,7 +148,7 @@
     <value>License Orders</value>
   </data>
   <data name="Breadcrumbs_OrgStructure" xml:space="preserve">
-    <value>OrgStructure</value>
+    <value>Organization Structure</value>
   </data>
   <data name="Breadcrumbs_Parameters" xml:space="preserve">
     <value>Parameters</value>
@@ -244,10 +244,10 @@
     <value>Waiting for approval</value>
   </data>
   <data name="Dispaly_ApiAddress" xml:space="preserve">
-    <value>Api Address</value>
+    <value>API Address</value>
   </data>
   <data name="Dispaly_ApiKey" xml:space="preserve">
-    <value>Api Key</value>
+    <value>API Key</value>
   </data>
   <data name="Dispaly_AutoPasswordChange" xml:space="preserve">
     <value>Auto Password Change</value>
@@ -607,13 +607,13 @@
     <value>Account not found.</value>
   </data>
   <data name="Exception_ActivationCodeNotFound" xml:space="preserve">
-    <value>Activation code not found</value>
+    <value>Activation Code not found</value>
   </data>
   <data name="Exception_ActiveDirectoryUserNotFound" xml:space="preserve">
-    <value>This employee was removed from active directory so it was changed to local user.</value>
+    <value>This employee was removed from Active Directory so it was changed to local user.</value>
   </data>
   <data name="Exception_ApiKeyEmpty" xml:space="preserve">
-    <value>Api Key is empty.</value>
+    <value>API Key is empty.</value>
   </data>
   <data name="Exception_AppSettingsNotFound" xml:space="preserve">
     <value>Application settings not found.</value>

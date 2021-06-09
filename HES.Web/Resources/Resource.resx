@@ -127,7 +127,7 @@
     <value>Turn off alarm</value>
   </data>
   <data name="Alarm_DisableAlarm_Toast" xml:space="preserve">
-    <value>All workstations are unlocked.</value>
+    <value>All workstations have been unlocked.</value>
   </data>
   <data name="Alarm_EnableAlarm_Body" xml:space="preserve">
     <value>Are you sure you want to turn on the alarm and lock all workstations?</value>
@@ -136,7 +136,7 @@
     <value>Turn on alarm</value>
   </data>
   <data name="Alarm_EnableAlarm_Toast" xml:space="preserve">
-    <value>All workstations are locked.</value>
+    <value>All workstations have been locked.</value>
   </data>
   <data name="Alarm_PageDescription" xml:space="preserve">
     <value>This button allows you to remotely lock workstations and block the connection of hardware vaults.</value>
@@ -175,7 +175,7 @@
     <value>Create</value>
   </data>
   <data name="Btn_CreateEmployee" xml:space="preserve">
-    <value>Create employee</value>
+    <value>Create Employee</value>
   </data>
   <data name="Btn_CreatePersonalAccount" xml:space="preserve">
     <value>Create Personal Account</value>
@@ -235,7 +235,7 @@
     <value>Skip</value>
   </data>
   <data name="Btn_SyncNow" xml:space="preserve">
-    <value>Sync Now</value>
+    <value>Sync now</value>
   </data>
   <data name="Btn_SyncWithAD" xml:space="preserve">
     <value>Sync with AD</value>
@@ -253,13 +253,13 @@
     <value>Add hardware vault</value>
   </data>
   <data name="EmployeeDetails_AddHardwareVault_Toast" xml:space="preserve">
-    <value>Hardware Vault added.</value>
+    <value>Hardware Vault has been added.</value>
   </data>
   <data name="EmployeeDetails_AddSharedAccount_NoAccounts" xml:space="preserve">
-    <value>There are no accounts, you can create a shared account on the Shared Account page.</value>
+    <value>There are no accounts yet, you can create a shared account on the Shared Account page.</value>
   </data>
   <data name="EmployeeDetails_AddSharedAccount_Title" xml:space="preserve">
-    <value>Add shared account</value>
+    <value>Add a shared account</value>
   </data>
   <data name="EmployeeDetails_BtnTitle_DeleteAccount" xml:space="preserve">
     <value>Delete account</value>
@@ -286,10 +286,10 @@
     <value>Resend invitation</value>
   </data>
   <data name="EmployeeDetails_BtnTitle_SetAsPrimary" xml:space="preserve">
-    <value>Set as primary account</value>
+    <value>Set as a primary account</value>
   </data>
   <data name="EmployeeDetails_BtnTitle_ShowActivationCode" xml:space="preserve">
-    <value>Show activation code</value>
+    <value>Show Activation Code</value>
   </data>
   <data name="EmployeeDetails_BtnTitle_SoftwareVaultDetails" xml:space="preserve">
     <value>Software Vault Details</value>
@@ -304,7 +304,7 @@
     <value>Primary account</value>
   </data>
   <data name="EmployeeDetails_SoftwareVaultInviteSent" xml:space="preserve">
-    <value>Software Vault invite sent</value>
+    <value>Software Vault invite has been sent</value>
   </data>
   <data name="Employees_CreateEmployee_EmployeeAlreadyExists" xml:space="preserve">
     <value>{0} {1} already exists.</value>
@@ -316,16 +316,16 @@
     <value>Create Employee</value>
   </data>
   <data name="Employees_CreateEmployee_Toast" xml:space="preserve">
-    <value>Employee created.</value>
+    <value>The employee has been created.</value>
   </data>
   <data name="Employees_DeleteEmployee_Body" xml:space="preserve">
-    <value>You want to delete employee {0}? Also all events and sessions will be deleted.</value>
+    <value>Do you want to delete employee {0}? Also, the history of all events and sessions will be deleted.</value>
   </data>
   <data name="Employees_DeleteEmployee_Title" xml:space="preserve">
     <value>Delete Employee</value>
   </data>
   <data name="Employees_DeleteEmployee_Toast" xml:space="preserve">
-    <value>Employee removed.</value>
+    <value>The Employee has been deleted.</value>
   </data>
   <data name="Employees_DeleteEmployee_UntieDevice" xml:space="preserve">
     <value>The employee {0} is tied device, first untie the device to remove the employee.</value>
@@ -334,10 +334,10 @@
     <value>Edit Employee</value>
   </data>
   <data name="Employees_EditEmployee_Toast" xml:space="preserve">
-    <value>Employee updated.</value>
+    <value>The Employee has been updated.</value>
   </data>
   <data name="Employees_SyncEmployeesWithAD_Alert" xml:space="preserve">
-    <value>To sync users from the active directory, set domain settings on the parameters page.</value>
+    <value>To sync users from the Active Directory, set domain settings on the Parameters page.</value>
   </data>
   <data name="Employees_SyncEmployeesWithAD_Title" xml:space="preserve">
     <value>Sync with Active Directory</value>
@@ -358,7 +358,7 @@
     <value>Activation</value>
   </data>
   <data name="Label_ActivationCode" xml:space="preserve">
-    <value>Activation code</value>
+    <value>Activation Code</value>
   </data>
   <data name="Label_Active" xml:space="preserve">
     <value>Active</value>
@@ -496,7 +496,7 @@
     <value>Operation</value>
   </data>
   <data name="Label_OrgStructure" xml:space="preserve">
-    <value>OrgStructure</value>
+    <value>Organization Structure</value>
   </data>
   <data name="Label_OtpUpdated" xml:space="preserve">
     <value>OTP Updated</value>
@@ -550,7 +550,7 @@
     <value>Severity</value>
   </data>
   <data name="Label_SharedAccount" xml:space="preserve">
-    <value>Shared account</value>
+    <value>Shared Account</value>
   </data>
   <data name="Label_SharedAccounts" xml:space="preserve">
     <value>Shared Accounts</value>
@@ -598,7 +598,7 @@
     <value>URLs</value>
   </data>
   <data name="Label_UserName" xml:space="preserve">
-    <value>User name</value>
+    <value>User Name</value>
   </data>
   <data name="Label_VaultAccessProfiles" xml:space="preserve">
     <value>Vault Access Profiles</value>
@@ -676,13 +676,13 @@
     <value>Create personal account</value>
   </data>
   <data name="EmployeeDetails_CreatePersonalAccount_Toast" xml:space="preserve">
-    <value>Account created.</value>
+    <value>Account has been created.</value>
   </data>
   <data name="EmployeeDetails_DeleteAccount_Body" xml:space="preserve">
-    <value>You want to delete {0} account {1}?</value>
+    <value>Do you want to delete {0} account {1}?</value>
   </data>
   <data name="EmployeeDetails_DeleteAccount_Toast" xml:space="preserve">
-    <value>Account deleted.</value>
+    <value>The account has been deleted.</value>
   </data>
   <data name="Label_Domain" xml:space="preserve">
     <value>Domain</value>
@@ -703,13 +703,13 @@
     <value>Delete Account</value>
   </data>
   <data name="EmployeeDetails_DeleteHardwareVault_Body" xml:space="preserve">
-    <value>You want to remove vault {0}? When removing the last vault, all accounts will be deleted.</value>
+    <value>Do you want to remove vault {0}? When removing the last vault, all accounts will be deleted.</value>
   </data>
   <data name="EmployeeDetails_DeleteHardwareVault_Title" xml:space="preserve">
     <value>Delete Hardware Vault</value>
   </data>
   <data name="EmployeeDetails_DeleteHardwareVault_Toast" xml:space="preserve">
-    <value>Hardware Vault removed.</value>
+    <value>The Hardware Vault has been deleted.</value>
   </data>
   <data name="EmployeeDetails_DisableSso_Body" xml:space="preserve">
     <value>Are you sure you want to disable SSO for {0}?</value>
@@ -718,13 +718,13 @@
     <value>Disable SSO</value>
   </data>
   <data name="EmployeeDetails_DisableSso_Toast" xml:space="preserve">
-    <value>SSO disabled.</value>
+    <value>The SSO has been disabled.</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccountOtp_Title" xml:space="preserve">
     <value>Edit personal account OTP</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccountOtp_Toast" xml:space="preserve">
-    <value>Account OTP updated.</value>
+    <value>The Account's OTP secret has been updated.</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccountPwd_CryptographicStrength" xml:space="preserve">
     <value>Current cryptographic strength</value>
@@ -748,13 +748,13 @@
     <value>Edit account password</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccountPwd_Toast" xml:space="preserve">
-    <value>Account password updated.</value>
+    <value>The account password has been updated.</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccount_Title" xml:space="preserve">
     <value>Edit personal account</value>
   </data>
   <data name="EmployeeDetails_EditPersonalAccount_Toast" xml:space="preserve">
-    <value>Account updated.</value>
+    <value>The account has been updated.</value>
   </data>
   <data name="EmployeeDetails_EnableSso_Body" xml:space="preserve">
     <value>Are you sure you want to enable SSO for {0}?</value>
@@ -763,7 +763,7 @@
     <value>Enable SSO</value>
   </data>
   <data name="EmployeeDetails_EnableSso_Toast" xml:space="preserve">
-    <value>SSO enabled.</value>
+    <value>The SSO has been enabled.</value>
   </data>
   <data name="EmployeeDetails_HardwareVaultDetails_Title" xml:space="preserve">
     <value>Hardware vault details</value>
@@ -772,7 +772,7 @@
     <value>Set this account as a primary account?</value>
   </data>
   <data name="EmployeeDetails_SetAsWorkstationAccount_Toast" xml:space="preserve">
-    <value>Account setted as primary.</value>
+    <value>Account has been set as a primary.</value>
   </data>
   <data name="Label_Battery" xml:space="preserve">
     <value>Battery</value>
@@ -832,7 +832,7 @@
     <value>Change</value>
   </data>
   <data name="Btn_ChangeProfile" xml:space="preserve">
-    <value>Change profile</value>
+    <value>Change Profile</value>
   </data>
   <data name="Btn_Compromised" xml:space="preserve">
     <value>Compromised</value>
@@ -850,10 +850,10 @@
     <value>Vault Is Compromised</value>
   </data>
   <data name="EmployeeDetails_AddSharedAccount_Toast" xml:space="preserve">
-    <value>Account added and will be recorded when the device is connected to the server.</value>
+    <value>The account has been added and will be uploaded to the device once it is connected to the server.</value>
   </data>
   <data name="HardwareVaults_BtnTitle_ShowActivationCode" xml:space="preserve">
-    <value>Show activation code</value>
+    <value>Show Activation Code</value>
   </data>
   <data name="HardwareVaults_BtnTitle_VaultCompromised" xml:space="preserve">
     <value>Compromised</value>
@@ -865,13 +865,13 @@
     <value>Profile</value>
   </data>
   <data name="HardwareVaults_ChangeProfile_Toast" xml:space="preserve">
-    <value>Hardware vault profile updated.</value>
+    <value>The hardware vault profile has been updated.</value>
   </data>
   <data name="HardwareVaults_ChangeStatus_Body_Activate" xml:space="preserve">
     <value>Are you sure you want to activate the vault {0}?</value>
   </data>
   <data name="HardwareVaults_ChangeStatus_Body_Compromised" xml:space="preserve">
-    <value>Are you sure you want to set compromised vault {0}?</value>
+    <value>Are you sure you want to set the vault {0} as a compromised?</value>
   </data>
   <data name="HardwareVaults_ChangeStatus_Body_Suspend" xml:space="preserve">
     <value>Are you sure you want to suspend the vault {0}?</value>
@@ -886,22 +886,22 @@
     <value>Suspend</value>
   </data>
   <data name="HardwareVaults_ChangeStatus_Toast_Activate" xml:space="preserve">
-    <value>Vault pending activate.</value>
+    <value>The Vault activation is pending.</value>
   </data>
   <data name="HardwareVaults_ChangeStatus_Toast_Compromised" xml:space="preserve">
-    <value>Vault compromised.</value>
+    <value>Vault has been set as a compromised.</value>
   </data>
   <data name="HardwareVaults_ChangeStatus_Toast_Suspend" xml:space="preserve">
-    <value>Vault pending suspend.</value>
+    <value>Vault pending suspension.</value>
   </data>
   <data name="HardwareVaults_EditRfid_Title" xml:space="preserve">
     <value>Edit RFID</value>
   </data>
   <data name="HardwareVaults_EditRfid_Toast" xml:space="preserve">
-    <value>RFID updated.</value>
+    <value>The RFID has been updated.</value>
   </data>
   <data name="HardwareVaults_ImportVaults_Toast" xml:space="preserve">
-    <value>Hardware Vaults imported.</value>
+    <value>The Hardware Vaults have been imported.</value>
   </data>
   <data name="HardwareVaults_ShowActivationCode_Title" xml:space="preserve">
     <value>Activation code</value>
@@ -952,7 +952,7 @@
     <value>Reset</value>
   </data>
   <data name="Btn_TryAgain" xml:space="preserve">
-    <value>Try Again</value>
+    <value>Try again</value>
   </data>
   <data name="Common_ErrorChangingEmail_Title" xml:space="preserve">
     <value>Error changing email</value>
@@ -976,10 +976,10 @@
     <value>Access denied</value>
   </data>
   <data name="Identity_ConfirmEmailChange_Description" xml:space="preserve">
-    <value>You confirmed change email for your account.</value>
+    <value>You confirmed the email change for your account.</value>
   </data>
   <data name="Identity_ConfirmEmailChange_Header" xml:space="preserve">
-    <value>Thank you for email confirmation</value>
+    <value>Thanks for confirming your email address.</value>
   </data>
   <data name="Identity_ForgotPasswordConfirmation_Description" xml:space="preserve">
     <value>Please check your email to reset your password.</value>
@@ -1003,7 +1003,7 @@
     <value>Invitation</value>
   </data>
   <data name="Identity_Invite_Title" xml:space="preserve">
-    <value>Invite administrator</value>
+    <value>Invite Administrator</value>
   </data>
   <data name="Identity_Lockout_Description" xml:space="preserve">
     <value>This account has been locked out, please try again later.</value>
@@ -1066,7 +1066,7 @@
     <value>We could not find a user with such an email, please contact the administrator.</value>
   </data>
   <data name="Identity_ResetPassword_CodeMustBeSupplied" xml:space="preserve">
-    <value>A code must be supplied password reset.</value>
+    <value>A code must be supplied for a password reset.</value>
   </data>
   <data name="Identity_ResetPassword_Title" xml:space="preserve">
     <value>Reset password</value>
@@ -1142,6 +1142,7 @@
   </data>
   <data name="Profile_General_ChangeEmail_Toast" xml:space="preserve">
     <value>Email confirmation sent.</value>
+    <comment>?</comment>
   </data>
   <data name="Profile_General_Description" xml:space="preserve">
     <value>Basic information of your account.</value>
@@ -1186,19 +1187,19 @@
     <value>Add new security key</value>
   </data>
   <data name="Profile_Security_AddSecurityKey_Toast" xml:space="preserve">
-    <value>Security key added.</value>
+    <value>The Security Key has been added.</value>
   </data>
   <data name="Profile_Security_ChangePassword_Header" xml:space="preserve">
     <value>Change Password</value>
   </data>
   <data name="Profile_Security_ChangePassword_Toast" xml:space="preserve">
-    <value>Password updated.</value>
+    <value>The Password has been updated.</value>
   </data>
   <data name="Profile_Security_DeleteSecurityKey_Body" xml:space="preserve">
     <value>Delete security key? If you delete this security key, you will not be able to use it to sign in with your account.</value>
   </data>
   <data name="Profile_Security_DeleteSecurityKey_Title" xml:space="preserve">
-    <value>Delete security key</value>
+    <value>Delete Security Key</value>
   </data>
   <data name="Profile_Security_Description" xml:space="preserve">
     <value>Your account security settings.</value>
@@ -1207,7 +1208,7 @@
     <value>Change security key name</value>
   </data>
   <data name="Profile_Security_EditSecurityKey_Toast" xml:space="preserve">
-    <value>Security key updated.</value>
+    <value>The Security Key has been updated.</value>
   </data>
   <data name="Profile_Security_SecurityKeys_Header" xml:space="preserve">
     <value>Security Keys</value>
@@ -1330,16 +1331,16 @@
     <value>Delete Administrator</value>
   </data>
   <data name="Administrators_DeleteAdministrator_Toast" xml:space="preserve">
-    <value>Administrator deleted.</value>
+    <value>The administrator has been deleted.</value>
   </data>
   <data name="Administrators_InviteAdmin_Title" xml:space="preserve">
     <value>Invite Administrator</value>
   </data>
   <data name="Administrators_InviteAdmin_Toast" xml:space="preserve">
-    <value>Administrator invited.</value>
+    <value>The administrator has been invited.</value>
   </data>
   <data name="Administrators_ResendInvite_Toast" xml:space="preserve">
-    <value>Invitation resent.</value>
+    <value>The invitation has been resent.</value>
   </data>
   <data name="Btn_Invite" xml:space="preserve">
     <value>Invite</value>
@@ -1366,19 +1367,19 @@
     <value>Change Data Protection Password</value>
   </data>
   <data name="DataProtection_ChangeDataProtectionPassword_Toast" xml:space="preserve">
-    <value>Data protection password updated.</value>
+    <value>The data protection password has been updated.</value>
   </data>
   <data name="DataProtection_DisableDataProtection_Title" xml:space="preserve">
     <value>Disable Data Protection</value>
   </data>
   <data name="DataProtection_DisableDataProtection_Toast" xml:space="preserve">
-    <value>Data protection disabled.</value>
+    <value>Data protection has been disabled.</value>
   </data>
   <data name="DataProtection_EnableDataProtection_Title" xml:space="preserve">
     <value>Enable Data Protection</value>
   </data>
   <data name="DataProtection_EnableDataProtection_Toast" xml:space="preserve">
-    <value>Data protection enabled.</value>
+    <value>Data protection has been enabled.</value>
   </data>
   <data name="DataProtection_IsDisabled" xml:space="preserve">
     <value>Data protection is disabled.</value>
@@ -1441,16 +1442,16 @@
     <value>Create Profile</value>
   </data>
   <data name="HardwareVaultAccessProfile_CreateAccessProfile_Toast" xml:space="preserve">
-    <value>Hardware vault profile created.</value>
+    <value>The hardware vault profile has been created.</value>
   </data>
   <data name="HardwareVaultAccessProfile_DeleteProfile_Body" xml:space="preserve">
-    <value>You want to delete hardware vault access profile {0}?</value>
+    <value>Do you want to delete hardware vault access profile {0}?</value>
   </data>
   <data name="HardwareVaultAccessProfile_DeleteProfile_Title" xml:space="preserve">
     <value>Delete Profile</value>
   </data>
   <data name="HardwareVaultAccessProfile_DeleteProfile_Toast" xml:space="preserve">
-    <value>Hardware vault profile deleted.</value>
+    <value>The hardware vault profile has been deleted.</value>
   </data>
   <data name="HardwareVaultAccessProfile_DetailsProfile_Title" xml:space="preserve">
     <value>Details Profile</value>
@@ -1465,7 +1466,7 @@
     <value>Button</value>
   </data>
   <data name="HardwareVaultAccessProfile_Label_Button_Connection_Title" xml:space="preserve">
-    <value>Request the device button confirmation for connecting the device to the computer that is already bonded with the computer.</value>
+    <value>Request the device button confirmation for connecting the device to the computer that is already paired with the computer.</value>
   </data>
   <data name="HardwareVaultAccessProfile_Label_Button_Pairing_Title" xml:space="preserve">
     <value>Request the device button confirmation for connecting the device to the computer for the first time.</value>
@@ -1501,7 +1502,7 @@
     <value>PIN settings</value>
   </data>
   <data name="HardwareVaultAccessProfile_Label_PIN_Connection_Title" xml:space="preserve">
-    <value>Request the PIN-code for connecting the device to the computer that is already bonded with the computer.</value>
+    <value>Request the PIN-code for connecting the device to the computer that is already paired with the computer.</value>
   </data>
   <data name="HardwareVaultAccessProfile_Label_PIN_Pairing_Title" xml:space="preserve">
     <value>Request the PIN-code for connecting the device to the computer for the first time.</value>
@@ -1513,7 +1514,7 @@
     <value>Server Confirmation</value>
   </data>
   <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title" xml:space="preserve">
-    <value>Require the server confirmation for connecting the device to the computer that is already bonded with the computer.</value>
+    <value>Require the server confirmation for connecting the device to the computer that is already paired with the computer.</value>
   </data>
   <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Pairing_Title" xml:space="preserve">
     <value>Require the server confirmation for connecting the device to the computer for the first time.</value>
@@ -1564,16 +1565,16 @@
     <value>Select at least one hardware vault.</value>
   </data>
   <data name="LicenseOrders_CreateLicenseOrder_NewLicense" xml:space="preserve">
-    <value>New license</value>
+    <value>New License</value>
   </data>
   <data name="LicenseOrders_CreateLicenseOrder_RenewLicense" xml:space="preserve">
-    <value>Renew license</value>
+    <value>Renew License</value>
   </data>
   <data name="LicenseOrders_CreateLicenseOrder_Title" xml:space="preserve">
     <value>Create License Order</value>
   </data>
   <data name="LicenseOrders_CreateLicenseOrder_Toast" xml:space="preserve">
-    <value>Order created.</value>
+    <value>The license order has been created.</value>
   </data>
   <data name="LicenseOrders_DeleteLicenseOrder_Body" xml:space="preserve">
     <value>Are you sure you want to delete this order?</value>
@@ -1582,7 +1583,7 @@
     <value>Delete License Order</value>
   </data>
   <data name="LicenseOrders_DeleteLicenseOrder_Toast" xml:space="preserve">
-    <value>License order deleted.</value>
+    <value>The License Order has been deleted.</value>
   </data>
   <data name="LicenseOrders_DetailsLicenseOrder_Title" xml:space="preserve">
     <value>License Order Details</value>
@@ -1591,7 +1592,7 @@
     <value>Edit License Order</value>
   </data>
   <data name="LicenseOrders_EditLicenseOrder_Toast" xml:space="preserve">
-    <value>Order updated.</value>
+    <value>The License Order has been updated.</value>
   </data>
   <data name="LicenseOrders_EntityName" xml:space="preserve">
     <value>license order</value>
@@ -1600,7 +1601,7 @@
     <value>License info refreshed.</value>
   </data>
   <data name="LicenseOrders_SendLicenseOrder_Body" xml:space="preserve">
-    <value>Confirm sending order.</value>
+    <value>Please confirm sending the order.</value>
   </data>
   <data name="LicenseOrders_SendLicenseOrder_Title" xml:space="preserve">
     <value>Send License Order</value>
@@ -1645,64 +1646,64 @@
     <value>Create Company</value>
   </data>
   <data name="OrgStructure_CreateCompany_Toast" xml:space="preserve">
-    <value>Company created.</value>
+    <value>The Company has been created.</value>
   </data>
   <data name="OrgStructure_CreateDepartment_Title" xml:space="preserve">
     <value>Create Department</value>
   </data>
   <data name="OrgStructure_CreateDepartment_Toast" xml:space="preserve">
-    <value>Department created.</value>
+    <value>The Department has been created.</value>
   </data>
   <data name="OrgStructure_CreatePosition_Title" xml:space="preserve">
     <value>Create Position</value>
   </data>
   <data name="OrgStructure_CreatePosition_Toast" xml:space="preserve">
-    <value>Position created.</value>
+    <value>The Position has been created.</value>
   </data>
   <data name="OrgStructure_DeleteCompany_Body" xml:space="preserve">
-    <value>You want to delete company {0}?</value>
+    <value>Do you want to delete company {0}?</value>
   </data>
   <data name="OrgStructure_DeleteCompany_Title" xml:space="preserve">
     <value>Delete Company</value>
   </data>
   <data name="OrgStructure_DeleteCompany_Toast" xml:space="preserve">
-    <value>Company deleted.</value>
+    <value>The Company has been deleted.</value>
   </data>
   <data name="OrgStructure_DeleteDepartment_Body" xml:space="preserve">
-    <value>You want to delete department {0}?</value>
+    <value>Do you want to delete department {0}?</value>
   </data>
   <data name="OrgStructure_DeleteDepartment_Title" xml:space="preserve">
     <value>Delete Department</value>
   </data>
   <data name="OrgStructure_DeleteDepartment_Toast" xml:space="preserve">
-    <value>Department deleted.</value>
+    <value>The Department has been deleted.</value>
   </data>
   <data name="OrgStructure_DeletePosition_Body" xml:space="preserve">
-    <value>You want to delete position {0}?</value>
+    <value>Do you want to delete position {0}?</value>
   </data>
   <data name="OrgStructure_DeletePosition_Title" xml:space="preserve">
     <value>Delete Position</value>
   </data>
   <data name="OrgStructure_DeletePosition_Toast" xml:space="preserve">
-    <value>Position deleted.</value>
+    <value>The Position has been deleted.</value>
   </data>
   <data name="OrgStructure_EditCompany_Title" xml:space="preserve">
     <value>Edit Company</value>
   </data>
   <data name="OrgStructure_EditCompany_Toast" xml:space="preserve">
-    <value>Company updated.</value>
+    <value>The Company has been updated.</value>
   </data>
   <data name="OrgStructure_EditDepartment_Title" xml:space="preserve">
     <value>Edit Department</value>
   </data>
   <data name="OrgStructure_EditDepartment_Toast" xml:space="preserve">
-    <value>Department updated.</value>
+    <value>The Department has been updated.</value>
   </data>
   <data name="OrgStructure_EditPosition_Title" xml:space="preserve">
     <value>Edit Position</value>
   </data>
   <data name="OrgStructure_EditPosition_Toast" xml:space="preserve">
-    <value>Position updated.</value>
+    <value>The Position has been updated.</value>
   </data>
   <data name="Parameters_AddLdapSettings_Description" xml:space="preserve">
     <value>These credentials will be used to connect to Active Directory via LDAPS</value>
@@ -1720,31 +1721,31 @@
     <value>Domain Settings</value>
   </data>
   <data name="Parameters_AddLdapSettings_Toast" xml:space="preserve">
-    <value>Domain settings updated.</value>
+    <value>The Domain settings have been updated.</value>
   </data>
   <data name="Parameters_AddLicenseSettings_Title" xml:space="preserve">
     <value>License Settings</value>
   </data>
   <data name="Parameters_AddLicenseSettings_Toast" xml:space="preserve">
-    <value>License settings updated.</value>
+    <value>The License settings have been updated.</value>
   </data>
   <data name="Parameters_DeleteLdapSettings_Body" xml:space="preserve">
-    <value>Confirm deleting domain settings.</value>
+    <value>Please confirm deleting domain settings.</value>
   </data>
   <data name="Parameters_DeleteLdapSettings_Title" xml:space="preserve">
     <value>Delete domain settings</value>
   </data>
   <data name="Parameters_DeleteLdapSettings_Toast" xml:space="preserve">
-    <value>Domain settings deleted.</value>
+    <value>The Domain settings have been deleted.</value>
   </data>
   <data name="Parameters_DeleteLicenseSettings_Body" xml:space="preserve">
-    <value>Confirm deleting license settings.</value>
+    <value>Please confirm deleting license settings.</value>
   </data>
   <data name="Parameters_DeleteLicenseSettings_Title" xml:space="preserve">
     <value>Delete license settings</value>
   </data>
   <data name="Parameters_DeleteLicenseSettings_Toast" xml:space="preserve">
-    <value>License settings deleted.</value>
+    <value>The License settings have been deleted.</value>
   </data>
   <data name="Parameters_Domain_Description" xml:space="preserve">
     <value>To connect to the domain and import groups and users.</value>
@@ -1759,7 +1760,7 @@
     <value>Licensing</value>
   </data>
   <data name="Parameters_Splunk_Description" xml:space="preserve">
-    <value>Settings for sending events to the Splank.</value>
+    <value>Settings for sending events to Splunk.</value>
   </data>
   <data name="Parameters_Splunk_Title" xml:space="preserve">
     <value>Splunk</value>
@@ -1768,19 +1769,19 @@
     <value>Splunk Settings</value>
   </data>
   <data name="Parameters_AddSplunkSettings_Toast" xml:space="preserve">
-    <value>Splunk settings updated.</value>
+    <value>The Splunk settings have been updated.</value>
   </data>
   <data name="Parameters_DeleteSplunkSettings_Body" xml:space="preserve">
-    <value>Confirm deleting splunk settings.</value>
+    <value>Please confirm deleting the Splunk settings.</value>
   </data>
   <data name="Parameters_DeleteSplunkSettings_Title" xml:space="preserve">
-    <value>Delete splunk settings</value>
+    <value>Delete Splunk settings</value>
   </data>
   <data name="Parameters_DeleteSplunkSettings_Toast" xml:space="preserve">
-    <value>Splunk settings deleted.</value>
+    <value>The Splunk settings have been deleted.</value>
   </data>
   <data name="Btn_CreateSharedAccount" xml:space="preserve">
-    <value>Create shared account</value>
+    <value>Create Shared Account</value>
   </data>
   <data name="SharedAccounts_CreateSharedAccount_EnterData" xml:space="preserve">
     <value>Enter data manually or select from the template:</value>
@@ -1798,31 +1799,31 @@
     <value>Delete Shared Account</value>
   </data>
   <data name="SharedAccounts_DeleteSharedAccount_Toast" xml:space="preserve">
-    <value>Shared Account deleted.</value>
+    <value>The Shared Account has been deleted.</value>
   </data>
   <data name="SharedAccounts_EditSharedAccountOtp_Title" xml:space="preserve">
     <value>Edit Shared Account OTP</value>
   </data>
   <data name="SharedAccounts_EditSharedAccountOtp_Toast" xml:space="preserve">
-    <value>Shared Account OTP updated.</value>
+    <value>The Shared Account's OTP secret has been updated.</value>
   </data>
   <data name="SharedAccounts_EditSharedAccountPassword_Title" xml:space="preserve">
     <value>Edit Shared Account password</value>
   </data>
   <data name="SharedAccounts_EditSharedAccountPassword_Toast" xml:space="preserve">
-    <value>Shared Account password updated.</value>
+    <value>The Shared Account password has been updated.</value>
   </data>
   <data name="SharedAccounts_EditSharedAccount_Title" xml:space="preserve">
     <value>Edit Shared Account</value>
   </data>
   <data name="SharedAccounts_EditSharedAccount_Toast" xml:space="preserve">
-    <value>Shared account updated.</value>
+    <value>The Shared Account has been updated.</value>
   </data>
   <data name="Btn_Approve" xml:space="preserve">
     <value>Approve</value>
   </data>
   <data name="Btn_CreateTemplate" xml:space="preserve">
-    <value>Create template</value>
+    <value>Create Template</value>
   </data>
   <data name="Btn_DeleteHardwareVault" xml:space="preserve">
     <value>Delete Hardware Vault</value>
@@ -1882,22 +1883,22 @@
     <value>Create Template</value>
   </data>
   <data name="Templates_CreateTemplate_Toast" xml:space="preserve">
-    <value>Template created.</value>
+    <value>The template has been created.</value>
   </data>
   <data name="Templates_DeleteTemplate_Body" xml:space="preserve">
-    <value>You want to delete template {0}?</value>
+    <value>Do you want to delete template {0}?</value>
   </data>
   <data name="Templates_DeleteTemplate_Title" xml:space="preserve">
     <value>Delete Template</value>
   </data>
   <data name="Templates_DeleteTemplate_Toast" xml:space="preserve">
-    <value>Template deleted.</value>
+    <value>The template has been deleted.</value>
   </data>
   <data name="Templates_EditTemplate_Title" xml:space="preserve">
     <value>Edit Template</value>
   </data>
   <data name="Templates_EditTemplate_Toast" xml:space="preserve">
-    <value>Template updated.</value>
+    <value>The template has been updated.</value>
   </data>
   <data name="Toast_TitleError" xml:space="preserve">
     <value>Error</value>
@@ -1912,51 +1913,51 @@
     <value>Add Proximity Vault</value>
   </data>
   <data name="Workstations_AddProximityVault_Toast" xml:space="preserve">
-    <value>Hardware Vault added.</value>
+    <value>The Hardware Vault has been added.</value>
   </data>
   <data name="Workstations_AddProximityVault_Warning" xml:space="preserve">
     <value>Warning! You are trying to allow proximity on more than one device. This can lead to unstable system behavior.</value>
   </data>
   <data name="Workstations_ApproveWorkstation_Body" xml:space="preserve">
-    <value>You want to approve workstation {0}?</value>
+    <value>Do you want to approve workstation {0}?</value>
   </data>
   <data name="Workstations_ApproveWorkstation_Title" xml:space="preserve">
     <value>Approve Workstation</value>
   </data>
   <data name="Workstations_ApproveWorkstation_Toast" xml:space="preserve">
-    <value>Workstation approved.</value>
+    <value>The workstation has been approved.</value>
   </data>
   <data name="Workstations_DeleteProximityVault_Body" xml:space="preserve">
-    <value>You want to delete vault {0} from this workstation?</value>
+    <value>Do you want to delete vault {0} from this workstation?</value>
   </data>
   <data name="Workstations_DeleteProximityVault_Title" xml:space="preserve">
     <value>Delete Proximity Vault</value>
   </data>
   <data name="Workstations_DeleteProximityVault_Toast" xml:space="preserve">
-    <value>Hardware Vault deleted.</value>
+    <value>The Hardware Vault has been deleted.</value>
   </data>
   <data name="Workstations_DeleteWorkstation_Body" xml:space="preserve">
-    <value>You want to delete workstation {0}?</value>
+    <value>Do you want to delete workstation {0}?</value>
   </data>
   <data name="Workstations_DeleteWorkstation_Title" xml:space="preserve">
     <value>Delete Workstation</value>
   </data>
   <data name="Workstations_DeleteWorkstation_Toast" xml:space="preserve">
-    <value>Workstation deleted.</value>
+    <value>The Workstation has been deleted.</value>
   </data>
   <data name="Workstations_EditWorkstation_Title" xml:space="preserve">
     <value>Edit Workstation</value>
   </data>
   <data name="Workstations_EditWorkstation_Toast" xml:space="preserve">
-    <value>Workstation updated.</value>
+    <value>The Workstation has been updated.</value>
   </data>
   <data name="Workstations_UnapproveWorkstation_Body" xml:space="preserve">
-    <value>You want to unapprove workstation {0}?</value>
+    <value>Do you want to unapprove workstation {0}?</value>
   </data>
   <data name="Workstations_UnapproveWorkstation_Title" xml:space="preserve">
     <value>Unapprove Workstation</value>
   </data>
   <data name="Workstations_UnapproveWorkstation_Toast" xml:space="preserve">
-    <value>Workstation unapproved.</value>
+    <value>The Workstation has been unapproved.</value>
   </data>
 </root>
