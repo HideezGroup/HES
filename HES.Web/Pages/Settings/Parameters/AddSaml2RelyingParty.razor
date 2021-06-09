@@ -1,0 +1,43 @@
+﻿@inherits HESModalBase
+
+@if (RelyingParty == null)
+{
+    <Loader />
+}
+else
+{
+    <div class="border rounded bg-light p-2 mb-3 d-flex align-items-center">
+        <div class="text-nowrap me-2">Configure settings manually or use a metadata file</div>
+        <div class="w-100">
+            <InputFile OnChange="@OnInputFileChangeAsync" class="form-control" />
+        </div>
+    </div>
+    <EditForm Model="RelyingParty" OnValidSubmit="AddAsync">
+        <DataAnnotationsValidator />
+        <ValidationErrorMessage @ref="ValidationErrorMessage" />
+        <div class="form-group">
+            <Label For="@(() => RelyingParty.Issuer)" class="text-gray" />
+            <InputText @bind-Value="RelyingParty.Issuer" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => RelyingParty.Issuer)" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <Label For="@(() => RelyingParty.SingleSignOnDestination)" class="text-gray" />
+            <InputText @bind-Value="RelyingParty.SingleSignOnDestination" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => RelyingParty.SingleSignOnDestination)" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <Label For="@(() => RelyingParty.SingleLogoutResponseDestination)" class="text-gray" />
+            <InputText @bind-Value="RelyingParty.SingleLogoutResponseDestination" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => RelyingParty.SingleLogoutResponseDestination)" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <Label For="@(() => RelyingParty.SignatureValidationCertificateBase64)" class="text-gray" />
+            <InputTextArea @bind-Value="RelyingParty.SignatureValidationCertificateBase64" rows="3" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => RelyingParty.SignatureValidationCertificateBase64)" class="text-danger" />
+        </div>
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
+            <Button @ref="Button" Text="Add" type="submit" class="btn btn-primary" />
+        </div>
+    </EditForm>
+}

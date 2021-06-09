@@ -67,6 +67,8 @@ namespace HES.Infrastructure
             modelBuilder.Entity<SummaryByEmployees>().HasNoKey().ToView("nameof(SummaryByEmployees)");
             modelBuilder.Entity<SummaryByDepartments>().HasNoKey().ToView("nameof(SummaryByDepartments)");
             modelBuilder.Entity<SummaryByWorkstations>().HasNoKey().ToView("nameof(SummaryByWorkstations)");
+            // SAML
+            modelBuilder.Entity<SamlRelyingParty>().HasIndex(x => x.Issuer).IsUnique();
         }
 
         public void Unchanged<T>(T entity)
@@ -114,6 +116,7 @@ namespace HES.Infrastructure
         public DbSet<SummaryByEmployees> SummaryByEmployees { get; set; }
         public DbSet<SummaryByDepartments> SummaryByDepartments { get; set; }
         public DbSet<SummaryByWorkstations> SummaryByWorkstations { get; set; }
+        public DbSet<SamlRelyingParty> SamlRelyingParties { get; set; }
 
         #endregion
     }

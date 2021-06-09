@@ -77,6 +77,46 @@
             }
         </div>
     </SettingsCard>
+    <SettingsCard Title="SAML" Description="Configuring service providers.">
+        <label class="control-label text-gray fw-bold">IdP metadata</label>
+        <div class="form-group">
+            <a class="btn btn-primary" href="@Routes.SamlMetadata" role="button" target="_blank">View metadata</a>
+            <a class="btn btn-outline-primary" href="@Routes.SamlDownloadMetadata" role="button" target="_blank">Download metadata</a>
+            <a class="btn btn-outline-primary" href="@Routes.SamlDownloadCert" role="button" target="_blank">Download certificate</a>
+        </div>
+        <hr />
+        <label class="control-label text-gray fw-bold">Service Providers</label>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" @onclick="OpenDialogAddSaml2RelyingPartyAsync">Add service provider</button>
+        </div>
+        @foreach (var rp in SamlRelyingParties)
+        {
+            <div class="card mt-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="text-gray">Issuer</label>
+                        <input value="@rp.Issuer" class="form-control text-navyblue" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label class="text-gray">Assertion Consumer Service</label>
+                        <input value="@rp.SingleSignOnDestination" class="form-control text-navyblue" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label class="text-gray">Single Logout Service</label>
+                        <input value="@rp.SingleLogoutResponseDestination" class="form-control text-navyblue" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label class="text-gray">Public x509 Certificate</label>
+                        <textarea value="@rp.SignatureValidationCertificateBase64" rows="3" class="form-control text-navyblue" disabled />
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-outline-secondary me-1" @onclick="@(() => OpenDialogEditSaml2RelyingPartyAsync(rp.Id))">Edit</button>
+                        <button type="button" class="btn btn-outline-danger" @onclick="@(() => OpenDialogDeleteSaml2RelyingPartyAsync(rp.Id))">Delete</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </SettingsCard>
 }
 else if (LoadFailed)
 {
