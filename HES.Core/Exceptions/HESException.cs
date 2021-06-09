@@ -95,11 +95,16 @@ namespace HES.Core.Exceptions
         DataProtectionIsBusy,
 
         // LDAP
-        TheLDAPServerIsUnavailable
+        TheLDAPServerIsUnavailable,
+
+        // SAML
+        InvalidCertificate,
+        Saml2RelyingPartyNotFound,
+        Saml2IssuerAlreadyExist
     }
 
     public class HESException : Exception
-    {
+    {              
         public HESCode Code { get; set; }
 
         public HESException(HESCode code) : base(GetMessage(code))
@@ -194,6 +199,10 @@ namespace HES.Core.Exceptions
                 { HESCode.DataProtectionIsBusy, Resources.Resource.Exception_DataProtectionIsBusy },
 
                 { HESCode.TheLDAPServerIsUnavailable, Resources.Resource.Exception_TheLDAPServerIsUnavailable },
+
+                { HESCode.InvalidCertificate, "Invalid certificate." },
+                { HESCode.Saml2RelyingPartyNotFound, "Service provider not found." },
+                { HESCode.Saml2IssuerAlreadyExist, "Issuer already exist." }
             };
         }
 

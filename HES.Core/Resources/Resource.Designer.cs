@@ -1285,7 +1285,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на days remainin.
+        ///   Ищет локализованную строку, похожую на days remaining.
         /// </summary>
         public static string Email_Common_DaysRemainin {
             get {

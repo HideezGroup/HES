@@ -3,14 +3,16 @@ using System;
 using HES.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HES.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210608090355_added_saml_relying_party")]
+    partial class added_saml_relying_party
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,9 +141,6 @@ namespace HES.Infrastructure.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Culture")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Email")
@@ -708,7 +707,6 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("SingleSignOnDestination")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

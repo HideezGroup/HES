@@ -21,5 +21,6 @@ namespace HES.Core.Constants
         public const string Email = "email";
         public const string Server = "server";
         public const string Splunk = "splunk";
+        public const string Saml2Sp = "saml2sp";
     }
 }

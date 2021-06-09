@@ -44,5 +44,9 @@
         public const string OrgStructure = "/settings/org-structure";
         public const string Parameters = "/settings/parameters";
 
+        public const string SamlMetadata = "/saml/metadata";
+        public const string SamlDownloadMetadata = "/saml/metadata?download=true";
+        public const string SamlDownloadCert = "/saml/cert";
+
     }
 }
