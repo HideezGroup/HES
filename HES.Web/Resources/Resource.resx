@@ -2004,4 +2004,8 @@
   <data name="Parameters_Saml_Title" xml:space="preserve">
     <value>SAML</value>
   </data>
+  <data name="LicenseOrders_SendLicenseOrder_Toast" xml:space="preserve">
+    <value>License order has been sent.</value>
+    <comment>new</comment>
+  </data>
 </root>

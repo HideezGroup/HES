@@ -3933,6 +3933,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на License order has been sent..
+        /// </summary>
+        public static string LicenseOrders_SendLicenseOrder_Toast {
+            get {
+                return ResourceManager.GetString("LicenseOrders_SendLicenseOrder_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Valid to.
         /// </summary>
         public static string LicenseOrders_ValidTo {
