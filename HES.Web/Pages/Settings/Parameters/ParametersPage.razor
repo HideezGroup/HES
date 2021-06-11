@@ -6,15 +6,8 @@
 @if (Initialized)
 {
     <SettingsCard Title="@Resource.Parameters_Licensing_Title" Description="@Resource.Parameters_Licensing_Description">
-        <div class="form-group">
-            <Label For="@(() => LicensingSettings.ApiAddress)" class="control-label text-gray" />
-            @if (LicensingSettings?.ApiAddress != null)
-            {
-                <div class="alert alert-secondary" role="alert">
-                    @LicensingSettings.ApiAddress
-                </div>
-            }
-            else
+        <div class="form-group">         
+            @if (LicensingSettings == null)
             {
                 <div class="alert alert-danger" role="alert">
                     @Resource.Label_NotConfigured

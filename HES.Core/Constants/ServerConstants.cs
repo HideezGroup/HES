@@ -22,5 +22,8 @@ namespace HES.Core.Constants
         public const string Server = "server";
         public const string Splunk = "splunk";
         public const string Saml2Sp = "saml2sp";
+
+        // License
+        public const string LicenseAddress = "https://hls.hideez.com";
     }
 }

@@ -1573,7 +1573,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на This employee was removed from Active Directory so it was changed to local user..
+        ///   Ищет локализованную строку, похожую на This employee was removed from Active Directory so it was changed to a local user..
         /// </summary>
         public static string Exception_ActiveDirectoryUserNotFound {
             get {
@@ -1600,7 +1600,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Authenticator not FIDO2..
+        ///   Ищет локализованную строку, похожую на The authenticator is not supporting FIDO2..
         /// </summary>
         public static string Exception_AuthenticatorNotFIDO2 {
             get {
@@ -1681,7 +1681,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Data protection not finished password change..
+        ///   Ищет локализованную строку, похожую на The password change for Data Protection is not finished..
         /// </summary>
         public static string Exception_DataProtectionNotFinishedPasswordChange {
             get {
@@ -1726,7 +1726,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на This email already taken..
+        ///   Ищет локализованную строку, похожую на This email address is already taken.
         /// </summary>
         public static string Exception_EmailAlreadyTaken {
             get {
@@ -1897,7 +1897,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hardware vault licenses not found..
+        ///   Ищет локализованную строку, похожую на Hardware Vault licenses not found..
         /// </summary>
         public static string Exception_LicenseForHardwareVaultNotFound {
             get {
@@ -1924,7 +1924,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Cannot add more than one hardware vault..
+        ///   Ищет локализованную строку, похожую на Cannot add more than one Hardware Vault..
         /// </summary>
         public static string Exception_OneHardwareVaultConstraint {
             get {
@@ -2023,7 +2023,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Shared Account with the same name and login exist..
+        ///   Ищет локализованную строку, похожую на Shared Account with the same name and login exists..
         /// </summary>
         public static string Exception_SharedAccountExist {
             get {
@@ -2113,7 +2113,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на The new password and confirmation new password do not match..
+        ///   Ищет локализованную строку, похожую на The new password and password confirmation do not match..
         /// </summary>
         public static string Validation_CompareNewPassword {
             get {
@@ -2122,7 +2122,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на The password and confirmation password do not match..
+        ///   Ищет локализованную строку, похожую на The password and password confirmation do not match..
         /// </summary>
         public static string Validation_ComparePassword {
             get {
