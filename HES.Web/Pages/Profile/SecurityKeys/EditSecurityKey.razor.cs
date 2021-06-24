@@ -1,5 +1,6 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Interfaces;
+using HES.Core.Models.Profile;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,8 @@ namespace HES.Web.Pages.Profile.SecurityKeys
         [Inject] public ILogger<EditSecurityKey> Logger { get; set; }
         [Parameter] public string SecurityKeyId { get; set; }
 
-        public string SecurityKeyName { get; set; }
+        public EditSecurityKeyModel EditSecurityKeyModel { get; set; }
+        public Button ButtonSpinner { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -24,7 +26,7 @@ namespace HES.Web.Pages.Profile.SecurityKeys
                 FidoService = ScopedServices.GetRequiredService<IFido2Service>();
 
                 var credential = await FidoService.GetCredentialsById(SecurityKeyId);
-                SecurityKeyName = credential.SecurityKeyName;
+                EditSecurityKeyModel = new EditSecurityKeyModel { Name = credential.SecurityKeyName };
 
                 SetInitialized();
             }
@@ -39,9 +41,12 @@ namespace HES.Web.Pages.Profile.SecurityKeys
         {
             try
             {
-                await FidoService.UpdateSecurityKeyNameAsync(SecurityKeyId, SecurityKeyName);
-                await ToastService.ShowToastAsync("Security key updated.", ToastType.Success);
-                await ModalDialogClose();
+                await ButtonSpinner.SpinAsync(async () =>
+                {
+                    await FidoService.UpdateSecurityKeyNameAsync(SecurityKeyId, EditSecurityKeyModel.Name);
+                    await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_EditSecurityKey_Toast, ToastType.Success);
+                    await ModalDialogClose();
+                });
             }
             catch (Exception ex)
             {

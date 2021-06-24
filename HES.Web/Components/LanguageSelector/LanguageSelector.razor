@@ -1,0 +1,7 @@
+﻿@namespace HES.Web.Components
+@inherits HESDomComponentBase
+
+<select class="form-select w-100" @onchange="ChangeCulture" style="background-color:transparent;">
+    <option value="@(CultureConstants.EN)" selected="@(CurrentCulture == CultureConstants.EN)">English</option>
+    <option value="@(CultureConstants.UA)" selected="@(CurrentCulture == CultureConstants.UA)">Українська</option>
+</select>

@@ -17,29 +17,29 @@
                     {
                         @if (!DataTableService.SelectedEntity.Approved)
                         {
-                            <button type="button" @onclick="ApproveWorkstationAsync" class="btn btn-light border mx-1" title="Approve workstation">
+                            <button type="button" @onclick="ApproveWorkstationAsync" class="btn btn-light border mx-1">
                                 <img class="icon-btn" src="/svg/icon-done.svg" />
-                                Approve
+                                @Resource.Btn_Approve
                             </button>
                         }
                         else
                         {
-                            <button type="button" @onclick="UnapproveWorkstationAsync" class="btn btn-light border mx-1" title="Unapprove workstation">
+                            <button type="button" @onclick="UnapproveWorkstationAsync" class="btn btn-light border mx-1">
                                 <img class="icon-btn" src="/svg/icon-unapprove.svg" />
-                                Unapprove
+                                @Resource.Btn_Unapprove
                             </button>
                         }
-                        <button type="button" @onclick="WorkstationDetailsAsync" class="btn btn-light border mx-1" title="Workstation details">
+                        <button type="button" @onclick="WorkstationDetailsAsync" class="btn btn-light border mx-1">
                             <img class="icon-btn" src="/svg/icon-details.svg" />
-                            Details
+                            @Resource.Btn_Details
                         </button>
-                        <button type="button" @onclick="EditWorkstationAsync" class="btn btn-light border mx-1" title="Edit workstation">
+                        <button type="button" @onclick="EditWorkstationAsync" class="btn btn-light border mx-1">
                             <img class="icon-btn" src="/svg/icon-edit.svg" />
-                            Edit
+                            @Resource.Btn_Edit
                         </button>
-                        <button type="button" @onclick="DeleteWorkstationAsync" class="btn btn-light border mx-1" title="Delete workstation">
+                        <button type="button" @onclick="DeleteWorkstationAsync" class="btn btn-light border mx-1">
                             <img class="icon-btn" src="/svg/icon-delete.svg" />
-                            Delete
+                            @Resource.Btn_Delete
                         </button>
                     }
                 </ActionButtons>
@@ -48,61 +48,61 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" SelecedItemDblClick="WorkstationDetailsAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Name"
+                    <DataTableHeaderItem Title="@Resource.Label_Name"
                                          SortColumn="@nameof(Workstation.Name)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Domain"
+                    <DataTableHeaderItem Title="@Resource.Label_Domain"
                                          SortColumn="@nameof(Workstation.Domain)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Client Version"
+                    <DataTableHeaderItem Title="@Resource.Label_ClientVersion"
                                          SortColumn="@nameof(Workstation.ClientVersion)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Company"
+                    <DataTableHeaderItem Title="@Resource.Label_Company"
                                          SortColumn="@nameof(Workstation.Department.Company)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Department"
+                    <DataTableHeaderItem Title="@Resource.Label_Department"
                                          SortColumn="@nameof(Workstation.Department)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="OS"
+                    <DataTableHeaderItem Title="@Resource.Label_OS"
                                          SortColumn="@nameof(Workstation.OS)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="IP"
+                    <DataTableHeaderItem Title="@Resource.Label_IP"
                                          SortColumn="@nameof(Workstation.IP)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Last Seen"
+                    <DataTableHeaderItem Title="@Resource.Label_LastSeen"
                                          SortColumn="@nameof(Workstation.LastSeen)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="RFID"
+                    <DataTableHeaderItem Title="@Resource.Label_RFID"
                                          SortColumn="@nameof(Workstation.RFID)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Approved"
+                    <DataTableHeaderItem Title="@Resource.Label_Approved"
                                          SortColumn="@nameof(Workstation.Approved)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
@@ -134,8 +134,8 @@
                     <td>
                         @if (context.IsOnline)
                             {
-                            <span class="badge bg-success" title="Workstation is online">
-                                Online
+                            <span class="badge bg-success">
+                                @Resource.Label_Online
                             </span>
                             }
                             else
@@ -146,21 +146,21 @@
                     <td>
                         @if (context.RFID)
                             {
-                            <span class="badge bg-success">Yes</span>
+                            <span class="badge bg-success">@Resource.Label_Yes</span>
                             }
                             else
                             {
-                            <span class="badge bg-secondary">No</span>
+                            <span class="badge bg-secondary">@Resource.Label_No</span>
                             }
                     </td>
                     <td>
                         @if (context.Approved)
                             {
-                            <span class="badge bg-success">Yes</span>
+                            <span class="badge bg-success">@Resource.Label_Yes</span>
                             }
                             else
                             {
-                            <span class="badge bg-danger">No</span>
+                            <span class="badge bg-danger">@Resource.Label_No</span>
                             }
                     </td>
                 </TableRow>

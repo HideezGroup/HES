@@ -1,9 +1,14 @@
 ﻿@namespace HES.Web.Components
-<h2 class="text-danger">Error.</h2>
-<h3 class="text-danger">An error occurred while processing your request.</h3>
-<p class="my-3">
-    <strong>Exception message:</strong> @ErrorMessage
-</p>
+<div class="alert alert-danger d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+    <div>
+        <h4>@Resource.LoadingFailed_Title</h4>
+        <h5>@Resource.LoadingFailed_Description</h5>
+        <p>
+            <strong>@Resource.Label_Description:</strong> @ErrorMessage
+        </p>
+    </div>
+</div>
 
 @code {
     [Parameter] public string ErrorMessage { get; set; }

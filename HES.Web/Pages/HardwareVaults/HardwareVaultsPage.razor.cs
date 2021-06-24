@@ -80,7 +80,7 @@ namespace HES.Web.Pages.HardwareVaults
             await InvokeAsync(async () =>
             {
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync($"Hardware Vault {hardwareVaultId} state changed.", ToastType.Notify);
+                await ToastService.ShowToastAsync(string.Format(Resources.Resource.Message_HardwareVaultStateChanged, hardwareVaultId), ToastType.Notify);
                 StateHasChanged();
             });
         }
@@ -91,7 +91,7 @@ namespace HES.Web.Pages.HardwareVaults
             {
                 await HardwareVaultService.ImportVaultsAsync();
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("Vaults imported.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.HardwareVaults_ImportVaults_Toast, ToastType.Success);
             }
             catch (Exception ex)
             {
@@ -109,7 +109,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit RFID", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.HardwareVaults_EditRfid_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -129,7 +129,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Suspend", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.HardwareVaults_ChangeStatus_Title_Suspend, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -149,7 +149,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Activate", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.HardwareVaults_ChangeStatus_Title_Activate, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -169,7 +169,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Compromised", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.HardwareVaults_ChangeStatus_Title_Compromised, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -188,7 +188,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Activation code", body);
+            await ModalDialogService.ShowAsync(Resources.Resource.HardwareVaults_ShowActivationCode_Title, body);
         }
 
         private async Task ChangeVaultProfileAsync()
@@ -200,7 +200,7 @@ namespace HES.Web.Pages.HardwareVaults
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Profile", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.HardwareVaults_ChangeProfile_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)

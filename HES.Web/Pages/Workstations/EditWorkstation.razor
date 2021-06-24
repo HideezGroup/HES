@@ -8,14 +8,14 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="workstation" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@Workstation.Name" CloseAction="ModalDialogCancel" />
     }
     else
     {
         <EditForm Model="Workstation" OnValidSubmit="EditAsync">
             <h5 class="text-gray mb-4 ">@Workstation.Name</h5>
             <div class="form-group">
-                <label class="text-gray">Company</label>
+                <label class="text-gray">@Resource.Label_Company</label>
                 <select class="form-select text-navyblue" @onchange="CompanyChangedAsync">
                     <option></option>
                     @foreach (var item in Companies)
@@ -40,10 +40,10 @@ else
                     }
                 </select>
             </div>
-            <label class="control-label text-gray">Unlock settings</label>
+            <label class="control-label text-gray">@Resource.Label_UnlockSettings</label>
             <ul class="list-group mb-4">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Has RFID
+                    @Resource.Label_HasRFID
                     <div class="custom-control custom-switch">
                         <input id="hasRfid" type="checkbox" class="custom-control-input text-navyblue" @bind="Workstation.RFID">
                         <label class="custom-control-label" for="hasRfid"></label>
@@ -51,8 +51,8 @@ else
                 </li>
             </ul>
             <div class="form-footer">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-                <Button @ref="Button" Text="Save" type="submit" class="btn btn-primary" />
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                <Button @ref="Button" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }

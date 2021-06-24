@@ -10,56 +10,56 @@
                     <SummaryFilterComponent FilterChanged="DataTableService.FilterChangedAsync" TabName="@nameof(ByDaysAndEmployeesTab)" />
                 </FilterForm>
                 <ActionButtons>
-                    <h2 class="text-navyblue mb-0">Summary</h2>
+                    <h2 class="text-navyblue mb-0">@Resource.Summary_PageTitle</h2>
                 </ActionButtons>
             </DataTableActions>
         </WrapperHeader>
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Date"
+                    <DataTableHeaderItem Title="@Resource.Label_Date"
                                          SortColumn="@nameof(SummaryByDayAndEmployee.Date)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Employee"
+                    <DataTableHeaderItem Title="@Resource.Label_Employee"
                                          SortColumn="@nameof(SummaryByDayAndEmployee.Employee)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Company"
+                    <DataTableHeaderItem Title="@Resource.Label_Company"
                                          SortColumn="@nameof(SummaryByDayAndEmployee.Company)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Department"
+                    <DataTableHeaderItem Title="@Resource.Label_Department"
                                          SortColumn="@nameof(SummaryByDayAndEmployee.Department)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Workstations Count"
+                    <DataTableHeaderItem Title="@Resource.Label_WorkstationsCount"
                                          SortColumn="@nameof(SummaryByDayAndEmployee.WorkstationsCount)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Avg Sessions Duration"
+                    <DataTableHeaderItem Title="@Resource.Label_AvgSessionsDuration"
                                          SortColumn="@nameof(SummaryByDayAndEmployee.AvgSessionsDuration)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Sessions Count"
+                    <DataTableHeaderItem Title="@Resource.Label_SessionsCount"
                                          SortColumn="@nameof(SummaryByDayAndEmployee.SessionsCount)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Total Sessions Duration"
+                    <DataTableHeaderItem Title="@Resource.Label_TotalSessionsDuration"
                                          SortColumn="@nameof(SummaryByDayAndEmployee.TotalSessionsDuration)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"

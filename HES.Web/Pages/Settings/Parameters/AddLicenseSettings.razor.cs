@@ -32,7 +32,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 await Button.SpinAsync(async () =>
                 {
                     await AppSettingsService.SetLicenseSettingsAsync(LicensingSettings);
-                    await ToastService.ShowToastAsync("License settings updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Parameters_AddLicenseSettings_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

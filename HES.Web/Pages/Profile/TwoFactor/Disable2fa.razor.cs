@@ -32,7 +32,7 @@ namespace HES.Web.Pages.Profile.TwoFactor
                 if (!response.IsSuccessStatusCode)
                     throw new Exception(await response.Content.ReadAsStringAsync());
 
-                await ToastService.ShowToastAsync("2fa has been disabled. You can reenable 2fa when you setup an authenticator app", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_Disable2fa_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

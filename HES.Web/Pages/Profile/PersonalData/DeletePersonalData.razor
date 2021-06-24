@@ -4,7 +4,7 @@
 {
     <div class="alert alert-warning" role="alert">
         <p class="my-0">
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+            <strong>@Resource.Profile_DeletePersonalData_Body</strong>
         </p>
     </div>
     <div>
@@ -16,8 +16,8 @@
                 <ValidationMessage For="@(() => PasswordModel.Password)" class="text-danger" />
             </div>
             <div class="text-end">
-                <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
-                <Button @ref="ButtonSpinner" Text="Delete data and close my account" class="btn btn-danger" type="submit" />
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                <Button @ref="ButtonSpinner" Text="@Resource.Btn_DeleteDataAndCloseMyAccount" type="submit" class="btn btn-danger" />
             </div>
         </EditForm>
     </div>

@@ -9,55 +9,55 @@
             <li class="nav-item">
                 <NavLink class="nav-link" href="@Routes.Dashboard" Match="NavLinkMatch.All">
                     <img class="icon-dashboard i-sidebar" src="/svg/empty.svg">
-                    <span class="page_labels">Dashboard</span>
+                    <span class="page_labels">@Resource.Label_Dashboard</span>
                 </NavLink>
             </li>
             <li class="nav-item">
                 <NavLink class="nav-link" href="@Routes.Employees">
                     <img class="icon-employees i-sidebar" src="/svg/empty.svg" />
-                    <span class="page_labels">Employees</span>
+                    <span class="page_labels">@Resource.Label_Employees</span>
                 </NavLink>
             </li>
             <li class="nav-item">
                 <NavLink class="nav-link" href="@Routes.HardwareVaults">
                     <img class="icon-devices i-sidebar" src="/svg/empty.svg" />
-                    <span class="page_labels">Hardware Vaults</span>
+                    <span class="page_labels">@Resource.Label_HardwareVaults</span>
                 </NavLink>
             </li>
             @*<li class="nav-item">
                 <NavLink class="nav-link" href="@Routes.SoftwareVaults">
                         <img class="icon-software-vault i-sidebar" src="/svg/empty.svg"/>
-                        <span class="page_labels">Software Vaults</span>
+                        <span class="page_labels">@Resource.Label_SoftwareVaults</span>
                     </NavLink>
                 </li>*@
             <li class="nav-item">
                 <NavLink class="nav-link" href="@Routes.Workstations">
                     <img class="icon-computers i-sidebar" src="/svg/empty.svg" />
-                    <span class="page_labels">Workstations</span>
+                    <span class="page_labels">@Resource.Label_Workstations</span>
                 </NavLink>
             </li>
             @*<li class="nav-item">
                     <NavLink class="nav-link" href="@Routes.Groups">
                         <img class="icon-groups i-sidebar" src="/svg/empty.svg" />
-                        <span class="page_labels">Groups</span>
+                        <span class="page_labels">@Resource.Label_Groups</span>
                     </NavLink>
                 </li>*@
             <li class="nav-item">
                 <NavLink class="nav-link" href="@Routes.SharedAccounts">
                     <img class="icon-shared-accounts i-sidebar" src="/svg/empty.svg" />
-                    <span class="page_labels">Shared Accounts</span>
+                    <span class="page_labels">@Resource.Label_SharedAccounts</span>
                 </NavLink>
             </li>
             <li class="nav-item">
                 <NavLink class="nav-link" href="@Routes.Templates">
                     <img class="icon-templates i-sidebar" src="/svg/empty.svg" />
-                    <span class="page_labels">Templates</span>
+                    <span class="page_labels">@Resource.Label_Templates</span>
                 </NavLink>
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed aria-exp" data-bs-toggle="collapse" href="#audit" role="button" aria-expanded="false" aria-controls="Audit" onclick="collapseSub('settings')">
                     <img class="icon-audit i-sidebar" src="/svg/empty.svg" />
-                    <span class="page_labels">Audit</span>
+                    <span class="page_labels">@Resource.Label_Audit</span>
                     <img class="icon-arrow i-sidebar" src="/svg/empty.svg" />
                 </a>
                 <div class="collapse shadow sidebar-collapse" id="audit">
@@ -65,17 +65,17 @@
                         <ul class="nav nav-pills flex-column expand-pills">
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.WorkstationEvents">
-                                    <span>Events</span>
+                                    <span>@Resource.Label_Events</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.WorkstationSessions">
-                                    <span>Sessions</span>
+                                    <span>@Resource.Label_Sessions</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.WorkstationSummaries">
-                                    <span>Summaries</span>
+                                    <span>@Resource.Label_Summaries</span>
                                 </NavLink>
                             </li>
                         </ul>
@@ -85,7 +85,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed aria-exp" data-bs-toggle="collapse" href="#settings" role="button" aria-expanded="false" aria-controls="Settings" onclick="collapseSub('audit')">
                     <img class="icon-settings i-sidebar" src="/svg/empty.svg" />
-                    <span class="page_labels">Settings</span>
+                    <span class="page_labels">@Resource.Label_Settings</span>
                     <img class="icon-arrow i-sidebar" src="/svg/empty.svg" />
                 </a>
                 <div class="collapse shadow sidebar-collapse" id="settings">
@@ -93,43 +93,43 @@
                         <ul class="nav nav-pills flex-column expand-pills">
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.Administrators">
-                                    <span>Administrators</span>
+                                    <span>@Resource.Label_Administrators</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.DataProtection">
-                                    <span>Data Protection</span>
+                                    <span>@Resource.Label_DataProtection</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.HardwareVaultAccessProfile">
-                                    <span>Vault Access Profiles</span>
+                                    <span>@Resource.Label_VaultAccessProfiles</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.OrgStructure">
-                                    <span>OrgStructure</span>
+                                    <span>@Resource.Label_OrgStructure</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.LicenseOrders">
-                                    <span>License Orders</span>
+                                    <span>@Resource.Label_LicenseOrders</span>
                                 </NavLink>
                             </li>
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="@Routes.Parameters">
-                                    <span>Parameters</span>
+                                    <span>@Resource.Label_Parameters</span>
                                 </NavLink>
                             </li>
                         </ul>
                     </div>
                 </div>
-            </li>          
+            </li>
         </ul>
     </div>
     <div class="navigation-menu__footer copyright">
         <span class="d-block">@HES.Core.Constants.ServerConstants.Copyright</span>
         <span class="d-block">@HES.Core.Constants.ServerConstants.ServerName</span>
-        <span class="d-block">Version: @HES.Core.Constants.ServerConstants.Version</span>
+        <span class="d-block">@Resource.Label_Version: @HES.Core.Constants.ServerConstants.Version</span>
     </div>
 </div>

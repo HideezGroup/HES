@@ -1,0 +1,825 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Breadcrumbs_Administrators" xml:space="preserve">
+    <value>Administrators</value>
+  </data>
+  <data name="Breadcrumbs_Alarm" xml:space="preserve">
+    <value>Alarm</value>
+  </data>
+  <data name="Breadcrumbs_Audit" xml:space="preserve">
+    <value>Audit</value>
+  </data>
+  <data name="Breadcrumbs_Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Breadcrumbs_DataProtection" xml:space="preserve">
+    <value>Data Protection</value>
+  </data>
+  <data name="Breadcrumbs_Employees" xml:space="preserve">
+    <value>Employees</value>
+  </data>
+  <data name="Breadcrumbs_Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="Breadcrumbs_HardwareVaultAccessProfiles" xml:space="preserve">
+    <value>Hardware Vault Access Profiles</value>
+  </data>
+  <data name="Breadcrumbs_HardwareVaults" xml:space="preserve">
+    <value>Hardware Vaults</value>
+  </data>
+  <data name="Breadcrumbs_LicenseOrders" xml:space="preserve">
+    <value>License Orders</value>
+  </data>
+  <data name="Breadcrumbs_OrgStructure" xml:space="preserve">
+    <value>Organization Structure</value>
+  </data>
+  <data name="Breadcrumbs_Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="Breadcrumbs_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Breadcrumbs_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Breadcrumbs_SharedAccounts" xml:space="preserve">
+    <value>Shared Accounts</value>
+  </data>
+  <data name="Breadcrumbs_Summaries" xml:space="preserve">
+    <value>Summaries</value>
+  </data>
+  <data name="Breadcrumbs_Templates" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="Breadcrumbs_WorkstationEvents" xml:space="preserve">
+    <value>Workstation Events</value>
+  </data>
+  <data name="Breadcrumbs_Workstations" xml:space="preserve">
+    <value>Workstations</value>
+  </data>
+  <data name="Breadcrumbs_WorkstationSessions" xml:space="preserve">
+    <value>Workstation Sessions</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_LeftText" xml:space="preserve">
+    <value>Registered</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_LongOpenSession" xml:space="preserve">
+    <value>Long open session (&gt;12h)</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_NonHideezUnlock" xml:space="preserve">
+    <value>Non-hideez unlock (24h)</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_RightText" xml:space="preserve">
+    <value>Opened Sessions</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_Title" xml:space="preserve">
+    <value>Employees</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LeftText" xml:space="preserve">
+    <value>Registered</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseCritical" xml:space="preserve">
+    <value>License critical</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseExpired" xml:space="preserve">
+    <value>License expired</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseWarning" xml:space="preserve">
+    <value>License warning</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LowBattery" xml:space="preserve">
+    <value>Low battery</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_RightText" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_Title" xml:space="preserve">
+    <value>Hardware Vaults</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_VaultLocked" xml:space="preserve">
+    <value>Vault locked</value>
+  </data>
+  <data name="Dashboard_ServerCard_LeftLink" xml:space="preserve">
+    <value>https://github.com/HideezGroup/HES</value>
+  </data>
+  <data name="Dashboard_ServerCard_LeftText" xml:space="preserve">
+    <value>HES version</value>
+  </data>
+  <data name="Dashboard_ServerCard_LongPendingTasks" xml:space="preserve">
+    <value>Long pending tasks</value>
+  </data>
+  <data name="Dashboard_ServerCard_RightText" xml:space="preserve">
+    <value>Hardware Vault Tasks</value>
+  </data>
+  <data name="Dashboard_ServerCard_Title" xml:space="preserve">
+    <value>Hideez Enterprise Server</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_LeftText" xml:space="preserve">
+    <value>Registered</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_RightText" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_Title" xml:space="preserve">
+    <value>Workstations</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_WaitingForApproval" xml:space="preserve">
+    <value>Waiting for approval</value>
+  </data>
+  <data name="Dispaly_ApiAddress" xml:space="preserve">
+    <value>API Address</value>
+  </data>
+  <data name="Dispaly_ApiKey" xml:space="preserve">
+    <value>API Key</value>
+  </data>
+  <data name="Dispaly_AutoPasswordChange" xml:space="preserve">
+    <value>Auto Password Change</value>
+  </data>
+  <data name="Dispaly_DomainName" xml:space="preserve">
+    <value>Domain Name</value>
+  </data>
+  <data name="Dispaly_Host" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Dispaly_Token" xml:space="preserve">
+    <value>Token</value>
+  </data>
+  <data name="Dispaly_UserLogonName" xml:space="preserve">
+    <value>User Logon Name</value>
+  </data>
+  <data name="Display_Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Display_AccountName" xml:space="preserve">
+    <value>Account Name</value>
+  </data>
+  <data name="Display_AccountType" xml:space="preserve">
+    <value>Account Type</value>
+  </data>
+  <data name="Display_Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Display_Apps" xml:space="preserve">
+    <value>Applications</value>
+  </data>
+  <data name="Display_AppsSeparate" xml:space="preserve">
+    <value>Applications (separate by semicolon)</value>
+  </data>
+  <data name="Display_AssertionConsumerService" xml:space="preserve">
+    <value>Assertion Consumer Service</value>
+  </data>
+  <data name="Display_AuthenticatorCode" xml:space="preserve">
+    <value>Authenticator code</value>
+  </data>
+  <data name="Display_Battery" xml:space="preserve">
+    <value>Battery</value>
+  </data>
+  <data name="Display_ClientVersion" xml:space="preserve">
+    <value>Client Version</value>
+  </data>
+  <data name="Display_Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Display_ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
+  <data name="Display_ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="Display_ContactEmail" xml:space="preserve">
+    <value>Contact Email</value>
+  </data>
+  <data name="Display_Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Display_CreatedAtDateFrom" xml:space="preserve">
+    <value>Created At From</value>
+  </data>
+  <data name="Display_CreatedAtDateTo" xml:space="preserve">
+    <value>Created At To</value>
+  </data>
+  <data name="Display_CurrentEmail" xml:space="preserve">
+    <value>Current Email</value>
+  </data>
+  <data name="Display_CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="Display_Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="Display_Domain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="Display_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Display_Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="Display_EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Display_Event" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="Display_Firmware" xml:space="preserve">
+    <value>Firmware</value>
+  </data>
+  <data name="Display_FirstName" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="Display_HardwareVault" xml:space="preserve">
+    <value>Hardware Vault</value>
+  </data>
+  <data name="Display_HardwareVaultsCount" xml:space="preserve">
+    <value>Hardware Vaults Count</value>
+  </data>
+  <data name="Display_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Display_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="Display_Issuer" xml:space="preserve">
+    <value>Issuer</value>
+  </data>
+  <data name="Display_LastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="Display_LastSeen" xml:space="preserve">
+    <value>Last Seen</value>
+  </data>
+  <data name="Display_LastSeenEndDate" xml:space="preserve">
+    <value>Last Seen End Date</value>
+  </data>
+  <data name="Display_LastSeenStartDate" xml:space="preserve">
+    <value>Last Seen Start Date</value>
+  </data>
+  <data name="Display_LastSynced" xml:space="preserve">
+    <value>Last Synced</value>
+  </data>
+  <data name="Display_LicenseEndDate" xml:space="preserve">
+    <value>License End Date</value>
+  </data>
+  <data name="Display_LicenseEndDateFrom" xml:space="preserve">
+    <value>License End Date From</value>
+  </data>
+  <data name="Display_LicenseEndDateTo" xml:space="preserve">
+    <value>License End Date To</value>
+  </data>
+  <data name="Display_LicenseStartDateFrom" xml:space="preserve">
+    <value>License Start Date From</value>
+  </data>
+  <data name="Display_LicenseStartDateTo" xml:space="preserve">
+    <value>License Start Date To</value>
+  </data>
+  <data name="Display_LicenseStatus" xml:space="preserve">
+    <value>License Status</value>
+  </data>
+  <data name="Display_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Display_LoginType" xml:space="preserve">
+    <value>Login Type</value>
+  </data>
+  <data name="Display_MAC" xml:space="preserve">
+    <value>MAC</value>
+  </data>
+  <data name="Display_Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Display_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Display_NewEmail" xml:space="preserve">
+    <value>New Email</value>
+  </data>
+  <data name="Display_NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="Display_Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Display_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Display_OrderCreatedAtDateFrom" xml:space="preserve">
+    <value>Order Created At From</value>
+  </data>
+  <data name="Display_OrderCreatedAtDateTo" xml:space="preserve">
+    <value>Order Created At To</value>
+  </data>
+  <data name="Display_OrderStatus" xml:space="preserve">
+    <value>Order Status</value>
+  </data>
+  <data name="Display_OS" xml:space="preserve">
+    <value>OS</value>
+  </data>
+  <data name="Display_OtpSecret" xml:space="preserve">
+    <value>OTP Secret</value>
+  </data>
+  <data name="Display_OtpUpdated" xml:space="preserve">
+    <value>OTP Updated</value>
+  </data>
+  <data name="Display_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Display_PasswordUpdated" xml:space="preserve">
+    <value>Password Updated</value>
+  </data>
+  <data name="Display_PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="Display_Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Display_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Display_ProlongLicense" xml:space="preserve">
+    <value>Prolong License</value>
+  </data>
+  <data name="Display_PublicX509Certificate" xml:space="preserve">
+    <value>Public x509 Certificate</value>
+  </data>
+  <data name="Display_RecoveryCode" xml:space="preserve">
+    <value>Recovery Code</value>
+  </data>
+  <data name="Display_RememberMachine" xml:space="preserve">
+    <value>Remember machine</value>
+  </data>
+  <data name="Display_RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="Display_RFID" xml:space="preserve">
+    <value>RFID</value>
+  </data>
+  <data name="Display_Severity" xml:space="preserve">
+    <value>Severity</value>
+  </data>
+  <data name="Display_SingleLogoutService" xml:space="preserve">
+    <value>Single Logout Service</value>
+  </data>
+  <data name="Display_StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Display_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Display_StatusDescription" xml:space="preserve">
+    <value>Status Description</value>
+  </data>
+  <data name="Display_StatusReason" xml:space="preserve">
+    <value>Status Reason</value>
+  </data>
+  <data name="Display_UnlockedBy" xml:space="preserve">
+    <value>Unlocked By</value>
+  </data>
+  <data name="Display_Updated" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="Display_UpdatedAtFrom" xml:space="preserve">
+    <value>Updated At From</value>
+  </data>
+  <data name="Display_UpdatedAtTo" xml:space="preserve">
+    <value>Updated At To</value>
+  </data>
+  <data name="Display_Urls" xml:space="preserve">
+    <value>URLs</value>
+  </data>
+  <data name="Display_UrlsSeparate" xml:space="preserve">
+    <value>URLs (separate by semicolon)</value>
+  </data>
+  <data name="Display_UserSession" xml:space="preserve">
+    <value>User Session</value>
+  </data>
+  <data name="Display_VaultsCount" xml:space="preserve">
+    <value>Vaults Count</value>
+  </data>
+  <data name="Display_VerificationCode" xml:space="preserve">
+    <value>Verification Code</value>
+  </data>
+  <data name="Display_Workstation" xml:space="preserve">
+    <value>Workstation</value>
+  </data>
+  <data name="Email_ActivateDataProtection_Body" xml:space="preserve">
+    <value>Your Hideez Enterprise Server has been restarted. Please activate the data protection on the server by clicking this button:</value>
+  </data>
+  <data name="Email_ActivateDataProtection_Subject" xml:space="preserve">
+    <value>Action required - Hideez Enterprise Server Status Update</value>
+  </data>
+  <data name="Email_Common_Admin" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="Email_Common_Btn_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="Email_Common_Btn_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Email_Common_Btn_ResetPassword" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="Email_Common_DaysRemainin" xml:space="preserve">
+    <value>days remaining</value>
+  </data>
+  <data name="Email_Common_Dear" xml:space="preserve">
+    <value>Dear {0},</value>
+  </data>
+  <data name="Email_Common_Link" xml:space="preserve">
+    <value>link</value>
+  </data>
+  <data name="Email_Common_YourServer" xml:space="preserve">
+    <value>Your Hideez Enterprise Server</value>
+  </data>
+  <data name="Email_EmployeeDisableSso_Body" xml:space="preserve">
+    <value>You've turned off the option SSO via Hideez Enterprise Server.</value>
+  </data>
+  <data name="Email_EmployeeDisableSso_Subject" xml:space="preserve">
+    <value>SSO Disabled to Hideez Enterprise Server</value>
+  </data>
+  <data name="Email_EmployeeEnableSso_Body" xml:space="preserve">
+    <value>You've turned on the option SSO via Hideez Enterprise Server. Please complete the setup by adding a security key using this</value>
+  </data>
+  <data name="Email_EmployeeEnableSso_Subject" xml:space="preserve">
+    <value>SSO Enabled to Hideez Enterprise Server</value>
+  </data>
+  <data name="Email_HardwareVaultActivationCode_Body" xml:space="preserve">
+    <value>Your hardware vault activation code:</value>
+  </data>
+  <data name="Email_HardwareVaultActivationCode_Subject" xml:space="preserve">
+    <value>Activate Hardware Vault - Hideez Enterprise Server</value>
+  </data>
+  <data name="Email_HardwareVaultLicenseStatus_Body" xml:space="preserve">
+    <value>Some of your Hideez Key devices have changes in their license status. Please review the list below and take action if required.</value>
+  </data>
+  <data name="Email_HardwareVaultLicenseStatus_Subject" xml:space="preserve">
+    <value>Hideez License Status Update</value>
+  </data>
+  <data name="Email_LicenseChanged_Body" xml:space="preserve">
+    <value>Thank you for placing the order on Hideez licenses.</value>
+  </data>
+  <data name="Email_LicenseChanged_Description" xml:space="preserve">
+    <value>The status of your Hideez License order of {0} has been changed to {1}</value>
+  </data>
+  <data name="Email_LicenseChanged_Subject" xml:space="preserve">
+    <value>Hideez License Order Status Update</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Body" xml:space="preserve">
+    <value>Your password for your domain account {0} has been automatically changed and uploaded to your Hideez Key device {1}.</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Description" xml:space="preserve">
+    <value>Please use it at the next login. Please note that your computer will need a connection to the server to sync data.</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Subject" xml:space="preserve">
+    <value>Password Auto Changed - Hideez Enterprise Server</value>
+  </data>
+  <data name="Email_UserConfirmEmail_Body" xml:space="preserve">
+    <value>Please confirm your account by clicking on the button:</value>
+  </data>
+  <data name="Email_UserConfirmEmail_Subject" xml:space="preserve">
+    <value>Action required - Confirm your email to Hideez Enterprise Server</value>
+  </data>
+  <data name="Email_UserInvitation_Body" xml:space="preserve">
+    <value>You've been invited to Hideez Enterprise Server. Please confirm the invitation by entering a new password using this</value>
+  </data>
+  <data name="Email_UserInvitation_Subject" xml:space="preserve">
+    <value>Action required - Invitation to Hideez Enterprise Server</value>
+  </data>
+  <data name="Email_UserResetPassword_Body" xml:space="preserve">
+    <value>To secure your account, please reset your password by clicking on the button:</value>
+  </data>
+  <data name="Email_UserResetPassword_Subject" xml:space="preserve">
+    <value>Action required - Password Reset to Hideez Enterprise Server</value>
+  </data>
+  <data name="Exception_AccountExist" xml:space="preserve">
+    <value>Account with the same name and login exist.</value>
+  </data>
+  <data name="Exception_AccountLockout" xml:space="preserve">
+    <value>Account lockout</value>
+  </data>
+  <data name="Exception_AccountNotFound" xml:space="preserve">
+    <value>Account not found.</value>
+  </data>
+  <data name="Exception_ActivationCodeNotFound" xml:space="preserve">
+    <value>Activation Code not found</value>
+  </data>
+  <data name="Exception_ActiveDirectoryUserNotFound" xml:space="preserve">
+    <value>This employee was removed from Active Directory so it was changed to a local user.</value>
+  </data>
+  <data name="Exception_ApiKeyEmpty" xml:space="preserve">
+    <value>API Key is empty.</value>
+  </data>
+  <data name="Exception_AppSettingsNotFound" xml:space="preserve">
+    <value>Application settings not found.</value>
+  </data>
+  <data name="Exception_AuthenticatorNotFIDO2" xml:space="preserve">
+    <value>The authenticator is not supporting FIDO2.</value>
+  </data>
+  <data name="Exception_CannotDeleteDefaultProfile" xml:space="preserve">
+    <value>Cannot delete default profile</value>
+  </data>
+  <data name="Exception_CompanyNameAlreadyInUse" xml:space="preserve">
+    <value>Company name already in use.</value>
+  </data>
+  <data name="Exception_CompanyNotFound" xml:space="preserve">
+    <value>Company not found.</value>
+  </data>
+  <data name="Exception_DataProtectionIsAlreadyActivated" xml:space="preserve">
+    <value>Data protection is already activated.</value>
+  </data>
+  <data name="Exception_DataProtectionIsAlreadyEnabled" xml:space="preserve">
+    <value>Data protection is already enabled.</value>
+  </data>
+  <data name="Exception_DataProtectionIsBusy" xml:space="preserve">
+    <value>Data protection is busy.</value>
+  </data>
+  <data name="Exception_DataProtectionNotActivated" xml:space="preserve">
+    <value>Data protection is not activated.</value>
+  </data>
+  <data name="Exception_DataProtectionNotEnabled" xml:space="preserve">
+    <value>Data protection is not enabled.</value>
+  </data>
+  <data name="Exception_DataProtectionNotFinishedPasswordChange" xml:space="preserve">
+    <value>The password change for Data Protection is not finished.</value>
+  </data>
+  <data name="Exception_DataProtectionParametersIsEmpty" xml:space="preserve">
+    <value>Data Protection parameters is empty.</value>
+  </data>
+  <data name="Exception_DataProtectionParametersNotFound" xml:space="preserve">
+    <value>Data protection parameters not found.</value>
+  </data>
+  <data name="Exception_DepartmentNameAlreadyInUse" xml:space="preserve">
+    <value>Department name already in use</value>
+  </data>
+  <data name="Exception_DepartmentNotFound" xml:space="preserve">
+    <value>Department not found.</value>
+  </data>
+  <data name="Exception_EmailAlreadyTaken" xml:space="preserve">
+    <value>This email address is already taken</value>
+  </data>
+  <data name="Exception_EmployeeAlreadyExist" xml:space="preserve">
+    <value>Employee with current name already exists.</value>
+  </data>
+  <data name="Exception_EmployeeNotFound" xml:space="preserve">
+    <value>Employee not found.</value>
+  </data>
+  <data name="Exception_EmployeeRequiresEmail" xml:space="preserve">
+    <value>Requires email.</value>
+  </data>
+  <data name="Exception_EmployeeRequiresLastName" xml:space="preserve">
+    <value>Requires last name.</value>
+  </data>
+  <data name="Exception_HardwareVaultCannotReserve" xml:space="preserve">
+    <value>Vault in a status that does not allow to reserve.</value>
+  </data>
+  <data name="Exception_HardwareVaultNotFound" xml:space="preserve">
+    <value>Hardware Vault not found.</value>
+  </data>
+  <data name="Exception_HardwareVaultNotFoundWithParam" xml:space="preserve">
+    <value>Hardware Vault {0} not found.</value>
+  </data>
+  <data name="Exception_HardwareVaultProfileNotFound" xml:space="preserve">
+    <value>Hardware Vault profile not found</value>
+  </data>
+  <data name="Exception_HardwareVaultUntieBeforeRemove" xml:space="preserve">
+    <value>First untie the hardware vault before removing.</value>
+  </data>
+  <data name="Exception_HardwareVaultВoesNotAllowToRemove" xml:space="preserve">
+    <value>Vault in a status that does not allow to remove.</value>
+  </data>
+  <data name="Exception_IncorrectCurrentPassword" xml:space="preserve">
+    <value>Incorrect current password.</value>
+  </data>
+  <data name="Exception_IncorrectOldPassword" xml:space="preserve">
+    <value>Incorrect old password.</value>
+  </data>
+  <data name="Exception_IncorrectOtp" xml:space="preserve">
+    <value>Incorrect OTP secret.</value>
+  </data>
+  <data name="Exception_IncorrectPassword" xml:space="preserve">
+    <value>Incorrect password.</value>
+  </data>
+  <data name="Exception_IncorrectUrl" xml:space="preserve">
+    <value>Incorrect URL address.</value>
+  </data>
+  <data name="Exception_InvalidCertificate" xml:space="preserve">
+    <value>Invalid certificate.</value>
+  </data>
+  <data name="Exception_InvalidLoginAttempt" xml:space="preserve">
+    <value>Invalid login attempt.</value>
+  </data>
+  <data name="Exception_LdapSettingsNotSet" xml:space="preserve">
+    <value>LDAP settings not set.</value>
+  </data>
+  <data name="Exception_LicenseForHardwareVaultNotFound" xml:space="preserve">
+    <value>Hardware Vault licenses not found.</value>
+  </data>
+  <data name="Exception_LicenseOrderNotFound" xml:space="preserve">
+    <value>License Order not found.</value>
+  </data>
+  <data name="Exception_None" xml:space="preserve">
+    <value>Something went wrong.</value>
+  </data>
+  <data name="Exception_OneHardwareVaultConstraint" xml:space="preserve">
+    <value>Cannot add more than one Hardware Vault.</value>
+  </data>
+  <data name="Exception_PositionNameAlreadyInUse" xml:space="preserve">
+    <value>Position name already in use.</value>
+  </data>
+  <data name="Exception_PositionNotFound" xml:space="preserve">
+    <value>Position not found.</value>
+  </data>
+  <data name="Exception_ProfileNameAlreadyInUse" xml:space="preserve">
+    <value>Profile name already in use</value>
+  </data>
+  <data name="Exception_RequiresRelogin" xml:space="preserve">
+    <value>Requires relogin</value>
+  </data>
+  <data name="Exception_RequiresTwoFactor" xml:space="preserve">
+    <value>Requires two factor.</value>
+  </data>
+  <data name="Exception_Saml2IssuerAlreadyExist" xml:space="preserve">
+    <value>Issuer already exist.</value>
+  </data>
+  <data name="Exception_Saml2NotMetadataOrDescriptorElementNotFound" xml:space="preserve">
+    <value>Not metadata or descriptor element not found.</value>
+  </data>
+  <data name="Exception_Saml2RelyingPartyNotFound" xml:space="preserve">
+    <value>Service provider not found.</value>
+  </data>
+  <data name="Exception_Saml2SPDescriptorNotLoaded" xml:space="preserve">
+    <value>Service Provider descriptor not loaded from metadata.</value>
+  </data>
+  <data name="Exception_SecurityKeyNotFound" xml:space="preserve">
+    <value>Security key not found.</value>
+  </data>
+  <data name="Exception_SharedAccountExist" xml:space="preserve">
+    <value>Shared Account with the same name and login exists.</value>
+  </data>
+  <data name="Exception_SharedAccountNotFound" xml:space="preserve">
+    <value>Shared Account not found.</value>
+  </data>
+  <data name="Exception_TemplateExist" xml:space="preserve">
+    <value>Template with current name already exists.</value>
+  </data>
+  <data name="Exception_TemplateNotFound" xml:space="preserve">
+    <value>Template not found.</value>
+  </data>
+  <data name="Exception_TheLDAPServerIsUnavailable" xml:space="preserve">
+    <value>The LDAP server is unavailable.</value>
+  </data>
+  <data name="Exception_UserNotFound" xml:space="preserve">
+    <value>User not found.</value>
+  </data>
+  <data name="Exception_WorkstationHardwareVaultPairAlreadyExist" xml:space="preserve">
+    <value>Hardware Vault already added to workstation.</value>
+  </data>
+  <data name="Exception_WorkstationHardwareVaultPairNotFound" xml:space="preserve">
+    <value>Workstation and Hardware Vault pair not found.</value>
+  </data>
+  <data name="Exception_WorkstationNotFound" xml:space="preserve">
+    <value>Workstation not found.</value>
+  </data>
+  <data name="Exception_WorkstationNotFoundWithParam" xml:space="preserve">
+    <value>Workstation {0} not found.</value>
+  </data>
+  <data name="Validation_CompareNewPassword" xml:space="preserve">
+    <value>The new password and password confirmation do not match.</value>
+  </data>
+  <data name="Validation_ComparePassword" xml:space="preserve">
+    <value>The password and password confirmation do not match.</value>
+  </data>
+  <data name="Validation_EmailAddress" xml:space="preserve">
+    <value>The {0} field is not a valid e-mail address.</value>
+  </data>
+  <data name="Validation_Range" xml:space="preserve">
+    <value>The field {0} must be between {1} and {2}.</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>The {0} field is required.</value>
+  </data>
+  <data name="Validation_StringLength" xml:space="preserve">
+    <value>The {0} must be at least {2} and at max {1} characters long.</value>
+  </data>
+  <data name="Validation_Url" xml:space="preserve">
+    <value>The {0} field is not a valid fully-qualified http, https, or ftp URL.</value>
+  </data>
+</root>

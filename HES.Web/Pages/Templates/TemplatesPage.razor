@@ -12,18 +12,18 @@
                     <TemplateFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
                 </FilterForm>
                 <ActionButtons>
-                    <button type="button" @onclick="CreateTemplateAsync" class="btn btn-primary mx-1 text-nowrap" title="Create template">
-                        Create template
+                    <button type="button" @onclick="CreateTemplateAsync" class="btn btn-primary mx-1 text-nowrap">
+                        @Resource.Btn_CreateTemplate
                     </button>
                     @if (DataTableService.SelectedEntity != null)
                     {
-                        <button type="button" @onclick="EditTemplateAsync" class="btn btn-light border mx-1 text-nowrap" title="Edit template">
+                        <button type="button" @onclick="EditTemplateAsync" class="btn btn-light border mx-1 text-nowrap">
                             <img class="icon-btn" src="/svg/icon-edit.svg" />
-                            Edit
+                            @Resource.Btn_Edit
                         </button>
-                        <button type="button" @onclick="DeleteTemplateAsync" class="btn btn-light border mx-1 text-nowrap" title="Delete template">
+                        <button type="button" @onclick="DeleteTemplateAsync" class="btn btn-light border mx-1 text-nowrap">
                             <img class="icon-btn" src="/svg/icon-delete.svg" />
-                            Delete
+                            @Resource.Btn_Delete
                         </button>
                     }
                 </ActionButtons>
@@ -32,19 +32,19 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Name"
+                    <DataTableHeaderItem Title="@Resource.Label_Name"
                                          SortColumn="@nameof(Template.Name)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Urls"
+                    <DataTableHeaderItem Title="@Resource.Label_Urls"
                                          SortColumn="@nameof(Template.Urls)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Apps"
+                    <DataTableHeaderItem Title="@Resource.Label_Apps"
                                          SortColumn="@nameof(Template.Apps)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"

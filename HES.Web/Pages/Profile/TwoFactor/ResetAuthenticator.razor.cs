@@ -32,7 +32,7 @@ namespace HES.Web.Pages.Profile.TwoFactor
                 if (!response.IsSuccessStatusCode)
                     throw new Exception(await response.Content.ReadAsStringAsync());
 
-                await ToastService.ShowToastAsync("Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_ResetAuthenticator_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

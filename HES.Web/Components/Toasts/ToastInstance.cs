@@ -23,13 +23,13 @@ namespace HES.Web.Components
             switch (toastType)
             {
                 case ToastType.Success:
-                    Header = string.IsNullOrWhiteSpace(header) ? "Success" : header;
+                    Header = string.IsNullOrWhiteSpace(header) ? Resources.Resource.Toast_TitleSuccess : header;
                     break;
                 case ToastType.Notify:
-                    Header = string.IsNullOrWhiteSpace(header) ? "Notification" : header;
+                    Header = string.IsNullOrWhiteSpace(header) ? Resources.Resource.Toast_TitleNotification : header;
                     break;
                 case ToastType.Error:
-                    Header = string.IsNullOrWhiteSpace(header) ? "Error" : header;
+                    Header = string.IsNullOrWhiteSpace(header) ? Resources.Resource.Toast_TitleError : header;
                     break;
                 default:
                     break;

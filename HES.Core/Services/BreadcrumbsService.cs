@@ -15,8 +15,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Settings" },
-                new Breadcrumb () { Active = true, Content = "Data Protection" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Settings },
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_DataProtection }
             };
 
             if (OnSet != null)
@@ -27,7 +27,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Dashboard" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Dashboard }
             };
 
             if (OnSet != null)
@@ -38,7 +38,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Administrators" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Administrators }
             };
 
             if (OnSet != null)
@@ -49,7 +49,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Employees" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Employees }
             };
 
             if (OnSet != null)
@@ -60,7 +60,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Templates" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Templates }
             };
 
             if (OnSet != null)
@@ -71,7 +71,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = false, Link= "/Employees", Content = "Employees" },
+                new Breadcrumb () { Active = false, Link= "/Employees", Content = Resources.Resource.Breadcrumbs_Employees },
                 new Breadcrumb () { Active = true, Content = name}
             };
 
@@ -83,7 +83,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Hardware Vaults" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_HardwareVaults }
             };
 
             if (OnSet != null)
@@ -94,7 +94,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Groups" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Groups }
             };
 
             if (OnSet != null)
@@ -105,7 +105,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = false, Link= "/Groups", Content = "Groups" },
+                new Breadcrumb () { Active = false, Link= "/Groups", Content = Resources.Resource.Breadcrumbs_Groups },
                 new Breadcrumb () { Active = true, Content = name}
             };
 
@@ -117,8 +117,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Settings" },
-                new Breadcrumb () { Active = true, Content = "License Orders" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Settings },
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_LicenseOrders }
             };
 
             if (OnSet != null)
@@ -129,8 +129,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Settings" },
-                new Breadcrumb () { Active = true, Content = "Hardware Vault Access Profiles" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Settings },
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_HardwareVaultAccessProfiles }
             };
 
             if (OnSet != null)
@@ -141,7 +141,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Shared Accounts" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_SharedAccounts }
             };
 
             if (OnSet != null)
@@ -152,8 +152,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Audit" },
-                new Breadcrumb () { Active = true, Content = "Workstation Events" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Audit },
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_WorkstationEvents }
             };
 
             if (OnSet != null)
@@ -164,8 +164,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Audit" },
-                new Breadcrumb () { Active = true, Content = "Workstation Sessions" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Audit },
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_WorkstationSessions }
             };
 
             if (OnSet != null)
@@ -176,8 +176,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Audit" },
-                new Breadcrumb () { Active = true, Content = "Summaries" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Audit },
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Summaries }
             };
 
             if (OnSet != null)
@@ -188,8 +188,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Settings" },
-                new Breadcrumb () { Active = true, Content = "Parameters" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Settings },
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Parameters }
             };
 
             if (OnSet != null)
@@ -200,8 +200,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Settings" },
-                new Breadcrumb () { Active = true, Content = "OrgStructure" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Settings },
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_OrgStructure }
             };
 
             if (OnSet != null)
@@ -212,7 +212,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Workstations" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Workstations }
             };
 
             if (OnSet != null)
@@ -223,41 +223,8 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = false, Link= "/Workstations", Content = "Workstations" },
+                new Breadcrumb () { Active = false, Link= "/Workstations", Content = Resources.Resource.Breadcrumbs_Workstations },
                 new Breadcrumb () { Active = true, Content = name}
-            };
-
-            if (OnSet != null)
-                await OnSet.Invoke(Breadcrumbs);
-        }
-
-        public async Task SetTwoFactorAuthentication()
-        {
-            Breadcrumbs = new List<Breadcrumb>()
-            {
-                new Breadcrumb () { Active = true, Content = "Two Factor Authentication" }
-            };
-
-            if (OnSet != null)
-                await OnSet.Invoke(Breadcrumbs);
-        }
-
-        public async Task SetShowRecoveryCodes()
-        {
-            Breadcrumbs = new List<Breadcrumb>()
-            {
-                new Breadcrumb () { Active = true, Content = "Show Recovery Codes" }
-            };
-
-            if (OnSet != null)
-                await OnSet.Invoke(Breadcrumbs);
-        }
-
-        public async Task SetResetAuthenticator()
-        {
-            Breadcrumbs = new List<Breadcrumb>()
-            {
-                new Breadcrumb () { Active = true, Content = "Reset Authenticator" }
             };
 
             if (OnSet != null)
@@ -268,62 +235,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Profile" }
-            };
-
-            if (OnSet != null)
-                await OnSet.Invoke(Breadcrumbs);
-        }
-
-        public async Task SetPersonalData()
-        {
-            Breadcrumbs = new List<Breadcrumb>()
-            {
-                new Breadcrumb () { Active = true, Content = "Personal Data" }
-            };
-
-            if (OnSet != null)
-                await OnSet.Invoke(Breadcrumbs);
-        }
-
-        public async Task SetGenerateRecoveryCodes()
-        {
-            Breadcrumbs = new List<Breadcrumb>()
-            {
-                new Breadcrumb () { Active = true, Content = "Generate Recovery Codes" }
-            };
-
-            if (OnSet != null)
-                await OnSet.Invoke(Breadcrumbs);
-        }
-
-        public async Task SetEnableAuthenticator()
-        {
-            Breadcrumbs = new List<Breadcrumb>()
-            {
-                new Breadcrumb () { Active = true, Content = "Enable Authenticator" }
-            };
-
-            if (OnSet != null)
-                await OnSet.Invoke(Breadcrumbs);
-        }
-
-        public async Task SetDisable2fa()
-        {
-            Breadcrumbs = new List<Breadcrumb>()
-            {
-                new Breadcrumb () { Active = true, Content = "Disable 2FA" }
-            };
-
-            if (OnSet != null)
-                await OnSet.Invoke(Breadcrumbs);
-        }
-
-        public async Task SetDeletePersonalData()
-        {
-            Breadcrumbs = new List<Breadcrumb>()
-            {
-                new Breadcrumb () { Active = true, Content = "Delete Personal Data" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Profile }
             };
 
             if (OnSet != null)
@@ -334,7 +246,7 @@ namespace HES.Core.Services
         {
             Breadcrumbs = new List<Breadcrumb>()
             {
-                new Breadcrumb () { Active = true, Content = "Alarm" }
+                new Breadcrumb () { Active = true, Content = Resources.Resource.Breadcrumbs_Alarm }
             };
 
             if (OnSet != null)

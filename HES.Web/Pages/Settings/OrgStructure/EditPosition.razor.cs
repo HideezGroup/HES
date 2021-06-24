@@ -29,7 +29,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Position = await OrgStructureService.GetPositionByIdAsync(PositionId);
                 if (Position == null)
-                    throw new Exception("Position not found.");
+                    throw new HESException(HESCode.PositionNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Position.Id, out object _);
                 if (!EntityBeingEdited)
@@ -58,7 +58,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.EditPositionAsync(Position);
-                    await ToastService.ShowToastAsync("Position updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.OrgStructure_EditPosition_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

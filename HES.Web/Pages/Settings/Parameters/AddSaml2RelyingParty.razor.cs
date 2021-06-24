@@ -3,6 +3,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
+using ITfoxtec.Identity.Saml2;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -37,7 +38,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 await Button.SpinAsync(async () =>
                 {
                     await AppSettingsService.AddSaml2RelyingPartyAsync(RelyingParty);
-                    await ToastService.ShowToastAsync("Service provider added.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Parameters_AddSaml2RelyingParty_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
@@ -73,13 +74,20 @@ namespace HES.Web.Pages.Settings.Parameters
                 var metadata = Encoding.UTF8.GetString(ms.ToArray());
 
                 var entityDescriptor = new EntityDescriptor();
-                entityDescriptor = entityDescriptor.ReadSPSsoDescriptor(metadata);
+                try
+                {
+                    entityDescriptor = entityDescriptor.ReadSPSsoDescriptor(metadata);
+                }
+                catch (Saml2RequestException)
+                {
+                    throw new HESException(HESCode.Saml2NotMetadataOrDescriptorElementNotFound);
+                }
 
                 if (entityDescriptor.SPSsoDescriptor == null)
                 {
-                    throw new Exception($"SP SSO Descriptor not loaded from metadata.");
+                    throw new HESException(HESCode.Saml2SPDescriptorNotLoaded);
                 }
-          
+
                 RelyingParty.Issuer = entityDescriptor.EntityId;
                 RelyingParty.SingleSignOnDestination = entityDescriptor.SPSsoDescriptor.AssertionConsumerServices.First().Location.ToString();
                 var singleLogoutService = entityDescriptor.SPSsoDescriptor.SingleLogoutServices.First();

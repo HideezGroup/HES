@@ -1,0 +1,825 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Display_StartDate" xml:space="preserve">
+    <value>Дата початку</value>
+  </data>
+  <data name="Display_Account" xml:space="preserve">
+    <value>Аккаунт</value>
+  </data>
+  <data name="Display_AccountType" xml:space="preserve">
+    <value>Тип аккаунту</value>
+  </data>
+  <data name="Display_Company" xml:space="preserve">
+    <value>Компанія</value>
+  </data>
+  <data name="Display_Department" xml:space="preserve">
+    <value>Відділення</value>
+  </data>
+  <data name="Display_Employee" xml:space="preserve">
+    <value>Співробітник</value>
+  </data>
+  <data name="Display_EndDate" xml:space="preserve">
+    <value>Кінцева дата</value>
+  </data>
+  <data name="Display_Event" xml:space="preserve">
+    <value>Подія</value>
+  </data>
+  <data name="Display_HardwareVault" xml:space="preserve">
+    <value>Апаратне сховище</value>
+  </data>
+  <data name="Display_Note" xml:space="preserve">
+    <value>Примітка</value>
+  </data>
+  <data name="Display_Severity" xml:space="preserve">
+    <value>Серйозність</value>
+  </data>
+  <data name="Display_UserSession" xml:space="preserve">
+    <value>Сесія користувача</value>
+  </data>
+  <data name="Display_Workstation" xml:space="preserve">
+    <value>Робоча станція</value>
+  </data>
+  <data name="Display_UnlockedBy" xml:space="preserve">
+    <value>Розблоковано</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_LeftText" xml:space="preserve">
+    <value>Зареєстровано</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_LongOpenSession" xml:space="preserve">
+    <value>Тривалий відкритий сеанс (&gt; 12 годин)</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_NonHideezUnlock" xml:space="preserve">
+    <value>Розблокування без Hideez (24 години)</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_RightText" xml:space="preserve">
+    <value>Відкриті сесії</value>
+  </data>
+  <data name="Dashboard_EmployeesCard_Title" xml:space="preserve">
+    <value>Співробітники</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LeftText" xml:space="preserve">
+    <value>Зареєстровано</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseCritical" xml:space="preserve">
+    <value>Ліцензія критична</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseExpired" xml:space="preserve">
+    <value>Термін дії ліцензії закінчився</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LicenseWarning" xml:space="preserve">
+    <value>Попередження про ліцензію</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_LowBattery" xml:space="preserve">
+    <value>Низький заряд батареї</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_RightText" xml:space="preserve">
+    <value>Готові</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_Title" xml:space="preserve">
+    <value>Апаратні сховища</value>
+  </data>
+  <data name="Dashboard_HardwareVaultsCard_VaultLocked" xml:space="preserve">
+    <value>Сховище заблоковано</value>
+  </data>
+  <data name="Dashboard_ServerCard_LeftLink" xml:space="preserve">
+    <value>https://github.com/HideezGroup/HES</value>
+  </data>
+  <data name="Dashboard_ServerCard_LeftText" xml:space="preserve">
+    <value>Версія HES</value>
+  </data>
+  <data name="Dashboard_ServerCard_LongPendingTasks" xml:space="preserve">
+    <value>Завдання, що довго розглядаються</value>
+  </data>
+  <data name="Dashboard_ServerCard_RightText" xml:space="preserve">
+    <value>Завдання апаратних сховищ</value>
+  </data>
+  <data name="Dashboard_ServerCard_Title" xml:space="preserve">
+    <value>Сервер Hideez Enterprise</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_LeftText" xml:space="preserve">
+    <value>Зареєстровано</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_RightText" xml:space="preserve">
+    <value>В онлайні</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_Title" xml:space="preserve">
+    <value>Робочі станції</value>
+  </data>
+  <data name="Dashboard_WorkstationsCard_WaitingForApproval" xml:space="preserve">
+    <value>В очікуванні схвалення</value>
+  </data>
+  <data name="Display_AppsSeparate" xml:space="preserve">
+    <value>Програми (розділити крапкою з комою)</value>
+  </data>
+  <data name="Display_Battery" xml:space="preserve">
+    <value>Акумулятор</value>
+  </data>
+  <data name="Display_ConfirmPassword" xml:space="preserve">
+    <value>Підтвердьте пароль</value>
+  </data>
+  <data name="Display_Domain" xml:space="preserve">
+    <value>Домен</value>
+  </data>
+  <data name="Display_Email" xml:space="preserve">
+    <value>Електронна пошта</value>
+  </data>
+  <data name="Display_Firmware" xml:space="preserve">
+    <value>Прошивка</value>
+  </data>
+  <data name="Display_FirstName" xml:space="preserve">
+    <value>Ім'я</value>
+  </data>
+  <data name="Display_LastName" xml:space="preserve">
+    <value>Прізвище</value>
+  </data>
+  <data name="Display_LastSeen" xml:space="preserve">
+    <value>Востаннє бачили</value>
+  </data>
+  <data name="Display_LastSynced" xml:space="preserve">
+    <value>Остання синхронізація</value>
+  </data>
+  <data name="Display_LicenseEndDate" xml:space="preserve">
+    <value>Дата закінчення ліцензії</value>
+  </data>
+  <data name="Display_LicenseStatus" xml:space="preserve">
+    <value>Статус ліцензії</value>
+  </data>
+  <data name="Display_Login" xml:space="preserve">
+    <value>Логiн</value>
+  </data>
+  <data name="Display_LoginType" xml:space="preserve">
+    <value>Тип входу</value>
+  </data>
+  <data name="Display_MAC" xml:space="preserve">
+    <value>МАС</value>
+  </data>
+  <data name="Display_Model" xml:space="preserve">
+    <value>Модель</value>
+  </data>
+  <data name="Display_Name" xml:space="preserve">
+    <value>Ім'я</value>
+  </data>
+  <data name="Display_OtpSecret" xml:space="preserve">
+    <value>OTP секрет</value>
+  </data>
+  <data name="Display_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="Display_PhoneNumber" xml:space="preserve">
+    <value>Номер телефону</value>
+  </data>
+  <data name="Display_Position" xml:space="preserve">
+    <value>Позиція</value>
+  </data>
+  <data name="Display_RFID" xml:space="preserve">
+    <value>RFID</value>
+  </data>
+  <data name="Display_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Display_StatusDescription" xml:space="preserve">
+    <value>Опис стану</value>
+  </data>
+  <data name="Display_StatusReason" xml:space="preserve">
+    <value>Причина статусу</value>
+  </data>
+  <data name="Display_UrlsSeparate" xml:space="preserve">
+    <value>URL-адреси (розділити крапкою з комою)</value>
+  </data>
+  <data name="Validation_CompareNewPassword" xml:space="preserve">
+    <value>Новий пароль та підтвердження не збігаються.</value>
+  </data>
+  <data name="Validation_ComparePassword" xml:space="preserve">
+    <value>Пароль та підтвердження не збігаються.</value>
+  </data>
+  <data name="Validation_EmailAddress" xml:space="preserve">
+    <value>Поле {0} не є дійсною адресою електронної пошти.</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>Поле {0} обов’язкове.</value>
+  </data>
+  <data name="Validation_StringLength" xml:space="preserve">
+    <value>Значення {0} має мати принаймні {2} та максимум {1} символів.</value>
+  </data>
+  <data name="Validation_Url" xml:space="preserve">
+    <value>Поле {0} не є дійсною повноцінною URL-адресою http, https або ftp.</value>
+  </data>
+  <data name="Display_AccountName" xml:space="preserve">
+    <value>Назва аккаунту</value>
+  </data>
+  <data name="Display_Created" xml:space="preserve">
+    <value>Створено</value>
+  </data>
+  <data name="Display_LastSeenEndDate" xml:space="preserve">
+    <value>Востаннє бачили кінцева дата</value>
+  </data>
+  <data name="Display_LastSeenStartDate" xml:space="preserve">
+    <value>Востаннє бачили дата початку</value>
+  </data>
+  <data name="Display_OtpUpdated" xml:space="preserve">
+    <value>OTP оновлено</value>
+  </data>
+  <data name="Display_PasswordUpdated" xml:space="preserve">
+    <value>Пароль оновлений</value>
+  </data>
+  <data name="Display_Profile" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="Display_Updated" xml:space="preserve">
+    <value>Оновлено</value>
+  </data>
+  <data name="Display_VaultsCount" xml:space="preserve">
+    <value>Кількість сховищ</value>
+  </data>
+  <data name="Exception_EmployeeRequiresEmail" xml:space="preserve">
+    <value>Потрібна електронна пошта.</value>
+  </data>
+  <data name="Exception_TheLDAPServerIsUnavailable" xml:space="preserve">
+    <value>Сервер LDAP недоступний.</value>
+  </data>
+  <data name="Exception_EmployeeRequiresLastName" xml:space="preserve">
+    <value>Потрібно прізвище.</value>
+  </data>
+  <data name="Display_Id" xml:space="preserve">
+    <value>Ідентифікатор</value>
+  </data>
+  <data name="Display_AuthenticatorCode" xml:space="preserve">
+    <value>Код автентифікатора</value>
+  </data>
+  <data name="Display_ConfirmNewPassword" xml:space="preserve">
+    <value>Підтвердити новий пароль</value>
+  </data>
+  <data name="Display_CurrentEmail" xml:space="preserve">
+    <value>Поточна електронна пошта</value>
+  </data>
+  <data name="Display_CurrentPassword" xml:space="preserve">
+    <value>Поточний пароль</value>
+  </data>
+  <data name="Display_NewEmail" xml:space="preserve">
+    <value>Нова електронна пошта</value>
+  </data>
+  <data name="Display_NewPassword" xml:space="preserve">
+    <value>Новий пароль</value>
+  </data>
+  <data name="Display_RecoveryCode" xml:space="preserve">
+    <value>Код відновлення</value>
+  </data>
+  <data name="Display_RememberMachine" xml:space="preserve">
+    <value>Запам’ятати машину</value>
+  </data>
+  <data name="Display_RememberMe" xml:space="preserve">
+    <value>Запам’ятати мене</value>
+  </data>
+  <data name="Display_VerificationCode" xml:space="preserve">
+    <value>Код підтвердження</value>
+  </data>
+  <data name="Display_ContactEmail" xml:space="preserve">
+    <value>Контактна електронна адреса</value>
+  </data>
+  <data name="Display_CreatedAtDateFrom" xml:space="preserve">
+    <value>Замовлення створено від</value>
+  </data>
+  <data name="Display_CreatedAtDateTo" xml:space="preserve">
+    <value>Замовлення створено до</value>
+  </data>
+  <data name="Display_LicenseEndDateFrom" xml:space="preserve">
+    <value>Дата закінчення ліцензії від</value>
+  </data>
+  <data name="Display_LicenseEndDateTo" xml:space="preserve">
+    <value>Дата закінчення ліцензії до</value>
+  </data>
+  <data name="Display_LicenseStartDateFrom" xml:space="preserve">
+    <value>Дата початку ліцензії від</value>
+  </data>
+  <data name="Display_LicenseStartDateTo" xml:space="preserve">
+    <value>Дата початку ліцензії до</value>
+  </data>
+  <data name="Display_OrderStatus" xml:space="preserve">
+    <value>Статус замовлення</value>
+  </data>
+  <data name="Display_ProlongLicense" xml:space="preserve">
+    <value>Продовжити ліцензію</value>
+  </data>
+  <data name="Display_HardwareVaultsCount" xml:space="preserve">
+    <value>Кількість апаратних сховищ</value>
+  </data>
+  <data name="Display_OrderCreatedAtDateFrom" xml:space="preserve">
+    <value>Замовлення створено вiд</value>
+  </data>
+  <data name="Display_OrderCreatedAtDateTo" xml:space="preserve">
+    <value>Замовлення створено до</value>
+  </data>
+  <data name="Display_UpdatedAtFrom" xml:space="preserve">
+    <value>Оновлено вiд</value>
+  </data>
+  <data name="Display_UpdatedAtTo" xml:space="preserve">
+    <value>Оновлено до</value>
+  </data>
+  <data name="Dispaly_ApiAddress" xml:space="preserve">
+    <value>API Адреса</value>
+  </data>
+  <data name="Dispaly_ApiKey" xml:space="preserve">
+    <value>API Ключ</value>
+  </data>
+  <data name="Dispaly_AutoPasswordChange" xml:space="preserve">
+    <value>Автоматична зміна пароля</value>
+  </data>
+  <data name="Dispaly_DomainName" xml:space="preserve">
+    <value>Доменне ім'я</value>
+  </data>
+  <data name="Dispaly_Host" xml:space="preserve">
+    <value>Хост</value>
+  </data>
+  <data name="Dispaly_Token" xml:space="preserve">
+    <value>Токен</value>
+  </data>
+  <data name="Dispaly_UserLogonName" xml:space="preserve">
+    <value>Ім'я входу користувача</value>
+  </data>
+  <data name="Validation_Range" xml:space="preserve">
+    <value>Поле {0} має бути між {1} та {2}.</value>
+  </data>
+  <data name="Display_Apps" xml:space="preserve">
+    <value>Програми</value>
+  </data>
+  <data name="Display_Urls" xml:space="preserve">
+    <value>URL-адреси</value>
+  </data>
+  <data name="Display_Approved" xml:space="preserve">
+    <value>Затверджено</value>
+  </data>
+  <data name="Display_ClientVersion" xml:space="preserve">
+    <value>Клієнтська версія</value>
+  </data>
+  <data name="Display_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="Display_Online" xml:space="preserve">
+    <value>Онлайн</value>
+  </data>
+  <data name="Display_OS" xml:space="preserve">
+    <value>ОС</value>
+  </data>
+  <data name="Exception_AccountExist" xml:space="preserve">
+    <value>Обліковий запис з таким іменем та логіном вже існує.</value>
+  </data>
+  <data name="Exception_AccountLockout" xml:space="preserve">
+    <value>Блокування облікового запису</value>
+  </data>
+  <data name="Exception_AccountNotFound" xml:space="preserve">
+    <value>Обліковий запис не знайдено.</value>
+  </data>
+  <data name="Exception_ActivationCodeNotFound" xml:space="preserve">
+    <value>Код активації не знайдено</value>
+  </data>
+  <data name="Exception_ActiveDirectoryUserNotFound" xml:space="preserve">
+    <value>Цього працівника було видалено з Active Directory, тому його було змінено на локального користувача.</value>
+  </data>
+  <data name="Exception_ApiKeyEmpty" xml:space="preserve">
+    <value>Api ключ порожній.</value>
+  </data>
+  <data name="Exception_AppSettingsNotFound" xml:space="preserve">
+    <value>Налаштування програми не знайдено.</value>
+  </data>
+  <data name="Exception_AuthenticatorNotFIDO2" xml:space="preserve">
+    <value>Цей автентифікатор не підтримує FIDO2.</value>
+  </data>
+  <data name="Exception_CannotDeleteDefaultProfile" xml:space="preserve">
+    <value>Не можна видаляти профіль за замовчуванням</value>
+  </data>
+  <data name="Exception_CompanyNameAlreadyInUse" xml:space="preserve">
+    <value>Така назва компанії вже використовується.</value>
+  </data>
+  <data name="Exception_CompanyNotFound" xml:space="preserve">
+    <value>Компанію не знайдено</value>
+  </data>
+  <data name="Exception_DataProtectionIsAlreadyActivated" xml:space="preserve">
+    <value>Захист даних уже активовано.</value>
+  </data>
+  <data name="Exception_DataProtectionIsAlreadyEnabled" xml:space="preserve">
+    <value>Захист даних уже ввімкнено.</value>
+  </data>
+  <data name="Exception_DataProtectionIsBusy" xml:space="preserve">
+    <value>Захист даних зайнятий.</value>
+  </data>
+  <data name="Exception_DataProtectionNotActivated" xml:space="preserve">
+    <value>Захист даних не активовано.</value>
+  </data>
+  <data name="Exception_DataProtectionNotEnabled" xml:space="preserve">
+    <value>Захист даних не ввімкнено.</value>
+  </data>
+  <data name="Exception_DataProtectionNotFinishedPasswordChange" xml:space="preserve">
+    <value>Зміна пароля для захисту даних не була завершена.</value>
+  </data>
+  <data name="Exception_DataProtectionParametersIsEmpty" xml:space="preserve">
+    <value>Параметри захисту даних порожні.</value>
+  </data>
+  <data name="Exception_DataProtectionParametersNotFound" xml:space="preserve">
+    <value>Параметри захисту даних не знайдено.</value>
+  </data>
+  <data name="Exception_DepartmentNameAlreadyInUse" xml:space="preserve">
+    <value>Така назва відділу вже використовується</value>
+  </data>
+  <data name="Exception_DepartmentNotFound" xml:space="preserve">
+    <value>Відділ не знайдено.</value>
+  </data>
+  <data name="Exception_EmailAlreadyTaken" xml:space="preserve">
+    <value>Ця email адреса вже занята.</value>
+  </data>
+  <data name="Exception_EmployeeAlreadyExist" xml:space="preserve">
+    <value>Співробітник з таким прізвищем уже існує.</value>
+  </data>
+  <data name="Exception_EmployeeNotFound" xml:space="preserve">
+    <value>Співробітника не знайдено.</value>
+  </data>
+  <data name="Exception_HardwareVaultCannotReserve" xml:space="preserve">
+    <value>Апаратне сховище у статусі, який не дозволяє резервувати.</value>
+  </data>
+  <data name="Exception_HardwareVaultNotFound" xml:space="preserve">
+    <value>Апаратне сховище не знайдено.</value>
+  </data>
+  <data name="Exception_HardwareVaultNotFoundWithParam" xml:space="preserve">
+    <value>Апаратне сховище {0} не знайдено.</value>
+  </data>
+  <data name="Exception_HardwareVaultProfileNotFound" xml:space="preserve">
+    <value>Профіль апаратного сховища не знайдено</value>
+  </data>
+  <data name="Exception_HardwareVaultUntieBeforeRemove" xml:space="preserve">
+    <value>Спочатку відв'язати апаратне сховище перед видаленням.</value>
+  </data>
+  <data name="Exception_HardwareVaultВoesNotAllowToRemove" xml:space="preserve">
+    <value>Апаратне сховище у статусі, який не дозволяє видалити.</value>
+  </data>
+  <data name="Exception_IncorrectCurrentPassword" xml:space="preserve">
+    <value>Неправильний поточний пароль.</value>
+  </data>
+  <data name="Exception_IncorrectOldPassword" xml:space="preserve">
+    <value>Неправильний старий пароль.</value>
+  </data>
+  <data name="Exception_IncorrectOtp" xml:space="preserve">
+    <value>Неправильний секрет OTP.</value>
+  </data>
+  <data name="Exception_IncorrectPassword" xml:space="preserve">
+    <value>Неправильний пароль.</value>
+  </data>
+  <data name="Exception_IncorrectUrl" xml:space="preserve">
+    <value>Неправильна URL-адреса.</value>
+  </data>
+  <data name="Exception_InvalidLoginAttempt" xml:space="preserve">
+    <value>Неправильна спроба входу.</value>
+  </data>
+  <data name="Exception_LdapSettingsNotSet" xml:space="preserve">
+    <value>Налаштування LDAP не встановлено.</value>
+  </data>
+  <data name="Exception_LicenseForHardwareVaultNotFound" xml:space="preserve">
+    <value>Ліцензій на апаратне сховище не знайдено.</value>
+  </data>
+  <data name="Exception_LicenseOrderNotFound" xml:space="preserve">
+    <value>Замовлення ліцензії не знайдено.</value>
+  </data>
+  <data name="Exception_None" xml:space="preserve">
+    <value>Щось пішло не так.</value>
+  </data>
+  <data name="Exception_OneHardwareVaultConstraint" xml:space="preserve">
+    <value>Не можна додати більше одного апаратного сховища.</value>
+  </data>
+  <data name="Exception_PositionNameAlreadyInUse" xml:space="preserve">
+    <value>Назва посади вже використовується.</value>
+  </data>
+  <data name="Exception_PositionNotFound" xml:space="preserve">
+    <value>Позиції не знайдено.</value>
+  </data>
+  <data name="Exception_ProfileNameAlreadyInUse" xml:space="preserve">
+    <value>Назва профілю вже використовується</value>
+  </data>
+  <data name="Exception_RequiresRelogin" xml:space="preserve">
+    <value>Потрібен релогін</value>
+  </data>
+  <data name="Exception_RequiresTwoFactor" xml:space="preserve">
+    <value>Потрібно два фактори.</value>
+  </data>
+  <data name="Exception_SecurityKeyNotFound" xml:space="preserve">
+    <value>Ключ безпеки не знайдено.</value>
+  </data>
+  <data name="Exception_SharedAccountExist" xml:space="preserve">
+    <value>Спільний обліковий запис з таким ім’ям та логіном вже існує.</value>
+  </data>
+  <data name="Exception_SharedAccountNotFound" xml:space="preserve">
+    <value>Спільний обліковий запис не знайдено.</value>
+  </data>
+  <data name="Exception_TemplateExist" xml:space="preserve">
+    <value>Шаблон із такою назвою вже існує.</value>
+  </data>
+  <data name="Exception_TemplateNotFound" xml:space="preserve">
+    <value>Шаблон не знайдено.</value>
+  </data>
+  <data name="Exception_UserNotFound" xml:space="preserve">
+    <value>Користувач не знайдений.</value>
+  </data>
+  <data name="Exception_WorkstationHardwareVaultPairAlreadyExist" xml:space="preserve">
+    <value>Апаратне сховище вже додано на робочу станцію.</value>
+  </data>
+  <data name="Exception_WorkstationHardwareVaultPairNotFound" xml:space="preserve">
+    <value>Пара робочої станції та апаратного сховища не знайдена.</value>
+  </data>
+  <data name="Exception_WorkstationNotFound" xml:space="preserve">
+    <value>Робоча станція не знайдена.</value>
+  </data>
+  <data name="Exception_WorkstationNotFoundWithParam" xml:space="preserve">
+    <value>Робочу станцію {0} не знайдено.</value>
+  </data>
+  <data name="Breadcrumbs_Administrators" xml:space="preserve">
+    <value>Адміністратори</value>
+  </data>
+  <data name="Breadcrumbs_Alarm" xml:space="preserve">
+    <value>Сигналізація</value>
+  </data>
+  <data name="Breadcrumbs_Audit" xml:space="preserve">
+    <value>Аудит</value>
+  </data>
+  <data name="Breadcrumbs_Dashboard" xml:space="preserve">
+    <value>Панель моніторингу</value>
+  </data>
+  <data name="Breadcrumbs_DataProtection" xml:space="preserve">
+    <value>Захист даних</value>
+  </data>
+  <data name="Breadcrumbs_Employees" xml:space="preserve">
+    <value>Співробітники</value>
+  </data>
+  <data name="Breadcrumbs_Groups" xml:space="preserve">
+    <value>Групи</value>
+  </data>
+  <data name="Breadcrumbs_HardwareVaultAccessProfiles" xml:space="preserve">
+    <value>Профілі доступу до апаратного сховища</value>
+  </data>
+  <data name="Breadcrumbs_HardwareVaults" xml:space="preserve">
+    <value>Апаратні сховища</value>
+  </data>
+  <data name="Breadcrumbs_LicenseOrders" xml:space="preserve">
+    <value>Замовлення ліцензій</value>
+  </data>
+  <data name="Breadcrumbs_OrgStructure" xml:space="preserve">
+    <value>Структура організації</value>
+  </data>
+  <data name="Breadcrumbs_Parameters" xml:space="preserve">
+    <value>Параметри</value>
+  </data>
+  <data name="Breadcrumbs_Profile" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="Breadcrumbs_Settings" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="Breadcrumbs_SharedAccounts" xml:space="preserve">
+    <value>Спільні аккаунти</value>
+  </data>
+  <data name="Breadcrumbs_Summaries" xml:space="preserve">
+    <value>Звіти</value>
+  </data>
+  <data name="Breadcrumbs_Templates" xml:space="preserve">
+    <value>Шаблони</value>
+  </data>
+  <data name="Breadcrumbs_WorkstationEvents" xml:space="preserve">
+    <value>Події робочої станції</value>
+  </data>
+  <data name="Breadcrumbs_Workstations" xml:space="preserve">
+    <value>Робочі станції</value>
+  </data>
+  <data name="Breadcrumbs_WorkstationSessions" xml:space="preserve">
+    <value>Сесії робочих станцій</value>
+  </data>
+  <data name="Email_ActivateDataProtection_Body" xml:space="preserve">
+    <value>Ваш сервер Hideez Enterprise перезапущений. Будь ласка, активуйте захист даних на сервері, натиснувши цю кнопку:</value>
+  </data>
+  <data name="Email_ActivateDataProtection_Subject" xml:space="preserve">
+    <value>Потрібна дія - оновлення статусу сервера Hideez Enterprise</value>
+  </data>
+  <data name="Email_Common_Admin" xml:space="preserve">
+    <value>Адміністратор</value>
+  </data>
+  <data name="Email_Common_Btn_Activate" xml:space="preserve">
+    <value>Активувати</value>
+  </data>
+  <data name="Email_Common_Btn_Confirm" xml:space="preserve">
+    <value>Підтвердьте</value>
+  </data>
+  <data name="Email_Common_Btn_ResetPassword" xml:space="preserve">
+    <value>Скинути пароль</value>
+  </data>
+  <data name="Email_Common_DaysRemainin" xml:space="preserve">
+    <value>днів залишились</value>
+  </data>
+  <data name="Email_Common_Dear" xml:space="preserve">
+    <value>Шановний {0},</value>
+  </data>
+  <data name="Email_Common_Link" xml:space="preserve">
+    <value>посилання</value>
+  </data>
+  <data name="Email_Common_YourServer" xml:space="preserve">
+    <value>Ваш сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_EmployeeDisableSso_Body" xml:space="preserve">
+    <value>Ви вимкнули опцію SSO через сервер Hideez Enterprise.</value>
+  </data>
+  <data name="Email_EmployeeDisableSso_Subject" xml:space="preserve">
+    <value>SSO вимкнено для сервера Hideez Enterprise</value>
+  </data>
+  <data name="Email_EmployeeEnableSso_Body" xml:space="preserve">
+    <value>Ви ввімкнули опцію SSO через Hideez Enterprise Server. Будь ласка, завершіть налаштування, додавши ключ безпеки за допомогою цього</value>
+  </data>
+  <data name="Email_EmployeeEnableSso_Subject" xml:space="preserve">
+    <value>SSO увімкнено для сервера Hideez Enterprise</value>
+  </data>
+  <data name="Email_HardwareVaultActivationCode_Body" xml:space="preserve">
+    <value>Код активації вашого обладнання:</value>
+  </data>
+  <data name="Email_HardwareVaultActivationCode_Subject" xml:space="preserve">
+    <value>Активувати обладнання - сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_HardwareVaultLicenseStatus_Body" xml:space="preserve">
+    <value>Деякі з ваших пристроїв Hideez Key змінили статус ліцензії. Будь ласка, перегляньте наведений нижче список і вжийте заходів, якщо потрібно.</value>
+  </data>
+  <data name="Email_HardwareVaultLicenseStatus_Subject" xml:space="preserve">
+    <value>Оновлення статусу ліцензії Hideez</value>
+  </data>
+  <data name="Email_LicenseChanged_Body" xml:space="preserve">
+    <value>Дякуємо за розміщення замовлення на ліцензії Hideez.</value>
+  </data>
+  <data name="Email_LicenseChanged_Description" xml:space="preserve">
+    <value>Статус вашого замовлення ліцензії Hideez від {0} змінено на {1}</value>
+  </data>
+  <data name="Email_LicenseChanged_Subject" xml:space="preserve">
+    <value>Оновлення статусу замовлення ліцензії Hideez</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Body" xml:space="preserve">
+    <value>Ваш пароль для облікового запису домену {0} було автоматично змінено та завантажено на пристрій Hideez Key {1}.</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Description" xml:space="preserve">
+    <value>Будь ласка, використовуйте його при наступному вході в систему. Зверніть увагу, що для синхронізації даних ваш комп’ютер потребуватиме з’єднання з сервером.</value>
+  </data>
+  <data name="Email_NotifyWhenPasswordAutoChanged_Subject" xml:space="preserve">
+    <value>Пароль було автоматично змінено  - сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_UserConfirmEmail_Body" xml:space="preserve">
+    <value>Підтвердьте свій аккаунт, натиснувши на кнопку:</value>
+  </data>
+  <data name="Email_UserConfirmEmail_Subject" xml:space="preserve">
+    <value>Потрібні дії - Підтвердьте свою електронну адресу на сервері Hideez Enterprise</value>
+  </data>
+  <data name="Email_UserInvitation_Body" xml:space="preserve">
+    <value>Вас запросили на сервер Hideez Enterprise. Будь ласка, підтвердьте запрошення, ввівши новий пароль за допомогою цього</value>
+  </data>
+  <data name="Email_UserInvitation_Subject" xml:space="preserve">
+    <value>Потрібна дія - запрошення на сервер Hideez Enterprise</value>
+  </data>
+  <data name="Email_UserResetPassword_Body" xml:space="preserve">
+    <value>Щоб захистити свій обліковий запис, скиньте пароль, натиснувши кнопку:</value>
+  </data>
+  <data name="Email_UserResetPassword_Subject" xml:space="preserve">
+    <value>Потрібна дія - скидання пароля для сервера Hideez Enterprise</value>
+  </data>
+  <data name="Display_AssertionConsumerService" xml:space="preserve">
+    <value>Ствердження споживчої служби</value>
+  </data>
+  <data name="Display_Issuer" xml:space="preserve">
+    <value>Емітент</value>
+  </data>
+  <data name="Display_PublicX509Certificate" xml:space="preserve">
+    <value>Публічний сертифікат x509</value>
+  </data>
+  <data name="Display_SingleLogoutService" xml:space="preserve">
+    <value>Служба єдиного виходу</value>
+  </data>
+  <data name="Exception_InvalidCertificate" xml:space="preserve">
+    <value>Недійсний сертифікат.</value>
+  </data>
+  <data name="Exception_Saml2IssuerAlreadyExist" xml:space="preserve">
+    <value>Емітент вже існує.</value>
+  </data>
+  <data name="Exception_Saml2RelyingPartyNotFound" xml:space="preserve">
+    <value>Постачальника послуг не знайдено.</value>
+  </data>
+  <data name="Exception_Saml2SPDescriptorNotLoaded" xml:space="preserve">
+    <value>Дескриптор постачальника послуг не завантажений із метаданих.</value>
+  </data>
+  <data name="Exception_Saml2NotMetadataOrDescriptorElementNotFound" xml:space="preserve">
+    <value>Не знайдено метаданих або елемента дескриптора.</value>
+  </data>
+</root>

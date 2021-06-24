@@ -1,0 +1,2011 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Alarm_DisableAlarm_Body" xml:space="preserve">
+    <value>Are you sure you want to turn off the alarm and unlock all workstations?</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Confirm" xml:space="preserve">
+    <value>Please enter your password to confirm</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Title" xml:space="preserve">
+    <value>Turn off alarm</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Toast" xml:space="preserve">
+    <value>All workstations have been unlocked.</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Body" xml:space="preserve">
+    <value>Are you sure you want to turn on the alarm and lock all workstations?</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Title" xml:space="preserve">
+    <value>Turn on alarm</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Toast" xml:space="preserve">
+    <value>All workstations have been locked.</value>
+  </data>
+  <data name="Alarm_PageDescription" xml:space="preserve">
+    <value>This button allows you to remotely lock workstations and block the connection of hardware vaults.</value>
+  </data>
+  <data name="Alarm_PageHeader" xml:space="preserve">
+    <value>Alarm Button</value>
+  </data>
+  <data name="Btn_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Btn_AddHardwareVault" xml:space="preserve">
+    <value>Add Hardware Vault</value>
+  </data>
+  <data name="Btn_AddSharedAccount" xml:space="preserve">
+    <value>Add Shared Account</value>
+  </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Btn_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Btn_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Btn_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Btn_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Btn_Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Btn_CreateEmployee" xml:space="preserve">
+    <value>Create Employee</value>
+  </data>
+  <data name="Btn_CreatePersonalAccount" xml:space="preserve">
+    <value>Create Personal Account</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Btn_Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Btn_DisableSSO" xml:space="preserve">
+    <value>Disable SSO</value>
+  </data>
+  <data name="Btn_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Btn_EditOTP" xml:space="preserve">
+    <value>Edit OTP</value>
+  </data>
+  <data name="Btn_EditPassword" xml:space="preserve">
+    <value>Edit Password</value>
+  </data>
+  <data name="Btn_EnableSSO" xml:space="preserve">
+    <value>Enable SSO</value>
+  </data>
+  <data name="Btn_Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Btn_Filters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="Btn_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Btn_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Btn_Resend" xml:space="preserve">
+    <value>Resend</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Btn_SendEmail" xml:space="preserve">
+    <value>Send email</value>
+  </data>
+  <data name="Btn_SetAsPrimary" xml:space="preserve">
+    <value>Set as primary</value>
+  </data>
+  <data name="Btn_Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="Btn_Skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="Btn_SyncNow" xml:space="preserve">
+    <value>Sync now</value>
+  </data>
+  <data name="Btn_SyncWithAD" xml:space="preserve">
+    <value>Sync with AD</value>
+  </data>
+  <data name="Btn_TurnOff" xml:space="preserve">
+    <value>Turn Off</value>
+  </data>
+  <data name="Btn_TurnOn" xml:space="preserve">
+    <value>Turn On</value>
+  </data>
+  <data name="Dashboard_HardwareVaultTasks_Title" xml:space="preserve">
+    <value>Hardware Vault Tasks</value>
+  </data>
+  <data name="EmployeeDetails_AddHardwareVault_Title" xml:space="preserve">
+    <value>Add hardware vault</value>
+  </data>
+  <data name="EmployeeDetails_AddHardwareVault_Toast" xml:space="preserve">
+    <value>Hardware Vault has been added.</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_NoAccounts" xml:space="preserve">
+    <value>There are no accounts yet, you can create a shared account on the Shared Account page.</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_Title" xml:space="preserve">
+    <value>Add a shared account</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_DeleteAccount" xml:space="preserve">
+    <value>Delete account</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_DeleteInvitation" xml:space="preserve">
+    <value>Delete invitation</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccount" xml:space="preserve">
+    <value>Edit personal account</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccountOtp" xml:space="preserve">
+    <value>Edit personal account OTP</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccountPwd" xml:space="preserve">
+    <value>Edit personal account password</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_HardwareVaultDetails" xml:space="preserve">
+    <value>Hardware Vault Details</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_RemoveHardwareVault" xml:space="preserve">
+    <value>Remove hardware vault from employee</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_ResendInvitation" xml:space="preserve">
+    <value>Resend invitation</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_SetAsPrimary" xml:space="preserve">
+    <value>Set as a primary account</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_ShowActivationCode" xml:space="preserve">
+    <value>Show Activation Code</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_SoftwareVaultDetails" xml:space="preserve">
+    <value>Software Vault Details</value>
+  </data>
+  <data name="EmployeeDetails_Label_LicenseNone" xml:space="preserve">
+    <value>License status None</value>
+  </data>
+  <data name="EmployeeDetails_Label_LicenseTill" xml:space="preserve">
+    <value>License till {0}</value>
+  </data>
+  <data name="EmployeeDetails_Label_PrimaryAccount" xml:space="preserve">
+    <value>Primary account</value>
+  </data>
+  <data name="EmployeeDetails_SoftwareVaultInviteSent" xml:space="preserve">
+    <value>Software Vault invite has been sent</value>
+  </data>
+  <data name="Employees_CreateEmployee_EmployeeAlreadyExists" xml:space="preserve">
+    <value>{0} {1} already exists.</value>
+  </data>
+  <data name="Employees_CreateEmployee_SendEmail" xml:space="preserve">
+    <value>You can send the code to the email</value>
+  </data>
+  <data name="Employees_CreateEmployee_Title" xml:space="preserve">
+    <value>Create Employee</value>
+  </data>
+  <data name="Employees_CreateEmployee_Toast" xml:space="preserve">
+    <value>The employee has been created.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Body" xml:space="preserve">
+    <value>Do you want to delete employee {0}? Also, the history of all events and sessions will be deleted.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Title" xml:space="preserve">
+    <value>Delete Employee</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Toast" xml:space="preserve">
+    <value>The Employee has been deleted.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_UntieDevice" xml:space="preserve">
+    <value>The employee {0} is tied device, first untie the device to remove the employee.</value>
+  </data>
+  <data name="Employees_EditEmployee_Title" xml:space="preserve">
+    <value>Edit Employee</value>
+  </data>
+  <data name="Employees_EditEmployee_Toast" xml:space="preserve">
+    <value>The Employee has been updated.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Alert" xml:space="preserve">
+    <value>To sync users from the Active Directory, set domain settings on the Parameters page.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Title" xml:space="preserve">
+    <value>Sync with Active Directory</value>
+  </data>
+  <data name="Label_Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Label_AccountName" xml:space="preserve">
+    <value>Account Name</value>
+  </data>
+  <data name="Label_Accounts" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="Label_AccountType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Label_Activation" xml:space="preserve">
+    <value>Activation</value>
+  </data>
+  <data name="Label_ActivationCode" xml:space="preserve">
+    <value>Activation Code</value>
+  </data>
+  <data name="Label_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Label_AD" xml:space="preserve">
+    <value>AD</value>
+  </data>
+  <data name="Label_Administrators" xml:space="preserve">
+    <value>Administrators</value>
+  </data>
+  <data name="Label_Apps" xml:space="preserve">
+    <value>Apps</value>
+  </data>
+  <data name="Label_Audit" xml:space="preserve">
+    <value>Audit</value>
+  </data>
+  <data name="Label_AvgSessionsCountPerDay" xml:space="preserve">
+    <value>Avg Sessions Count Per Day</value>
+  </data>
+  <data name="Label_AvgSessionsDuration" xml:space="preserve">
+    <value>Avg Sessions Duration</value>
+  </data>
+  <data name="Label_AvgTotalDuartionByEmployee" xml:space="preserve">
+    <value>Avg Total Duartion By Employee</value>
+  </data>
+  <data name="Label_AvgTotalSessionsCountByEmployee" xml:space="preserve">
+    <value>Avg Total Sessions Count By Employee</value>
+  </data>
+  <data name="Label_AvgWorkingHoursPerDay" xml:space="preserve">
+    <value>Avg Working Hours Per Day</value>
+  </data>
+  <data name="Label_ByDaysAndEmployees" xml:space="preserve">
+    <value>By Days And Employees</value>
+  </data>
+  <data name="Label_ByDepartments" xml:space="preserve">
+    <value>By Departments</value>
+  </data>
+  <data name="Label_ByEmployees" xml:space="preserve">
+    <value>By Employees</value>
+  </data>
+  <data name="Label_ByWorkstations" xml:space="preserve">
+    <value>By Workstations</value>
+  </data>
+  <data name="Label_Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="Label_Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Label_Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Label_DataProtection" xml:space="preserve">
+    <value>Data Protection</value>
+  </data>
+  <data name="Label_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Label_Day" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="Label_Days" xml:space="preserve">
+    <value>days</value>
+  </data>
+  <data name="Label_Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="Label_DisabledBy" xml:space="preserve">
+    <value>Disabled by</value>
+  </data>
+  <data name="Label_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Label_Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="Label_Employees" xml:space="preserve">
+    <value>Employees</value>
+  </data>
+  <data name="Label_EmployeesCount" xml:space="preserve">
+    <value>Employees Count</value>
+  </data>
+  <data name="Label_EnabledBy" xml:space="preserve">
+    <value>Enabled by</value>
+  </data>
+  <data name="Label_EndDate" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="Label_Event" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="Label_Events" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="Label_FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Label_Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="Label_HardwareVault" xml:space="preserve">
+    <value>Hardware Vault</value>
+  </data>
+  <data name="Label_HardwareVaults" xml:space="preserve">
+    <value>Hardware Vaults</value>
+  </data>
+  <data name="Label_LastSeen" xml:space="preserve">
+    <value>Last Seen</value>
+  </data>
+  <data name="Label_LicenseOrders" xml:space="preserve">
+    <value>License Orders</value>
+  </data>
+  <data name="Label_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Label_LoginType" xml:space="preserve">
+    <value>Login Type</value>
+  </data>
+  <data name="Label_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Label_NeedSync" xml:space="preserve">
+    <value>Need Sync</value>
+  </data>
+  <data name="Label_NeverUsed" xml:space="preserve">
+    <value>Never used</value>
+  </data>
+  <data name="Label_Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Label_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Label_Operation" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="Label_OrgStructure" xml:space="preserve">
+    <value>Organization Structure</value>
+  </data>
+  <data name="Label_OtpUpdated" xml:space="preserve">
+    <value>OTP Updated</value>
+  </data>
+  <data name="Label_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="Label_Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="Label_PersonalAccount" xml:space="preserve">
+    <value>Personal account</value>
+  </data>
+  <data name="Label_PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="Label_Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Label_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Label_PasswordUpdated" xml:space="preserve">
+    <value>Password updated</value>
+  </data>
+  <data name="Label_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Label_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Label_SecurityKey" xml:space="preserve">
+    <value>Security Key</value>
+  </data>
+  <data name="Label_SerialNumber" xml:space="preserve">
+    <value>Serial Number</value>
+  </data>
+  <data name="Label_Session" xml:space="preserve">
+    <value>Session</value>
+  </data>
+  <data name="Label_Sessions" xml:space="preserve">
+    <value>Sessions</value>
+  </data>
+  <data name="Label_SessionsCount" xml:space="preserve">
+    <value>Sessions Count</value>
+  </data>
+  <data name="Label_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Label_Severity" xml:space="preserve">
+    <value>Severity</value>
+  </data>
+  <data name="Label_SharedAccount" xml:space="preserve">
+    <value>Shared Account</value>
+  </data>
+  <data name="Label_SharedAccounts" xml:space="preserve">
+    <value>Shared Accounts</value>
+  </data>
+  <data name="Label_SingleSignOn" xml:space="preserve">
+    <value>Single Sign On</value>
+  </data>
+  <data name="Label_SoftwareVaults" xml:space="preserve">
+    <value>Software Vaults</value>
+  </data>
+  <data name="Label_SSODisabled" xml:space="preserve">
+    <value>SSO Disabled</value>
+  </data>
+  <data name="Label_SSOEnabled" xml:space="preserve">
+    <value>SSO Enabled</value>
+  </data>
+  <data name="Label_StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Label_Summaries" xml:space="preserve">
+    <value>Summaries</value>
+  </data>
+  <data name="Label_Templates" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="Label_TotalSessionsCount" xml:space="preserve">
+    <value>Total Sessions Count</value>
+  </data>
+  <data name="Label_TotalSessionsDuration" xml:space="preserve">
+    <value>Total Sessions Duration</value>
+  </data>
+  <data name="Label_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Label_UnlockedBy" xml:space="preserve">
+    <value>Unlocked By</value>
+  </data>
+  <data name="Label_Updated" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="Label_Urls" xml:space="preserve">
+    <value>URLs</value>
+  </data>
+  <data name="Label_UserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="Label_VaultAccessProfiles" xml:space="preserve">
+    <value>Vault Access Profiles</value>
+  </data>
+  <data name="Label_Vaults" xml:space="preserve">
+    <value>Vaults</value>
+  </data>
+  <data name="Label_VaultsCount" xml:space="preserve">
+    <value>Vaults Count</value>
+  </data>
+  <data name="Label_WorkingDaysCount" xml:space="preserve">
+    <value>Working Days Count</value>
+  </data>
+  <data name="Label_Workstation" xml:space="preserve">
+    <value>Workstation</value>
+  </data>
+  <data name="Label_Workstations" xml:space="preserve">
+    <value>Workstations</value>
+  </data>
+  <data name="Label_WorkstationsCount" xml:space="preserve">
+    <value>Workstations Count</value>
+  </data>
+  <data name="Label_WorkstationsOnline" xml:space="preserve">
+    <value>Workstations Online</value>
+  </data>
+  <data name="Message_SelectHardwareVault" xml:space="preserve">
+    <value>Please, select a hardware vault.</value>
+  </data>
+  <data name="Summary_PageTitle" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="Title_CannotAddMoreHardwareVault" xml:space="preserve">
+    <value>Cannot add more than one hardware vault.</value>
+  </data>
+  <data name="Title_DeleteEmployee" xml:space="preserve">
+    <value>Delete employee</value>
+  </data>
+  <data name="Title_EditEmployee" xml:space="preserve">
+    <value>Edit employee</value>
+  </data>
+  <data name="Title_EmployeeDetails" xml:space="preserve">
+    <value>Employee details</value>
+  </data>
+  <data name="Title_Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Title_ImportedFromActiveDirectory" xml:space="preserve">
+    <value>Imported from Active Directory</value>
+  </data>
+  <data name="Title_LockAll" xml:space="preserve">
+    <value>Lock all workstations</value>
+  </data>
+  <data name="Title_LongPending" xml:space="preserve">
+    <value>Long Pending</value>
+  </data>
+  <data name="Title_RefreshTable" xml:space="preserve">
+    <value>Refresh table</value>
+  </data>
+  <data name="Title_UnlockAll" xml:space="preserve">
+    <value>Unlock all workstations</value>
+  </data>
+  <data name="WorkstationEvents_PageTitle" xml:space="preserve">
+    <value>Workstation Events</value>
+  </data>
+  <data name="WorkstationSessions_PageTitle" xml:space="preserve">
+    <value>Workstation Sessions</value>
+  </data>
+  <data name="Employees_CreateEmployee_SelectVault" xml:space="preserve">
+    <value>Please, select a vault.</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_EnterData" xml:space="preserve">
+    <value>Enter data manually or select from the template:</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_Title" xml:space="preserve">
+    <value>Create personal account</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_Toast" xml:space="preserve">
+    <value>Account has been created.</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Body" xml:space="preserve">
+    <value>Do you want to delete {0} account {1}?</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Toast" xml:space="preserve">
+    <value>The account has been deleted.</value>
+  </data>
+  <data name="Label_Domain" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="Label_UserLogonName" xml:space="preserve">
+    <value>User Logon Name</value>
+  </data>
+  <data name="Btn_Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="Btn_Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="Btn_Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Title" xml:space="preserve">
+    <value>Delete Account</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Body" xml:space="preserve">
+    <value>Do you want to remove vault {0}? When removing the last vault, all accounts will be deleted.</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Title" xml:space="preserve">
+    <value>Delete Hardware Vault</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Toast" xml:space="preserve">
+    <value>The Hardware Vault has been deleted.</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Body" xml:space="preserve">
+    <value>Are you sure you want to disable SSO for {0}?</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Title" xml:space="preserve">
+    <value>Disable SSO</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Toast" xml:space="preserve">
+    <value>The SSO has been disabled.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountOtp_Title" xml:space="preserve">
+    <value>Edit personal account OTP</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountOtp_Toast" xml:space="preserve">
+    <value>The Account's OTP secret has been updated.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_CryptographicStrength" xml:space="preserve">
+    <value>Current cryptographic strength</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsLowerCase" xml:space="preserve">
+    <value>Is Lower Case</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsNumeric" xml:space="preserve">
+    <value>Is Numeric</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsSpecChar" xml:space="preserve">
+    <value>Is Spec Char</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsUpperCase" xml:space="preserve">
+    <value>Is Upper Case</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Length" xml:space="preserve">
+    <value>Length {0}</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Title" xml:space="preserve">
+    <value>Edit account password</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Toast" xml:space="preserve">
+    <value>The account password has been updated.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccount_Title" xml:space="preserve">
+    <value>Edit personal account</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccount_Toast" xml:space="preserve">
+    <value>The account has been updated.</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Body" xml:space="preserve">
+    <value>Are you sure you want to enable SSO for {0}?</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Title" xml:space="preserve">
+    <value>Enable SSO</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Toast" xml:space="preserve">
+    <value>The SSO has been enabled.</value>
+  </data>
+  <data name="EmployeeDetails_HardwareVaultDetails_Title" xml:space="preserve">
+    <value>Hardware vault details</value>
+  </data>
+  <data name="EmployeeDetails_SetAsWorkstationAccount_Body" xml:space="preserve">
+    <value>Set this account as a primary account?</value>
+  </data>
+  <data name="EmployeeDetails_SetAsWorkstationAccount_Toast" xml:space="preserve">
+    <value>Account has been set as a primary.</value>
+  </data>
+  <data name="Label_Battery" xml:space="preserve">
+    <value>Battery</value>
+  </data>
+  <data name="Label_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Label_EnterPwd" xml:space="preserve">
+    <value>Enter Pwd</value>
+  </data>
+  <data name="Label_GeneratePwd" xml:space="preserve">
+    <value>Generate Pwd</value>
+  </data>
+  <data name="Label_ImportedAt" xml:space="preserve">
+    <value>Imported At</value>
+  </data>
+  <data name="Label_LastSynced" xml:space="preserve">
+    <value>Last Synced</value>
+  </data>
+  <data name="Label_LicenseEndDate" xml:space="preserve">
+    <value>License End Date</value>
+  </data>
+  <data name="Label_LicenseStatus" xml:space="preserve">
+    <value>License Status</value>
+  </data>
+  <data name="Label_MAC" xml:space="preserve">
+    <value>MAC</value>
+  </data>
+  <data name="Label_Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Label_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Label_Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="Label_RFID" xml:space="preserve">
+    <value>RFID</value>
+  </data>
+  <data name="Label_SelectReason" xml:space="preserve">
+    <value>Select the reason</value>
+  </data>
+  <data name="Label_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Btn_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="Btn_ActivateVault" xml:space="preserve">
+    <value>Activate vault</value>
+  </data>
+  <data name="Btn_ActivationCode" xml:space="preserve">
+    <value>Activation code</value>
+  </data>
+  <data name="Btn_Change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Btn_ChangeProfile" xml:space="preserve">
+    <value>Change Profile</value>
+  </data>
+  <data name="Btn_Compromised" xml:space="preserve">
+    <value>Compromised</value>
+  </data>
+  <data name="Btn_EditRFID" xml:space="preserve">
+    <value>Edit RFID</value>
+  </data>
+  <data name="Btn_Suspend" xml:space="preserve">
+    <value>Suspend</value>
+  </data>
+  <data name="Btn_SuspendVault" xml:space="preserve">
+    <value>Suspend vault</value>
+  </data>
+  <data name="Btn_VaultCompromised" xml:space="preserve">
+    <value>Vault Is Compromised</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_Toast" xml:space="preserve">
+    <value>The account has been added and will be uploaded to the device once it is connected to the server.</value>
+  </data>
+  <data name="HardwareVaults_BtnTitle_ShowActivationCode" xml:space="preserve">
+    <value>Show Activation Code</value>
+  </data>
+  <data name="HardwareVaults_BtnTitle_VaultCompromised" xml:space="preserve">
+    <value>Compromised</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Body" xml:space="preserve">
+    <value>Change access profile for {0} vault?</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Title" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Toast" xml:space="preserve">
+    <value>The hardware vault profile has been updated.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Activate" xml:space="preserve">
+    <value>Are you sure you want to activate the vault {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Compromised" xml:space="preserve">
+    <value>Are you sure you want to set the vault {0} as a compromised?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Suspend" xml:space="preserve">
+    <value>Are you sure you want to suspend the vault {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Compromised" xml:space="preserve">
+    <value>Compromised</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Suspend" xml:space="preserve">
+    <value>Suspend</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Activate" xml:space="preserve">
+    <value>The Vault activation is pending.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Compromised" xml:space="preserve">
+    <value>Vault has been set as a compromised.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Suspend" xml:space="preserve">
+    <value>Vault pending suspension.</value>
+  </data>
+  <data name="HardwareVaults_EditRfid_Title" xml:space="preserve">
+    <value>Edit RFID</value>
+  </data>
+  <data name="HardwareVaults_EditRfid_Toast" xml:space="preserve">
+    <value>The RFID has been updated.</value>
+  </data>
+  <data name="HardwareVaults_ImportVaults_Toast" xml:space="preserve">
+    <value>The Hardware Vaults have been imported.</value>
+  </data>
+  <data name="HardwareVaults_ShowActivationCode_Title" xml:space="preserve">
+    <value>Activation code</value>
+  </data>
+  <data name="Label_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Label_Firmware" xml:space="preserve">
+    <value>Firmware</value>
+  </data>
+  <data name="Label_HardwareVaultProfile" xml:space="preserve">
+    <value>Hardware vault profile</value>
+  </data>
+  <data name="Label_High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="Label_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Label_Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="Label_StatusReason" xml:space="preserve">
+    <value>Status Reason</value>
+  </data>
+  <data name="Message_HardwareVaultStateChanged" xml:space="preserve">
+    <value>Hardware Vault {0} state changed.</value>
+  </data>
+  <data name="Message_PleaseTypeToConfirm" xml:space="preserve">
+    <value>Please type &lt;b&gt;{0}&lt;/b&gt; to confirm.</value>
+  </data>
+  <data name="Message_RfidNotChange" xml:space="preserve">
+    <value>The RFID will not change on the hardware vault.</value>
+  </data>
+  <data name="Message_YouCanSendCode" xml:space="preserve">
+    <value>You can send the code to the email</value>
+  </data>
+  <data name="Btn_ImportHardwareVaults" xml:space="preserve">
+    <value>Import Hardware Vaults</value>
+  </data>
+  <data name="Btn_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Btn_Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Btn_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Btn_TryAgain" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="Common_ErrorChangingEmail_Title" xml:space="preserve">
+    <value>Error changing email</value>
+  </data>
+  <data name="Common_UserNotFound_Description" xml:space="preserve">
+    <value>Unable to load user.</value>
+  </data>
+  <data name="Common_UserNotFound_Title" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="Common_WrongCode_Description" xml:space="preserve">
+    <value>This code is not valid.</value>
+  </data>
+  <data name="Common_WrongCode_Title" xml:space="preserve">
+    <value>Wrong code</value>
+  </data>
+  <data name="Identity_AccessDenied_Description" xml:space="preserve">
+    <value>You do not have access to this resource.</value>
+  </data>
+  <data name="Identity_AccessDenied_Title" xml:space="preserve">
+    <value>Access denied</value>
+  </data>
+  <data name="Identity_ConfirmEmailChange_Description" xml:space="preserve">
+    <value>You confirmed the email change for your account.</value>
+  </data>
+  <data name="Identity_ConfirmEmailChange_Header" xml:space="preserve">
+    <value>Thanks for confirming your email address.</value>
+  </data>
+  <data name="Identity_ForgotPasswordConfirmation_Description" xml:space="preserve">
+    <value>Please check your email to reset your password.</value>
+  </data>
+  <data name="Identity_ForgotPasswordConfirmation_Title" xml:space="preserve">
+    <value>Forgot password confirmation</value>
+  </data>
+  <data name="Identity_ForgotPassword_Header" xml:space="preserve">
+    <value>Enter your email.</value>
+  </data>
+  <data name="Identity_ForgotPassword_Title" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+  <data name="Identity_Invite_CodeMustBeSupplied" xml:space="preserve">
+    <value>A code must be supplied for invitation.</value>
+  </data>
+  <data name="Identity_Invite_EmailAddressDoesNotExist" xml:space="preserve">
+    <value>Email address does not exist.</value>
+  </data>
+  <data name="Identity_Invite_Header" xml:space="preserve">
+    <value>Invitation</value>
+  </data>
+  <data name="Identity_Invite_Title" xml:space="preserve">
+    <value>Invite Administrator</value>
+  </data>
+  <data name="Identity_Lockout_Description" xml:space="preserve">
+    <value>This account has been locked out, please try again later.</value>
+  </data>
+  <data name="Identity_Lockout_Title" xml:space="preserve">
+    <value>Locked out</value>
+  </data>
+  <data name="Identity_LoginWith2fa_Description" xml:space="preserve">
+    <value>Your login is protected with an authenticator app. Enter your authenticator code below.</value>
+  </data>
+  <data name="Identity_LoginWith2fa_DontHaveAccess" xml:space="preserve">
+    <value>Don't have access to your authenticator device?</value>
+  </data>
+  <data name="Identity_LoginWith2fa_InvalidAuthenticatorCode" xml:space="preserve">
+    <value>Invalid authenticator code.</value>
+  </data>
+  <data name="Identity_LoginWith2fa_LoginWithRecoveryCode" xml:space="preserve">
+    <value>Log in with a recovery code</value>
+  </data>
+  <data name="Identity_LoginWith2fa_Title" xml:space="preserve">
+    <value>Two-factor authentication</value>
+  </data>
+  <data name="Identity_LoginWith2fa_UnableToLoad" xml:space="preserve">
+    <value>Unable to load two-factor authentication user.</value>
+  </data>
+  <data name="Identity_LoginWithRecoveryCode_Description" xml:space="preserve">
+    <value>You have requested to log in with a recovery code. This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again.</value>
+  </data>
+  <data name="Identity_LoginWithRecoveryCode_InvalidRecoveryCode" xml:space="preserve">
+    <value>Invalid recovery code entered.</value>
+  </data>
+  <data name="Identity_LoginWithRecoveryCode_Title" xml:space="preserve">
+    <value>Recovery code verification</value>
+  </data>
+  <data name="Identity_Login_Email_Header" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+  <data name="Identity_Login_EnterPassword_Header" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="Identity_Login_ForgotYourPassword" xml:space="preserve">
+    <value>Forgot your password?</value>
+  </data>
+  <data name="Identity_Logout_Description" xml:space="preserve">
+    <value>You have successfully logged out of the application.</value>
+  </data>
+  <data name="Identity_Logout_Title" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="Identity_RegisterSecurityKey_AlreadyAdded" xml:space="preserve">
+    <value>You have already added a security key.</value>
+  </data>
+  <data name="Identity_RegisterSecurityKey_InvalidToken" xml:space="preserve">
+    <value>Invitation token has expired.</value>
+  </data>
+  <data name="Identity_RegisterSecurityKey_Title" xml:space="preserve">
+    <value>Security key registration</value>
+  </data>
+  <data name="Identity_RegisterSecurityKey_UserNotFound" xml:space="preserve">
+    <value>We could not find a user with such an email, please contact the administrator.</value>
+  </data>
+  <data name="Identity_ResetPassword_CodeMustBeSupplied" xml:space="preserve">
+    <value>A code must be supplied for a password reset.</value>
+  </data>
+  <data name="Identity_ResetPassword_Title" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="Identity_SingleLogOut_Header" xml:space="preserve">
+    <value>Single Log Out</value>
+  </data>
+  <data name="Identity_SingleSignOn_Header" xml:space="preserve">
+    <value>Single Sign On</value>
+  </data>
+  <data name="Identity_SingleSignOn_WrongQueryString_Description" xml:space="preserve">
+    <value>HTTP Query String does not contain {0}</value>
+  </data>
+  <data name="Identity_SingleSignOn_WrongQueryString_Title" xml:space="preserve">
+    <value>Wrong parameters</value>
+  </data>
+  <data name="Label_GoToLoginPage" xml:space="preserve">
+    <value>Go to login page</value>
+  </data>
+  <data name="Label_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Label_RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="SecurityKey_Done_Description" xml:space="preserve">
+    <value>You have successfully completed the security key registration process. Thanks!</value>
+  </data>
+  <data name="SecurityKey_Error_Description" xml:space="preserve">
+    <value>We couldn't verify you or the key you used. If you are using a security key, make sure this is your key and try again.</value>
+  </data>
+  <data name="SecurityKey_Register_Description" xml:space="preserve">
+    <value>Your PC will open a security window. Follow the instructions there to register.</value>
+  </data>
+  <data name="SecurityKey_SignIn_Description" xml:space="preserve">
+    <value>Your PC will open a security window. Follow the instructions there to sign in.</value>
+  </data>
+  <data name="SecurityKey_SignIn_Title" xml:space="preserve">
+    <value>Sign in with a security key</value>
+  </data>
+  <data name="SecurityKey_Start_Description" xml:space="preserve">
+    <value>When you choose Next, you will be promoted to plug your security key. Your PC will open a security window. Follow the instructions there to register.</value>
+  </data>
+  <data name="Btn_AddAuthenticatorApp" xml:space="preserve">
+    <value>Add authenticator app</value>
+  </data>
+  <data name="Btn_AddSecurityKey" xml:space="preserve">
+    <value>Add Security Key</value>
+  </data>
+  <data name="Btn_DeleteDataAndCloseMyAccount" xml:space="preserve">
+    <value>Delete data and close my account</value>
+  </data>
+  <data name="Btn_Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Btn_ForgetThisBrowser" xml:space="preserve">
+    <value>Forget this browser</value>
+  </data>
+  <data name="Btn_ResetAuthenticatorApp" xml:space="preserve">
+    <value>Reset authenticator app</value>
+  </data>
+  <data name="Btn_SetupAuthenticatorApp" xml:space="preserve">
+    <value>Setup authenticator app</value>
+  </data>
+  <data name="Profile_DeletePersonalData_Body" xml:space="preserve">
+    <value>Deleting this data will permanently remove your account, and this cannot be recovered.</value>
+  </data>
+  <data name="Profile_DeletePersonalData_Title" xml:space="preserve">
+    <value>Delete Personal Data</value>
+  </data>
+  <data name="Profile_General_ChangeEmail_Header" xml:space="preserve">
+    <value>Change email</value>
+  </data>
+  <data name="Profile_General_ChangeEmail_Toast" xml:space="preserve">
+    <value>Email confirmation sent.</value>
+    <comment>?</comment>
+  </data>
+  <data name="Profile_General_Description" xml:space="preserve">
+    <value>Basic information of your account.</value>
+  </data>
+  <data name="Profile_General_Language_Header" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Profile_General_PersonalData_Description1" xml:space="preserve">
+    <value>Your account contains personal data that you have given us. This page allows you to download or delete that data.</value>
+  </data>
+  <data name="Profile_General_PersonalData_Description2" xml:space="preserve">
+    <value>Deleting this data will permanently remove your account, and this cannot be recovered.</value>
+  </data>
+  <data name="Profile_General_PersonalData_Header" xml:space="preserve">
+    <value>Personal Data</value>
+  </data>
+  <data name="Profile_General_PersonalData_Toast" xml:space="preserve">
+    <value>Download started.</value>
+  </data>
+  <data name="Profile_General_Profile_Header" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Profile_General_Profile_Toast" xml:space="preserve">
+    <value>Your profile has been updated.</value>
+  </data>
+  <data name="Profile_General_Title" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Profile_Security_2FA_Header" xml:space="preserve">
+    <value>Two-factor authentication (2FA)</value>
+  </data>
+  <data name="Profile_Security_2FA_SubHeader_AuthenticatorApp" xml:space="preserve">
+    <value>Authenticator app</value>
+  </data>
+  <data name="Profile_Security_2FA_SubHeader_Manage2FA" xml:space="preserve">
+    <value>Manage 2FA</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_KeyName" xml:space="preserve">
+    <value>Security Key Name</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_Title" xml:space="preserve">
+    <value>Add new security key</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_Toast" xml:space="preserve">
+    <value>The Security Key has been added.</value>
+  </data>
+  <data name="Profile_Security_ChangePassword_Header" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Profile_Security_ChangePassword_Toast" xml:space="preserve">
+    <value>The Password has been updated.</value>
+  </data>
+  <data name="Profile_Security_DeleteSecurityKey_Body" xml:space="preserve">
+    <value>Delete security key? If you delete this security key, you will not be able to use it to sign in with your account.</value>
+  </data>
+  <data name="Profile_Security_DeleteSecurityKey_Title" xml:space="preserve">
+    <value>Delete Security Key</value>
+  </data>
+  <data name="Profile_Security_Description" xml:space="preserve">
+    <value>Your account security settings.</value>
+  </data>
+  <data name="Profile_Security_EditSecurityKey_Title" xml:space="preserve">
+    <value>Change security key name</value>
+  </data>
+  <data name="Profile_Security_EditSecurityKey_Toast" xml:space="preserve">
+    <value>The Security Key has been updated.</value>
+  </data>
+  <data name="Profile_Security_SecurityKeys_Header" xml:space="preserve">
+    <value>Security Keys</value>
+  </data>
+  <data name="Profile_Security_Title" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="SecurityKey_Error_Title" xml:space="preserve">
+    <value>Something went wrong. Try again.</value>
+  </data>
+  <data name="Btn_Disable2FA" xml:space="preserve">
+    <value>Disable 2FA</value>
+  </data>
+  <data name="Btn_GenerateRecoveryCodes" xml:space="preserve">
+    <value>Generate recovery codes</value>
+  </data>
+  <data name="Btn_ResetAuthenticatorKey" xml:space="preserve">
+    <value>Reset authenticator key</value>
+  </data>
+  <data name="Btn_ResetRecoveryCodes" xml:space="preserve">
+    <value>Reset recovery codes</value>
+  </data>
+  <data name="Btn_Verify" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="Profile_Security_2FA_1RecoveryCodes_Description" xml:space="preserve">
+    <value>You can generate a new set of recovery codes.</value>
+  </data>
+  <data name="Profile_Security_2FA_1RecoveryCodes_Header" xml:space="preserve">
+    <value>You have 1 recovery code left.</value>
+  </data>
+  <data name="Profile_Security_2FA_HaveRecoveryCodes_Description" xml:space="preserve">
+    <value>You should generate a new set of recovery codes.</value>
+  </data>
+  <data name="Profile_Security_2FA_HaveRecoveryCodes_Header" xml:space="preserve">
+    <value>You have {0} recovery codes left.</value>
+  </data>
+  <data name="Profile_Security_2FA_NoRecoveryCodes_Description" xml:space="preserve">
+    <value>You must generate a new set of recovery codes before you can log in with a recovery code.</value>
+  </data>
+  <data name="Profile_Security_2FA_NoRecoveryCodes_Header" xml:space="preserve">
+    <value>You have no recovery codes left.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Description" xml:space="preserve">
+    <value>Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should reset your authenticator keys.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Header" xml:space="preserve">
+    <value>This action only disables 2FA.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Title" xml:space="preserve">
+    <value>Disable two-factor authentication (2FA)</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Toast" xml:space="preserve">
+    <value>2FA has been disabled. You can reenable 2fa when you setup an authenticator app.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Header" xml:space="preserve">
+    <value>Configure authenticator app</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_RecoveryCodes_Description" xml:space="preserve">
+    <value>If you lose your device and don't have the recovery codes you will lose access to your account.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_RecoveryCodes_Header" xml:space="preserve">
+    <value>Put these codes in a safe place.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step1_Download2FA" xml:space="preserve">
+    <value>Download a two-factor authenticator app like Microsoft Authenticator for &lt;a href="https://go.microsoft.com/fwlink/?Linkid=825071"&gt;Windows&lt;/a&gt;, &lt;a href="https://go.microsoft.com/fwlink/?Linkid=825072"&gt;Android&lt;/a&gt; and &lt;a href="https://go.microsoft.com/fwlink/?Linkid=825073"&gt;iOS&lt;/a&gt; or Google Authenticator for &lt;a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;amp;hl=en"&gt;Android&lt;/a&gt; and &lt;a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"&gt;iOS&lt;/a&gt;.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step2_ScanQR" xml:space="preserve">
+    <value>Scan the QR Code or enter this key &lt;kbd&gt;{0}&lt;/kbd&gt; into your two factor authenticator app. Spaces and casing do not matter.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step3_EnterCode" xml:space="preserve">
+    <value>Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Title" xml:space="preserve">
+    <value>Enable Authenticator</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Toast_AuthenticatorVerified" xml:space="preserve">
+    <value>Your authenticator app has been verified.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Toast_InvalidCode" xml:space="preserve">
+    <value>Verification code is invalid.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_ToUse" xml:space="preserve">
+    <value>To use an authenticator app go through the following steps:</value>
+  </data>
+  <data name="Profile_Security_ForgetBrowser_Toast" xml:space="preserve">
+    <value>The current browser has been forgotten. When you login again from this browser you will be prompted for your 2FA code.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Description" xml:space="preserve">
+    <value>If you lose your device and don't have the recovery codes you will lose access to your account.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Header" xml:space="preserve">
+    <value>Put these codes in a safe place.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_NotExists_SubDescription" xml:space="preserve">
+    <value>Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should reset your authenticator keys.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Title" xml:space="preserve">
+    <value>Generate two-factor authentication (2FA) recovery codes</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Description" xml:space="preserve">
+    <value>If you reset your authenticator key your authenticator app will not work until you reconfigure it.</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_SubDescription" xml:space="preserve">
+    <value>This process disables 2FA until you verify your authenticator app. If you do not complete your authenticator app configuration you may lose access to your account.</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Title" xml:space="preserve">
+    <value>Reset Authenticator</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Toast" xml:space="preserve">
+    <value>Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.</value>
+  </data>
+  <data name="Profile_Security_SecurityKeys_RegistrationDate" xml:space="preserve">
+    <value>Registration Date</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Body" xml:space="preserve">
+    <value>You want to delete administrator {0}?</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Title" xml:space="preserve">
+    <value>Delete Administrator</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Toast" xml:space="preserve">
+    <value>The administrator has been deleted.</value>
+  </data>
+  <data name="Administrators_InviteAdmin_Title" xml:space="preserve">
+    <value>Invite Administrator</value>
+  </data>
+  <data name="Administrators_InviteAdmin_Toast" xml:space="preserve">
+    <value>The administrator has been invited.</value>
+  </data>
+  <data name="Administrators_ResendInvite_Toast" xml:space="preserve">
+    <value>The invitation has been resent.</value>
+  </data>
+  <data name="Btn_Invite" xml:space="preserve">
+    <value>Invite</value>
+  </data>
+  <data name="Btn_InviteAdmin" xml:space="preserve">
+    <value>Invite admin</value>
+  </data>
+  <data name="Btn_ResendInvite" xml:space="preserve">
+    <value>Resend invite</value>
+  </data>
+  <data name="Label_InviteAccepted" xml:space="preserve">
+    <value>Invite Accepted</value>
+  </data>
+  <data name="Label_TwoFactorEnabled" xml:space="preserve">
+    <value>Two Factor Enabled</value>
+  </data>
+  <data name="Btn_ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Btn_CreateProfile" xml:space="preserve">
+    <value>Create Profile</value>
+  </data>
+  <data name="DataProtection_ChangeDataProtectionPassword_Title" xml:space="preserve">
+    <value>Change Data Protection Password</value>
+  </data>
+  <data name="DataProtection_ChangeDataProtectionPassword_Toast" xml:space="preserve">
+    <value>The data protection password has been updated.</value>
+  </data>
+  <data name="DataProtection_DisableDataProtection_Title" xml:space="preserve">
+    <value>Disable Data Protection</value>
+  </data>
+  <data name="DataProtection_DisableDataProtection_Toast" xml:space="preserve">
+    <value>Data protection has been disabled.</value>
+  </data>
+  <data name="DataProtection_EnableDataProtection_Title" xml:space="preserve">
+    <value>Enable Data Protection</value>
+  </data>
+  <data name="DataProtection_EnableDataProtection_Toast" xml:space="preserve">
+    <value>Data protection has been enabled.</value>
+  </data>
+  <data name="DataProtection_IsDisabled" xml:space="preserve">
+    <value>Data protection is disabled.</value>
+  </data>
+  <data name="DataProtection_IsEnabled" xml:space="preserve">
+    <value>Data protection is enabled.</value>
+  </data>
+  <data name="DataProtection_MainDescription" xml:space="preserve">
+    <value>&lt;h5&gt;
+        What is the purpose of Data Protection?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        Data Protection solves the problem of secure data storage in the database (DB).
+    &lt;/p&gt;
+    &lt;h5&gt;
+        What confidential data is stored in the DB?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        The database stores Device Keys – encryption keys that provide access to the information stored on the Hideez Key. Passwords and OTP Secrets that are awaiting transfer to devices are also temporarily stored in the DB.
+        Passwords to the “Shared Account” are permanently stored in the database. If Data Protection is turned off, all passwords and keys are stored in plain text. If you have a Device Key and the device itself, you can read all the content of the Hideez Key memory.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        Do I need to enable Data Protection?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        First of all, you need to evaluate which employees have a direct to potential access to the HES database.
+        If some of them should not have access to the sensitive data listed above than Data Protection must be enabled.
+        Please also note, that the data can be physically read from the HDD/SDD on which it is stored. It is necessary to consider the possibility of both software and physical access to the data.
+        In some cases, for example, if the HES and the database server are running on the same physical server that can be accessed by a limited number of trusted people, then Data Protection can be omitted.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        How does it work?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        All the confidential fields in the DB are encrypted using the AES-256 algorithm. The encryption key (a password) is entered manually by the administrator after the webserver start, and then it is stored only in the server’s RAM.
+        If the server reboots, the encryption key erases, and all the administrators receive an email asking them to enter the Data Protection password. Before the password is entered, the server doesn’t process incoming requests. Once the password is provided, the server switches to the normal mode, and the data is decrypted on the fly.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        The password to Data Protection can be placed in a config file or Environment Variables on the server to avoid manual input. In this case, the server can reboot without administrator involvement. Such a scenario also means that only authorized persons should have access to the server.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        The password to Data Protection can be changed. To do this, enter the current password and a new password twice in the HES interface. All data in the DB will be re-encrypted.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        Risks and best practices
+    &lt;/h5&gt;
+    &lt;p&gt;
+        The main risk of Data Protection use is the password loss for its activation. In such a case, you lose access to the encrypted data on the server, as well as access to all the data on all of your Hideez Key devices.
+        All the devices will have to undergo manual reset procedure with full memory wipe, and then to be bonded again with the employees. All the accounts should be added to the devices from scratch.
+        Therefore we recommend that the password to Data Protection should be known to several employees and preferably stored on a safe physical token (vault).
+        &lt;br /&gt;
+        &lt;br /&gt;
+        In case of using Data Protection, there is a risk that the HES server can be temporarily unavailable due to emergency restart until the activation password to Data Protection is entered. However, it should not affect the company operations, since all the accounts are stored on employees’ devices and can be used without a connection to the HES server.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        An update of the Data Protection password should be done according to the company’s information security regulations.
+    &lt;/p&gt;</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_CreateAccessProfile_Title" xml:space="preserve">
+    <value>Create Profile</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_CreateAccessProfile_Toast" xml:space="preserve">
+    <value>The hardware vault profile has been created.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Body" xml:space="preserve">
+    <value>Do you want to delete hardware vault access profile {0}?</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Title" xml:space="preserve">
+    <value>Delete Profile</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Toast" xml:space="preserve">
+    <value>The hardware vault profile has been deleted.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DetailsProfile_Title" xml:space="preserve">
+    <value>Details Profile</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_EditProfile_Title" xml:space="preserve">
+    <value>Edit Profile</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_AuthorizationParameters" xml:space="preserve">
+    <value>Authorization parameters</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button" xml:space="preserve">
+    <value>Button</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_Connection_Title" xml:space="preserve">
+    <value>Request the device button confirmation for connecting the device to the computer that is already paired with the computer.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_Pairing_Title" xml:space="preserve">
+    <value>Request the device button confirmation for connecting the device to the computer for the first time.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_StorageAccess_Title" xml:space="preserve">
+    <value>Request the device button confirmation when an application is getting access to the device’s storage.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Connection" xml:space="preserve">
+    <value>Connection</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Pairing" xml:space="preserve">
+    <value>Pairing</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN" xml:space="preserve">
+    <value>PIN</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinExpiration" xml:space="preserve">
+    <value>PIN expiration</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinExpiration_Title" xml:space="preserve">
+    <value>After PIN code is expired, the device storage will be locked until the user enters the PIN again.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry" xml:space="preserve">
+    <value>PIN incorrect entry</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry_Title" xml:space="preserve">
+    <value>Maximum number of incorrect PIN code entering. After the number of entries is exceeded, the device is locked.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinLength" xml:space="preserve">
+    <value>PIN length</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinSettings" xml:space="preserve">
+    <value>PIN settings</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_Connection_Title" xml:space="preserve">
+    <value>Request the PIN-code for connecting the device to the computer that is already paired with the computer.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_Pairing_Title" xml:space="preserve">
+    <value>Request the PIN-code for connecting the device to the computer for the first time.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_StorageAccess_Title" xml:space="preserve">
+    <value>Request the PIN-code when an application is getting access to the device’s storage.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation" xml:space="preserve">
+    <value>Server Confirmation</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title" xml:space="preserve">
+    <value>Require the server confirmation for connecting the device to the computer that is already paired with the computer.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Pairing_Title" xml:space="preserve">
+    <value>Require the server confirmation for connecting the device to the computer for the first time.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_StorageAccess_Title" xml:space="preserve">
+    <value>Require the server confirmation when an application is getting access to the device’s storage.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_StorageAccess" xml:space="preserve">
+    <value>Storage Access</value>
+  </data>
+  <data name="Btn_NewOrder" xml:space="preserve">
+    <value>New Order</value>
+  </data>
+  <data name="Btn_RefreshLicenses" xml:space="preserve">
+    <value>Refresh Licenses</value>
+  </data>
+  <data name="Btn_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Label_ContactEmail" xml:space="preserve">
+    <value>Contact Email</value>
+  </data>
+  <data name="Label_OrderStatus" xml:space="preserve">
+    <value>Order Status</value>
+  </data>
+  <data name="Label_Prolong" xml:space="preserve">
+    <value>Prolong</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_AlreadryHaveLicense" xml:space="preserve">
+    <value>All of your devices already have a license. If you want to renew them, go to the "Renew License" tab.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_DontHaveDevices" xml:space="preserve">
+    <value>You don't have any Hideez devices yet. You can place an order at &lt;a href="https://hideez.com/pages/hideez-enterprise" role="button"&gt;hideez.com&lt;/a&gt;</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_DontHaveLicenseToRenew" xml:space="preserve">
+    <value>You don't have any licenses that can be renewed. To purchase new licenses, go to the "New License" tab.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_LessThanMaxEndDate" xml:space="preserve">
+    <value>The selected {0} less than max end date for selected hardware vaults.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_MustBeAtLeast" xml:space="preserve">
+    <value>{0} must be at least current date.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess" xml:space="preserve">
+    <value>{0} must not be less than {1}.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne" xml:space="preserve">
+    <value>Select at least one hardware vault.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_NewLicense" xml:space="preserve">
+    <value>New License</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_RenewLicense" xml:space="preserve">
+    <value>Renew License</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Title" xml:space="preserve">
+    <value>Create License Order</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Toast" xml:space="preserve">
+    <value>The license order has been created.</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Body" xml:space="preserve">
+    <value>Are you sure you want to delete this order?</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Title" xml:space="preserve">
+    <value>Delete License Order</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Toast" xml:space="preserve">
+    <value>The License Order has been deleted.</value>
+  </data>
+  <data name="LicenseOrders_DetailsLicenseOrder_Title" xml:space="preserve">
+    <value>License Order Details</value>
+  </data>
+  <data name="LicenseOrders_EditLicenseOrder_Title" xml:space="preserve">
+    <value>Edit License Order</value>
+  </data>
+  <data name="LicenseOrders_EditLicenseOrder_Toast" xml:space="preserve">
+    <value>The License Order has been updated.</value>
+  </data>
+  <data name="LicenseOrders_EntityName" xml:space="preserve">
+    <value>license order</value>
+  </data>
+  <data name="LicenseOrders_RefreshLicenseInfo_Toast" xml:space="preserve">
+    <value>License info refreshed.</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Body" xml:space="preserve">
+    <value>Please confirm sending the order.</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Title" xml:space="preserve">
+    <value>Send License Order</value>
+  </data>
+  <data name="LicenseOrders_ValidTo" xml:space="preserve">
+    <value>Valid to</value>
+  </data>
+  <data name="Btn_CreateCompany" xml:space="preserve">
+    <value>Create Company</value>
+  </data>
+  <data name="Btn_CreateDepartment" xml:space="preserve">
+    <value>Create Department</value>
+  </data>
+  <data name="Btn_CreatePosition" xml:space="preserve">
+    <value>Create Position</value>
+  </data>
+  <data name="Btn_DeleteSettings" xml:space="preserve">
+    <value>Delete Settings</value>
+  </data>
+  <data name="Btn_SetDomainSettings" xml:space="preserve">
+    <value>Set Domain Settings</value>
+  </data>
+  <data name="Btn_SetLicensingSettings" xml:space="preserve">
+    <value>Set Licensing Settings</value>
+  </data>
+  <data name="Btn_SetSplunkSettings" xml:space="preserve">
+    <value>Set Splunk Settings</value>
+  </data>
+  <data name="Label_Companies" xml:space="preserve">
+    <value>Companies</value>
+  </data>
+  <data name="Label_Departments" xml:space="preserve">
+    <value>Departments</value>
+  </data>
+  <data name="Label_NotConfigured" xml:space="preserve">
+    <value>Not configured</value>
+  </data>
+  <data name="Label_Positions" xml:space="preserve">
+    <value>Positions</value>
+  </data>
+  <data name="OrgStructure_CreateCompany_Title" xml:space="preserve">
+    <value>Create Company</value>
+  </data>
+  <data name="OrgStructure_CreateCompany_Toast" xml:space="preserve">
+    <value>The Company has been created.</value>
+  </data>
+  <data name="OrgStructure_CreateDepartment_Title" xml:space="preserve">
+    <value>Create Department</value>
+  </data>
+  <data name="OrgStructure_CreateDepartment_Toast" xml:space="preserve">
+    <value>The Department has been created.</value>
+  </data>
+  <data name="OrgStructure_CreatePosition_Title" xml:space="preserve">
+    <value>Create Position</value>
+  </data>
+  <data name="OrgStructure_CreatePosition_Toast" xml:space="preserve">
+    <value>The Position has been created.</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Body" xml:space="preserve">
+    <value>Do you want to delete company {0}?</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Title" xml:space="preserve">
+    <value>Delete Company</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Toast" xml:space="preserve">
+    <value>The Company has been deleted.</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Body" xml:space="preserve">
+    <value>Do you want to delete department {0}?</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Title" xml:space="preserve">
+    <value>Delete Department</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Toast" xml:space="preserve">
+    <value>The Department has been deleted.</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Body" xml:space="preserve">
+    <value>Do you want to delete position {0}?</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Title" xml:space="preserve">
+    <value>Delete Position</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Toast" xml:space="preserve">
+    <value>The Position has been deleted.</value>
+  </data>
+  <data name="OrgStructure_EditCompany_Title" xml:space="preserve">
+    <value>Edit Company</value>
+  </data>
+  <data name="OrgStructure_EditCompany_Toast" xml:space="preserve">
+    <value>The Company has been updated.</value>
+  </data>
+  <data name="OrgStructure_EditDepartment_Title" xml:space="preserve">
+    <value>Edit Department</value>
+  </data>
+  <data name="OrgStructure_EditDepartment_Toast" xml:space="preserve">
+    <value>The Department has been updated.</value>
+  </data>
+  <data name="OrgStructure_EditPosition_Title" xml:space="preserve">
+    <value>Edit Position</value>
+  </data>
+  <data name="OrgStructure_EditPosition_Toast" xml:space="preserve">
+    <value>The Position has been updated.</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Description" xml:space="preserve">
+    <value>These credentials will be used to connect to Active Directory via LDAPS</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Header" xml:space="preserve">
+    <value>Enter your credentials</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_InvalidCredentials" xml:space="preserve">
+    <value>Invalid password</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Placeholder" xml:space="preserve">
+    <value>my.company.com</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Title" xml:space="preserve">
+    <value>Domain Settings</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Toast" xml:space="preserve">
+    <value>The Domain settings have been updated.</value>
+  </data>
+  <data name="Parameters_AddLicenseSettings_Title" xml:space="preserve">
+    <value>License Settings</value>
+  </data>
+  <data name="Parameters_AddLicenseSettings_Toast" xml:space="preserve">
+    <value>The License settings have been updated.</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Body" xml:space="preserve">
+    <value>Please confirm deleting domain settings.</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Title" xml:space="preserve">
+    <value>Delete domain settings</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Toast" xml:space="preserve">
+    <value>The Domain settings have been deleted.</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Body" xml:space="preserve">
+    <value>Please confirm deleting license settings.</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Title" xml:space="preserve">
+    <value>Delete license settings</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Toast" xml:space="preserve">
+    <value>The License settings have been deleted.</value>
+  </data>
+  <data name="Parameters_Domain_Description" xml:space="preserve">
+    <value>To connect to the domain and import groups and users.</value>
+  </data>
+  <data name="Parameters_Domain_Title" xml:space="preserve">
+    <value>Domain</value>
+  </data>
+  <data name="Parameters_Licensing_Description" xml:space="preserve">
+    <value>API authentication key for ordering licenses and the address of the licensing server.</value>
+  </data>
+  <data name="Parameters_Licensing_Title" xml:space="preserve">
+    <value>Licensing</value>
+  </data>
+  <data name="Parameters_Splunk_Description" xml:space="preserve">
+    <value>Settings for sending events to Splunk.</value>
+  </data>
+  <data name="Parameters_Splunk_Title" xml:space="preserve">
+    <value>Splunk</value>
+  </data>
+  <data name="Parameters_AddSplunkSettings_Title" xml:space="preserve">
+    <value>Splunk Settings</value>
+  </data>
+  <data name="Parameters_AddSplunkSettings_Toast" xml:space="preserve">
+    <value>The Splunk settings have been updated.</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Body" xml:space="preserve">
+    <value>Please confirm deleting the Splunk settings.</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Title" xml:space="preserve">
+    <value>Delete Splunk settings</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Toast" xml:space="preserve">
+    <value>The Splunk settings have been deleted.</value>
+  </data>
+  <data name="Btn_CreateSharedAccount" xml:space="preserve">
+    <value>Create Shared Account</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_EnterData" xml:space="preserve">
+    <value>Enter data manually or select from the template:</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_Title" xml:space="preserve">
+    <value>Create Shared Account</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_Toast" xml:space="preserve">
+    <value>Account created.</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Body" xml:space="preserve">
+    <value>You want to delete account {0}?</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Title" xml:space="preserve">
+    <value>Delete Shared Account</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Toast" xml:space="preserve">
+    <value>The Shared Account has been deleted.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountOtp_Title" xml:space="preserve">
+    <value>Edit Shared Account OTP</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountOtp_Toast" xml:space="preserve">
+    <value>The Shared Account's OTP secret has been updated.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountPassword_Title" xml:space="preserve">
+    <value>Edit Shared Account password</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountPassword_Toast" xml:space="preserve">
+    <value>The Shared Account password has been updated.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccount_Title" xml:space="preserve">
+    <value>Edit Shared Account</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccount_Toast" xml:space="preserve">
+    <value>The Shared Account has been updated.</value>
+  </data>
+  <data name="Btn_Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Btn_CreateTemplate" xml:space="preserve">
+    <value>Create Template</value>
+  </data>
+  <data name="Btn_DeleteHardwareVault" xml:space="preserve">
+    <value>Delete Hardware Vault</value>
+  </data>
+  <data name="Btn_Unapprove" xml:space="preserve">
+    <value>Unapprove</value>
+  </data>
+  <data name="Label_Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Label_ClientVersion" xml:space="preserve">
+    <value>Client Version</value>
+  </data>
+  <data name="Label_EditedByAnother" xml:space="preserve">
+    <value>The {0} is currently being edited by another admin.</value>
+  </data>
+  <data name="Label_HasRFID" xml:space="preserve">
+    <value>Has RFID</value>
+  </data>
+  <data name="Label_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="Label_Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Label_OS" xml:space="preserve">
+    <value>OS</value>
+  </data>
+  <data name="Label_ProximityVaults" xml:space="preserve">
+    <value>Proximity Vaults</value>
+  </data>
+  <data name="Label_UnlockSettings" xml:space="preserve">
+    <value>Unlock settings</value>
+  </data>
+  <data name="Label_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="LoadingFailed_Description" xml:space="preserve">
+    <value>An error occurred while processing your request.</value>
+  </data>
+  <data name="LoadingFailed_Title" xml:space="preserve">
+    <value>Error.</value>
+  </data>
+  <data name="NotFound_Description" xml:space="preserve">
+    <value>We're sorry, we couldn't find the page you requested.</value>
+  </data>
+  <data name="NotFound_Title" xml:space="preserve">
+    <value>Page not found</value>
+  </data>
+  <data name="Table_Footer_ShowEntries" xml:space="preserve">
+    <value>Show entries</value>
+  </data>
+  <data name="Table_Footer_Showing" xml:space="preserve">
+    <value>Showing {0} to {1} of {2} entries</value>
+  </data>
+  <data name="Templates_CreateTemplate_Title" xml:space="preserve">
+    <value>Create Template</value>
+  </data>
+  <data name="Templates_CreateTemplate_Toast" xml:space="preserve">
+    <value>The template has been created.</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Body" xml:space="preserve">
+    <value>Do you want to delete template {0}?</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Title" xml:space="preserve">
+    <value>Delete Template</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Toast" xml:space="preserve">
+    <value>The template has been deleted.</value>
+  </data>
+  <data name="Templates_EditTemplate_Title" xml:space="preserve">
+    <value>Edit Template</value>
+  </data>
+  <data name="Templates_EditTemplate_Toast" xml:space="preserve">
+    <value>The template has been updated.</value>
+  </data>
+  <data name="Toast_TitleError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Toast_TitleNotification" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="Toast_TitleSuccess" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Workstations_AddProximityVault_Title" xml:space="preserve">
+    <value>Add Proximity Vault</value>
+    <comment>?</comment>
+  </data>
+  <data name="Workstations_AddProximityVault_Toast" xml:space="preserve">
+    <value>The Hardware Vault has been added.</value>
+  </data>
+  <data name="Workstations_AddProximityVault_Warning" xml:space="preserve">
+    <value>Warning! You are trying to allow proximity on more than one device. This can lead to unstable system behavior.</value>
+    <comment>?</comment>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Body" xml:space="preserve">
+    <value>Do you want to approve workstation {0}?</value>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Title" xml:space="preserve">
+    <value>Approve Workstation</value>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Toast" xml:space="preserve">
+    <value>The workstation has been approved.</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Body" xml:space="preserve">
+    <value>Do you want to delete vault {0} from this workstation?</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Title" xml:space="preserve">
+    <value>Delete Proximity Vault</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Toast" xml:space="preserve">
+    <value>The Hardware Vault has been deleted.</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Body" xml:space="preserve">
+    <value>Do you want to delete workstation {0}?</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Title" xml:space="preserve">
+    <value>Delete Workstation</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Toast" xml:space="preserve">
+    <value>The Workstation has been deleted.</value>
+  </data>
+  <data name="Workstations_EditWorkstation_Title" xml:space="preserve">
+    <value>Edit Workstation</value>
+  </data>
+  <data name="Workstations_EditWorkstation_Toast" xml:space="preserve">
+    <value>The Workstation has been updated.</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Body" xml:space="preserve">
+    <value>Do you want to unapprove workstation {0}?</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Title" xml:space="preserve">
+    <value>Unapprove Workstation</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Toast" xml:space="preserve">
+    <value>The Workstation has been unapproved.</value>
+  </data>
+  <data name="Btn_AddServiceProvider" xml:space="preserve">
+    <value>Add service provider</value>
+  </data>
+  <data name="Btn_DownloadCertificate" xml:space="preserve">
+    <value>Download certificate</value>
+  </data>
+  <data name="Btn_DownloadMetadata" xml:space="preserve">
+    <value>Download metadata</value>
+  </data>
+  <data name="Btn_ViewMetadata" xml:space="preserve">
+    <value>View metadata</value>
+  </data>
+  <data name="Label_IdPMetadata" xml:space="preserve">
+    <value>IdP metadata</value>
+  </data>
+  <data name="Label_ServiceProviders" xml:space="preserve">
+    <value>Service Providers</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Configure" xml:space="preserve">
+    <value>Configure settings manually or use a metadata file</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Add Service Provider</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Toast" xml:space="preserve">
+    <value>Service provider added.</value>
+  </data>
+  <data name="Parameters_DeleteSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Delete Service Provider</value>
+  </data>
+  <data name="Parameters_EditSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Edit Service Provider</value>
+  </data>
+  <data name="Parameters_EditSaml2RelyingParty_Toasat" xml:space="preserve">
+    <value>Service provider updated.</value>
+  </data>
+  <data name="Parameters_Saml_Description" xml:space="preserve">
+    <value>Configuring service providers.</value>
+  </data>
+  <data name="Parameters_Saml_Title" xml:space="preserve">
+    <value>SAML</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Toast" xml:space="preserve">
+    <value>License order has been sent.</value>
+    <comment>new</comment>
+  </data>
+</root>

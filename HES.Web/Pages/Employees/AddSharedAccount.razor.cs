@@ -59,7 +59,7 @@ namespace HES.Web.Pages.Employees
                 var account = await EmployeeService.AddSharedAccountAsync(EmployeeId, SelectedSharedAccount.Id);
                 var employee = await EmployeeService.GetEmployeeByIdAsync(account.EmployeeId);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(employee.HardwareVaults.Select(x => x.Id).ToArray());
-                await ToastService.ShowToastAsync("Account added and will be recorded when the device is connected to the server.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_AddSharedAccount_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

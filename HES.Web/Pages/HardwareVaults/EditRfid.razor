@@ -8,24 +8,24 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@HardwareVault.Id" CloseAction="ModalDialogCancel" />
     }
     else
     {
-        <Alert Message="The RFID will not change on the hardware vault." />
+        <Alert Message="@Resource.Message_RfidNotChange" />
         <EditForm Model="@HardwareVault" OnValidSubmit="EditAsync">
             <DataAnnotationsValidator />
             <div class="form-group">
                 <h5 class="text-navyblue">@HardwareVault.Id</h5>
             </div>
             <div class="form-group">
-                <Label For="@(() => HardwareVault.RFID)" class="text-gray"/>
+                <Label For="@(() => HardwareVault.RFID)" class="text-gray" />
                 <InputText @bind-Value="HardwareVault.RFID" class="form-control text-navyblue" />
                 <ValidationMessage For="() => HardwareVault.RFID" />
             </div>
             <div class="form-footer">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-                <Button @ref="ButtonSpinner"  Text="Save" type="submit" class="btn btn-primary" />
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                <Button @ref="ButtonSpinner" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }

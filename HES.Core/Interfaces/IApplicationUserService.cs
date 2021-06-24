@@ -1,7 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Models.API;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using HES.Core.Models.Identity;
@@ -33,9 +33,9 @@ namespace HES.Core.Interfaces
 
         #region Profile
         Task UpdateProfileInfoAsync(UserProfileModel parameters);
-        Task ChangeEmailAsync(ChangeEmailModel parameters);
+        Task<string> ChangeEmailAsync(UserChangeEmailModel parameters, string baseUri);
         Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters);
-        Task UpdateAccountPasswordAsync(ChangePasswordModel parameters);
+        Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters);
         Task<TwoFactorInfo> GetTwoFactorInfoAsync(HttpClient httpClient);
         Task ForgetBrowserAsync(HttpClient httpClient);
 

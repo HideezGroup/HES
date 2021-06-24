@@ -1,0 +1,2011 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Label_Dashboard" xml:space="preserve">
+    <value>Панель моніторингу</value>
+  </data>
+  <data name="Label_Administrators" xml:space="preserve">
+    <value>Адміністратори</value>
+  </data>
+  <data name="Label_Audit" xml:space="preserve">
+    <value>Аудит</value>
+  </data>
+  <data name="Label_DataProtection" xml:space="preserve">
+    <value>Захист даних</value>
+  </data>
+  <data name="Label_Employees" xml:space="preserve">
+    <value>Співробітники</value>
+  </data>
+  <data name="Label_Events" xml:space="preserve">
+    <value>Події</value>
+  </data>
+  <data name="Label_Groups" xml:space="preserve">
+    <value>Групи</value>
+  </data>
+  <data name="Label_HardwareVaults" xml:space="preserve">
+    <value>Апаратні сховища</value>
+  </data>
+  <data name="Label_LicenseOrders" xml:space="preserve">
+    <value>Замовлення ліцензій</value>
+  </data>
+  <data name="Label_Parameters" xml:space="preserve">
+    <value>Параметри</value>
+  </data>
+  <data name="Label_Sessions" xml:space="preserve">
+    <value>Сесії</value>
+  </data>
+  <data name="Label_Settings" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="Label_SharedAccounts" xml:space="preserve">
+    <value>Спільні аккаунти</value>
+  </data>
+  <data name="Label_Summaries" xml:space="preserve">
+    <value>Звіти</value>
+  </data>
+  <data name="Label_Templates" xml:space="preserve">
+    <value>Шаблони</value>
+  </data>
+  <data name="Label_Workstations" xml:space="preserve">
+    <value>Робочі станції</value>
+  </data>
+  <data name="Label_OrgStructure" xml:space="preserve">
+    <value>Структура організації</value>
+  </data>
+  <data name="Label_VaultAccessProfiles" xml:space="preserve">
+    <value>Профілі доступу до сховища</value>
+  </data>
+  <data name="Label_SoftwareVaults" xml:space="preserve">
+    <value>Програмні сховища</value>
+  </data>
+  <data name="Alarm_PageDescription" xml:space="preserve">
+    <value>Ця кнопка дозволяє віддалено блокувати робочі станції та блокувати підключення апаратних сховищ.</value>
+  </data>
+  <data name="Alarm_PageHeader" xml:space="preserve">
+    <value>Кнопка тривоги</value>
+  </data>
+  <data name="Btn_TurnOff" xml:space="preserve">
+    <value>Вимкнути</value>
+  </data>
+  <data name="Btn_TurnOn" xml:space="preserve">
+    <value>Ввімкнути</value>
+  </data>
+  <data name="Label_DisabledBy" xml:space="preserve">
+    <value>Вимкнено</value>
+  </data>
+  <data name="Label_EnabledBy" xml:space="preserve">
+    <value>Увімкнено</value>
+  </data>
+  <data name="Label_NeverUsed" xml:space="preserve">
+    <value>Ніколи не використовували</value>
+  </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Label_WorkstationsCount" xml:space="preserve">
+    <value>Кількість робочих станцій</value>
+  </data>
+  <data name="Label_WorkstationsOnline" xml:space="preserve">
+    <value>Робочі станції в онлайні</value>
+  </data>
+  <data name="Title_LockAll" xml:space="preserve">
+    <value>Заблокувати всі робочі станції</value>
+  </data>
+  <data name="Title_UnlockAll" xml:space="preserve">
+    <value>Розблокувати всі робочі станції</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Body" xml:space="preserve">
+    <value>Ви впевнені, що хочете вимкнути тривогу і розблокувати всі робочі станції?</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Confirm" xml:space="preserve">
+    <value>Будь ласка, введіть свій пароль для підтвердження</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Title" xml:space="preserve">
+    <value>Вимкніть тривогу</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Body" xml:space="preserve">
+    <value>Ви впевнені, що хочете увімкнути тривогу і заблокувати всі робочі станції?</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Title" xml:space="preserve">
+    <value>Увімкніть тривогу</value>
+  </data>
+  <data name="Alarm_EnableAlarm_Toast" xml:space="preserve">
+    <value>Усі робочі станції заблоковані.</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>Скасувати</value>
+  </data>
+  <data name="Btn_Confirm" xml:space="preserve">
+    <value>Підтвердити</value>
+  </data>
+  <data name="Alarm_DisableAlarm_Toast" xml:space="preserve">
+    <value>Усі робочі станції розблоковані.</value>
+  </data>
+  <data name="Btn_Clear" xml:space="preserve">
+    <value>Очистити</value>
+  </data>
+  <data name="Btn_Filter" xml:space="preserve">
+    <value>Фільтр</value>
+  </data>
+  <data name="Label_Account" xml:space="preserve">
+    <value>Аккаунт</value>
+  </data>
+  <data name="Label_AccountType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Label_Company" xml:space="preserve">
+    <value>Компанія</value>
+  </data>
+  <data name="Label_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Label_Department" xml:space="preserve">
+    <value>Відділення</value>
+  </data>
+  <data name="Label_Employee" xml:space="preserve">
+    <value>Співробітник</value>
+  </data>
+  <data name="Label_Event" xml:space="preserve">
+    <value>Подія</value>
+  </data>
+  <data name="Label_HardwareVault" xml:space="preserve">
+    <value>Апаратне сховище</value>
+  </data>
+  <data name="Label_Note" xml:space="preserve">
+    <value>Примітка</value>
+  </data>
+  <data name="Label_Session" xml:space="preserve">
+    <value>Сесія</value>
+  </data>
+  <data name="Label_Severity" xml:space="preserve">
+    <value>Серйозність</value>
+  </data>
+  <data name="Label_Workstation" xml:space="preserve">
+    <value>Робоча станція</value>
+  </data>
+  <data name="WorkstationEvents_PageTitle" xml:space="preserve">
+    <value>Події робочої станції</value>
+  </data>
+  <data name="Btn_Filters" xml:space="preserve">
+    <value>Фільтри</value>
+  </data>
+  <data name="Btn_Refresh" xml:space="preserve">
+    <value>Оновити</value>
+  </data>
+  <data name="Label_Search" xml:space="preserve">
+    <value>Пошук</value>
+  </data>
+  <data name="Title_Filter" xml:space="preserve">
+    <value>Фільтр</value>
+  </data>
+  <data name="Title_RefreshTable" xml:space="preserve">
+    <value>Оновити таблицю</value>
+  </data>
+  <data name="Label_Active" xml:space="preserve">
+    <value>Активний</value>
+  </data>
+  <data name="Label_EndDate" xml:space="preserve">
+    <value>Кінцева дата</value>
+  </data>
+  <data name="Label_StartDate" xml:space="preserve">
+    <value>Дата початку</value>
+  </data>
+  <data name="Label_UnlockedBy" xml:space="preserve">
+    <value>Розблоковано</value>
+  </data>
+  <data name="WorkstationSessions_PageTitle" xml:space="preserve">
+    <value>Сесії робочих станцій</value>
+  </data>
+  <data name="Label_AvgSessionsCountPerDay" xml:space="preserve">
+    <value>Середня кількість сеансів на день</value>
+  </data>
+  <data name="Label_AvgSessionsDuration" xml:space="preserve">
+    <value>Середня тривалість сеансів</value>
+  </data>
+  <data name="Label_AvgTotalDuartionByEmployee" xml:space="preserve">
+    <value>Середня загальна тривалість по співробітникам</value>
+  </data>
+  <data name="Label_AvgTotalSessionsCountByEmployee" xml:space="preserve">
+    <value>Середня загальна кількість сеансів по співробітникам</value>
+  </data>
+  <data name="Label_AvgWorkingHoursPerDay" xml:space="preserve">
+    <value>Середній робочий час на день</value>
+  </data>
+  <data name="Label_ByDaysAndEmployees" xml:space="preserve">
+    <value>За днями та співробітниками</value>
+  </data>
+  <data name="Label_ByDepartments" xml:space="preserve">
+    <value>За відділами</value>
+  </data>
+  <data name="Label_ByEmployees" xml:space="preserve">
+    <value>За співробітниками</value>
+  </data>
+  <data name="Label_ByWorkstations" xml:space="preserve">
+    <value>По робочих станціях</value>
+  </data>
+  <data name="Label_EmployeesCount" xml:space="preserve">
+    <value>Кількість співробітників</value>
+  </data>
+  <data name="Label_SessionsCount" xml:space="preserve">
+    <value>Кількість сеансів</value>
+  </data>
+  <data name="Label_TotalSessionsCount" xml:space="preserve">
+    <value>Загальна кількість сеансів</value>
+  </data>
+  <data name="Label_TotalSessionsDuration" xml:space="preserve">
+    <value>Загальна тривалість сеансів</value>
+  </data>
+  <data name="Label_WorkingDaysCount" xml:space="preserve">
+    <value>Кількість робочих днів</value>
+  </data>
+  <data name="Summary_PageTitle" xml:space="preserve">
+    <value>Звіт</value>
+  </data>
+  <data name="Btn_Close" xml:space="preserve">
+    <value>Закрити</value>
+  </data>
+  <data name="Label_Created" xml:space="preserve">
+    <value>Створено</value>
+  </data>
+  <data name="Label_Operation" xml:space="preserve">
+    <value>Операція</value>
+  </data>
+  <data name="Title_LongPending" xml:space="preserve">
+    <value>Довго в очікуванні</value>
+  </data>
+  <data name="Dashboard_HardwareVaultTasks_Title" xml:space="preserve">
+    <value>Завдання апаратних сховищ</value>
+  </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Btn_Copy" xml:space="preserve">
+    <value>Копіювати</value>
+  </data>
+  <data name="Btn_Create" xml:space="preserve">
+    <value>Створити</value>
+  </data>
+  <data name="Btn_CreateEmployee" xml:space="preserve">
+    <value>Створити співробітника</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>Видалити</value>
+  </data>
+  <data name="Btn_Details" xml:space="preserve">
+    <value>Деталі</value>
+  </data>
+  <data name="Btn_Done" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>Редагувати</value>
+  </data>
+  <data name="Btn_Next" xml:space="preserve">
+    <value>Далі</value>
+  </data>
+  <data name="Btn_SendEmail" xml:space="preserve">
+    <value>Відправити лист</value>
+  </data>
+  <data name="Btn_Show" xml:space="preserve">
+    <value>Показати</value>
+  </data>
+  <data name="Btn_Skip" xml:space="preserve">
+    <value>Пропустити</value>
+  </data>
+  <data name="Btn_SyncNow" xml:space="preserve">
+    <value>Синхронізувати зараз</value>
+  </data>
+  <data name="Btn_SyncWithAD" xml:space="preserve">
+    <value>Синхронізувати з AD</value>
+  </data>
+  <data name="Employees_CreateEmployee_EmployeeAlreadyExists" xml:space="preserve">
+    <value>{0} {1} вже існує.</value>
+  </data>
+  <data name="Employees_CreateEmployee_SelectVault" xml:space="preserve">
+    <value>Виберіть сховище.</value>
+  </data>
+  <data name="Employees_CreateEmployee_SendEmail" xml:space="preserve">
+    <value>Ви можете надіслати код на електронне повідомлення</value>
+  </data>
+  <data name="Employees_CreateEmployee_Title" xml:space="preserve">
+    <value>Створити співробітника</value>
+  </data>
+  <data name="Employees_CreateEmployee_Toast" xml:space="preserve">
+    <value>Співробітник створений.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Title" xml:space="preserve">
+    <value>Видалити співробітника</value>
+  </data>
+  <data name="Employees_EditEmployee_Title" xml:space="preserve">
+    <value>Редагувати співробітника</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Alert" xml:space="preserve">
+    <value>Щоб синхронізувати користувачів з Active Directory, встановіть параметри домену на сторінці параметрів.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Title" xml:space="preserve">
+    <value>Синхронізація з Active Directory</value>
+  </data>
+  <data name="Label_AccountName" xml:space="preserve">
+    <value>Назва аккаунту</value>
+  </data>
+  <data name="Label_Activation" xml:space="preserve">
+    <value>Активація</value>
+  </data>
+  <data name="Label_ActivationCode" xml:space="preserve">
+    <value>Код активації</value>
+  </data>
+  <data name="Label_AD" xml:space="preserve">
+    <value>AD</value>
+  </data>
+  <data name="Label_Email" xml:space="preserve">
+    <value>Електронна пошта</value>
+  </data>
+  <data name="Label_FullName" xml:space="preserve">
+    <value>Повне ім'я</value>
+  </data>
+  <data name="Label_LastSeen" xml:space="preserve">
+    <value>Востаннє бачили</value>
+  </data>
+  <data name="Label_LoginType" xml:space="preserve">
+    <value>Тип логіну</value>
+  </data>
+  <data name="Label_Name" xml:space="preserve">
+    <value>Ім'я</value>
+  </data>
+  <data name="Label_Overview" xml:space="preserve">
+    <value>Огляд</value>
+  </data>
+  <data name="Label_PersonalAccount" xml:space="preserve">
+    <value>Особистий аккаунт</value>
+  </data>
+  <data name="Label_PhoneNumber" xml:space="preserve">
+    <value>Номер телефону</value>
+  </data>
+  <data name="Label_Position" xml:space="preserve">
+    <value>Посада</value>
+  </data>
+  <data name="Label_Profile" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="Label_SerialNumber" xml:space="preserve">
+    <value>Серійний номер</value>
+  </data>
+  <data name="Label_SharedAccount" xml:space="preserve">
+    <value>Спільний аккаут</value>
+  </data>
+  <data name="Label_UserName" xml:space="preserve">
+    <value>Ім'я користувача</value>
+  </data>
+  <data name="Label_VaultsCount" xml:space="preserve">
+    <value>Кількість сховищь</value>
+  </data>
+  <data name="Title_DeleteEmployee" xml:space="preserve">
+    <value>Видалити співробітника</value>
+  </data>
+  <data name="Title_EditEmployee" xml:space="preserve">
+    <value>Редагувати співробітника</value>
+  </data>
+  <data name="Title_EmployeeDetails" xml:space="preserve">
+    <value>Інформація про співробітника</value>
+  </data>
+  <data name="Title_ImportedFromActiveDirectory" xml:space="preserve">
+    <value>Імпортовано з Active Directory</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>Зберегти</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити співробітника {0}? Також усі події та сеанси будуть видалені.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_Toast" xml:space="preserve">
+    <value>Співробітника видалено.</value>
+  </data>
+  <data name="Employees_DeleteEmployee_UntieDevice" xml:space="preserve">
+    <value>Співробітник {0} має пов’язаний пристрій, спочатку відв’яжіть пристрій, щоб видалити співробітника.</value>
+  </data>
+  <data name="Employees_EditEmployee_Toast" xml:space="preserve">
+    <value>Співробітник оновлений.</value>
+  </data>
+  <data name="Btn_AddHardwareVault" xml:space="preserve">
+    <value>Додати апаратне сховище</value>
+  </data>
+  <data name="Btn_AddSharedAccount" xml:space="preserve">
+    <value>Додати спільний аккаунт</value>
+  </data>
+  <data name="Btn_CreatePersonalAccount" xml:space="preserve">
+    <value>Створити особистий аккаунт</value>
+  </data>
+  <data name="Btn_DisableSSO" xml:space="preserve">
+    <value>Вимкнути єдиний вхід</value>
+  </data>
+  <data name="Btn_EditOTP" xml:space="preserve">
+    <value>Редагувати OTP</value>
+  </data>
+  <data name="Btn_EditPassword" xml:space="preserve">
+    <value>Редагувати пароль</value>
+  </data>
+  <data name="Btn_EnableSSO" xml:space="preserve">
+    <value>Увімкнути систему єдиного входу</value>
+  </data>
+  <data name="Btn_Resend" xml:space="preserve">
+    <value>Повторно відправити</value>
+  </data>
+  <data name="Btn_SetAsPrimary" xml:space="preserve">
+    <value>Встановити як основний</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_DeleteAccount" xml:space="preserve">
+    <value>Видалити аккаунт</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_DeleteInvitation" xml:space="preserve">
+    <value>Видалити запрошення</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccount" xml:space="preserve">
+    <value>Редагувати особистий аккаунт</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccountOtp" xml:space="preserve">
+    <value>Редагувати OTP секрет особистого аккаунту</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_EditPersonalAccountPwd" xml:space="preserve">
+    <value>Редагувати пароль особистого кабінету</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_HardwareVaultDetails" xml:space="preserve">
+    <value>Деталі апаратного сховища</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_RemoveHardwareVault" xml:space="preserve">
+    <value>Видалити апаратне сховище від співробітника</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_ResendInvitation" xml:space="preserve">
+    <value>Повторно надіслати запрошення</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_SetAsPrimary" xml:space="preserve">
+    <value>Встановити як основний аккаунт</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_ShowActivationCode" xml:space="preserve">
+    <value>Показати код активації</value>
+  </data>
+  <data name="EmployeeDetails_BtnTitle_SoftwareVaultDetails" xml:space="preserve">
+    <value>Деталі програмного сховища</value>
+  </data>
+  <data name="EmployeeDetails_Label_LicenseNone" xml:space="preserve">
+    <value>Статус ліцензії Немає</value>
+  </data>
+  <data name="EmployeeDetails_Label_LicenseTill" xml:space="preserve">
+    <value>Ліцензія до {0}</value>
+  </data>
+  <data name="EmployeeDetails_Label_PrimaryAccount" xml:space="preserve">
+    <value>Первинний рахунок</value>
+  </data>
+  <data name="EmployeeDetails_SoftwareVaultInviteSent" xml:space="preserve">
+    <value>Запрошення до програмного сховища надіслано</value>
+  </data>
+  <data name="Label_Accounts" xml:space="preserve">
+    <value>Аккаунти</value>
+  </data>
+  <data name="Label_Apps" xml:space="preserve">
+    <value>Програми</value>
+  </data>
+  <data name="Label_Day" xml:space="preserve">
+    <value>День</value>
+  </data>
+  <data name="Label_Days" xml:space="preserve">
+    <value>Днів</value>
+  </data>
+  <data name="Label_Login" xml:space="preserve">
+    <value>Логін</value>
+  </data>
+  <data name="Label_NeedSync" xml:space="preserve">
+    <value>Потрібна синхронізація</value>
+  </data>
+  <data name="Label_Online" xml:space="preserve">
+    <value>Онлайн</value>
+  </data>
+  <data name="Label_OtpUpdated" xml:space="preserve">
+    <value>OTP оновлений</value>
+  </data>
+  <data name="Label_PasswordUpdated" xml:space="preserve">
+    <value>Пароль оновлений</value>
+  </data>
+  <data name="Label_Remove" xml:space="preserve">
+    <value>Видалити</value>
+  </data>
+  <data name="Label_SecurityKey" xml:space="preserve">
+    <value>Ключ захисту</value>
+  </data>
+  <data name="Label_SingleSignOn" xml:space="preserve">
+    <value>Єдиний вхід</value>
+  </data>
+  <data name="Label_SSODisabled" xml:space="preserve">
+    <value>SSO вимкнено</value>
+  </data>
+  <data name="Label_SSOEnabled" xml:space="preserve">
+    <value>SSO увімкнено</value>
+  </data>
+  <data name="Label_Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Label_Updated" xml:space="preserve">
+    <value>Оновлено</value>
+  </data>
+  <data name="Label_Urls" xml:space="preserve">
+    <value>URL-адреси</value>
+  </data>
+  <data name="Label_Vaults" xml:space="preserve">
+    <value>Сховища</value>
+  </data>
+  <data name="Title_CannotAddMoreHardwareVault" xml:space="preserve">
+    <value>Не можна додати більше одного апаратного сховища.</value>
+  </data>
+  <data name="Btn_Add" xml:space="preserve">
+    <value>Додати</value>
+  </data>
+  <data name="EmployeeDetails_AddHardwareVault_Title" xml:space="preserve">
+    <value>Додайте апаратне сховище</value>
+  </data>
+  <data name="EmployeeDetails_AddHardwareVault_Toast" xml:space="preserve">
+    <value>Додано апаратне сховище.</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_NoAccounts" xml:space="preserve">
+    <value>Облікових записів немає, ви можете створити спільний обліковий запис на сторінці Спільні Облікові Записи.</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_Title" xml:space="preserve">
+    <value>Додати спільний обліковий запис</value>
+  </data>
+  <data name="Message_SelectHardwareVault" xml:space="preserve">
+    <value>Будь ласка, виберіть апаратне сховище.</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_EnterData" xml:space="preserve">
+    <value>Введіть дані вручну або виберіть із шаблону:</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_Title" xml:space="preserve">
+    <value>Створіть особистий обліковий запис</value>
+  </data>
+  <data name="EmployeeDetails_CreatePersonalAccount_Toast" xml:space="preserve">
+    <value>Обліковий запис створено.</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити {0} обліковий запис {1}?</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Toast" xml:space="preserve">
+    <value>Обліковий запис видалено.</value>
+  </data>
+  <data name="Label_Domain" xml:space="preserve">
+    <value>Домен</value>
+  </data>
+  <data name="Label_UserLogonName" xml:space="preserve">
+    <value>Ім'я входу користувача</value>
+  </data>
+  <data name="Btn_Disable" xml:space="preserve">
+    <value>Вимкнути</value>
+  </data>
+  <data name="Btn_Enable" xml:space="preserve">
+    <value>Увімкнути</value>
+  </data>
+  <data name="Btn_Generate" xml:space="preserve">
+    <value>Створити</value>
+  </data>
+  <data name="EmployeeDetails_DeleteAccount_Title" xml:space="preserve">
+    <value>Видалити аккаунт</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити сховище {0}? При видаленні останнього сховища всі облікові записи будуть видалені.</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Title" xml:space="preserve">
+    <value>Видалити апаратне сховище</value>
+  </data>
+  <data name="EmployeeDetails_DeleteHardwareVault_Toast" xml:space="preserve">
+    <value>Апаратне сховище видалено.</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Body" xml:space="preserve">
+    <value>Ви впевнені, що хочете вимкнути систему єдиного входу для {0}?</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Title" xml:space="preserve">
+    <value>Вимкнути єдиний вхід</value>
+  </data>
+  <data name="EmployeeDetails_DisableSso_Toast" xml:space="preserve">
+    <value>Єдиний вхід вимкнено.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountOtp_Title" xml:space="preserve">
+    <value>Редагувати особистий секрет OTP</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountOtp_Toast" xml:space="preserve">
+    <value>OTP секрет облікового запису оновлено.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_CryptographicStrength" xml:space="preserve">
+    <value>Поточна криптографічна сила</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsLowerCase" xml:space="preserve">
+    <value>Нижній регістр</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsNumeric" xml:space="preserve">
+    <value>Числовий</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsSpecChar" xml:space="preserve">
+    <value>Особливий регістр</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_IsUpperCase" xml:space="preserve">
+    <value>Верхній регістр</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Length" xml:space="preserve">
+    <value>Довжина {0}</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Title" xml:space="preserve">
+    <value>Змінити пароль аккаунту</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccountPwd_Toast" xml:space="preserve">
+    <value>Пароль аккаунту оновлений.</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccount_Title" xml:space="preserve">
+    <value>Редагувати особистий аккаунт</value>
+  </data>
+  <data name="EmployeeDetails_EditPersonalAccount_Toast" xml:space="preserve">
+    <value>Аккаунт оновлено.</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Body" xml:space="preserve">
+    <value>Ви впевнені, що хочете увімкнути систему єдиного входу для {0}?</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Title" xml:space="preserve">
+    <value>Увімкнути систему єдиного входу</value>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Toast" xml:space="preserve">
+    <value>Єдиний вхід увімкнено.</value>
+  </data>
+  <data name="EmployeeDetails_HardwareVaultDetails_Title" xml:space="preserve">
+    <value>Деталі апаратного сховища</value>
+  </data>
+  <data name="EmployeeDetails_SetAsWorkstationAccount_Body" xml:space="preserve">
+    <value>Встановити цей аккаунт як основний?</value>
+  </data>
+  <data name="EmployeeDetails_SetAsWorkstationAccount_Toast" xml:space="preserve">
+    <value>Обліковий запис встановлено як основний.</value>
+  </data>
+  <data name="Label_Battery" xml:space="preserve">
+    <value>Акумулятор</value>
+  </data>
+  <data name="Label_Description" xml:space="preserve">
+    <value>Опис</value>
+  </data>
+  <data name="Label_EnterPwd" xml:space="preserve">
+    <value>Введіть пароль</value>
+  </data>
+  <data name="Label_GeneratePwd" xml:space="preserve">
+    <value>Створити пароль</value>
+  </data>
+  <data name="Label_ImportedAt" xml:space="preserve">
+    <value>Імпорт</value>
+  </data>
+  <data name="Label_LastSynced" xml:space="preserve">
+    <value>Остання синхронізація</value>
+  </data>
+  <data name="Label_LicenseEndDate" xml:space="preserve">
+    <value>Дата закінчення ліцензії</value>
+  </data>
+  <data name="Label_LicenseStatus" xml:space="preserve">
+    <value>Статус ліцензії</value>
+  </data>
+  <data name="Label_MAC" xml:space="preserve">
+    <value>MAC</value>
+  </data>
+  <data name="Label_Model" xml:space="preserve">
+    <value>Модель</value>
+  </data>
+  <data name="Label_No" xml:space="preserve">
+    <value>Ні</value>
+  </data>
+  <data name="Label_Reason" xml:space="preserve">
+    <value>Причина</value>
+  </data>
+  <data name="Label_RFID" xml:space="preserve">
+    <value>RFID</value>
+  </data>
+  <data name="Label_SelectReason" xml:space="preserve">
+    <value>Виберіть причину</value>
+  </data>
+  <data name="Label_Yes" xml:space="preserve">
+    <value>Так</value>
+  </data>
+  <data name="EmployeeDetails_AddSharedAccount_Toast" xml:space="preserve">
+    <value>Обліковий запис додано і буде записано, коли пристрій буде підключено до сервера.</value>
+  </data>
+  <data name="Btn_Activate" xml:space="preserve">
+    <value>Активувати</value>
+  </data>
+  <data name="Btn_ActivateVault" xml:space="preserve">
+    <value>Активувати сховище</value>
+  </data>
+  <data name="Btn_ActivationCode" xml:space="preserve">
+    <value>Код активації</value>
+  </data>
+  <data name="Btn_Change" xml:space="preserve">
+    <value>Змінити</value>
+  </data>
+  <data name="Btn_ChangeProfile" xml:space="preserve">
+    <value>Змінити профіль</value>
+  </data>
+  <data name="Btn_Compromised" xml:space="preserve">
+    <value>Скомпрометований</value>
+  </data>
+  <data name="Btn_EditRFID" xml:space="preserve">
+    <value>Редагувати RFID</value>
+  </data>
+  <data name="Btn_Suspend" xml:space="preserve">
+    <value>Призупинити</value>
+  </data>
+  <data name="Btn_SuspendVault" xml:space="preserve">
+    <value>Призупинити сховище</value>
+  </data>
+  <data name="Btn_VaultCompromised" xml:space="preserve">
+    <value>Cховище cкомпрометований</value>
+  </data>
+  <data name="HardwareVaults_BtnTitle_ShowActivationCode" xml:space="preserve">
+    <value>Показати код активації</value>
+  </data>
+  <data name="HardwareVaults_BtnTitle_VaultCompromised" xml:space="preserve">
+    <value>Скомпрометований</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Body" xml:space="preserve">
+    <value>Змінити профіль доступу для сховища {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Title" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="HardwareVaults_ChangeProfile_Toast" xml:space="preserve">
+    <value>Профіль апаратного сховища оновлено.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Activate" xml:space="preserve">
+    <value>Ви впевнені, що хочете активувати сховище {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Compromised" xml:space="preserve">
+    <value>Ви впевнені, що хочете встановити компрометоване сховище {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Body_Suspend" xml:space="preserve">
+    <value>Ви впевнені, що хочете призупинити сховище {0}?</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Activate" xml:space="preserve">
+    <value>Активувати</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Compromised" xml:space="preserve">
+    <value>Скомпрометований</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Title_Suspend" xml:space="preserve">
+    <value>Призупинити</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Activate" xml:space="preserve">
+    <value>Сховище очікує на активацію.</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Compromised" xml:space="preserve">
+    <value>Сховище скомпрометовано</value>
+  </data>
+  <data name="HardwareVaults_ChangeStatus_Toast_Suspend" xml:space="preserve">
+    <value>Сховище очікує на призупинення.</value>
+  </data>
+  <data name="HardwareVaults_EditRfid_Title" xml:space="preserve">
+    <value>Редагувати RFID</value>
+  </data>
+  <data name="HardwareVaults_EditRfid_Toast" xml:space="preserve">
+    <value>RFID оновлено.</value>
+  </data>
+  <data name="HardwareVaults_ImportVaults_Toast" xml:space="preserve">
+    <value>Імпортовано апаратні сховища.</value>
+  </data>
+  <data name="HardwareVaults_ShowActivationCode_Title" xml:space="preserve">
+    <value>Код активації</value>
+  </data>
+  <data name="Label_Connected" xml:space="preserve">
+    <value>Підключений</value>
+  </data>
+  <data name="Label_Firmware" xml:space="preserve">
+    <value>Прошивка</value>
+  </data>
+  <data name="Label_HardwareVaultProfile" xml:space="preserve">
+    <value>Профіль апаратного сховища</value>
+  </data>
+  <data name="Label_High" xml:space="preserve">
+    <value>Високий</value>
+  </data>
+  <data name="Label_Id" xml:space="preserve">
+    <value>Ідентифікатор</value>
+  </data>
+  <data name="Label_Low" xml:space="preserve">
+    <value>Низький</value>
+  </data>
+  <data name="Label_StatusReason" xml:space="preserve">
+    <value>Причина статусу</value>
+  </data>
+  <data name="Message_HardwareVaultStateChanged" xml:space="preserve">
+    <value>Змінено стан апаратного сховища {0}.</value>
+  </data>
+  <data name="Message_PleaseTypeToConfirm" xml:space="preserve">
+    <value>Введіть &lt;b&gt;{0}&lt;/b&gt; для підтвердження.</value>
+  </data>
+  <data name="Message_RfidNotChange" xml:space="preserve">
+    <value>RFID не зміниться на апаратном сховищі.</value>
+  </data>
+  <data name="Message_YouCanSendCode" xml:space="preserve">
+    <value>Ви можете відправити код по електронній пошті</value>
+  </data>
+  <data name="Btn_ImportHardwareVaults" xml:space="preserve">
+    <value>Імпортувати апаратні сховища</value>
+  </data>
+  <data name="Btn_Login" xml:space="preserve">
+    <value>Увійти</value>
+  </data>
+  <data name="Btn_Logout" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="Btn_Reset" xml:space="preserve">
+    <value>Скинути</value>
+  </data>
+  <data name="Btn_TryAgain" xml:space="preserve">
+    <value>Спробуйте ще раз</value>
+  </data>
+  <data name="Common_ErrorChangingEmail_Title" xml:space="preserve">
+    <value>Помилка зміни електронної пошти</value>
+  </data>
+  <data name="Common_UserNotFound_Description" xml:space="preserve">
+    <value>Не вдається завантажити користувача.</value>
+  </data>
+  <data name="Common_UserNotFound_Title" xml:space="preserve">
+    <value>Користувач не знайдений</value>
+  </data>
+  <data name="Common_WrongCode_Description" xml:space="preserve">
+    <value>Цей код недійсний.</value>
+  </data>
+  <data name="Common_WrongCode_Title" xml:space="preserve">
+    <value>Невірний код</value>
+  </data>
+  <data name="Identity_AccessDenied_Description" xml:space="preserve">
+    <value>Ви не маєте доступу до цього ресурсу.</value>
+  </data>
+  <data name="Identity_AccessDenied_Title" xml:space="preserve">
+    <value>Доступ заборонено</value>
+  </data>
+  <data name="Identity_ConfirmEmailChange_Description" xml:space="preserve">
+    <value>Ви підтвердили зміну електронної пошти для свого облікового запису.</value>
+  </data>
+  <data name="Identity_ConfirmEmailChange_Header" xml:space="preserve">
+    <value>Дякуємо за підтвердження електронної пошти</value>
+  </data>
+  <data name="Identity_ForgotPasswordConfirmation_Description" xml:space="preserve">
+    <value>Будь ласка, перевірте свою електронну адресу, щоб скинути пароль.</value>
+  </data>
+  <data name="Identity_ForgotPasswordConfirmation_Title" xml:space="preserve">
+    <value>Підтвердження забутого пароля</value>
+  </data>
+  <data name="Identity_ForgotPassword_Header" xml:space="preserve">
+    <value>Введіть свою електронну адресу.</value>
+  </data>
+  <data name="Identity_ForgotPassword_Title" xml:space="preserve">
+    <value>Забули пароль?</value>
+  </data>
+  <data name="Identity_Invite_CodeMustBeSupplied" xml:space="preserve">
+    <value>Для запрошення потрібно надати код.</value>
+  </data>
+  <data name="Identity_Invite_EmailAddressDoesNotExist" xml:space="preserve">
+    <value>Адреса електронної пошти не існує.</value>
+  </data>
+  <data name="Identity_Invite_Header" xml:space="preserve">
+    <value>Запрошення</value>
+  </data>
+  <data name="Identity_Invite_Title" xml:space="preserve">
+    <value>Запрошення адміністратора</value>
+  </data>
+  <data name="Identity_Lockout_Description" xml:space="preserve">
+    <value>Цей обліковий запис заблоковано. Повторіть спробу пізніше.</value>
+  </data>
+  <data name="Identity_Lockout_Title" xml:space="preserve">
+    <value>Заблокований</value>
+  </data>
+  <data name="Identity_LoginWith2fa_Description" xml:space="preserve">
+    <value>Ваш логін захищений додатком автентифікатора. Введіть код автентифікації нижче.</value>
+  </data>
+  <data name="Identity_LoginWith2fa_DontHaveAccess" xml:space="preserve">
+    <value>Не маєте доступу до свого пристрою для автентифікації?</value>
+  </data>
+  <data name="Identity_LoginWith2fa_InvalidAuthenticatorCode" xml:space="preserve">
+    <value>Недійсний код автентифікатора.</value>
+  </data>
+  <data name="Identity_LoginWith2fa_LoginWithRecoveryCode" xml:space="preserve">
+    <value>Увійдіть за допомогою коду відновлення</value>
+  </data>
+  <data name="Identity_LoginWith2fa_Title" xml:space="preserve">
+    <value>Двофакторна автентифікація</value>
+  </data>
+  <data name="Identity_LoginWith2fa_UnableToLoad" xml:space="preserve">
+    <value>Неможливо завантажити двофакторну автентифікацію користувача.</value>
+  </data>
+  <data name="Identity_LoginWithRecoveryCode_Description" xml:space="preserve">
+    <value>Ви подали запит на вхід із кодом відновлення. Цей логін не буде запам’ятовуватися, доки ви не введете код програми для автентифікації при вході або не вимкнете 2FA та не ввійдете знову.</value>
+  </data>
+  <data name="Identity_LoginWithRecoveryCode_InvalidRecoveryCode" xml:space="preserve">
+    <value>Введено недійсний код відновлення.</value>
+  </data>
+  <data name="Identity_LoginWithRecoveryCode_Title" xml:space="preserve">
+    <value>Перевірка коду відновлення</value>
+  </data>
+  <data name="Identity_Login_Email_Header" xml:space="preserve">
+    <value>Увійти</value>
+  </data>
+  <data name="Identity_Login_EnterPassword_Header" xml:space="preserve">
+    <value>Введіть пароль</value>
+  </data>
+  <data name="Identity_Login_ForgotYourPassword" xml:space="preserve">
+    <value>Забули свій пароль?</value>
+  </data>
+  <data name="Identity_Logout_Description" xml:space="preserve">
+    <value>Ви успішно вийшли з програми.</value>
+  </data>
+  <data name="Identity_Logout_Title" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="Identity_RegisterSecurityKey_AlreadyAdded" xml:space="preserve">
+    <value>Ви вже додали ключ безпеки.</value>
+  </data>
+  <data name="Identity_RegisterSecurityKey_InvalidToken" xml:space="preserve">
+    <value>Термін дії токену запрошення закінчився.</value>
+  </data>
+  <data name="Identity_RegisterSecurityKey_Title" xml:space="preserve">
+    <value>Реєстрація ключа безпеки</value>
+  </data>
+  <data name="Identity_RegisterSecurityKey_UserNotFound" xml:space="preserve">
+    <value>Нам не вдалося знайти користувача з таким імейлом, зв’яжіться з адміністратором.</value>
+  </data>
+  <data name="Identity_ResetPassword_CodeMustBeSupplied" xml:space="preserve">
+    <value>Код повинен бути наданий для скидання пароля.</value>
+  </data>
+  <data name="Identity_ResetPassword_Title" xml:space="preserve">
+    <value>Скинути пароль</value>
+  </data>
+  <data name="Identity_SingleLogOut_Header" xml:space="preserve">
+    <value>Єдиний вихід</value>
+  </data>
+  <data name="Identity_SingleSignOn_Header" xml:space="preserve">
+    <value>Єдиний вхід</value>
+  </data>
+  <data name="Identity_SingleSignOn_WrongQueryString_Description" xml:space="preserve">
+    <value>Рядок запиту HTTP не містить {0}</value>
+  </data>
+  <data name="Identity_SingleSignOn_WrongQueryString_Title" xml:space="preserve">
+    <value>Неправильні параметри</value>
+  </data>
+  <data name="Label_GoToLoginPage" xml:space="preserve">
+    <value>Перейти на сторінку входу</value>
+  </data>
+  <data name="Label_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="Label_RememberMe" xml:space="preserve">
+    <value>Запам'ятати мене</value>
+  </data>
+  <data name="SecurityKey_Done_Description" xml:space="preserve">
+    <value>Ви успішно завершили процес реєстрації ключа безпеки. Дякую!</value>
+  </data>
+  <data name="SecurityKey_Error_Description" xml:space="preserve">
+    <value>Ми не змогли перевірити вас або ключ, який ви використовували. Якщо ви використовуєте ключ безпеки, переконайтеся, що це ваш ключ, і повторіть спробу.</value>
+  </data>
+  <data name="SecurityKey_Register_Description" xml:space="preserve">
+    <value>Ваш ПК відкриє вікно безпеки. Дотримуйтесь інструкцій там, щоб зареєструватися.</value>
+  </data>
+  <data name="SecurityKey_SignIn_Description" xml:space="preserve">
+    <value>Ваш ПК відкриє вікно безпеки. Дотримуйтесь інструкцій там, щоб увійти.</value>
+  </data>
+  <data name="SecurityKey_SignIn_Title" xml:space="preserve">
+    <value>Увійдіть за допомогою ключа безпеки</value>
+  </data>
+  <data name="SecurityKey_Start_Description" xml:space="preserve">
+    <value>Коли ви вибираєте Далі, вам буде запропоновано підключити ключ безпеки. Ваш ПК відкриє вікно безпеки. Дотримуйтесь інструкцій там, щоб зареєструватися.</value>
+  </data>
+  <data name="Btn_AddAuthenticatorApp" xml:space="preserve">
+    <value>Додати додаток автентифікатора</value>
+  </data>
+  <data name="Btn_AddSecurityKey" xml:space="preserve">
+    <value>Додати ключ безпеки</value>
+  </data>
+  <data name="Btn_DeleteDataAndCloseMyAccount" xml:space="preserve">
+    <value>Видалити дані та закрити мій аккаунт</value>
+  </data>
+  <data name="Btn_Download" xml:space="preserve">
+    <value>Завантажити</value>
+  </data>
+  <data name="Btn_ForgetThisBrowser" xml:space="preserve">
+    <value>Забути цей браузер</value>
+  </data>
+  <data name="Btn_ResetAuthenticatorApp" xml:space="preserve">
+    <value>Скинути додаток автентифікатора</value>
+  </data>
+  <data name="Btn_SetupAuthenticatorApp" xml:space="preserve">
+    <value>Налаштувати додаток автентифікатора</value>
+  </data>
+  <data name="Profile_DeletePersonalData_Body" xml:space="preserve">
+    <value>Видалення цих даних назавжди видалить ваш обліковий запис, і відновити їх не вдасться.</value>
+  </data>
+  <data name="Profile_DeletePersonalData_Title" xml:space="preserve">
+    <value>Видалити персональні дані</value>
+  </data>
+  <data name="Profile_General_ChangeEmail_Header" xml:space="preserve">
+    <value>Змінити електронну адресу</value>
+  </data>
+  <data name="Profile_General_ChangeEmail_Toast" xml:space="preserve">
+    <value>Підтвердження електронною поштою надіслано.</value>
+    <comment>?</comment>
+  </data>
+  <data name="Profile_General_Description" xml:space="preserve">
+    <value>Основна інформація про ваш аккаунт.</value>
+  </data>
+  <data name="Profile_General_Language_Header" xml:space="preserve">
+    <value>Мова</value>
+  </data>
+  <data name="Profile_General_PersonalData_Description1" xml:space="preserve">
+    <value>Ваш обліковий запис містить особисті дані, які ви нам надали. Ця сторінка дозволяє завантажувати або видаляти ці дані.</value>
+  </data>
+  <data name="Profile_General_PersonalData_Description2" xml:space="preserve">
+    <value>Видалення цих даних назавжди видалить ваш обліковий запис, і відновити їх не вдасться.</value>
+  </data>
+  <data name="Profile_General_PersonalData_Header" xml:space="preserve">
+    <value>Особисті дані</value>
+  </data>
+  <data name="Profile_General_PersonalData_Toast" xml:space="preserve">
+    <value>Завантаження розпочато.</value>
+  </data>
+  <data name="Profile_General_Profile_Header" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
+  <data name="Profile_General_Profile_Toast" xml:space="preserve">
+    <value>Ваш профіль був оновлений.</value>
+  </data>
+  <data name="Profile_General_Title" xml:space="preserve">
+    <value>Загальні</value>
+  </data>
+  <data name="Profile_Security_2FA_Header" xml:space="preserve">
+    <value>Двофакторна автентифікація (2FA)</value>
+  </data>
+  <data name="Profile_Security_2FA_SubHeader_AuthenticatorApp" xml:space="preserve">
+    <value>Програма автентифікатора</value>
+  </data>
+  <data name="Profile_Security_2FA_SubHeader_Manage2FA" xml:space="preserve">
+    <value>Управління 2FA</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_KeyName" xml:space="preserve">
+    <value>Назва ключа безпеки</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_Title" xml:space="preserve">
+    <value>Додайти новий ключ безпеки</value>
+  </data>
+  <data name="Profile_Security_AddSecurityKey_Toast" xml:space="preserve">
+    <value>Ключ безпеки додано.</value>
+  </data>
+  <data name="Profile_Security_ChangePassword_Header" xml:space="preserve">
+    <value>Змінити пароль</value>
+  </data>
+  <data name="Profile_Security_ChangePassword_Toast" xml:space="preserve">
+    <value>Пароль оновлено.</value>
+  </data>
+  <data name="Profile_Security_DeleteSecurityKey_Body" xml:space="preserve">
+    <value>Видалити ключ безпеки? Якщо ви видалите цей ключ безпеки, ви не зможете використовувати його для входу зі своїм обліковим записом.</value>
+  </data>
+  <data name="Profile_Security_DeleteSecurityKey_Title" xml:space="preserve">
+    <value>Видаліть ключ безпеки</value>
+  </data>
+  <data name="Profile_Security_Description" xml:space="preserve">
+    <value>Налаштування безпеки вашого облікового запису.</value>
+  </data>
+  <data name="Profile_Security_EditSecurityKey_Title" xml:space="preserve">
+    <value>Змінити назву ключа безпеки</value>
+  </data>
+  <data name="Profile_Security_EditSecurityKey_Toast" xml:space="preserve">
+    <value>Ключ безпеки оновлений.</value>
+  </data>
+  <data name="Profile_Security_SecurityKeys_Header" xml:space="preserve">
+    <value>Ключі безпеки</value>
+  </data>
+  <data name="Profile_Security_Title" xml:space="preserve">
+    <value>Безпека</value>
+  </data>
+  <data name="SecurityKey_Error_Title" xml:space="preserve">
+    <value>Щось пішло не так. Спробуйте ще раз.</value>
+  </data>
+  <data name="Btn_Disable2FA" xml:space="preserve">
+    <value>Вимкнути 2FA</value>
+  </data>
+  <data name="Btn_GenerateRecoveryCodes" xml:space="preserve">
+    <value>Створіть коди відновлення</value>
+  </data>
+  <data name="Btn_ResetAuthenticatorKey" xml:space="preserve">
+    <value>Скинути ключ автентифікації</value>
+  </data>
+  <data name="Btn_ResetRecoveryCodes" xml:space="preserve">
+    <value>Скинути коди відновлення</value>
+  </data>
+  <data name="Btn_Verify" xml:space="preserve">
+    <value>Перевірити</value>
+  </data>
+  <data name="Profile_Security_2FA_1RecoveryCodes_Description" xml:space="preserve">
+    <value>Ви можете створити новий набір кодів відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_1RecoveryCodes_Header" xml:space="preserve">
+    <value>У вас залишився 1 код відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_HaveRecoveryCodes_Description" xml:space="preserve">
+    <value>Вам слід створити новий набір кодів відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_HaveRecoveryCodes_Header" xml:space="preserve">
+    <value>У вас залишилось {0} кодів відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_NoRecoveryCodes_Description" xml:space="preserve">
+    <value>Ви повинні створити новий набір кодів відновлення, перш ніж зможете ввійти в систему за допомогою коду відновлення.</value>
+  </data>
+  <data name="Profile_Security_2FA_NoRecoveryCodes_Header" xml:space="preserve">
+    <value>У вас не залишилось кодів відновлення.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Description" xml:space="preserve">
+    <value>Вимкнення 2FA не змінює ключі, що використовуються в програмах автентифікації. Якщо ви хочете змінити ключ, який використовується в програмі автентифікації, вам слід скинути ключі автентифікатора.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Header" xml:space="preserve">
+    <value>Ця дія вимикає лише 2FA.</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Title" xml:space="preserve">
+    <value>Вимкнути двофакторну автентифікацію (2FA)</value>
+  </data>
+  <data name="Profile_Security_Disable2fa_Toast" xml:space="preserve">
+    <value>2FA вимкнено. Ви можете знову активувати 2fa під час налаштування програми автентифікації.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Header" xml:space="preserve">
+    <value>Налаштування програми автентифікації</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_RecoveryCodes_Description" xml:space="preserve">
+    <value>Якщо ви загубите пристрій і не маєте кодів відновлення, ви втратите доступ до свого облікового запису.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_RecoveryCodes_Header" xml:space="preserve">
+    <value>Покладіть ці коди в безпечне місце.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step1_Download2FA" xml:space="preserve">
+    <value>Завантажте двофакторну програму автентифікації, як Microsoft Authenticator, для &lt;a href="https://go.microsoft.com/fwlink/?Linkid=825071"&gt;Windows&lt;/a&gt;, &lt;a href="https://go.microsoft.com/fwlink/?Linkid=25072"&gt;Android&lt;/a&gt; і &lt;a href="https://go.microsoft.com/fwlink/?Linkid=825073"&gt;iOS&lt;/a&gt; або Google Authenticator для &lt;a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;amp;hl=uk"&gt;Android&lt;/a&gt; та &lt;a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"&gt;iOS&lt;/a&gt;.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step2_ScanQR" xml:space="preserve">
+    <value>Відскануйте QR-код або введіть цей ключ &lt;kbd&gt;{0}&lt;/kbd&gt; у свою програму автентифікації з двома факторами. Відстань і кожух не мають значення.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Step3_EnterCode" xml:space="preserve">
+    <value>Після сканування QR-коду або введення ключа вище, ваш двофакторний додаток автентифікації надасть вам унікальний код. Введіть код у поле для підтвердження нижче.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Title" xml:space="preserve">
+    <value>Увімкнути автентифікатор</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Toast_AuthenticatorVerified" xml:space="preserve">
+    <value>Ваш додаток для автентифікації підтверджено.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_Toast_InvalidCode" xml:space="preserve">
+    <value>Код підтвердження недійсний.</value>
+  </data>
+  <data name="Profile_Security_EnableAuthenticator_ToUse" xml:space="preserve">
+    <value>Для використання програми автентифікатора виконайте такі дії:</value>
+  </data>
+  <data name="Profile_Security_ForgetBrowser_Toast" xml:space="preserve">
+    <value>Поточний браузер забутий. Коли ви знову ввійдете з цього браузера, вам буде запропоновано ввести код 2FA.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Description" xml:space="preserve">
+    <value>Якщо ви загубите пристрій і не маєте кодів відновлення, ви втратите доступ до свого облікового запису.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Header" xml:space="preserve">
+    <value>Покладіть ці коди в безпечне місце.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_NotExists_SubDescription" xml:space="preserve">
+    <value>Створення нових кодів відновлення не змінює ключі, що використовуються в програмах автентифікації. Якщо ви хочете змінити ключ, який використовується в програмі автентифікації, вам слід скинути ключі автентифікатора.</value>
+  </data>
+  <data name="Profile_Security_GenerateRecoveryCodes_Title" xml:space="preserve">
+    <value>Створіть коди відновлення двофакторної автентифікації (2FA)</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Description" xml:space="preserve">
+    <value>Якщо скинути ключ автентифікації, програма автентифікатора не працюватиме, доки ви не налаштуєте його.</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_SubDescription" xml:space="preserve">
+    <value>Цей процес вимикає 2FA, доки ви не підтвердите додаток для автентифікації. Якщо ви не завершите налаштування програми автентифікації, ви можете втратити доступ до свого облікового запису.</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Title" xml:space="preserve">
+    <value>Скинути автентифікатор</value>
+  </data>
+  <data name="Profile_Security_ResetAuthenticator_Toast" xml:space="preserve">
+    <value>Ключ програми автентифікатора скинутий, вам потрібно буде налаштувати програму автентифікації за допомогою нового ключа.</value>
+  </data>
+  <data name="Profile_Security_SecurityKeys_RegistrationDate" xml:space="preserve">
+    <value>Дата Реєстрації</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Body" xml:space="preserve">
+    <value>Ви дійсно  хочете видалити адміністратора {0}?</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Title" xml:space="preserve">
+    <value>Видалити адміністратора</value>
+  </data>
+  <data name="Administrators_DeleteAdministrator_Toast" xml:space="preserve">
+    <value>Адміністратора видалено.</value>
+  </data>
+  <data name="Administrators_InviteAdmin_Title" xml:space="preserve">
+    <value>Запросити адміністратора.</value>
+  </data>
+  <data name="Administrators_InviteAdmin_Toast" xml:space="preserve">
+    <value>Адміністратора запрошений</value>
+  </data>
+  <data name="Administrators_ResendInvite_Toast" xml:space="preserve">
+    <value>Запрошення повторно відправлено.</value>
+  </data>
+  <data name="Btn_Invite" xml:space="preserve">
+    <value>Запросити</value>
+  </data>
+  <data name="Btn_InviteAdmin" xml:space="preserve">
+    <value>Запросити адміністратора</value>
+  </data>
+  <data name="Btn_ResendInvite" xml:space="preserve">
+    <value>Повторно надіслати запрошення</value>
+  </data>
+  <data name="Label_InviteAccepted" xml:space="preserve">
+    <value>Запрошення прийнято</value>
+  </data>
+  <data name="Label_TwoFactorEnabled" xml:space="preserve">
+    <value>Двофактор увімкнено</value>
+  </data>
+  <data name="Btn_ChangePassword" xml:space="preserve">
+    <value>Змінити пароль</value>
+  </data>
+  <data name="DataProtection_ChangeDataProtectionPassword_Title" xml:space="preserve">
+    <value>Змінити пароль захисту даних</value>
+  </data>
+  <data name="DataProtection_ChangeDataProtectionPassword_Toast" xml:space="preserve">
+    <value>Пароль захисту даних оновлений.</value>
+  </data>
+  <data name="DataProtection_DisableDataProtection_Title" xml:space="preserve">
+    <value>Вимкніть захист даних</value>
+  </data>
+  <data name="DataProtection_DisableDataProtection_Toast" xml:space="preserve">
+    <value>Захист даних вимкнено.</value>
+  </data>
+  <data name="DataProtection_EnableDataProtection_Title" xml:space="preserve">
+    <value>Увімкнути захист даних</value>
+  </data>
+  <data name="DataProtection_EnableDataProtection_Toast" xml:space="preserve">
+    <value>Захист даних увімкнено.</value>
+  </data>
+  <data name="DataProtection_IsDisabled" xml:space="preserve">
+    <value>Захист даних вимкнено.</value>
+  </data>
+  <data name="DataProtection_IsEnabled" xml:space="preserve">
+    <value>Захист даних увімкнено.</value>
+  </data>
+  <data name="DataProtection_MainDescription" xml:space="preserve">
+    <value>&lt;h5&gt;
+        Яка мета захисту даних?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        Захист даних вирішує проблему безпечного зберігання даних у базі даних (БД).
+    &lt;/p&gt;
+    &lt;h5&gt;
+        Які конфіденційні дані зберігаються в БД?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        У базі даних зберігаються Ключі пристрою - ключі шифрування, що забезпечують доступ до інформації, що зберігається на Ключі Hideez. Паролі та OTP-секрети, які очікують передачі на пристрої, також тимчасово зберігаються в БД.
+        Паролі до «Спільного рахунку» постійно зберігаються в базі даних. Якщо Захист даних вимкнено, усі паролі та ключі зберігаються у звичайному тексті. Якщо у вас є ключ пристрою та сам пристрій, ви можете прочитати весь вміст пам'яті ключа Hideez.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        Чи потрібно вмикати захист даних?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        Перш за все, потрібно оцінити, які співробітники мають прямий потенційний доступ до бази даних HES.
+        Якщо деякі з них не повинні мати доступу до конфіденційних даних, перелічених вище, потрібно захистити дані.
+        Також зауважте, що дані можна фізично зчитувати з HDD / SDD, на якому вони зберігаються. Необхідно враховувати можливість як програмного, так і фізичного доступу до даних.
+        Наприклад, у деяких випадках, якщо HES і сервер баз даних працюють на одному фізичному сервері, до якого може отримати доступ обмежена кількість довірених людей, захист даних можна пропустити.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        Як це працює?
+    &lt;/h5&gt;
+    &lt;p&gt;
+        Усі конфіденційні поля в БД зашифровані за допомогою алгоритму AES-256. Ключ шифрування (пароль) вводиться адміністратором вручну після запуску веб-сервера, а потім він зберігається лише в оперативній пам'яті сервера.
+        Якщо сервер перезавантажується, ключ шифрування стирається, і всі адміністратори отримують електронне повідомлення з проханням ввести пароль захисту даних. Перед введенням пароля сервер не обробляє вхідні запити. Після введення пароля сервер переходить у звичайний режим, і дані на льоту розшифровуються.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        Пароль для захисту даних можна розмістити у файлі конфігурації або змінних середовища на сервері, щоб уникнути ручного введення. У цьому випадку сервер може перезавантажитися без участі адміністратора. Такий сценарій також означає, що доступ до сервера повинні мати лише уповноважені особи.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        Пароль захисту даних можна змінити. Для цього двічі введіть поточний та новий пароль в інтерфейсі HES. Усі дані в БД будуть перешифровані.
+    &lt;/p&gt;
+    &lt;h5&gt;
+        Ризики та найкращі практики
+    &lt;/h5&gt;
+    &lt;p&gt;
+        Основним ризиком використання захисту даних є втрата пароля для його активації. У такому випадку ви втрачаєте доступ до зашифрованих даних на сервері, а також до всіх даних на всіх ваших пристроях Hideez Key.
+        Всі пристрої повинні будуть пройти процедуру ручного скидання з повним стиранням пам’яті, а потім знову бути пов’язаними з працівниками. Усі облікові записи слід додавати до пристроїв з нуля.
+        Тому ми рекомендуємо, щоб пароль до захисту даних мав бути відомим кільком працівникам і бажано зберігатись у безпечному фізичному токені (сховищі).
+        &lt;br /&gt;
+        &lt;br /&gt;
+        У разі використання Захисту даних існує ризик того, що сервер HES може бути тимчасово недоступним через екстрене перезавантаження, поки не буде введено пароль активації захисту даних. Однак це не повинно впливати на діяльність компанії, оскільки всі облікові записи зберігаються на пристроях співробітників і можуть використовуватися без підключення до сервера HES.
+        &lt;br /&gt;
+        &lt;br /&gt;
+        Оновлення пароля захисту даних повинно відбуватися відповідно до вимог компанії щодо захисту інформації.
+    &lt;/p&gt;</value>
+  </data>
+  <data name="Btn_CreateProfile" xml:space="preserve">
+    <value>Створити профіль</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_CreateAccessProfile_Title" xml:space="preserve">
+    <value>Створити профіль</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_CreateAccessProfile_Toast" xml:space="preserve">
+    <value>Створено профіль апаратного сховища.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити профіль доступу до апаратного сховища {0}?</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Title" xml:space="preserve">
+    <value>Видалити профіль</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DeleteProfile_Toast" xml:space="preserve">
+    <value>Профіль апаратного сховища видалено.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_DetailsProfile_Title" xml:space="preserve">
+    <value>Деталі профілю</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_EditProfile_Title" xml:space="preserve">
+    <value>Редагувати профіль</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_AuthorizationParameters" xml:space="preserve">
+    <value>Параметри авторизації</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button" xml:space="preserve">
+    <value>Кнопка</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_Connection_Title" xml:space="preserve">
+    <value>Запит підтвердження кнопки пристрою для підключення пристрою до комп’ютера, який уже пов’язаний із комп’ютером.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_Pairing_Title" xml:space="preserve">
+    <value>Запит підтвердження кнопки пристрою для першого підключення пристрою до комп’ютера.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Button_StorageAccess_Title" xml:space="preserve">
+    <value>Запит підтвердження кнопки пристрою, коли програма отримує доступ до сховища пристрою.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Connection" xml:space="preserve">
+    <value>Підключення</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_Pairing" xml:space="preserve">
+    <value>Сполучення</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN" xml:space="preserve">
+    <value>PIN-код</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinExpiration" xml:space="preserve">
+    <value>Термін дії PIN-коду</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinExpiration_Title" xml:space="preserve">
+    <value>Після закінчення терміну дії PIN-коду пам’ять пристрою буде заблокована, доки користувач знову не введе PIN-код.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry" xml:space="preserve">
+    <value>Неправильний введення PIN-коду</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry_Title" xml:space="preserve">
+    <value>Максимальна кількість неправильного введення PIN-коду. Після перевищення кількості записів пристрій блокується.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinLength" xml:space="preserve">
+    <value>Довжина PIN-коду</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PinSettings" xml:space="preserve">
+    <value>Налаштування PIN-коду</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_Connection_Title" xml:space="preserve">
+    <value>Запит PIN-код для підключення пристрою до комп’ютера, який уже зв’язаний із комп’ютером.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_Pairing_Title" xml:space="preserve">
+    <value>Запит PIN-код для першого підключення пристрою до комп’ютера.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_PIN_StorageAccess_Title" xml:space="preserve">
+    <value>Запит PIN-код, коли програма отримує доступ до сховища пристрою.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation" xml:space="preserve">
+    <value>Підтвердження сервера</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title" xml:space="preserve">
+    <value>Потрібне підтвердження сервера для підключення пристрою до комп’ютера, який уже зв’язаний із комп’ютером.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_Pairing_Title" xml:space="preserve">
+    <value>Потрібне підтвердження сервера для першого підключення пристрою до комп’ютера.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_ServerConfirmation_StorageAccess_Title" xml:space="preserve">
+    <value>Вимагати підтвердження сервера, коли програма отримує доступ до сховища пристрою.</value>
+  </data>
+  <data name="HardwareVaultAccessProfile_Label_StorageAccess" xml:space="preserve">
+    <value>Доступ до сховища</value>
+  </data>
+  <data name="Btn_NewOrder" xml:space="preserve">
+    <value>Нове замовлення</value>
+  </data>
+  <data name="Btn_RefreshLicenses" xml:space="preserve">
+    <value>Оновити ліцензії</value>
+  </data>
+  <data name="Btn_Send" xml:space="preserve">
+    <value>Надіслати</value>
+  </data>
+  <data name="Label_ContactEmail" xml:space="preserve">
+    <value>Контактна електронна адреса</value>
+  </data>
+  <data name="Label_OrderStatus" xml:space="preserve">
+    <value>Статус замовлення</value>
+  </data>
+  <data name="Label_Prolong" xml:space="preserve">
+    <value>Продовжувати</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_AlreadryHaveLicense" xml:space="preserve">
+    <value>Усі ваші пристрої вже мають ліцензію. Якщо ви хочете їх поновити, перейдіть на вкладку "Поновити ліцензію".</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_DontHaveDevices" xml:space="preserve">
+    <value>У вас ще немає пристроїв Hideez. Ви можете зробити замовлення за адресою &lt;a href="https://hideez.com/pages/hideez-enterprise" role="button"&gt;hideez.com&lt;/a&gt;</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_DontHaveLicenseToRenew" xml:space="preserve">
+    <value>У вас немає ліцензій, які можна поновити. Щоб придбати нові ліцензії, перейдіть на вкладку "Нова ліцензія".</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_LessThanMaxEndDate" xml:space="preserve">
+    <value>Вибрана {0} дата закінчення, яка не перевищує максимальну для вибраних апаратных сховищ.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_MustBeAtLeast" xml:space="preserve">
+    <value>{0} має мати принаймні поточну дату.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess" xml:space="preserve">
+    <value>Значення {0} не повинно бути менше {1}.</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne" xml:space="preserve">
+    <value>Виберіть принаймні один пристрій</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_NewLicense" xml:space="preserve">
+    <value>Нова ліцензія</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_RenewLicense" xml:space="preserve">
+    <value>Поновити ліцензію</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Title" xml:space="preserve">
+    <value>Створити замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_CreateLicenseOrder_Toast" xml:space="preserve">
+    <value>Замовлення створено.</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Body" xml:space="preserve">
+    <value>Ви впевнені, що хочете видалити це замовлення?</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Title" xml:space="preserve">
+    <value>Видалити замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_DeleteLicenseOrder_Toast" xml:space="preserve">
+    <value>Замовлення ліцензії видалено.</value>
+  </data>
+  <data name="LicenseOrders_DetailsLicenseOrder_Title" xml:space="preserve">
+    <value>Деталі замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_EditLicenseOrder_Title" xml:space="preserve">
+    <value>Редагувати замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_EditLicenseOrder_Toast" xml:space="preserve">
+    <value>Замовлення оновлено.</value>
+  </data>
+  <data name="LicenseOrders_EntityName" xml:space="preserve">
+    <value>ліцензійне замовлення</value>
+  </data>
+  <data name="LicenseOrders_RefreshLicenseInfo_Toast" xml:space="preserve">
+    <value>Інформацію про ліцензію оновлено.</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Body" xml:space="preserve">
+    <value>Підтвердьте відправлення замовлення.</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Title" xml:space="preserve">
+    <value>Надіслати замовлення ліцензії</value>
+  </data>
+  <data name="LicenseOrders_ValidTo" xml:space="preserve">
+    <value>Діє до</value>
+  </data>
+  <data name="Btn_CreateCompany" xml:space="preserve">
+    <value>Створити компанію</value>
+  </data>
+  <data name="Btn_CreateDepartment" xml:space="preserve">
+    <value>Створити відділ</value>
+  </data>
+  <data name="Btn_CreatePosition" xml:space="preserve">
+    <value>Створити позицію</value>
+  </data>
+  <data name="Label_Companies" xml:space="preserve">
+    <value>Компанії</value>
+  </data>
+  <data name="Label_Departments" xml:space="preserve">
+    <value>Відділи</value>
+  </data>
+  <data name="Label_Positions" xml:space="preserve">
+    <value>Позиції</value>
+  </data>
+  <data name="OrgStructure_CreateCompany_Title" xml:space="preserve">
+    <value>Створити компанію</value>
+  </data>
+  <data name="OrgStructure_CreateCompany_Toast" xml:space="preserve">
+    <value>Компанія створена.</value>
+  </data>
+  <data name="OrgStructure_CreateDepartment_Title" xml:space="preserve">
+    <value>Створити відділ</value>
+  </data>
+  <data name="OrgStructure_CreateDepartment_Toast" xml:space="preserve">
+    <value>Відділ створений.</value>
+  </data>
+  <data name="OrgStructure_CreatePosition_Title" xml:space="preserve">
+    <value>Створити позицію</value>
+  </data>
+  <data name="OrgStructure_CreatePosition_Toast" xml:space="preserve">
+    <value>Позиція створена.</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити компанію {0}?</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Title" xml:space="preserve">
+    <value>Видалити компанію</value>
+  </data>
+  <data name="OrgStructure_DeleteCompany_Toast" xml:space="preserve">
+    <value>Компанію видалено.</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити відділ {0}?</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Title" xml:space="preserve">
+    <value>Видалити відділ</value>
+  </data>
+  <data name="OrgStructure_DeleteDepartment_Toast" xml:space="preserve">
+    <value>Відділ видалено.</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити позицію {0}?</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Title" xml:space="preserve">
+    <value>Видалити позицію</value>
+  </data>
+  <data name="OrgStructure_DeletePosition_Toast" xml:space="preserve">
+    <value>Позицію видалено.</value>
+  </data>
+  <data name="OrgStructure_EditCompany_Title" xml:space="preserve">
+    <value>Редагувати компанію</value>
+  </data>
+  <data name="OrgStructure_EditCompany_Toast" xml:space="preserve">
+    <value>Компанія оновлена.</value>
+  </data>
+  <data name="OrgStructure_EditDepartment_Title" xml:space="preserve">
+    <value>Редагувати відділ</value>
+  </data>
+  <data name="OrgStructure_EditDepartment_Toast" xml:space="preserve">
+    <value>Відділ оновлено.</value>
+  </data>
+  <data name="OrgStructure_EditPosition_Title" xml:space="preserve">
+    <value>Редагувати позицію</value>
+  </data>
+  <data name="OrgStructure_EditPosition_Toast" xml:space="preserve">
+    <value>Позиція оновлена.</value>
+  </data>
+  <data name="Btn_DeleteSettings" xml:space="preserve">
+    <value>Видалити налаштування</value>
+  </data>
+  <data name="Btn_SetDomainSettings" xml:space="preserve">
+    <value>Налаштувати домен</value>
+  </data>
+  <data name="Btn_SetLicensingSettings" xml:space="preserve">
+    <value>Налаштувати ліцензування</value>
+  </data>
+  <data name="Btn_SetSplunkSettings" xml:space="preserve">
+    <value>Налаштувати Splunk</value>
+  </data>
+  <data name="Label_NotConfigured" xml:space="preserve">
+    <value>Не налаштовано</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Description" xml:space="preserve">
+    <value>Ці облікові дані будуть використані для підключення до Active Directory через LDAPS</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Header" xml:space="preserve">
+    <value>Введіть свої дані</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_InvalidCredentials" xml:space="preserve">
+    <value>Недійсний пароль</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Placeholder" xml:space="preserve">
+    <value>my.company.com</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Title" xml:space="preserve">
+    <value>Налаштування домену</value>
+  </data>
+  <data name="Parameters_AddLdapSettings_Toast" xml:space="preserve">
+    <value>Налаштування домену оновлено.</value>
+  </data>
+  <data name="Parameters_AddLicenseSettings_Title" xml:space="preserve">
+    <value>Налаштування ліцензії</value>
+  </data>
+  <data name="Parameters_AddLicenseSettings_Toast" xml:space="preserve">
+    <value>Налаштування ліцензії оновлено.</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Body" xml:space="preserve">
+    <value>Підтвердьте видалення налаштувань домену.</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Title" xml:space="preserve">
+    <value>Видаліть налаштування домену</value>
+  </data>
+  <data name="Parameters_DeleteLdapSettings_Toast" xml:space="preserve">
+    <value>Налаштування домену видалено.</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Body" xml:space="preserve">
+    <value>Підтвердьте видалення налаштувань ліцензії.</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Title" xml:space="preserve">
+    <value>Видаліть налаштування ліцензії</value>
+  </data>
+  <data name="Parameters_DeleteLicenseSettings_Toast" xml:space="preserve">
+    <value>Налаштування ліцензії видалено.</value>
+  </data>
+  <data name="Parameters_Domain_Description" xml:space="preserve">
+    <value>Для підключення до домену та імпорту групи та користувачів.</value>
+  </data>
+  <data name="Parameters_Domain_Title" xml:space="preserve">
+    <value>Домен</value>
+  </data>
+  <data name="Parameters_Licensing_Description" xml:space="preserve">
+    <value>Ключ автентифікації API для замовлення ліцензій та адреси сервера ліцензування.</value>
+  </data>
+  <data name="Parameters_Licensing_Title" xml:space="preserve">
+    <value>Ліцензування</value>
+  </data>
+  <data name="Parameters_Splunk_Description" xml:space="preserve">
+    <value>Налаштування надсилання подій на Splunk.</value>
+  </data>
+  <data name="Parameters_Splunk_Title" xml:space="preserve">
+    <value>Splunk</value>
+  </data>
+  <data name="Parameters_AddSplunkSettings_Title" xml:space="preserve">
+    <value>Налаштування Splunk</value>
+  </data>
+  <data name="Parameters_AddSplunkSettings_Toast" xml:space="preserve">
+    <value>Налаштування Splunk оновлено.</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Body" xml:space="preserve">
+    <value>Підтвердьте видалення налаштувань.</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Title" xml:space="preserve">
+    <value>Видаліть налаштування виходу</value>
+  </data>
+  <data name="Parameters_DeleteSplunkSettings_Toast" xml:space="preserve">
+    <value>Налаштування Splunk видалено.</value>
+  </data>
+  <data name="Btn_CreateSharedAccount" xml:space="preserve">
+    <value>Створити спільний обліковий запис</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_EnterData" xml:space="preserve">
+    <value>Введіть дані вручну або виберіть із шаблону:</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_Title" xml:space="preserve">
+    <value>Створити спільний обліковий запис</value>
+  </data>
+  <data name="SharedAccounts_CreateSharedAccount_Toast" xml:space="preserve">
+    <value>обліковий запис створено.</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити обліковий запис {0}?</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Title" xml:space="preserve">
+    <value>Видалити обліковий запис</value>
+  </data>
+  <data name="SharedAccounts_DeleteSharedAccount_Toast" xml:space="preserve">
+    <value>Обліковий запис видалено.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountOtp_Title" xml:space="preserve">
+    <value>Редагувати OTP спільного облікового запису</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountOtp_Toast" xml:space="preserve">
+    <value>OTP спільного облікового запису оновлено.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountPassword_Title" xml:space="preserve">
+    <value>Редагувати пароль спільного облікового запису</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccountPassword_Toast" xml:space="preserve">
+    <value>Пароль спільного облікового запису оновлено.</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccount_Title" xml:space="preserve">
+    <value>Редагувати спільний обліковий запис</value>
+  </data>
+  <data name="SharedAccounts_EditSharedAccount_Toast" xml:space="preserve">
+    <value>Спільний обліковий запис оновлено.</value>
+  </data>
+  <data name="Btn_CreateTemplate" xml:space="preserve">
+    <value>Створити шаблон</value>
+  </data>
+  <data name="Templates_CreateTemplate_Title" xml:space="preserve">
+    <value>Створити шаблон</value>
+  </data>
+  <data name="Templates_CreateTemplate_Toast" xml:space="preserve">
+    <value>Шаблон створений.</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити шаблон {0}?</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Title" xml:space="preserve">
+    <value>Видалити шаблон</value>
+  </data>
+  <data name="Templates_DeleteTemplate_Toast" xml:space="preserve">
+    <value>Шаблон видалений.</value>
+  </data>
+  <data name="Templates_EditTemplate_Title" xml:space="preserve">
+    <value>Редагувати шаблон</value>
+  </data>
+  <data name="Templates_EditTemplate_Toast" xml:space="preserve">
+    <value>Шаблон оновлено.</value>
+  </data>
+  <data name="Btn_Approve" xml:space="preserve">
+    <value>Затвердити</value>
+  </data>
+  <data name="Btn_DeleteHardwareVault" xml:space="preserve">
+    <value>Видалити aпаратне сховище</value>
+  </data>
+  <data name="Btn_Unapprove" xml:space="preserve">
+    <value>Відхилити</value>
+  </data>
+  <data name="Label_Approved" xml:space="preserve">
+    <value>Затверджено</value>
+  </data>
+  <data name="Label_ClientVersion" xml:space="preserve">
+    <value>Клієнтська версія</value>
+  </data>
+  <data name="Label_HasRFID" xml:space="preserve">
+    <value>Має RFID</value>
+  </data>
+  <data name="Label_IP" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="Label_OS" xml:space="preserve">
+    <value>ОС</value>
+  </data>
+  <data name="Label_ProximityVaults" xml:space="preserve">
+    <value>Близькі сховища</value>
+  </data>
+  <data name="Label_UnlockSettings" xml:space="preserve">
+    <value>Налаштування розблокування </value>
+  </data>
+  <data name="Workstations_AddProximityVault_Title" xml:space="preserve">
+    <value>Додайте сховище Proximity</value>
+    <comment>?</comment>
+  </data>
+  <data name="Workstations_AddProximityVault_Toast" xml:space="preserve">
+    <value>Додано апаратне сховище.</value>
+  </data>
+  <data name="Workstations_AddProximityVault_Warning" xml:space="preserve">
+    <value>Увага! Ви намагаєтеся дозволити близькість на кількох пристроях. Це може призвести до нестабільної поведінки системи.</value>
+    <comment>?</comment>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Body" xml:space="preserve">
+    <value>Ви дійсно хочете затвердити робочу станцію {0}?</value>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Title" xml:space="preserve">
+    <value>Затвердити робочу станцію</value>
+  </data>
+  <data name="Workstations_ApproveWorkstation_Toast" xml:space="preserve">
+    <value>Робоча станція затверджена.</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити сховище {0} з цієї робочої станції?</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Title" xml:space="preserve">
+    <value>Видалити сховище</value>
+  </data>
+  <data name="Workstations_DeleteProximityVault_Toast" xml:space="preserve">
+    <value>Сховище обладнання видалено.</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Body" xml:space="preserve">
+    <value>Ви дійсно хочете видалити робочу станцію {0}?</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Title" xml:space="preserve">
+    <value>Видалити робочу станцію</value>
+  </data>
+  <data name="Workstations_DeleteWorkstation_Toast" xml:space="preserve">
+    <value>Робоча станція видалена.</value>
+  </data>
+  <data name="Workstations_EditWorkstation_Title" xml:space="preserve">
+    <value>Редагувати робочу станцію</value>
+  </data>
+  <data name="Workstations_EditWorkstation_Toast" xml:space="preserve">
+    <value>Робоча станція оновлена.</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Body" xml:space="preserve">
+    <value>Ви дійсно хочете відхилити робочу станцію {0}?</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Title" xml:space="preserve">
+    <value>Відхилити робочу станцію</value>
+  </data>
+  <data name="Workstations_UnapproveWorkstation_Toast" xml:space="preserve">
+    <value>Робоча станція не затверджена.</value>
+  </data>
+  <data name="Label_EditedByAnother" xml:space="preserve">
+    <value>Наразі {0} редагується іншим адміністратором.</value>
+  </data>
+  <data name="Label_Logout" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="Label_Version" xml:space="preserve">
+    <value>Версія</value>
+  </data>
+  <data name="LoadingFailed_Description" xml:space="preserve">
+    <value>Сталася помилка при обробці вашого запиту.</value>
+  </data>
+  <data name="LoadingFailed_Title" xml:space="preserve">
+    <value>Помилка.</value>
+  </data>
+  <data name="NotFound_Description" xml:space="preserve">
+    <value>На жаль, ми не змогли знайти потрібну вам сторінку.</value>
+  </data>
+  <data name="NotFound_Title" xml:space="preserve">
+    <value>Сторінку не знайдено</value>
+  </data>
+  <data name="Table_Footer_ShowEntries" xml:space="preserve">
+    <value>Показати записи</value>
+  </data>
+  <data name="Table_Footer_Showing" xml:space="preserve">
+    <value>Показ записів від {0} до {1} з {2}</value>
+  </data>
+  <data name="Toast_TitleError" xml:space="preserve">
+    <value>Помилка</value>
+  </data>
+  <data name="Toast_TitleNotification" xml:space="preserve">
+    <value>Повідомлення</value>
+  </data>
+  <data name="Toast_TitleSuccess" xml:space="preserve">
+    <value>Успіх</value>
+  </data>
+  <data name="Btn_AddServiceProvider" xml:space="preserve">
+    <value>Додати постачальника послуг</value>
+  </data>
+  <data name="Btn_DownloadCertificate" xml:space="preserve">
+    <value>Завантажити сертифікат</value>
+  </data>
+  <data name="Btn_DownloadMetadata" xml:space="preserve">
+    <value>Завантажити метадані</value>
+  </data>
+  <data name="Btn_ViewMetadata" xml:space="preserve">
+    <value>Переглянути метадані</value>
+  </data>
+  <data name="Label_IdPMetadata" xml:space="preserve">
+    <value>Метадані IdP</value>
+  </data>
+  <data name="Label_ServiceProviders" xml:space="preserve">
+    <value>Постачальники послуг</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Configure" xml:space="preserve">
+    <value>Налаштуйте параметри вручну або використовуйте файл метаданих</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Додати постачальника послуг</value>
+  </data>
+  <data name="Parameters_AddSaml2RelyingParty_Toast" xml:space="preserve">
+    <value>Додано постачальника послуг.</value>
+  </data>
+  <data name="Parameters_DeleteSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Видалити постачальника послуг</value>
+  </data>
+  <data name="Parameters_EditSaml2RelyingParty_Title" xml:space="preserve">
+    <value>Редагувати постачальника послуг</value>
+  </data>
+  <data name="Parameters_EditSaml2RelyingParty_Toasat" xml:space="preserve">
+    <value>Постачальник послуг оновлено.</value>
+  </data>
+  <data name="Parameters_Saml_Description" xml:space="preserve">
+    <value>Налаштування постачальників послуг.</value>
+  </data>
+  <data name="Parameters_Saml_Title" xml:space="preserve">
+    <value>SAML</value>
+  </data>
+  <data name="LicenseOrders_SendLicenseOrder_Toast" xml:space="preserve">
+    <value>Замовлення ліцензії надіслано.</value>
+    <comment>new</comment>
+  </data>
+</root>

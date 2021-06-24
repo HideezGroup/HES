@@ -25,7 +25,7 @@ namespace HES.Web.Pages.Alarm
             try
             {
                 await RemoteWorkstationConnections.LockAllWorkstationsAsync(CurrentUserEmail);
-                await ToastService.ShowToastAsync("All workstations are locked.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Alarm_EnableAlarm_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

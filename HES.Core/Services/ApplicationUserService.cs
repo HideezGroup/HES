@@ -4,7 +4,7 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using HES.Core.Models.Identity;
@@ -53,6 +53,10 @@ namespace HES.Core.Services
 
         public async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return null;
+            }
             return await _userManager.FindByEmailAsync(email);
         }
 
@@ -114,7 +118,7 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.EmailAlreadyTaken);
             }
 
-            var user = new ApplicationUser { UserName = email, Email = email };
+            var user = new ApplicationUser { UserName = email, Email = email, Culture = CultureConstants.EN };
             var password = Guid.NewGuid().ToString();
 
             var result = await _userManager.CreateAsync(user, password);
@@ -220,7 +224,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task ChangeEmailAsync(ChangeEmailModel parameters)
+        public async Task<string> ChangeEmailAsync(UserChangeEmailModel parameters, string baseUri)
         {
             if (parameters == null)
             {
@@ -242,7 +246,9 @@ namespace HES.Core.Services
             var code = await _userManager.GenerateChangeEmailTokenAsync(user, parameters.NewEmail);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            await _emailSenderService.SendUserConfirmEmailAsync(user.Id, parameters.NewEmail, code);
+            var callbackUrl = HtmlEncoder.Default.Encode($"{baseUri}/{Routes.ConfirmEmailChange}?userId={user.Id}&code={code}&email={parameters.NewEmail}");
+
+            return callbackUrl;
         }
 
         public async Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters)
@@ -284,7 +290,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task UpdateAccountPasswordAsync(ChangePasswordModel parameters)
+        public async Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters)
         {
             if (parameters == null)
             {
@@ -345,7 +351,7 @@ namespace HES.Core.Services
         public async Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults)
         {
             var administrators = await GetAllAdministratorsAsync();
-            await _emailSenderService.SendHardwareVaultLicenseStatus(vaults, administrators);
+            await _emailSenderService.SendHardwareVaultLicenseStatusAsync(vaults, administrators);
         }
 
         public async Task SendActivateDataProtectionAsync()

@@ -3,7 +3,7 @@
         @CompanyBody
     </div>
     <div class="d-flex align-items-end flex-nowrap">
-        <input type="text" @bind-value="SearchText" @bind-value:event="oninput" class="form-control is-search" placeholder="Search">
+        <input type="text" @bind-value="SearchText" @bind-value:event="oninput" class="form-control is-search" placeholder="@Resource.Label_Search">
     </div>
 </div>
 <div class="table-responsive mb-3">
@@ -12,7 +12,7 @@
             <tr>
                 <th @onclick="@(() => SortTable())">
                     <span class="w-100">
-                        Departments
+                        @Resource.Label_Departments
                     </span>
                     <img class="table-sort-arrow @GetSortIcon()" />
                 </th>
@@ -30,11 +30,11 @@
                             <div class="d-flex align-items-center flex-nowrap">
                                 <button type="button" class="btn btn-light border mx-1" title="Edit department" @onclick="@(async () => await EditDepartmentDialog.Invoke(department))">
                                     <img class="icon-btn" src="/svg/icon-edit.svg" />
-                                    Edit
+                                    @Resource.Btn_Edit
                                 </button>
                                 <button type="button" class="btn btn-light border mx-1" title="Delete department" @onclick="@(async () => await DeleteDepartmentDialog.Invoke(department))">
                                     <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                    Delete
+                                    @Resource.Btn_Delete
                                 </button>
                             </div>
                         </div>

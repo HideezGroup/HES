@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.LicenseOrders;
 using HES.Web.Components;
@@ -18,7 +19,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
         public ILicenseService LicenseService { get; set; }
         public IHardwareVaultService HardwareVaultService { get; set; }
         [Inject] public IMemoryCache MemoryCache { get; set; }
-        [Inject] public ILogger<EditLicenseOrder> Logger { get; set; } 
+        [Inject] public ILogger<EditLicenseOrder> Logger { get; set; }
         [Parameter] public string LicenseOrderId { get; set; }
         public LicenseOrder LicenseOrder { get; set; }
 
@@ -38,7 +39,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
                 LicenseOrder = await LicenseService.GetLicenseOrderByIdAsync(LicenseOrderId);
                 if (LicenseOrder == null)
-                    throw new Exception("License Order not found.");
+                    throw new HESException(HESCode.LicenseOrderNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(LicenseOrder.Id, out object _);
                 if (!EntityBeingEdited)
@@ -86,19 +87,19 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 {
                     if (_newLicenseOrder.StartDate < DateTime.Now.Date)
                     {
-                        ValidationErrorMessage.DisplayError(nameof(NewLicenseOrder.StartDate), $"Start Date must be at least current date.");
+                        ValidationErrorMessage.DisplayError(nameof(NewLicenseOrder.StartDate), string.Format(Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_MustBeAtLeast, Resources.Resource.Label_StartDate));
                         return;
                     }
 
                     if (_newLicenseOrder.EndDate < _newLicenseOrder.StartDate)
                     {
-                        ValidationErrorMessage.DisplayError(nameof(NewLicenseOrder.EndDate), $"End Date must not be less than Start Date.");
+                        ValidationErrorMessage.DisplayError(nameof(NewLicenseOrder.EndDate), string.Format(Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess, Resources.Resource.Label_EndDate, Resources.Resource.Label_StartDate));
                         return;
                     }
 
                     if (!_newLicenseOrder.HardwareVaults.Where(x => x.Checked).Any())
                     {
-                        ValidationErrorMessage.DisplayError(nameof(NewLicenseOrder.HardwareVaults), $"Select at least one hardware vault.");
+                        ValidationErrorMessage.DisplayError(nameof(NewLicenseOrder.HardwareVaults), Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne);
                         return;
                     }
 
@@ -109,8 +110,8 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                     LicenseOrder.EndDate = _newLicenseOrder.EndDate.Date;
 
                     var checkedHardwareVaults = _newLicenseOrder.HardwareVaults.Where(x => x.Checked).ToList();
-                    await LicenseService.EditOrderAsync(LicenseOrder, checkedHardwareVaults);                    
-                    await ToastService.ShowToastAsync("Order created.", ToastType.Success);
+                    await LicenseService.EditOrderAsync(LicenseOrder, checkedHardwareVaults);
+                    await ToastService.ShowToastAsync(Resources.Resource.LicenseOrders_EditLicenseOrder_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
@@ -130,13 +131,13 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 {
                     if (_renewLicenseOrder.EndDate < DateTime.Now)
                     {
-                        ValidationErrorMessage.DisplayError(nameof(RenewLicenseOrder.EndDate), $"End Date must not be less than Start Date.");
+                        ValidationErrorMessage.DisplayError(nameof(RenewLicenseOrder.EndDate), string.Format(Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess, Resources.Resource.Label_EndDate, Resources.Resource.Label_StartDate));
                         return;
                     }
 
                     if (!_renewLicenseOrder.HardwareVaults.Where(x => x.Checked).Any())
                     {
-                        ValidationErrorMessage.DisplayError(nameof(RenewLicenseOrder.HardwareVaults), $"Select at least one hardware vault.");
+                        ValidationErrorMessage.DisplayError(nameof(RenewLicenseOrder.HardwareVaults), Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne);
                         return;
                     }
 
@@ -145,7 +146,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
                     if (_renewLicenseOrder.EndDate < maxEndDate)
                     {
-                        ValidationErrorMessage.DisplayError(nameof(RenewLicenseOrder.HardwareVaults), $"The selected End Date less than max end date for selected hardware vaults.");
+                        ValidationErrorMessage.DisplayError(nameof(RenewLicenseOrder.HardwareVaults), string.Format(Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_LessThanMaxEndDate, Resources.Resource.Label_EndDate));
                         return;
                     }
 
@@ -156,7 +157,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                     LicenseOrder.EndDate = _renewLicenseOrder.EndDate.Date;
 
                     await LicenseService.EditOrderAsync(LicenseOrder, checkedHardwareVaults);
-                    await ToastService.ShowToastAsync("Order created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.LicenseOrders_EditLicenseOrder_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

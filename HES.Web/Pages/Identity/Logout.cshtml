@@ -1,7 +1,7 @@
 ﻿@page "/logout"
 @model HES.Web.Pages.Identity.LogoutModel
 @{
-    ViewData["Title"] = "Log out";
+    ViewData["Title"] = Resource.Identity_Logout_Title;
 }
 
 <div class="d-flex justify-content-center align-items-center h-100">
@@ -13,13 +13,13 @@
         {
             <h5 class="text-navyblue my-3">@User.Identity.Name</h5>
             <form class="form-inline" asp-page="@Routes.Logout" method="post">
-                <button type="submit" class="btn btn-outline-primary w-100">Logout</button>
+                <button type="submit" class="btn btn-outline-primary w-100">@Resource.Btn_Logout</button>
             </form>
         }
         else
         {
-            <p>You have successfully logged out of the application.</p>
-            <a href="@Routes.Login">Go to login page</a>
+            <p>@Resource.Identity_Logout_Description</p>
+            <a href="@Routes.Login">@Resource.Label_GoToLoginPage</a>
         }
     </div>
 </div>

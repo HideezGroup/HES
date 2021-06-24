@@ -7,7 +7,7 @@
 else
 {
     <div class="border rounded bg-light p-2 mb-3 d-flex align-items-center">
-        <div class="text-nowrap me-2">Configure settings manually or use a metadata file</div>
+        <div class="text-nowrap me-2">@Resource.Parameters_AddSaml2RelyingParty_Configure</div>
         <div class="w-100">
             <InputFile OnChange="@OnInputFileChangeAsync" class="form-control" />
         </div>
@@ -36,8 +36,8 @@ else
             <ValidationMessage For="@(() => RelyingParty.SignatureValidationCertificateBase64)" class="text-danger" />
         </div>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-            <Button @ref="Button" Text="Add" type="submit" class="btn btn-primary" />
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button @ref="Button" Text="@Resource.Btn_Add" type="submit" class="btn btn-primary" />
         </div>
     </EditForm>
 }

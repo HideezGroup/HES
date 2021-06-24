@@ -78,8 +78,8 @@ namespace HES.Core.Exceptions
         // API
         ApiKeyEmpty,
 
-        //Profiles
-        VaultProfileNotFound,
+        // Hardware Vault Profile
+        HardwareVaultProfileNotFound,
         CannotDeleteDefaultProfile,
         ProfileNameAlreadyInUse,
         ActivationCodeNotFound,
@@ -94,109 +94,120 @@ namespace HES.Core.Exceptions
         DataProtectionIsAlreadyEnabled,
         DataProtectionIsBusy,
 
-        InvalidCertificate,
+        // LDAP
+        TheLDAPServerIsUnavailable,
 
+        // SAML
+        InvalidCertificate,
         Saml2RelyingPartyNotFound,
-        Saml2IssuerAlreadyExist
+        Saml2IssuerAlreadyExist,
+        Saml2SPDescriptorNotLoaded,
+        Saml2NotMetadataOrDescriptorElementNotFound,
     }
 
     public class HESException : Exception
     {
-        private static readonly Dictionary<HESCode, string> Errors = new Dictionary<HESCode, string>()
-        {
-            { HESCode.None, "Something went wrong." },
-            { HESCode.UserNotFound, "User not found." },
-            { HESCode.InvalidLoginAttempt, "Invalid login attempt." },
-            { HESCode.AccountLockout, "Account lockout" },
-            { HESCode.IncorrectCurrentPassword, "Incorrect current password." },
-            { HESCode.EmailAlreadyTaken, "This email already taken." },
-            { HESCode.RequiresRelogin, "Requires relogin." },
-            { HESCode.RequiresTwoFactor, "Requires two factor." },
-
-            { HESCode.EmployeeNotFound, "Employee not found." },
-            { HESCode.ActiveDirectoryUserNotFound,  "This employee was removed from active directory so it was changed to local user." },
-            { HESCode.EmployeeAlreadyExist, "Employee with current name already exists." },
-            { HESCode.EmployeeRequiresLastName, "Requires last name." },
-            { HESCode.EmployeeRequiresEmail, "Requires email." },
-
-            { HESCode.HardwareVaultNotFound, "Hardware Vault not found." },
-            { HESCode.HardwareVaultNotFoundWithParam,  "Hardware Vault {0} not found." },
-
-            { HESCode.OneHardwareVaultConstraint,  "Cannot add more than one hardware vault." },
-            { HESCode.HardwareVaultCannotReserve,  "Vault in a status that does not allow to reserve." },
-            { HESCode.HardwareVaultUntieBeforeRemove,  "First untie the hardware vault before removing." },
-            { HESCode.HardwareVaultВoesNotAllowToRemove,  "Vault in a status that does not allow to remove." },
-
-            { HESCode.WorkstationNotFound,  "Workstation not found." },
-            { HESCode.WorkstationNotFoundWithParam,  "Workstation {0} not found." },
-            { HESCode.WorkstationHardwareVaultPairNotFound,  "Workstation and Hardware Vault pair not found." },
-            { HESCode.WorkstationHardwareVaultPairAlreadyExist,  "Hardware Vault already added to workstation." },
-
-            { HESCode.LdapSettingsNotSet,  "LDAP settings not set." },
-            { HESCode.AppSettingsNotFound,  "Application settings not found." },
-
-            { HESCode.VaultProfileNotFound,  "Vault profile not found" },
-            { HESCode.CannotDeleteDefaultProfile,  "Cannot delete default profile" },
-            { HESCode.ProfileNameAlreadyInUse,  "Profile name already in use" },
-            { HESCode.ActivationCodeNotFound,  "Activation code not found" },
-
-            { HESCode.AccountNotFound, "Account not found." },
-            { HESCode.AccountExist, "Account with the same name and login exist." },
-            { HESCode.IncorrectUrl, "Incorrect URL address." },
-            { HESCode.IncorrectOtp, "Incorrect OTP secret." },
-            { HESCode.IncorrectPassword, "Incorrect password." },
-            { HESCode.IncorrectOldPassword, "Incorrect old password." },
-
-            { HESCode.TemplateNotFound, "Template not found." },
-            { HESCode.TemplateExist, "Template with current name already exists." },
-
-            { HESCode.SharedAccountNotFound, "Shared Account not found." },
-            { HESCode.SharedAccountExist, "Shared Account with the same name and login exist." },
-            { HESCode.SecurityKeyNotFound, "Security key not found." },
-            { HESCode.AuthenticatorNotFIDO2, "Authenticator not FIDO2." },
-
-            { HESCode.CompanyNameAlreadyInUse, "Company name already in use." },
-            { HESCode.CompanyNotFound, "Company not found." },
-            { HESCode.DepartmentNameAlreadyInUse, "Department name already in use" },
-            { HESCode.DepartmentNotFound, "Department not found." },
-            { HESCode.PositionNameAlreadyInUse, "Position name already in use." },
-            { HESCode.PositionNotFound, "Position not found." },
-
-            { HESCode.LicenseOrderNotFound, "License Order not found." },
-            { HESCode.LicenseForHardwareVaultNotFound, "Hardware vault licenses not found." },
-
-            { HESCode.ApiKeyEmpty, "Api Key is empty." },
-
-            { HESCode.DataProtectionNotFinishedPasswordChange, "Data protection not finished password change." },
-            { HESCode.DataProtectionNotActivated, "Data protection is not activated." },
-            { HESCode.DataProtectionNotEnabled, "Data protection is not enabled." },
-            { HESCode.DataProtectionParametersNotFound, "Data protection parameters not found." },
-            { HESCode.DataProtectionParametersIsEmpty, "Data Protection parameters is empty." },
-            { HESCode.DataProtectionIsAlreadyActivated, "Data protection is already activated." },
-            { HESCode.DataProtectionIsAlreadyEnabled, "Data protection is already enabled." },
-            { HESCode.DataProtectionIsBusy, "Data protection is busy." },
-
-            { HESCode.InvalidCertificate, "Invalid certificate." },
-
-            { HESCode.Saml2RelyingPartyNotFound, "Service provider not found." },
-            { HESCode.Saml2IssuerAlreadyExist, "Issuer already exist." }
-        };
-
         public HESCode Code { get; set; }
 
-        public HESException(HESCode code) : base(Errors[code])
+        public HESException(HESCode code) : base(GetMessage(code))
         {
             Code = code;
         }
 
-        public HESException(HESCode code, string[] parameters) : base(string.Format(Errors[code], parameters))
+        public HESException(HESCode code, string[] parameters) : base(string.Format(GetMessage(code), parameters))
         {
             Code = code;
         }
 
         public static string GetMessage(HESCode code)
         {
-            return Errors[code];
+            return GetErrorsDictionary()[code];
+        }
+
+        private static Dictionary<HESCode, string> GetErrorsDictionary()
+        {
+            return new Dictionary<HESCode, string>()
+            {
+                { HESCode.None, Resources.Resource.Exception_None },
+                { HESCode.UserNotFound, Resources.Resource.Exception_UserNotFound },
+                { HESCode.InvalidLoginAttempt, Resources.Resource.Exception_InvalidLoginAttempt },
+                { HESCode.AccountLockout, Resources.Resource.Exception_AccountLockout },
+                { HESCode.IncorrectCurrentPassword, Resources.Resource.Exception_IncorrectCurrentPassword },
+                { HESCode.EmailAlreadyTaken, Resources.Resource.Exception_EmailAlreadyTaken },
+                { HESCode.RequiresRelogin, Resources.Resource.Exception_RequiresRelogin },
+                { HESCode.RequiresTwoFactor, Resources.Resource.Exception_RequiresTwoFactor },
+
+                { HESCode.EmployeeNotFound, Resources.Resource.Exception_EmployeeNotFound },
+                { HESCode.ActiveDirectoryUserNotFound,  Resources.Resource.Exception_ActiveDirectoryUserNotFound },
+                { HESCode.EmployeeAlreadyExist, Resources.Resource.Exception_EmployeeAlreadyExist },
+                { HESCode.EmployeeRequiresLastName, Resources.Resource.Exception_EmployeeRequiresLastName },
+                { HESCode.EmployeeRequiresEmail, Resources.Resource.Exception_EmployeeRequiresEmail },
+
+                { HESCode.HardwareVaultNotFound, Resources.Resource.Exception_HardwareVaultNotFound },
+                { HESCode.HardwareVaultNotFoundWithParam, Resources.Resource.Exception_HardwareVaultNotFoundWithParam },
+
+                { HESCode.OneHardwareVaultConstraint, Resources.Resource.Exception_OneHardwareVaultConstraint },
+                { HESCode.HardwareVaultCannotReserve, Resources.Resource.Exception_HardwareVaultCannotReserve },
+                { HESCode.HardwareVaultUntieBeforeRemove, Resources.Resource.Exception_HardwareVaultUntieBeforeRemove },
+                { HESCode.HardwareVaultВoesNotAllowToRemove, Resources.Resource.Exception_HardwareVaultВoesNotAllowToRemove },
+
+                { HESCode.WorkstationNotFound, Resources.Resource.Exception_WorkstationNotFound },
+                { HESCode.WorkstationNotFoundWithParam, Resources.Resource.Exception_WorkstationNotFoundWithParam },
+                { HESCode.WorkstationHardwareVaultPairNotFound, Resources.Resource.Exception_WorkstationHardwareVaultPairNotFound },
+                { HESCode.WorkstationHardwareVaultPairAlreadyExist, Resources.Resource.Exception_WorkstationHardwareVaultPairAlreadyExist },
+
+                { HESCode.LdapSettingsNotSet,  Resources.Resource.Exception_LdapSettingsNotSet },
+                { HESCode.AppSettingsNotFound,  Resources.Resource.Exception_AppSettingsNotFound },
+
+                { HESCode.HardwareVaultProfileNotFound,  Resources.Resource.Exception_HardwareVaultProfileNotFound },
+                { HESCode.CannotDeleteDefaultProfile,  Resources.Resource.Exception_CannotDeleteDefaultProfile },
+                { HESCode.ProfileNameAlreadyInUse,  Resources.Resource.Exception_ProfileNameAlreadyInUse },
+                { HESCode.ActivationCodeNotFound,  Resources.Resource.Exception_ActivationCodeNotFound },
+
+                { HESCode.AccountNotFound, Resources.Resource.Exception_AccountNotFound },
+                { HESCode.AccountExist, Resources.Resource.Exception_AccountExist },
+                { HESCode.IncorrectUrl, Resources.Resource.Exception_IncorrectUrl },
+                { HESCode.IncorrectOtp, Resources.Resource.Exception_IncorrectOtp },
+                { HESCode.IncorrectPassword, Resources.Resource.Exception_IncorrectPassword },
+                { HESCode.IncorrectOldPassword, Resources.Resource.Exception_IncorrectOldPassword },
+
+                { HESCode.TemplateNotFound, Resources.Resource.Exception_TemplateNotFound },
+                { HESCode.TemplateExist, Resources.Resource.Exception_TemplateExist },
+
+                { HESCode.SharedAccountNotFound, Resources.Resource.Exception_SharedAccountNotFound },
+                { HESCode.SharedAccountExist, Resources.Resource.Exception_SharedAccountExist },
+                { HESCode.SecurityKeyNotFound, Resources.Resource.Exception_SecurityKeyNotFound },
+                { HESCode.AuthenticatorNotFIDO2, Resources.Resource.Exception_AuthenticatorNotFIDO2 },
+
+                { HESCode.CompanyNameAlreadyInUse, Resources.Resource.Exception_CompanyNameAlreadyInUse },
+                { HESCode.CompanyNotFound, Resources.Resource.Exception_CompanyNotFound },
+                { HESCode.DepartmentNameAlreadyInUse, Resources.Resource.Exception_DepartmentNameAlreadyInUse },
+                { HESCode.DepartmentNotFound, Resources.Resource.Exception_DepartmentNotFound },
+                { HESCode.PositionNameAlreadyInUse, Resources.Resource.Exception_PositionNameAlreadyInUse },
+                { HESCode.PositionNotFound, Resources.Resource.Exception_PositionNotFound },
+
+                { HESCode.LicenseOrderNotFound, Resources.Resource.Exception_LicenseOrderNotFound },
+                { HESCode.LicenseForHardwareVaultNotFound, Resources.Resource.Exception_LicenseForHardwareVaultNotFound },
+
+                { HESCode.ApiKeyEmpty, Resources.Resource.Exception_ApiKeyEmpty },
+
+                { HESCode.DataProtectionNotFinishedPasswordChange, Resources.Resource.Exception_DataProtectionNotFinishedPasswordChange },
+                { HESCode.DataProtectionNotActivated, Resources.Resource.Exception_DataProtectionNotActivated },
+                { HESCode.DataProtectionNotEnabled, Resources.Resource.Exception_DataProtectionNotEnabled },
+                { HESCode.DataProtectionParametersNotFound, Resources.Resource.Exception_DataProtectionParametersNotFound },
+                { HESCode.DataProtectionParametersIsEmpty, Resources.Resource.Exception_DataProtectionParametersIsEmpty },
+                { HESCode.DataProtectionIsAlreadyActivated, Resources.Resource.Exception_DataProtectionIsAlreadyActivated },
+                { HESCode.DataProtectionIsAlreadyEnabled, Resources.Resource.Exception_DataProtectionIsAlreadyEnabled },
+                { HESCode.DataProtectionIsBusy, Resources.Resource.Exception_DataProtectionIsBusy },
+
+                { HESCode.TheLDAPServerIsUnavailable, Resources.Resource.Exception_TheLDAPServerIsUnavailable },
+
+                { HESCode.InvalidCertificate, Resources.Resource.Exception_InvalidCertificate },
+                { HESCode.Saml2RelyingPartyNotFound, Resources.Resource.Exception_Saml2RelyingPartyNotFound },
+                { HESCode.Saml2IssuerAlreadyExist, Resources.Resource.Exception_Saml2IssuerAlreadyExist },
+                { HESCode.Saml2SPDescriptorNotLoaded, Resources.Resource.Exception_Saml2SPDescriptorNotLoaded },
+                { HESCode.Saml2NotMetadataOrDescriptorElementNotFound, Resources.Resource.Exception_Saml2NotMetadataOrDescriptorElementNotFound },
+            };
         }
 
         public static string GetIdentityResultErrors(IEnumerable<IdentityError> errors)

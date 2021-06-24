@@ -24,7 +24,7 @@ namespace HES.Web.Pages.Settings.Parameters
             try
             {
                 await AppSettingsService.RemoveLdapSettingsAsync();
-                await ToastService.ShowToastAsync("Domain settings removed.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Parameters_DeleteLdapSettings_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

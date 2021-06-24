@@ -8,14 +8,14 @@ else
 {
     @if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="workstation" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@Workstation.Name" CloseAction="ModalDialogCancel" />
     }
     else
     {
-        <h5 class="text-gray mb-4 ">You want to delete workstation @Workstation.Name?</h5>
+        <h5 class="text-gray mb-4 ">@string.Format(Resources.Resource.Workstations_DeleteWorkstation_Body, Workstation.Name)</h5>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-            <Button class="btn btn-danger" Text="Delete" OnClick="DeleteAsync" />
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button Text="@Resource.Btn_Delete" OnClick="DeleteAsync" class="btn btn-danger" />
         </div>
     }
 }

@@ -26,7 +26,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.CreateCompanyAsync(Company);
-                    await ToastService.ShowToastAsync("Company created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.OrgStructure_CreateCompany_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

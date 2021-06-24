@@ -5,16 +5,15 @@
     <div class="alert alert-warning" role="alert">
         <p>
             <span class="glyphicon glyphicon-warning-sign"></span>
-            <strong>If you reset your authenticator key your authenticator app will not work until you reconfigure it.</strong>
+            <strong>@Resource.Profile_Security_ResetAuthenticator_Description</strong>
         </p>
         <p>
-            This process disables 2FA until you verify your authenticator app.
-            If you do not complete your authenticator app configuration you may lose access to your account.
+            @Resource.Profile_Security_ResetAuthenticator_SubDescription
         </p>
     </div>
     <div class="text-end">
-        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Close</button>
-        <Button class="btn btn-danger" type="button" Text="Reset authenticator key" OnClick="ResetAuthenticatorKeyAsync" />
+        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">@Resource.Btn_Close</button>
+        <Button class="btn btn-danger" type="button" Text="@Resource.Btn_ResetAuthenticatorKey" OnClick="ResetAuthenticatorKeyAsync" />
     </div>
 }
 else

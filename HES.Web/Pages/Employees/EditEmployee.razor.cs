@@ -86,7 +86,7 @@ namespace HES.Web.Pages.Employees
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await EmployeeService.EditEmployeeAsync(Employee);
-                    await ToastService.ShowToastAsync("Employee updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Employees_EditEmployee_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

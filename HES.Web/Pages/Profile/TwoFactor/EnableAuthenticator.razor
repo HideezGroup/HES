@@ -4,41 +4,34 @@
 {
     <div class="card">
         <div class="card-body">
-            <h4 class="text-navyblue mb-2">Configure authenticator app</h4>
+            <h4 class="text-navyblue mb-2">@Resource.Profile_Security_EnableAuthenticator_Header</h4>
             <div>
-                <p>To use an authenticator app go through the following steps:</p>
+                <p>@Resource.Profile_Security_EnableAuthenticator_ToUse</p>
                 <ol class="list">
                     <li>
                         <p>
-                            Download a two-factor authenticator app like Microsoft Authenticator for
-                            <a href="https://go.microsoft.com/fwlink/?Linkid=825071">Windows Phone</a>,
-                            <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> and
-                            <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a> or
-                            Google Authenticator for
-                            <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Android</a> and
-                            <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
+                            @((MarkupString)Resource.Profile_Security_EnableAuthenticator_Step1_Download2FA)
                         </p>
                     </li>
                     <li>
-                        <p>Scan the QR Code or enter this key <kbd>@SharedKeyInfo.SharedKey</kbd> into your two factor authenticator app. Spaces and casing do not matter.</p>
+                        <p>@((MarkupString)string.Format(Resource.Profile_Security_EnableAuthenticator_Step2_ScanQR, SharedKeyInfo.SharedKey))</p>
                         <div id="qrCode"></div>
                         <div id="qrCodeData" data-url="@((MarkupString)SharedKeyInfo.AuthenticatorUri)"></div>
                         <br />
                     </li>
                     <li>
                         <p>
-                            Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
-                            with a unique code. Enter the code in the confirmation box below.
+                            @Resource.Profile_Security_EnableAuthenticator_Step3_EnterCode
                         </p>
                         <div class="row">
                             <div class="col-md-6">
                                 <EditForm Model="VerificationCode" OnValidSubmit="VerifyTwoFactorAsync">
                                     <DataAnnotationsValidator />
                                     <div>
-                                        <label class="control-label">Verification Code</label>
+                                        <Label For="@(() => VerificationCode.Code)" class="control-label" />
                                         <div class="align-items-end d-flex">
                                             <InputText @bind-Value="VerificationCode.Code" class="form-control me-2" autocomplete="off" />
-                                            <button type="submit" class="btn btn-primary">Verify</button>
+                                            <button type="submit" class="btn btn-primary">@Resource.Btn_Verify</button>
                                         </div>
                                         <ValidationMessage For="@(() => VerificationCode.Code)" class="text-danger" />
                                     </div>
@@ -54,10 +47,10 @@
                     <div class="alert alert-warning" role="alert">
                         <p>
                             <span class="glyphicon glyphicon-warning-sign"></span>
-                            <strong>Put these codes in a safe place.</strong>
+                            <strong>@Resource.Profile_Security_EnableAuthenticator_RecoveryCodes_Header</strong>
                         </p>
                         <p>
-                            If you lose your device and don't have the recovery codes you will lose access to your account.
+                            @Resource.Profile_Security_EnableAuthenticator_RecoveryCodes_Description
                         </p>
                     </div>
                     <div class="row">
@@ -73,7 +66,7 @@
         </div>
     </div>
     <div class="text-center">
-        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary mt-3">Close</button>
+        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary mt-3">@Resource.Btn_Close</button>
     </div>
 }
 else

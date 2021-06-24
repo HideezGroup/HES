@@ -11,28 +11,28 @@ else
                 <DataAnnotationsValidator />
                 <div class="row">
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Start Date</label>
+                        <Label For="@(() => Filter.StartDate)" class="form-label text-gray" />
                         <InputDate @bind-Value="Filter.StartDate" class="form-control" />
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">End Date</label>
+                        <Label For="@(() => Filter.EndDate)" class="form-label text-gray" />
                         <InputDate @bind-Value="Filter.EndDate" class="form-control" />
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Employee</label>
+                        <Label For="@(() => Filter.Employee)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Employee" class="form-control" />
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Company</label>
+                        <Label For="@(() => Filter.Company)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Company" class="form-control" />
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Department</label>
+                        <Label For="@(() => Filter.Department)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Department" class="form-control" />
                     </div>
                     <div class="col align-self-end text-end form-group">
-                        <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync" />
-                        <Button @ref="Button" type="submit" Text="Filter" class="btn btn-primary" />
+                        <Button Text="@Resource.Btn_Clear" OnClick="ClearAsync" class="btn btn-secondary" />
+                        <Button @ref="Button" Text="@Resource.Btn_Filter" type="submit" class="btn btn-primary" />
                     </div>
                 </div>
             </EditForm>
@@ -42,20 +42,20 @@ else
                 <DataAnnotationsValidator />
                 <div class="row">
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Employee</label>
+                        <Label For="@(() => Filter.Employee)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Employee" class="form-control" />
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Company</label>
+                        <Label For="@(() => Filter.Company)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Company" class="form-control" />
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Department</label>
+                        <Label For="@(() => Filter.Department)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Department" class="form-control" />
                     </div>
                     <div class="col align-self-end text-end form-group">
-                        <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync" />
-                        <Button @ref="Button" type="submit" Text="Filter" class="btn btn-primary" />
+                        <Button Text="@Resource.Btn_Clear" OnClick="ClearAsync" class="btn btn-secondary" />
+                        <Button @ref="Button" Text="@Resource.Btn_Filter" type="submit" class="btn btn-primary" />
                     </div>
                 </div>
             </EditForm>
@@ -65,16 +65,16 @@ else
                 <DataAnnotationsValidator />
                 <div class="row">
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Company</label>
+                        <Label For="@(() => Filter.Company)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Company" class="form-control" />
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Department</label>
+                        <Label For="@(() => Filter.Department)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Department" class="form-control" />
                     </div>
                     <div class="col align-self-end text-end form-group">
-                        <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync" />
-                        <Button @ref="Button" type="submit" Text="Filter" class="btn btn-primary" />
+                        <Button Text="@Resource.Btn_Clear" OnClick="ClearAsync" class="btn btn-secondary" />
+                        <Button @ref="Button" Text="@Resource.Btn_Filter" type="submit" class="btn btn-primary" />
                     </div>
                 </div>
             </EditForm>
@@ -84,12 +84,12 @@ else
                 <DataAnnotationsValidator />
                 <div class="row">
                     <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                        <label class="mb-0 text-gray">Workstation</label>
+                        <Label For="@(() => Filter.Workstation)" class="form-label text-gray" />
                         <InputText @bind-Value="Filter.Workstation" class="form-control" />
-                    </div>             
+                    </div>
                     <div class="col align-self-end text-end form-group">
-                        <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync" />            
-                        <Button @ref="Button" type="submit" Text="Filter" class="btn btn-primary" />
+                        <Button Text="@Resource.Btn_Clear" OnClick="ClearAsync" class="btn btn-secondary" />
+                        <Button @ref="Button" Text="@Resource.Btn_Filter" type="submit" class="btn btn-primary" />
                     </div>
                 </div>
             </EditForm>

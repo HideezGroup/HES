@@ -44,7 +44,7 @@ namespace HES.Web.Pages.Settings.Administrators
             try
             {
                 await ApplicationUserService.DeleteUserAsync(ApplicationUserId);
-                await ToastService.ShowToastAsync("Administrator deleted.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Administrators_DeleteAdministrator_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

@@ -8,14 +8,14 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="company" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@Account.Name" CloseAction="ModalDialogCancel" />
     }
     else
     {
-        <h5 class="text-gray mb-4 text-break">You want to delete @Account.AccountType.ToString().ToLower() account @Account.Name?</h5>
+        <h5 class="text-gray mb-4 text-break">@string.Format(Resource.EmployeeDetails_DeleteAccount_Body, Account.AccountType.ToString().ToLower(), Account.Name)</h5>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary me-1" @onclick="ModalDialogCancel">Cancel</button>
-            <Button Text="Delete" OnClick="DeleteAccoountAsync" class="btn btn-danger" />
+            <button type="button" class="btn btn-secondary me-1" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button Text="@Resource.Btn_Delete" OnClick="DeleteAccoountAsync" class="btn btn-danger" />
         </div>
     }
 }

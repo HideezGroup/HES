@@ -96,7 +96,7 @@ namespace HES.Web.Pages.Employees
                     }
 
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
-                    await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_EditPersonalAccountPwd_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
@@ -122,7 +122,7 @@ namespace HES.Web.Pages.Employees
                 }
 
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
-                await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_EditPersonalAccountPwd_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

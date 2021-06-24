@@ -5,7 +5,7 @@ using HES.Core.Exceptions;
 using HES.Core.Helpers;
 using HES.Core.Interfaces;
 using HES.Core.Models.Accounts;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using Hideez.SDK.Communication.PasswordManager;
@@ -486,7 +486,8 @@ namespace HES.Core.Services
                 PhoneNumber = employee.PhoneNumber,
                 UserName = employee.Email,
                 Email = employee.Email,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Culture = CultureConstants.EN
             };
 
             var result = await _userManager.CreateAsync(user);

@@ -17,22 +17,22 @@ else
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-10 col-xl-8">
                                 <img style="width:120px;" src="/svg/logo-lock.svg" />
-                                <h2>Alarm Button</h2>
+                                <h2>@Resource.Alarm_PageHeader</h2>
                                 <p class="text-muted">
-                                    This button allows you to remotely lock workstations and block the connection of hardware vaults.
+                                    @Resource.Alarm_PageDescription
                                 </p>
                                 @if (AlarmState.IsAlarm)
                                 {
-                                    <button type="button" @onclick="DisableAlarmAsync" class="btn btn-success" title="Unlock all workstations">
+                                    <button type="button" @onclick="DisableAlarmAsync" class="btn btn-success" title="@Resource.Title_UnlockAll">
                                         <img src="/svg/icon-lock-open.svg" />
-                                        Turn Off
+                                        @Resource.Btn_TurnOff
                                     </button>
                                 }
                                 else
                                 {
-                                    <button type="button" @onclick="EnableAlarmAsync" class="btn btn-danger" title="Lock all workstations">
+                                    <button type="button" @onclick="EnableAlarmAsync" class="btn btn-danger" title="@Resource.Title_LockAll">
                                         <img src="/svg/icon-lock.svg" />
-                                        Turn On
+                                        @Resource.Btn_TurnOn
                                     </button>
                                 }
                             </div>
@@ -44,7 +44,7 @@ else
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h6 class="text-uppercase text-muted mb-2">
-                                    Workstations Online
+                                    @Resource.Label_WorkstationsOnline
                                 </h6>
                                 <span class="h2 mb-0">
                                     @WorkstationOnline
@@ -56,7 +56,7 @@ else
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h6 class="text-uppercase text-muted mb-2">
-                                    Workstations Count
+                                    @Resource.Label_WorkstationsCount
                                 </h6>
                                 <span class="h2 mb-0">
                                     @WorkstationCount
@@ -68,22 +68,22 @@ else
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h6 class="text-uppercase text-muted mb-2">
-                                    Status
+                                    @Resource.Label_Status
                                 </h6>
                                 <span class="h5 mb-0">
                                     @if (AlarmState.IsAlarm)
                                     {
-                                        <span>Enabled by @AlarmState.AdminName @AlarmState.Date.ToLocalTime()</span>
+                                        <span>@Resource.Label_EnabledBy @AlarmState.AdminName @AlarmState.Date.ToLocalTime()</span>
                                     }
                                     else
                                     {
                                         @if (AlarmState.Date == new DateTime())
                                         {
-                                            <span>Never used</span>
+                                            <span>@Resource.Label_NeverUsed</span>
                                         }
                                         else
                                         {
-                                            <span>Disabled by @AlarmState.AdminName @AlarmState.Date.ToLocalTime()</span>
+                                            <span>@Resource.Label_DisabledBy @AlarmState.AdminName @AlarmState.Date.ToLocalTime()</span>
                                         }
                                     }
                                 </span>

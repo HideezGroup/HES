@@ -4,49 +4,49 @@
     <div class="col-6">
         <ul class="list-group mb-3">
             <li class="list-group-item d-flex align-items-center">
-                <span class="fw-bold">Contact Email</span>
+                <span class="fw-bold">@Resource.Label_ContactEmail</span>
                 <span class="mx-1">-</span>
                 <span>@LicenseOrder.ContactEmail</span>
             </li>
             <li class="list-group-item d-flex align-items-center">
-                <span class="fw-bold">Note</span>
+                <span class="fw-bold">@Resource.Label_Note</span>
                 <span class="mx-1">-</span>
                 <span class="text-truncate">@LicenseOrder.Note</span>
             </li>
             <li class="list-group-item d-flex align-items-center">
-                <span class="fw-bold">Prolong</span>
+                <span class="fw-bold">@Resource.Label_Prolong</span>
                 <span class="mx-1">-</span>
                 <span>
                     @if (LicenseOrder.ProlongExistingLicenses)
                     {
-                        <span>Yes</span>
+                        <span>@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span>No</span>
+                        <span>@Resource.Label_No</span>
                     }
                 </span>
             </li>
             @if (!LicenseOrder.ProlongExistingLicenses)
             {
                 <li class="list-group-item d-flex align-items-center">
-                    <span class="fw-bold">Start Date</span>
+                    <span class="fw-bold">@Resource.Label_StartDate</span>
                     <span class="mx-1">-</span>
                     <span>@LicenseOrder.StartDate.Value.ToShortDateString()</span>
                 </li>
             }
             <li class="list-group-item d-flex align-items-center">
-                <span class="fw-bold">End Date</span>
+                <span class="fw-bold">@Resource.Label_EndDate</span>
                 <span class="mx-1">-</span>
                 <span>@LicenseOrder.EndDate.ToShortDateString()</span>
             </li>
             <li class="list-group-item d-flex align-items-center">
-                <span class="fw-bold">Created At</span>
+                <span class="fw-bold">@Resource.Label_Created</span>
                 <span class="mx-1">-</span>
                 <span>@LicenseOrder.CreatedAt.ToLocalTime()</span>
             </li>
             <li class="list-group-item d-flex align-items-center">
-                <span class="fw-bold">Order Status</span>
+                <span class="fw-bold">@Resource.Label_OrderStatus</span>
                 <span class="mx-1">-</span>
                 <span>@LicenseOrder.OrderStatus</span>
             </li>
@@ -58,7 +58,7 @@
                 <thead>
                     <tr>
                         <th>
-                            Serial Number
+                            @Resource.Label_SerialNumber
                         </th>
                     </tr>
                 </thead>
@@ -77,5 +77,5 @@
     </div>
 </div>
 <div class="form-footer">
-    <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Close</button>
+    <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Close</button>
 </div>

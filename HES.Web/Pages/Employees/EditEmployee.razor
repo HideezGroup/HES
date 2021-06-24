@@ -8,7 +8,7 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="employee" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@Employee.FullName" CloseAction="ModalDialogCancel" />
     }
     else
     {
@@ -36,7 +36,7 @@ else
                 <ValidationMessage For="@(() => Employee.PhoneNumber)" class="text-danger" />
             </div>
             <div class="form-group">
-                <label class="control-label text-gra">Company</label>
+                <label class="control-label text-gray">@Resource.Label_Company</label>
                 <select @onchange="OnCompanyChangeAsync" class="form-select text-navyblue">
                     <option></option>
                     @foreach (var item in Companies)
@@ -72,8 +72,8 @@ else
                 </select>
             </div>
             <div class="form-footer">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-                <Button @ref="ButtonSpinner" Text="Save" type="submit" class="btn btn-primary" />
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                <Button @ref="ButtonSpinner" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }

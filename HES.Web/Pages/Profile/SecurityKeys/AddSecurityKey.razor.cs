@@ -53,7 +53,7 @@ namespace HES.Web.Pages.Profile.SecurityKeys
                 ChangeState(SecurityKeyAddingStep.Configuration);
 
                 FidoStoredCredential = await FidoService.AddSecurityKeyAsync(CurrentUser.Email, JSRuntime);
-                await ToastService.ShowToastAsync("Security key added.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_AddSecurityKey_Toast, ToastType.Success);
 
                 ChangeState(SecurityKeyAddingStep.Done);
             }

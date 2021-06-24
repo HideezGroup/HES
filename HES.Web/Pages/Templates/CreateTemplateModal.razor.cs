@@ -32,17 +32,17 @@ namespace HES.Web.Pages.Templates
                 await Button.SpinAsync(async () =>
                 {
                     await TemplateService.CreateTmplateAsync(Template);
-                    await ToastService.ShowToastAsync("Template created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Templates_CreateTemplate_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
             catch (HESException ex) when (ex.Code == HESCode.TemplateExist)
             {
-                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Name), ex.Message);
+                ValidationErrorMessage.DisplayError(nameof(Template.Name), ex.Message);
             }
             catch (HESException ex) when (ex.Code == HESCode.IncorrectUrl)
             {
-                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Urls), ex.Message);
+                ValidationErrorMessage.DisplayError(nameof(Template.Urls), ex.Message);
             }
             catch (Exception ex)
             {

@@ -36,8 +36,8 @@ namespace HES.Web.Pages.Employees
             try
             {
                 await EmployeeService.DisableSsoAsync(Employee);
-                await EmailSenderService.SendEmployeeDisableSsoAsync(Employee.Email);
-                await ToastService.ShowToastAsync($"SSO disabled.", ToastType.Success);
+                await EmailSenderService.SendEmployeeDisableSsoAsync(Employee);
+                await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_DisableSso_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

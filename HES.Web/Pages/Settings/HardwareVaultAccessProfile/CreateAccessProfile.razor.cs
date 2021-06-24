@@ -3,7 +3,6 @@ using HES.Core.Enums;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -43,7 +42,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
                 await Button.SpinAsync(async () =>
                 {
                     await HardwareVaultService.CreateProfileAsync(AccessProfile);
-                    await ToastService.ShowToastAsync("Hardware vault profile created.", ToastType.Success); 
+                    await ToastService.ShowToastAsync(Resources.Resource.HardwareVaultAccessProfile_CreateAccessProfile_Toast, ToastType.Success); 
                     await ModalDialogClose();
                 });
             }

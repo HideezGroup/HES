@@ -742,9 +742,9 @@ namespace HES.Core.Services
                 {
                     query = query.Where(x => x.CreatedAt >= dataLoadingOptions.Filter.CreatedAtFrom.Value.Date.ToUniversalTime());
                 }
-                if (dataLoadingOptions.Filter.CreateddAtTo != null)
+                if (dataLoadingOptions.Filter.CreatedAtTo != null)
                 {
-                    query = query.Where(x => x.CreatedAt <= dataLoadingOptions.Filter.CreateddAtTo.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59).ToUniversalTime());
+                    query = query.Where(x => x.CreatedAt <= dataLoadingOptions.Filter.CreatedAtTo.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59).ToUniversalTime());
                 }
                 if (dataLoadingOptions.Filter.UpdatedAtFrom != null)
                 {
@@ -879,7 +879,7 @@ namespace HES.Core.Services
             var deviceAccessProfile = await _dbContext.HardwareVaultProfiles.FindAsync(profileId);
             if (deviceAccessProfile == null)
             {
-                throw new HESException(HESCode.VaultProfileNotFound);
+                throw new HESException(HESCode.HardwareVaultProfileNotFound);
             }
 
             if (deviceAccessProfile.HardwareVaults.Count > 0)
@@ -917,7 +917,7 @@ namespace HES.Core.Services
             var profile = await _dbContext.HardwareVaultProfiles.FindAsync(profileId);
             if (profile == null)
             {
-                throw new HESException(HESCode.VaultProfileNotFound);
+                throw new HESException(HESCode.HardwareVaultProfileNotFound);
             }
 
             vault.HardwareVaultProfileId = profileId;

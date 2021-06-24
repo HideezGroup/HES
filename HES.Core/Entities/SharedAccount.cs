@@ -12,33 +12,24 @@ namespace HES.Core.Entities
         public string Id { get; set; }
 
         [Required]
-        [Display(Name = "Account Name")]
         public string Name { get; set; }
 
-        [Display(Name = "URLs")]
         public string Urls { get; set; }
 
-        [Display(Name = "Applications")]
         public string Apps { get; set; }
 
-        [Display(Name = "Login Type")]
         public LoginType LoginType { get; set; }
 
         [Required]
-        [Display(Name = "Login")]
         public string Login { get; set; }
 
         [Required]
-        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Password Changed At")]
         public DateTime? PasswordChangedAt { get; set; }
 
-        [Display(Name = "OTP Secret")]
         public string OtpSecret { get; set; }
 
-        [Display(Name = "OTP Secret Changed At")]
         public DateTime? OtpSecretChangedAt { get; set; }
 
         public bool Deleted { get; set; }

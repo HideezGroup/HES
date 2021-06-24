@@ -20,7 +20,7 @@ namespace HES.Web.Pages.Settings.Parameters
 
         protected override void OnInitialized()
         {
-            AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>(); 
+            AppSettingsService = ScopedServices.GetRequiredService<IAppSettingsService>();
         }
 
         private async Task UpdateSettingsAsync()
@@ -30,7 +30,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 await Button.SpinAsync(async () =>
                 {
                     await AppSettingsService.SetSplunkSettingsAsync(SplunkSettings);
-                    await ToastService.ShowToastAsync("Splunk settings updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Parameters_AddSplunkSettings_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

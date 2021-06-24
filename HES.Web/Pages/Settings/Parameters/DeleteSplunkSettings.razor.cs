@@ -24,7 +24,7 @@ namespace HES.Web.Pages.Settings.Parameters
             try
             {
                 await AppSettingsService.RemoveSplunkSettingsAsync();
-                await ToastService.ShowToastAsync("Splunk settings removed.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Parameters_DeleteSplunkSettings_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

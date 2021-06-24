@@ -22,13 +22,15 @@ namespace HES.Web.Pages.Profile
     public partial class GeneralTab : HESPageBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
+        public IEmailSenderService EmailSenderService { get; set; }
         [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<ProfilePage> Logger { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
 
         public ApplicationUser User { get; set; }
         public UserProfileModel UserProfileModel { get; set; }
-        public ChangeEmailModel ChangeEmailModel { get; set; }
+        public UserChangeEmailModel ChangeEmailModel { get; set; }
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public Button ButtonUpdateProfile { get; set; }
         public Button ButtonChangeEmail { get; set; }
@@ -38,6 +40,7 @@ namespace HES.Web.Pages.Profile
             try
             {
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
+                EmailSenderService = ScopedServices.GetRequiredService<IEmailSenderService>();
 
                 var email = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.Name;
 
@@ -51,11 +54,11 @@ namespace HES.Web.Pages.Profile
                 {
                     UserId = User.Id,
                     FirstName = User.FirstName,
-                    LastName = User.LastName,              
+                    LastName = User.LastName,
                     PhoneNumber = User.PhoneNumber
                 };
 
-                ChangeEmailModel = new ChangeEmailModel
+                ChangeEmailModel = new UserChangeEmailModel
                 {
                     CurrentEmail = User.Email
                 };
@@ -77,7 +80,7 @@ namespace HES.Web.Pages.Profile
                 {
                     await ApplicationUserService.UpdateProfileInfoAsync(UserProfileModel);
                     await IdentityApiClient.RefreshSignInAsync();
-                    await ToastService.ShowToastAsync("Your profile has been updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Profile_General_Profile_Toast, ToastType.Success);
                 });
             }
             catch (Exception ex)
@@ -93,8 +96,9 @@ namespace HES.Web.Pages.Profile
             {
                 await ButtonChangeEmail.SpinAsync(async () =>
                 {
-                    await ApplicationUserService.ChangeEmailAsync(ChangeEmailModel);
-                    await ToastService.ShowToastAsync("Email confirmation sent.", ToastType.Success);
+                    var callbackUrl = await ApplicationUserService.ChangeEmailAsync(ChangeEmailModel, NavigationManager.BaseUri);
+                    await EmailSenderService.SendUserConfirmEmailAsync(User, ChangeEmailModel.NewEmail, callbackUrl);
+                    await ToastService.ShowToastAsync(Resources.Resource.Profile_General_ChangeEmail_Toast, ToastType.Success);
                 });
             }
             catch (HESException ex)
@@ -121,7 +125,7 @@ namespace HES.Web.Pages.Profile
                 }
 
                 await JSRuntime.InvokeVoidAsync("downloadPersonalData", JsonConvert.SerializeObject(personalData));
-                await ToastService.ShowToastAsync("Download started.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Profile_General_PersonalData_Toast, ToastType.Success);
             }
             catch (Exception ex)
             {
@@ -141,7 +145,7 @@ namespace HES.Web.Pages.Profile
                     builder.CloseComponent();
                 };
 
-                await ModalDialogService.ShowAsync("Delete Personal Data", body);
+                await ModalDialogService.ShowAsync(Resources.Resource.Profile_DeletePersonalData_Title, body);
             }
             catch (Exception ex)
             {

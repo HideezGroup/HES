@@ -5,33 +5,26 @@
 
 @if (Initialized)
 {
-    <SettingsCard Title="Licensing" Description="API authentication key for ordering licenses and the address of the licensing server.">
-        <div class="form-group">
-            <label class="control-label text-gray">Api Address</label>
-            @if (LicensingSettings?.ApiAddress != null)
-            {
-                <div class="alert alert-secondary" role="alert">
-                    @LicensingSettings.ApiAddress
-                </div>
-            }
-            else
+    <SettingsCard Title="@Resource.Parameters_Licensing_Title" Description="@Resource.Parameters_Licensing_Description">
+        <div class="form-group">         
+            @if (LicensingSettings == null)
             {
                 <div class="alert alert-danger" role="alert">
-                    Not set
+                    @Resource.Label_NotConfigured
                 </div>
             }
         </div>
         <div class="mt-4">
-            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLicensingSettingsAsync">Set Licensing Settings</button>
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLicensingSettingsAsync">@Resource.Btn_SetLicensingSettings</button>
             @if (LicensingSettings != null)
             {
-                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLicenseSettingsAsync">Delete Settings</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLicenseSettingsAsync">@Resource.Btn_DeleteSettings</button>
             }
         </div>
     </SettingsCard>
-    <SettingsCard Title="Domain" Description="To connect to the domain and import groups and users.">
+    <SettingsCard Title="@Resource.Parameters_Domain_Title" Description="@Resource.Parameters_Domain_Description">
         <div class="form-group">
-            <label class="control-label text-gray">Domain Name</label>
+            <Label For="@(() => LdapSettings.Host)" class="control-label text-gray" />
             @if (LdapSettings != null)
             {
                 <div class="alert alert-secondary" role="alert">
@@ -41,21 +34,21 @@
             else
             {
                 <div class="alert alert-danger" role="alert">
-                    Not set
+                    @Resource.Label_NotConfigured
                 </div>
             }
         </div>
         <div class="mt-4">
-            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLdapSettingsAsync">Set Domain Settings</button>
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogLdapSettingsAsync">@Resource.Btn_SetDomainSettings</button>
             @if (LdapSettings != null)
             {
-                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLdapSettingsAsync">Delete Settings</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteLdapSettingsAsync">@Resource.Btn_DeleteSettings</button>
             }
         </div>
     </SettingsCard>
-    <SettingsCard Title="Splunk" Description="Settings for sending events to the Splank.">
+    <SettingsCard Title="@Resource.Parameters_Splunk_Title" Description="@Resource.Parameters_Splunk_Description">
         <div class="form-group">
-            <label class="control-label text-gray">Host</label>
+            <Label For="@(() => SplunkSettings.Host)" class="control-label text-gray" />
             @if (SplunkSettings != null)
             {
                 <div class="alert alert-secondary" role="alert">
@@ -65,53 +58,53 @@
             else
             {
                 <div class="alert alert-danger" role="alert">
-                    Not set
+                    @Resource.Label_NotConfigured
                 </div>
             }
         </div>
         <div class="mt-4">
-            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogSplunkSettingsAsync">Set Splunk Settings</button>
+            <button type="button" class="btn btn-primary me-1" @onclick="OpenDialogSplunkSettingsAsync">@Resource.Btn_SetSplunkSettings</button>
             @if (SplunkSettings != null)
             {
-                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteSplunkSettingsAsync">Delete Settings</button>
+                <button type="button" class="btn btn-outline-danger" @onclick="OpenDialogDeleteSplunkSettingsAsync">@Resource.Btn_DeleteSettings</button>
             }
         </div>
     </SettingsCard>
-    <SettingsCard Title="SAML" Description="Configuring service providers.">
-        <label class="control-label text-gray fw-bold">IdP metadata</label>
+    <SettingsCard Title="@Resource.Parameters_Saml_Title" Description="@Resource.Parameters_Saml_Description">
+        <label class="control-label text-gray fw-bold">@Resource.Label_IdPMetadata</label>
         <div class="form-group">
-            <a class="btn btn-primary" href="@Routes.SamlMetadata" role="button" target="_blank">View metadata</a>
-            <a class="btn btn-outline-primary" href="@Routes.SamlDownloadMetadata" role="button" target="_blank">Download metadata</a>
-            <a class="btn btn-outline-primary" href="@Routes.SamlDownloadCert" role="button" target="_blank">Download certificate</a>
+            <a class="btn btn-primary me-1" href="@Routes.SamlMetadata" role="button" target="_blank">@Resource.Btn_ViewMetadata</a>
+            <a class="btn btn-outline-primary me-1" href="@Routes.SamlDownloadMetadata" role="button" target="_blank">@Resource.Btn_DownloadMetadata</a>
+            <a class="btn btn-outline-primary" href="@Routes.SamlDownloadCert" role="button" target="_blank">@Resource.Btn_DownloadCertificate</a>
         </div>
         <hr />
-        <label class="control-label text-gray fw-bold">Service Providers</label>
+        <label class="control-label text-gray fw-bold">@Resource.Label_ServiceProviders</label>
         <div class="form-group">
-            <button type="button" class="btn btn-primary" @onclick="OpenDialogAddSaml2RelyingPartyAsync">Add service provider</button>
+            <button type="button" class="btn btn-primary" @onclick="OpenDialogAddSaml2RelyingPartyAsync">@Resource.Btn_AddServiceProvider</button>
         </div>
         @foreach (var rp in SamlRelyingParties)
         {
             <div class="card mt-2">
                 <div class="card-body">
                     <div class="form-group">
-                        <label class="text-gray">Issuer</label>
+                        <Label For="@(() => rp.Issuer)" class="control-label text-gray" />
                         <input value="@rp.Issuer" class="form-control text-navyblue" disabled />
                     </div>
                     <div class="form-group">
-                        <label class="text-gray">Assertion Consumer Service</label>
+                        <Label For="@(() => rp.SingleSignOnDestination)" class="control-label text-gray" />
                         <input value="@rp.SingleSignOnDestination" class="form-control text-navyblue" disabled />
                     </div>
                     <div class="form-group">
-                        <label class="text-gray">Single Logout Service</label>
+                        <Label For="@(() => rp.SingleLogoutResponseDestination)" class="control-label text-gray" />
                         <input value="@rp.SingleLogoutResponseDestination" class="form-control text-navyblue" disabled />
                     </div>
                     <div class="form-group">
-                        <label class="text-gray">Public x509 Certificate</label>
+                        <Label For="@(() => rp.SignatureValidationCertificateBase64)" class="control-label text-gray" />
                         <textarea value="@rp.SignatureValidationCertificateBase64" rows="3" class="form-control text-navyblue" disabled />
                     </div>
                     <div class="mt-4">
-                        <button type="button" class="btn btn-outline-secondary me-1" @onclick="@(() => OpenDialogEditSaml2RelyingPartyAsync(rp.Id))">Edit</button>
-                        <button type="button" class="btn btn-outline-danger" @onclick="@(() => OpenDialogDeleteSaml2RelyingPartyAsync(rp.Id))">Delete</button>
+                        <button type="button" class="btn btn-outline-secondary me-1" @onclick="@(() => OpenDialogEditSaml2RelyingPartyAsync(rp.Id))">@Resource.Btn_Edit</button>
+                        <button type="button" class="btn btn-outline-danger" @onclick="@(() => OpenDialogDeleteSaml2RelyingPartyAsync(rp.Id))">@Resource.Btn_Delete</button>
                     </div>
                 </div>
             </div>

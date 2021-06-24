@@ -1,4 +1,4 @@
-﻿namespace HES.Core.Models.AppUsers
+﻿namespace HES.Core.Models.ApplicationUsers
 {
     public class TwoFactorInfo
     {

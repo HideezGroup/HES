@@ -10,12 +10,11 @@ namespace HES.Core.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        [Required]
-        [Display(Name = "Name")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Name), ResourceType = typeof(Resources.Resource))]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Company")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string CompanyId { get; set; }
 
         [ForeignKey("CompanyId")]

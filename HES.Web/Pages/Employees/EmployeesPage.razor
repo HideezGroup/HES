@@ -12,28 +12,28 @@
                     <EmployeeFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
                 </FilterForm>
                 <ActionButtons>
-                    <button type="button" @onclick="SyncEmployeesWithAdAsync" class="btn btn-primary me-1" title="Sync with AD">
-                        Sync with AD
+                    <button type="button" @onclick="SyncEmployeesWithAdAsync" class="btn btn-primary me-1">
+                        @Resource.Btn_SyncWithAD
                     </button>
-                    <button type="button" @onclick="CreateEmployeeAsync" class="btn btn-primary mx-1" title="Create employee">
-                        Create employee
+                    <button type="button" @onclick="CreateEmployeeAsync" class="btn btn-primary mx-1">
+                        @Resource.Btn_CreateEmployee
                     </button>
                     @if (DataTableService.SelectedEntity != null)
                     {
-                        <button type="button" @onclick="EmployeeDetailsAsync" class="btn btn-light border mx-1" title="Employee details">
+                        <button type="button" @onclick="EmployeeDetailsAsync" class="btn btn-light border mx-1" title="@Resource.Title_EmployeeDetails">
                             <img class="icon-btn" src="/svg/icon-details.svg" />
-                            Details
+                            @Resource.Btn_Details
                         </button>
                         @if (DataTableService.SelectedEntity.ActiveDirectoryGuid == null)
                         {
-                            <button type="button" @onclick="EditEmployeeAsync" class="btn btn-light border mx-1" title="Edit employee">
+                            <button type="button" @onclick="EditEmployeeAsync" class="btn btn-light border mx-1" title="@Resource.Title_EditEmployee">
                                 <img class="icon-btn" src="/svg/icon-edit.svg" />
-                                Edit
+                                @Resource.Btn_Edit
                             </button>
                         }
-                        <button type="button" @onclick="DeleteEmployeeAsync" class="btn btn-light border mx-1" title="Delete employee">
+                        <button type="button" @onclick="DeleteEmployeeAsync" class="btn btn-light border mx-1" title="@Resource.Title_DeleteEmployee">
                             <img class="icon-btn" src="/svg/icon-delete.svg" />
-                            Delete
+                            @Resource.Btn_Delete
                         </button>
                     }
                 </ActionButtons>
@@ -42,49 +42,49 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" SelecedItemDblClick="EmployeeDetailsAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Name"
+                    <DataTableHeaderItem Title="@Resource.Label_Name"
                                          SortColumn="@nameof(Employee.FullName)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Email"
+                    <DataTableHeaderItem Title="@Resource.Label_Email"
                                          SortColumn="@nameof(Employee.Email)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Phone Number"
+                    <DataTableHeaderItem Title="@Resource.Label_PhoneNumber"
                                          SortColumn="@nameof(Employee.PhoneNumber)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Company"
+                    <DataTableHeaderItem Title="@Resource.Label_Company"
                                          SortColumn="@nameof(Employee.Department.Company)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Department"
+                    <DataTableHeaderItem Title="@Resource.Label_Department"
                                          SortColumn="@nameof(Employee.Department)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Position"
+                    <DataTableHeaderItem Title="@Resource.Label_Position"
                                          SortColumn="@nameof(Employee.Position)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Last Seen"
+                    <DataTableHeaderItem Title="@Resource.Label_LastSeen"
                                          SortColumn="@nameof(Employee.LastSeen)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Vaults Count"
+                    <DataTableHeaderItem Title="@Resource.Label_VaultsCount"
                                          SortColumn="@nameof(Employee.VaultsCount)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
@@ -96,8 +96,8 @@
                         @context.FullName
                         @if (context.ActiveDirectoryGuid != null)
                             {
-                            <span class="badge @(DataTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-primary") ms-1" title="Imported from Active Directory">
-                                AD
+                            <span class="badge @(DataTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-primary") ms-1" title="@Resource.Title_ImportedFromActiveDirectory">
+                                @Resource.Label_AD
                             </span>
                             }
                     </td>

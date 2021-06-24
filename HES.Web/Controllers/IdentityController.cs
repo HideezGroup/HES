@@ -2,7 +2,7 @@
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
 using HES.Core.Models.API.Identity;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -333,7 +333,7 @@ namespace HES.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> DeletePersonalData(RequiredPassword requiredPassword)
+        public async Task<IActionResult> DeletePersonalData(UserPasswordModel model)
         {
             try
             {
@@ -343,7 +343,7 @@ namespace HES.Web.Controllers
 
                 var requirePassword = await _userManager.HasPasswordAsync(user);
                 if (requirePassword)
-                    if (!await _userManager.CheckPasswordAsync(user, requiredPassword.Password))
+                    if (!await _userManager.CheckPasswordAsync(user, model.Password))
                         throw new Exception("Password not correct.");
 
                 var result = await _userManager.DeleteAsync(user);

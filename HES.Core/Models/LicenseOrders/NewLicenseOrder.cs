@@ -7,19 +7,20 @@ namespace HES.Core.Models.LicenseOrders
 {
     public class NewLicenseOrder
     {
-        [Required]
-        [Display(Name = "Contact Email")]
-        [RegularExpression(@"^[a-z0-9][-a-z0-9.!#$%&'*+-=?^_`{|}~\/]+@([-a-z0-9]+\.)+[a-z]{2,5}$", ErrorMessage = "The Email field is not a valid e-mail address.")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_ContactEmail), ResourceType = typeof(Resources.Resource))]
+        [RegularExpression(@"^[a-z0-9][-a-z0-9.!#$%&'*+-=?^_`{|}~\/]+@([-a-z0-9]+\.)+[a-z]{2,5}$", ErrorMessageResourceName = nameof(Resources.Resource.Validation_EmailAddress), ErrorMessageResourceType = typeof(Resources.Resource))]
         public string ContactEmail { get; set; }
 
+        [Display(Name = nameof(Resources.Resource.Display_Note), ResourceType = typeof(Resources.Resource))]
         public string Note { get; set; }
 
-        [Required]
-        [Display(Name = "Start Date")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_StartDate), ResourceType = typeof(Resources.Resource))]
         public DateTime StartDate { get; set; } = DateTime.Now;
 
-        [Required]
-        [Display(Name = "End Date")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_EndDate), ResourceType = typeof(Resources.Resource))]
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(1);
 
         public List<HardwareVault> HardwareVaults { get; set; }
