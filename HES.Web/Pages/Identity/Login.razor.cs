@@ -141,7 +141,7 @@ namespace HES.Web.Pages.Identity
                 var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
                 response.ThrowIfFailed();
 
-                NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard, true);
+                NavigationManager.NavigateToLocal(ReturnUrl ?? Routes.Dashboard, true);
             }
             catch (JSException ex)
             {
@@ -166,7 +166,7 @@ namespace HES.Web.Pages.Identity
 
                     if (response.Succeeded)
                     {
-                        NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard, true);
+                        NavigationManager.NavigateToLocal(ReturnUrl ?? Routes.Dashboard, true);
                         return;
                     }
 

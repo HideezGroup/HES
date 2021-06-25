@@ -10,14 +10,14 @@
             <img src="/svg/hideez-es-logo.svg" />
         </div>
         <h3 class="text-navyblue my-3">@Resource.Identity_SingleLogOut_Header</h3>
-        @if (Model.User != null)
+        @if (Model.User.Identity.IsAuthenticated)
         {
             <h5 class="mb-5">
                 @Model.User.Identity.Name
             </h5>
+            <form class="form-inline" asp-page="/slo" method="post">
+                <button type="submit" class="btn btn-outline-primary w-100">@Resource.Btn_Logout</button>
+            </form>
         }
-        <form class="form-inline" asp-page="/slo" method="post">
-            <button type="submit" class="btn btn-outline-primary w-100">@Resource.Btn_Logout</button>
-        </form>
     </div>
 </div>

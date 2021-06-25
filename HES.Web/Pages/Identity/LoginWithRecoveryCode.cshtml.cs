@@ -1,6 +1,7 @@
 using HES.Core.Constants;
 using HES.Core.Entities;
 using HES.Core.Models.Identity;
+using HES.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +53,7 @@ namespace HES.Web.Pages.Identity
                 _logger.LogError(ex.Message);
                 ErrorMessage = ex.Message;
                 return Page();
-            }           
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -62,6 +63,11 @@ namespace HES.Web.Pages.Identity
                 if (!ModelState.IsValid)
                 {
                     return Page();
+                }
+
+                if (!NavigationManagerExtensions.IsLocalUrl(returnUrl))
+                {
+                    returnUrl = null;
                 }
 
                 var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -93,7 +99,7 @@ namespace HES.Web.Pages.Identity
                 _logger.LogError(ex.Message);
                 ErrorMessage = ex.Message;
                 return Page();
-            }            
+            }
         }
     }
 }

@@ -10,9 +10,6 @@ namespace HES.Web.Pages.Identity
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        [TempData]
-        public string ReturnUrl { get; set; }
-
         public SingleLogOutModel(SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
@@ -24,15 +21,7 @@ namespace HES.Web.Pages.Identity
             {
                 await _signInManager.SignOutAsync();
             }
-
-            if (ReturnUrl != null)
-            {
-                return LocalRedirect(ReturnUrl);
-            }
-            else
-            {
-                return RedirectToPage();
-            }
+            return RedirectToPage();
         }
     }
 }
