@@ -850,7 +850,7 @@
     <value>Призупинити сховище</value>
   </data>
   <data name="Btn_VaultCompromised" xml:space="preserve">
-    <value>Cховище cкомпрометований</value>
+    <value>Cховище cкомпрометоване</value>
   </data>
   <data name="HardwareVaults_BtnTitle_ShowActivationCode" xml:space="preserve">
     <value>Показати код активації</value>
@@ -1478,7 +1478,7 @@
     <value>Після закінчення терміну дії PIN-коду пам’ять пристрою буде заблокована, доки користувач знову не введе PIN-код.</value>
   </data>
   <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry" xml:space="preserve">
-    <value>Неправильний введення PIN-коду</value>
+    <value>Кількість неправильного PIN-коду</value>
   </data>
   <data name="HardwareVaultAccessProfile_Label_PinIncorrectEntry_Title" xml:space="preserve">
     <value>Максимальна кількість неправильного введення PIN-коду. Після перевищення кількості записів пристрій блокується.</value>
