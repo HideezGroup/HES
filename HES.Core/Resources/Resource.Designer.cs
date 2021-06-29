@@ -1888,6 +1888,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invitation not confirmed..
+        /// </summary>
+        public static string Exception_InvitationNotConfirmed {
+            get {
+                return ResourceManager.GetString("Exception_InvitationNotConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на LDAP settings not set..
         /// </summary>
         public static string Exception_LdapSettingsNotSet {

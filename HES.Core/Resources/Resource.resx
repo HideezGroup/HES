@@ -726,6 +726,10 @@
   <data name="Exception_InvalidLoginAttempt" xml:space="preserve">
     <value>Invalid login attempt.</value>
   </data>
+  <data name="Exception_InvitationNotConfirmed" xml:space="preserve">
+    <value>Invitation not confirmed.</value>
+    <comment>new</comment>
+  </data>
   <data name="Exception_LdapSettingsNotSet" xml:space="preserve">
     <value>LDAP settings not set.</value>
   </data>

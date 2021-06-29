@@ -19,6 +19,7 @@ namespace HES.Web.Pages.Identity
     {
         EmailValidation,
         EnterPassword,
+        ForgotPassword,
         SecurityKeyAuthentication,
         SecurityKeyError
     }
@@ -42,6 +43,8 @@ namespace HES.Web.Pages.Identity
         public bool HasSecurityKey { get; set; }
         public string ReturnUrl { get; set; }
         public bool SetFocus { get; set; }
+        public bool SendingDisabled { get; set; }
+        public int TimeToRepeat { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -202,6 +205,43 @@ namespace HES.Web.Pages.Identity
         private void BackToEmailValidation()
         {
             AuthenticationStep = AuthenticationStep.EmailValidation;
+        }
+
+        private void SetForgotPasswordStep()
+        {
+            AuthenticationStep = AuthenticationStep.ForgotPassword;
+        }
+
+        private async Task ResetPasswordAsync()
+        {
+            try
+            {
+                await ApplicationUserService.SendUserResetPasswordAsync(UserEmailModel.Email, NavigationManager.BaseUri);
+                SetTimerToResend();
+            }
+            catch (HESException ex)
+            {
+                SetErrorMessage(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                SetErrorMessage(ex.Message);
+            }
+        }
+
+        private async void SetTimerToResend()
+        {
+            SendingDisabled = true;
+            TimeToRepeat = 60;
+            while (TimeToRepeat > 0)
+            {
+                TimeToRepeat--;
+                StateHasChanged();
+                await Task.Delay(1000);
+            }
+            SendingDisabled = false;
+            StateHasChanged();
         }
 
         private void SwitchFocus()

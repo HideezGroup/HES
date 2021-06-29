@@ -9,8 +9,6 @@
         public const string LoginWithRecoveryCode = "/login-with-recovery-code";
         public const string Lockout = "/lockout";
         public const string AccessDenied = "/access-denied";
-        public const string ForgotPassword = "/forgot-password";
-        public const string ForgotPasswordConfirmation = "/forgot-password-confirmation";
         public const string ResetPassword = "/reset-password";   
         public const string ConfirmEmailChange = "/confirm-email-change";   
 

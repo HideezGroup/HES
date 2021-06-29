@@ -38,13 +38,13 @@ namespace HES.Core.Interfaces
         Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters);
         Task<TwoFactorInfo> GetTwoFactorInfoAsync(HttpClient httpClient);
         Task ForgetBrowserAsync(HttpClient httpClient);
-
         #endregion
 
         #region Email
         Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status);
         Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults);
         Task SendActivateDataProtectionAsync();
+        Task SendUserResetPasswordAsync(string email, string domain);
         #endregion
 
         #region API

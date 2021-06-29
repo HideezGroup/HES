@@ -981,18 +981,6 @@
   <data name="Identity_ConfirmEmailChange_Header" xml:space="preserve">
     <value>Дякуємо за підтвердження електронної пошти</value>
   </data>
-  <data name="Identity_ForgotPasswordConfirmation_Description" xml:space="preserve">
-    <value>Будь ласка, перевірте свою електронну адресу, щоб скинути пароль.</value>
-  </data>
-  <data name="Identity_ForgotPasswordConfirmation_Title" xml:space="preserve">
-    <value>Підтвердження забутого пароля</value>
-  </data>
-  <data name="Identity_ForgotPassword_Header" xml:space="preserve">
-    <value>Введіть свою електронну адресу.</value>
-  </data>
-  <data name="Identity_ForgotPassword_Title" xml:space="preserve">
-    <value>Забули пароль?</value>
-  </data>
   <data name="Identity_Invite_CodeMustBeSupplied" xml:space="preserve">
     <value>Для запрошення потрібно надати код.</value>
   </data>
@@ -2006,6 +1994,18 @@
   </data>
   <data name="LicenseOrders_SendLicenseOrder_Toast" xml:space="preserve">
     <value>Замовлення ліцензії надіслано.</value>
+    <comment>new</comment>
+  </data>
+  <data name="Identity_Login_ForgotPassword_Description" xml:space="preserve">
+    <value>Підтвердьте надсилання електронного листа про скидання пароля.</value>
+    <comment>new</comment>
+  </data>
+  <data name="Identity_Login_ForgotPassword_Header" xml:space="preserve">
+    <value>Забули пароль?</value>
+    <comment>new</comment>
+  </data>
+  <data name="Identity_Login_ForgotPassword_Repeat" xml:space="preserve">
+    <value>Ви можете повторити це через {0}</value>
     <comment>new</comment>
   </data>
 </root>

@@ -360,6 +360,27 @@ namespace HES.Core.Services
             await _emailSenderService.SendActivateDataProtectionAsync(administrators);
         }
 
+        public async Task SendUserResetPasswordAsync(string email, string domain)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
+
+            if (!user.EmailConfirmed)
+            {
+                throw new HESException(HESCode.InvitationNotConfirmed);
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var callbackUrl = $"{domain.TrimEnd('/')}{Routes.ResetPassword}?code={code}&email={email}";
+
+            await _emailSenderService.SendUserResetPasswordAsync(email, HtmlEncoder.Default.Encode(callbackUrl));
+        }
+
         #endregion
 
         #region API

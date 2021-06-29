@@ -17,6 +17,7 @@ namespace HES.Core.Exceptions
         IncorrectCurrentPassword,
         EmailAlreadyTaken,
         RequiresRelogin,
+        InvitationNotConfirmed,
 
         // Employees
         EmployeeNotFound,
@@ -136,6 +137,7 @@ namespace HES.Core.Exceptions
                 { HESCode.EmailAlreadyTaken, Resources.Resource.Exception_EmailAlreadyTaken },
                 { HESCode.RequiresRelogin, Resources.Resource.Exception_RequiresRelogin },
                 { HESCode.RequiresTwoFactor, Resources.Resource.Exception_RequiresTwoFactor },
+                { HESCode.InvitationNotConfirmed, Resources.Resource.Exception_InvitationNotConfirmed },
 
                 { HESCode.EmployeeNotFound, Resources.Resource.Exception_EmployeeNotFound },
                 { HESCode.ActiveDirectoryUserNotFound,  Resources.Resource.Exception_ActiveDirectoryUserNotFound },

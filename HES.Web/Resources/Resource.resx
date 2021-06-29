@@ -981,18 +981,6 @@
   <data name="Identity_ConfirmEmailChange_Header" xml:space="preserve">
     <value>Thanks for confirming your email address.</value>
   </data>
-  <data name="Identity_ForgotPasswordConfirmation_Description" xml:space="preserve">
-    <value>Please check your email to reset your password.</value>
-  </data>
-  <data name="Identity_ForgotPasswordConfirmation_Title" xml:space="preserve">
-    <value>Forgot password confirmation</value>
-  </data>
-  <data name="Identity_ForgotPassword_Header" xml:space="preserve">
-    <value>Enter your email.</value>
-  </data>
-  <data name="Identity_ForgotPassword_Title" xml:space="preserve">
-    <value>Forgot password?</value>
-  </data>
   <data name="Identity_Invite_CodeMustBeSupplied" xml:space="preserve">
     <value>A code must be supplied for invitation.</value>
   </data>
@@ -2007,5 +1995,29 @@
   <data name="LicenseOrders_SendLicenseOrder_Toast" xml:space="preserve">
     <value>License order has been sent.</value>
     <comment>new</comment>
+  </data>
+  <data name="Identity_Login_ForgotPassword_Description" xml:space="preserve">
+    <value>Confirm sending the password reset email.</value>
+    <comment>new</comment>
+  </data>
+  <data name="Identity_Login_ForgotPassword_Header" xml:space="preserve">
+    <value>Forgot password?</value>
+    <comment>new</comment>
+  </data>
+  <data name="Identity_Login_ForgotPassword_Repeat" xml:space="preserve">
+    <value>You can repeat it through {0}</value>
+    <comment>new</comment>
+  </data>
+  <data name="Identity_ForgotPasswordConfirmation_Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Identity_ForgotPasswordConfirmation_Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Identity_ForgotPassword_Header" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Identity_ForgotPassword_Title" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -822,4 +822,8 @@
   <data name="Exception_Saml2NotMetadataOrDescriptorElementNotFound" xml:space="preserve">
     <value>Не знайдено метаданих або елемента дескриптора.</value>
   </data>
+  <data name="Exception_InvitationNotConfirmed" xml:space="preserve">
+    <value>Запрошення не підтверджено.</value>
+    <comment>new</comment>
+  </data>
 </root>

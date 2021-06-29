@@ -2160,42 +2160,6 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Enter your email..
-        /// </summary>
-        public static string Identity_ForgotPassword_Header {
-            get {
-                return ResourceManager.GetString("Identity_ForgotPassword_Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Forgot password?.
-        /// </summary>
-        public static string Identity_ForgotPassword_Title {
-            get {
-                return ResourceManager.GetString("Identity_ForgotPassword_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Please check your email to reset your password..
-        /// </summary>
-        public static string Identity_ForgotPasswordConfirmation_Description {
-            get {
-                return ResourceManager.GetString("Identity_ForgotPasswordConfirmation_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Forgot password confirmation.
-        /// </summary>
-        public static string Identity_ForgotPasswordConfirmation_Title {
-            get {
-                return ResourceManager.GetString("Identity_ForgotPasswordConfirmation_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на A code must be supplied for invitation..
         /// </summary>
         public static string Identity_Invite_CodeMustBeSupplied {
@@ -2264,6 +2228,33 @@ namespace HES.Web.Resources {
         public static string Identity_Login_EnterPassword_Header {
             get {
                 return ResourceManager.GetString("Identity_Login_EnterPassword_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm sending the password reset email..
+        /// </summary>
+        public static string Identity_Login_ForgotPassword_Description {
+            get {
+                return ResourceManager.GetString("Identity_Login_ForgotPassword_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Forgot password?.
+        /// </summary>
+        public static string Identity_Login_ForgotPassword_Header {
+            get {
+                return ResourceManager.GetString("Identity_Login_ForgotPassword_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You can repeat it through {0}.
+        /// </summary>
+        public static string Identity_Login_ForgotPassword_Repeat {
+            get {
+                return ResourceManager.GetString("Identity_Login_ForgotPassword_Repeat", resourceCulture);
             }
         }
         
