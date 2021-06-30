@@ -72,7 +72,7 @@ namespace HES.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex.InnerException == null ? ex.Message : $"{ex.Message} InnerException: {ex.InnerException.Message}");
             }
         }
 
