@@ -1,4 +1,5 @@
 ﻿@inherits HESModalBase
+@using ITfoxtec.Identity.Saml2.Schemas
 
 @if (RelyingParty == null)
 {
@@ -34,6 +35,20 @@ else
             <Label For="@(() => RelyingParty.SignatureValidationCertificateBase64)" class="text-gray" />
             <InputTextArea @bind-Value="RelyingParty.SignatureValidationCertificateBase64" rows="3" class="form-control text-navyblue" />
             <ValidationMessage For="@(() => RelyingParty.SignatureValidationCertificateBase64)" class="text-danger" />
+        </div>
+        <div class="form-group">
+            <Label For="@(() => RelyingParty.NameIdentifierFormat)" class="text-gray" />
+            <InputSelect @bind-Value="RelyingParty.NameIdentifierFormat" class="form-select text-navyblue">
+                <option value="@NameIdentifierFormats.Unspecified">Unspecified</option>
+                <option value="@NameIdentifierFormats.Email" selected>Email</option>
+                <option value="@NameIdentifierFormats.X509SubjectName">X509SubjectName</option>
+                <option value="@NameIdentifierFormats.Windows">Windows</option>
+                <option value="@NameIdentifierFormats.Kerberos">Kerberos</option>
+                <option value="@NameIdentifierFormats.Entity">Entity</option>
+                <option value="@NameIdentifierFormats.Persistent">Persistent</option>
+                <option value="@NameIdentifierFormats.Transient">Transient</option>                
+            </InputSelect>
+            <ValidationMessage For="@(() => RelyingParty.NameIdentifierFormat)" class="text-danger" />
         </div>
         <div class="form-footer">
             <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>

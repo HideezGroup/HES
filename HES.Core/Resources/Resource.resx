@@ -408,6 +408,9 @@
   <data name="Display_Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Display_NameIdentifierFormat" xml:space="preserve">
+    <value>Name Identifier Format</value>
+  </data>
   <data name="Display_NewEmail" xml:space="preserve">
     <value>New Email</value>
   </data>

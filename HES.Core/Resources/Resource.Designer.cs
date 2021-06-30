@@ -934,6 +934,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Name Identifier Format.
+        /// </summary>
+        public static string Display_NameIdentifierFormat {
+            get {
+                return ResourceManager.GetString("Display_NameIdentifierFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New Email.
         /// </summary>
         public static string Display_NewEmail {

@@ -826,4 +826,7 @@
     <value>Запрошення не підтверджено.</value>
     <comment>new</comment>
   </data>
+  <data name="Display_NameIdentifierFormat" xml:space="preserve">
+    <value>Формат ідентифікатора імені</value>
+  </data>
 </root>

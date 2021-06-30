@@ -40,5 +40,9 @@ namespace HES.Core.Entities
                 SignatureValidationCertificateBase64 = Convert.ToBase64String(value.Export(X509ContentType.Cert));
             }
         }
+
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_NameIdentifierFormat), ResourceType = typeof(Resources.Resource))]
+        public Uri NameIdentifierFormat { get; set; }
     }
 }
