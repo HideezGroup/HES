@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HES.Core.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.X509Certificates;
@@ -43,6 +44,10 @@ namespace HES.Core.Entities
 
         [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
         [Display(Name = nameof(Resources.Resource.Display_NameIdentifierFormat), ResourceType = typeof(Resources.Resource))]
-        public Uri NameIdentifierFormat { get; set; }
+        public Uri NameIdentifierFormat { get; set; } 
+        
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_NameIdentifierField), ResourceType = typeof(Resources.Resource))]
+        public SamlNameIdentifierType NameIdentifierField { get; set; }
     }
 }

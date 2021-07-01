@@ -94,6 +94,10 @@ namespace HES.Web.Pages.Employees
             {
                 ValidationErrorMessage.DisplayError(nameof(Employee.FirstName), ex.Message);
             }
+            catch (HESException ex) when (ex.Code == HESCode.EmployeeRequiresLastName)
+            {
+                ValidationErrorMessage.DisplayError(nameof(Employee.LastName), ex.Message);
+            }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message);

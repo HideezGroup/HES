@@ -23,7 +23,7 @@ namespace HES.Web.Pages.Settings.Parameters
         public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddSaml2RelyingParty> Logger { get; set; }
 
-        public SamlRelyingParty RelyingParty { get; set; } = new() { NameIdentifierFormat = NameIdentifierFormats.Email };
+        public SamlRelyingParty RelyingParty { get; set; } = new() { NameIdentifierFormat = NameIdentifierFormats.Email, NameIdentifierField = SamlNameIdentifierType.Email };
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public Button Button { get; set; }
 

@@ -10,7 +10,21 @@ namespace HES.Core.Helpers
     {
         public static string GetDisplayName(Enum value)
         {
-            return value.GetType()?.GetMember(value.ToString())?.First()?.GetCustomAttribute<DisplayAttribute>()?.Name ?? value.ToString();
+            var attr = value.GetType()?.GetMember(value.ToString())?.First()?.GetCustomAttribute<DisplayAttribute>();
+
+            if (attr?.ResourceType != null)
+            {
+                try
+                {
+                    return attr.ResourceType.GetProperty(attr.Name).GetValue(attr.ResourceType).ToString();
+                }
+                catch (Exception)
+                {
+                    return value.ToString();
+                }
+            }
+
+            return attr?.Name ?? value.ToString();
         }
 
         public static int StringArrToEnum<T>(string[] array) where T : struct

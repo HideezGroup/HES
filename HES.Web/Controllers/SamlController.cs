@@ -1,5 +1,6 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Entities;
+using HES.Core.Enums;
 using HES.Core.Interfaces;
 using ITfoxtec.Identity.Saml2;
 using ITfoxtec.Identity.Saml2.MvcCore;
@@ -70,7 +71,7 @@ namespace HES.Web.Controllers
                 var sessionIndex = Guid.NewGuid().ToString();
                 var user = await _signInManager.UserManager.FindByNameAsync(User.Identity.Name);
 
-                return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, requestBinding.RelayState, relyingParty, sessionIndex, GetUserClaims(user));
+                return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, requestBinding.RelayState, relyingParty, sessionIndex, GetUserClaims(user, relyingParty.NameIdentifierField));
             }
             catch (Exception ex)
             {
@@ -249,9 +250,27 @@ namespace HES.Web.Controllers
             return relyingParty;
         }
 
-        private IEnumerable<Claim> GetUserClaims(ApplicationUser user)
+        private IEnumerable<Claim> GetUserClaims(ApplicationUser user, SamlNameIdentifierType type)
         {
-            yield return new Claim(ClaimTypes.NameIdentifier, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
+            string nameIdentifier = string.Empty;
+
+            switch (type)
+            {
+                case SamlNameIdentifierType.Email:
+                    nameIdentifier = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
+                    break;
+                case SamlNameIdentifierType.External:
+                    if (string.IsNullOrWhiteSpace(user.ExternalId))
+                    {
+                        throw new Exception($"The external identifier cannot be null or empty for the {user.Email}.");
+                    }
+                    nameIdentifier = user.ExternalId;
+                    break;
+                default:
+                    throw new Exception("SamlNameIdentifierType not implemented.");
+            }
+
+            yield return new Claim(ClaimTypes.NameIdentifier, nameIdentifier);
             yield return new Claim(ClaimTypes.Email, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value);
             yield return new Claim(ClaimTypes.Name, User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value);
             yield return new Claim(ClaimTypes.GivenName, user.FirstName);

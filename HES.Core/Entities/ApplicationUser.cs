@@ -12,6 +12,8 @@ namespace HES.Core.Entities
 
         public string Culture { get; set; }
 
+        public string ExternalId { get; set; }
+
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
 
         [NotMapped]
