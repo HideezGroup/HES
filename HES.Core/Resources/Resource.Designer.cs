@@ -529,6 +529,15 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Added.
+        /// </summary>
+        public static string Display_Added {
+            get {
+                return ResourceManager.GetString("Display_Added", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Approved.
         /// </summary>
         public static string Display_Approved {
@@ -723,6 +732,15 @@ namespace HES.Core.Resources {
         public static string Display_Event {
             get {
                 return ResourceManager.GetString("Display_Event", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на External ID.
+        /// </summary>
+        public static string Display_External_Id {
+            get {
+                return ResourceManager.GetString("Display_External_Id", resourceCulture);
             }
         }
         
@@ -934,6 +952,24 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Name Identifier Field.
+        /// </summary>
+        public static string Display_NameIdentifierField {
+            get {
+                return ResourceManager.GetString("Display_NameIdentifierField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name Identifier Format.
+        /// </summary>
+        public static string Display_NameIdentifierFormat {
+            get {
+                return ResourceManager.GetString("Display_NameIdentifierFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New Email.
         /// </summary>
         public static string Display_NewEmail {
@@ -948,6 +984,15 @@ namespace HES.Core.Resources {
         public static string Display_NewPassword {
             get {
                 return ResourceManager.GetString("Display_NewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Not added.
+        /// </summary>
+        public static string Display_NotAdded {
+            get {
+                return ResourceManager.GetString("Display_NotAdded", resourceCulture);
             }
         }
         
@@ -1537,6 +1582,24 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Email.
+        /// </summary>
+        public static string Enum_Email {
+            get {
+                return ResourceManager.GetString("Enum_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на External ID.
+        /// </summary>
+        public static string Enum_External_Id {
+            get {
+                return ResourceManager.GetString("Enum_External_Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Account with the same name and login exist..
         /// </summary>
         public static string Exception_AccountExist {
@@ -1762,7 +1825,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Requires last name..
+        ///   Ищет локализованную строку, похожую на SSO requires last name..
         /// </summary>
         public static string Exception_EmployeeRequiresLastName {
             get {

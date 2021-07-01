@@ -2160,6 +2160,42 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        public static string Identity_ForgotPassword_Header {
+            get {
+                return ResourceManager.GetString("Identity_ForgotPassword_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        public static string Identity_ForgotPassword_Title {
+            get {
+                return ResourceManager.GetString("Identity_ForgotPassword_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        public static string Identity_ForgotPasswordConfirmation_Description {
+            get {
+                return ResourceManager.GetString("Identity_ForgotPasswordConfirmation_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        public static string Identity_ForgotPasswordConfirmation_Title {
+            get {
+                return ResourceManager.GetString("Identity_ForgotPasswordConfirmation_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на A code must be supplied for invitation..
         /// </summary>
         public static string Identity_Invite_CodeMustBeSupplied {

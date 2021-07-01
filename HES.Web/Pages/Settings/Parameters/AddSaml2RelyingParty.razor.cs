@@ -4,6 +4,7 @@ using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using ITfoxtec.Identity.Saml2;
+using ITfoxtec.Identity.Saml2.Schemas;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -22,7 +23,7 @@ namespace HES.Web.Pages.Settings.Parameters
         public IAppSettingsService AppSettingsService { get; set; }
         [Inject] public ILogger<AddSaml2RelyingParty> Logger { get; set; }
 
-        public SamlRelyingParty RelyingParty { get; set; } = new();
+        public SamlRelyingParty RelyingParty { get; set; } = new() { NameIdentifierFormat = NameIdentifierFormats.Email, NameIdentifierField = SamlNameIdentifierType.Email };
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public Button Button { get; set; }
 

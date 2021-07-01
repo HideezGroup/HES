@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HES.Core.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.X509Certificates;
@@ -40,5 +41,13 @@ namespace HES.Core.Entities
                 SignatureValidationCertificateBase64 = Convert.ToBase64String(value.Export(X509ContentType.Cert));
             }
         }
+
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_NameIdentifierFormat), ResourceType = typeof(Resources.Resource))]
+        public Uri NameIdentifierFormat { get; set; } 
+        
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_NameIdentifierField), ResourceType = typeof(Resources.Resource))]
+        public SamlNameIdentifierType NameIdentifierField { get; set; }
     }
 }

@@ -22,6 +22,11 @@
                     <Label For="@(() => UserProfileModel.PhoneNumber)" class="form-label" />
                     <InputText @bind-Value="UserProfileModel.PhoneNumber" class="form-control" />
                     <ValidationMessage For="@(() => UserProfileModel.PhoneNumber)" class="text-danger" />
+                </div>  
+                <div class="form-group">
+                    <Label For="@(() => UserProfileModel.ExternalId)" class="form-label" />
+                    <InputText @bind-Value="UserProfileModel.ExternalId" class="form-control" />
+                    <ValidationMessage For="@(() => UserProfileModel.ExternalId)" class="text-danger" />
                 </div>
                 <div class="text-center py-3">
                     <Button @ref="ButtonUpdateProfile" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary w-25" />
@@ -54,7 +59,7 @@
     <h5>@Resource.Profile_General_Language_Header</h5>
     <div class="card mb-5">
         <div class="card-body">
-            <LanguageSelector/>
+            <LanguageSelector />
         </div>
     </div>
     <h5>@Resource.Profile_General_PersonalData_Header</h5>

@@ -3,14 +3,16 @@ using System;
 using HES.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HES.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210630114557_added_name_identifier_format_field")]
+    partial class added_name_identifier_format_field
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,9 +153,6 @@ namespace HES.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("ExternalId")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext");
 
@@ -286,9 +285,6 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ExternalId")
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
@@ -706,9 +702,6 @@ namespace HES.Infrastructure.Migrations
                     b.Property<string>("Issuer")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
-
-                    b.Property<int>("NameIdentifierField")
-                        .HasColumnType("int");
 
                     b.Property<string>("NameIdentifierFormat")
                         .IsRequired()

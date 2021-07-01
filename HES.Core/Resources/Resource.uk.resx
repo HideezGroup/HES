@@ -355,7 +355,7 @@
     <value>Сервер LDAP недоступний.</value>
   </data>
   <data name="Exception_EmployeeRequiresLastName" xml:space="preserve">
-    <value>Потрібно прізвище.</value>
+    <value>Єдиний вхід вимагає прізвище.</value>
   </data>
   <data name="Display_Id" xml:space="preserve">
     <value>Ідентифікатор</value>
@@ -825,5 +825,26 @@
   <data name="Exception_InvitationNotConfirmed" xml:space="preserve">
     <value>Запрошення не підтверджено.</value>
     <comment>new</comment>
+  </data>
+  <data name="Display_NameIdentifierFormat" xml:space="preserve">
+    <value>Формат ідентифікатора імені</value>
+  </data>
+  <data name="Display_External_Id" xml:space="preserve">
+    <value>Зовнішній ідентифікатор</value>
+  </data>
+  <data name="Display_NameIdentifierField" xml:space="preserve">
+    <value>Поле ідентифікатора імені</value>
+  </data>
+  <data name="Enum_Email" xml:space="preserve">
+    <value>Електронна пошта</value>
+  </data>
+  <data name="Enum_External_Id" xml:space="preserve">
+    <value>Зовнішній ідентифікатор</value>
+  </data>
+  <data name="Display_Added" xml:space="preserve">
+    <value>Додано</value>
+  </data>
+  <data name="Display_NotAdded" xml:space="preserve">
+    <value>Не додано</value>
   </data>
 </root>

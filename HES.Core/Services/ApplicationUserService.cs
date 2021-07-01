@@ -215,6 +215,7 @@ namespace HES.Core.Services
             user.FirstName = parameters.FirstName;
             user.LastName = parameters.LastName;
             user.PhoneNumber = parameters.PhoneNumber;
+            user.ExternalId = parameters.ExternalId;
 
             var userResult = await _userManager.UpdateAsync(user);
 

@@ -297,14 +297,20 @@ namespace HES.Core.Services
 
             await ThrowIfEmployeeExistAsync(x => x.FirstName == employee.FirstName && x.LastName == employee.LastName && x.Id != employee.Id);
 
+            var user = await _userManager.FindByIdAsync(employee.Id);
+            if (user != null && string.IsNullOrWhiteSpace(employee.LastName))
+            {
+                throw new HESException(HESCode.EmployeeRequiresLastName);
+            }
+
+            // Update employee
             await UpdateEmployeeInDatabase(employee);
 
-            var user = await _userManager.FindByIdAsync(employee.Id);
-
+            // Is SSO enabled, update user
             if (user != null)
             {
-                var isUser = await _userManager.IsInRoleAsync(user, ApplicationRoles.User);
-                if (!isUser)
+                var isUserRole = await _userManager.IsInRoleAsync(user, ApplicationRoles.User);
+                if (!isUserRole)
                 {
                     return;
                 }
@@ -315,24 +321,11 @@ namespace HES.Core.Services
                     return;
                 }
 
-                var update = false;
+                user.FirstName = employee.FirstName;
+                user.LastName = employee.LastName;
+                user.ExternalId = employee.ExternalId;
 
-                if (employee.FirstName != user.FirstName)
-                {
-                    user.FirstName = employee.FirstName;
-                    update = true;
-                }
-
-                if (!string.IsNullOrWhiteSpace(employee.LastName) && employee.LastName != user.LastName)
-                {
-                    user.LastName = employee.LastName;
-                    update = true;
-                }
-
-                if (update)
-                {
-                    await _userManager.UpdateAsync(user);
-                }
+                await _userManager.UpdateAsync(user);               
             }
         }
 
@@ -451,7 +444,7 @@ namespace HES.Core.Services
                 IsSsoEnabled = user != null,
                 UserEmail = user.Email,
                 UserRole = user.UserRoles.FirstOrDefault().Role.Name,
-                SecurityKeyName = cred.Count > 0 ? "Added" : "Not added"
+                SecurityKeyName = cred.Count > 0 ? Resources.Resource.Display_Added : Resources.Resource.Display_NotAdded
             };
         }
 
@@ -487,6 +480,7 @@ namespace HES.Core.Services
                 UserName = employee.Email,
                 Email = employee.Email,
                 EmailConfirmed = true,
+                ExternalId = employee.ExternalId,
                 Culture = CultureConstants.EN
             };
 

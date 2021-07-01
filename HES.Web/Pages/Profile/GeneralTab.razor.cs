@@ -55,7 +55,8 @@ namespace HES.Web.Pages.Profile
                     UserId = User.Id,
                     FirstName = User.FirstName,
                     LastName = User.LastName,
-                    PhoneNumber = User.PhoneNumber
+                    PhoneNumber = User.PhoneNumber,
+                    ExternalId = User.ExternalId
                 };
 
                 ChangeEmailModel = new UserChangeEmailModel

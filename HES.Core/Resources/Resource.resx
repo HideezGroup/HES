@@ -273,6 +273,9 @@
   <data name="Display_AccountType" xml:space="preserve">
     <value>Account Type</value>
   </data>
+  <data name="Display_Added" xml:space="preserve">
+    <value>Added</value>
+  </data>
   <data name="Display_Approved" xml:space="preserve">
     <value>Approved</value>
   </data>
@@ -338,6 +341,9 @@
   </data>
   <data name="Display_Event" xml:space="preserve">
     <value>Event</value>
+  </data>
+  <data name="Display_External_Id" xml:space="preserve">
+    <value>External ID</value>
   </data>
   <data name="Display_Firmware" xml:space="preserve">
     <value>Firmware</value>
@@ -408,11 +414,20 @@
   <data name="Display_Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Display_NameIdentifierField" xml:space="preserve">
+    <value>Name Identifier Field</value>
+  </data>
+  <data name="Display_NameIdentifierFormat" xml:space="preserve">
+    <value>Name Identifier Format</value>
+  </data>
   <data name="Display_NewEmail" xml:space="preserve">
     <value>New Email</value>
   </data>
   <data name="Display_NewPassword" xml:space="preserve">
     <value>New Password</value>
+  </data>
+  <data name="Display_NotAdded" xml:space="preserve">
+    <value>Not added</value>
   </data>
   <data name="Display_Note" xml:space="preserve">
     <value>Note</value>
@@ -609,6 +624,12 @@
   <data name="Email_UserResetPassword_Subject" xml:space="preserve">
     <value>Action required - Password Reset to Hideez Enterprise Server</value>
   </data>
+  <data name="Enum_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Enum_External_Id" xml:space="preserve">
+    <value>External ID</value>
+  </data>
   <data name="Exception_AccountExist" xml:space="preserve">
     <value>Account with the same name and login exist.</value>
   </data>
@@ -685,7 +706,7 @@
     <value>Requires email.</value>
   </data>
   <data name="Exception_EmployeeRequiresLastName" xml:space="preserve">
-    <value>Requires last name.</value>
+    <value>SSO requires last name.</value>
   </data>
   <data name="Exception_HardwareVaultCannotReserve" xml:space="preserve">
     <value>Vault in a status that does not allow to reserve.</value>

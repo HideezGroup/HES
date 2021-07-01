@@ -6,7 +6,7 @@
 @if (Initialized)
 {
     <SettingsCard Title="@Resource.Parameters_Licensing_Title" Description="@Resource.Parameters_Licensing_Description">
-        <div class="form-group">         
+        <div class="form-group">
             @if (LicensingSettings == null)
             {
                 <div class="alert alert-danger" role="alert">
@@ -101,6 +101,14 @@
                     <div class="form-group">
                         <Label For="@(() => rp.SignatureValidationCertificateBase64)" class="control-label text-gray" />
                         <textarea value="@rp.SignatureValidationCertificateBase64" rows="3" class="form-control text-navyblue" disabled />
+                    </div>
+                    <div class="form-group">
+                        <Label For="@(() => rp.NameIdentifierFormat)" class="control-label text-gray" />
+                        <input value="@rp.NameIdentifierFormat" class="form-control text-navyblue" disabled />
+                    </div>
+                    <div class="form-group">
+                        <Label For="@(() => rp.NameIdentifierField)" class="control-label text-gray" />
+                        <input value="@EnumHelper.GetDisplayName(rp.NameIdentifierField)" class="form-control text-navyblue" disabled />
                     </div>
                     <div class="mt-4">
                         <button type="button" class="btn btn-outline-secondary me-1" @onclick="@(() => OpenDialogEditSaml2RelyingPartyAsync(rp.Id))">@Resource.Btn_Edit</button>

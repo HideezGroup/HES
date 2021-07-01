@@ -16,6 +16,9 @@ namespace HES.Core.Models.Identity
         public string LastName { get; set; }
 
         [Display(Name = nameof(Resources.Resource.Display_PhoneNumber), ResourceType = typeof(Resources.Resource))]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }   
+        
+        [Display(Name = nameof(Resources.Resource.Display_External_Id), ResourceType = typeof(Resources.Resource))]
+        public string ExternalId { get; set; }
     }
 }
