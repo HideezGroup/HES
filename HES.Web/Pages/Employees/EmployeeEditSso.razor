@@ -6,8 +6,7 @@
 }
 else
 {
-    <h5 class="text-gray mb-4 text-break">@string.Format(Resource.EmployeeDetails_EnableSso_Body, Employee.FullName)</h5>
-    <EditForm Model="@Settings" OnValidSubmit="EnableEmployeeSsoAsync">
+    <EditForm Model="@Settings" OnValidSubmit="EditEmployeeSsoAsync">
         <DataAnnotationsValidator />
         <div class="form-group">
             <label class="text-gray">@Resource.EmployeeDetails_EnableSso_Label_ExternalId</label>
@@ -22,7 +21,7 @@ else
         </div>
         <div class="form-footer">
             <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
-            <Button @ref="ButtonSpinner" Text="@Resource.Btn_Enable" type="submit" class="btn btn-primary" />
+            <Button @ref="ButtonSpinner" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
         </div>
     </EditForm>
 }

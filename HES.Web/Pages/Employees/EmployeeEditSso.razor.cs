@@ -11,16 +11,17 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Employees
 {
-    public partial class EmployeeEnableSso : HESModalBase
+    public partial class EmployeeEditSso : HESModalBase
     {
         public IEmployeeService EmployeeService { get; set; }
         public IApplicationUserService ApplicationUserService { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IEmailSenderService EmailSenderService { get; set; }
-        [Inject] public ILogger<EmployeeEnableSso> Logger { get; set; }
+        [Inject] public ILogger<EmployeeEditSso> Logger { get; set; }
         [Parameter] public Employee Employee { get; set; }
+        [Parameter] public UserSsoInfo Info { get; set; }
 
-        public UserSsoSettings Settings { get; set; } = new UserSsoSettings();
+        public UserSsoSettings Settings { get; set; }
         public Button ButtonSpinner { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -29,6 +30,11 @@ namespace HES.Web.Pages.Employees
             {
                 EmployeeService = ScopedServices.GetRequiredService<IEmployeeService>();
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
+                Settings = new UserSsoSettings
+                {
+                    ExternalId = Info.ExternalId,
+                    AllowPasswordlessByU2F = Info.AllowPasswordlessByU2F
+                };
                 SetInitialized();
             }
             catch (Exception ex)
@@ -39,16 +45,14 @@ namespace HES.Web.Pages.Employees
             }
         }
 
-        public async Task EnableEmployeeSsoAsync()
+        public async Task EditEmployeeSsoAsync()
         {
             try
             {
                 await ButtonSpinner.SpinAsync(async () =>
                 {
-                    await EmployeeService.EnableSsoAsync(Employee, Settings);
-                    var callback = await ApplicationUserService.GenerateEnableSsoCallBackUrlAsync(Employee.Email, NavigationManager.BaseUri);
-                    await EmailSenderService.SendEmployeeEnableSsoAsync(Employee, callback);
-                    await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_EnableSso_Toast, ToastType.Success);
+                    await EmployeeService.EditSsoAsync(Employee, Settings);
+                    await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_EditSso_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

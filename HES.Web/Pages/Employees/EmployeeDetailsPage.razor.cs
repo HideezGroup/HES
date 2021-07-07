@@ -460,6 +460,28 @@ namespace HES.Web.Pages.Employees
             }
         }
 
+        private async Task OpenModalEditSsoAsync()
+        {
+            if (!await VerifyAdUserAsync()) return;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(EmployeeEditSso));
+                builder.AddAttribute(1, nameof(EmployeeEditSso.Employee), Employee);
+                builder.AddAttribute(2, nameof(EmployeeEditSso.Info), UserSsoInfo);
+                builder.CloseComponent();
+            };
+
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_EditSso_Title, body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadEmployeeSsoState();
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
+        }
+
         #endregion
 
         public void Dispose()

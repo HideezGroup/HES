@@ -2008,4 +2008,24 @@
     <value>Ви можете повторити це через {0}</value>
     <comment>new</comment>
   </data>
+  <data name="EmployeeDetails_EnableSso_Label_AllowPasswordless" xml:space="preserve">
+    <value>Дозволити passwordless через U2F (незахищений)</value>
+    <comment>new</comment>
+  </data>
+  <data name="EmployeeDetails_EnableSso_Label_ExternalId" xml:space="preserve">
+    <value>Зовнішній ідентифікатор (обов’язково, якщо співставлення налаштовано по зовнішньому ідентифікатору)</value>
+    <comment>new</comment>
+  </data>
+  <data name="Btn_EditSettings" xml:space="preserve">
+    <value>Змінити налаштування</value>
+    <comment>new</comment>
+  </data>
+  <data name="EmployeeDetails_EditSso_Title" xml:space="preserve">
+    <value>Редагувати параметри єдиного входу</value>
+    <comment>new</comment>
+  </data>
+  <data name="EmployeeDetails_EditSso_Toast" xml:space="preserve">
+    <value>Налаштування єдиного входу оновлено.</value>
+    <comment>new</comment>
+  </data>
 </root>

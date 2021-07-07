@@ -14,6 +14,8 @@ namespace HES.Core.Entities
 
         public string ExternalId { get; set; }
 
+        public bool AllowPasswordlessByU2F { get; set; }
+
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
 
         [NotMapped]
