@@ -1,6 +1,7 @@
 ﻿using HES.Core.Constants;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.API;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Extensions;
@@ -18,7 +19,6 @@ namespace HES.Web.Pages.Identity
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service Fido2Service { get; set; }
-        [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<SingleSignOn> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
@@ -85,7 +85,7 @@ namespace HES.Web.Pages.Identity
                 StateHasChanged();
 
                 SecurityKeySignInModel.AuthenticatorAssertionRawResponse = await Fido2Service.MakeAssertionRawResponse(UserEmailModel.Email, JSRuntime);
-                var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
+                var response = await JSRuntime.InvokeWebApiPostAsync<AuthorizationResponse>(Routes.ApiLoginWithFido2, SecurityKeySignInModel);
                 response.ThrowIfFailed();
 
                 NavigationManager.NavigateTo(Routes.SSO + NavigationManager.GetQueryString(), true);

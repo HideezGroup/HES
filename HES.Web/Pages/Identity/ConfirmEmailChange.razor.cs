@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Interfaces;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ namespace HES.Web.Pages.Identity
     public partial class ConfirmEmailChange : HESPageBase
     {
         public IApplicationUserService ApplicationUserService { get; set; }
-        [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
         [Inject] public ILogger<ConfirmEmailChange> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
@@ -51,11 +53,11 @@ namespace HES.Web.Pages.Identity
                     return;
                 }
 
-                code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
                 try
                 {
+                    code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
                     await ApplicationUserService.ConfirmEmailChangeAsync(new UserConfirmEmailChangeModel() { UserId = userId, Email = email, Code = code });
-                    await IdentityApiClient.LogoutAsync();
+                    await JSRuntime.InvokeWebApiPostVoidAsync(Routes.ApiLogout);
                 }
                 catch (Exception ex)
                 {

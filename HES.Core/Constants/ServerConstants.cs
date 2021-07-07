@@ -25,5 +25,8 @@ namespace HES.Core.Constants
 
         // License
         public const string LicenseAddress = "https://hls.hideez.com";
+
+        // Cookie
+        public const string SetCookieHeader = "Set-Cookie";
     }
 }

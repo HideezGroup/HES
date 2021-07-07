@@ -2,6 +2,7 @@
 using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.API;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Extensions;
@@ -28,7 +29,6 @@ namespace HES.Web.Pages.Identity
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service Fido2Service { get; set; }
-        [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<Login> Logger { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
@@ -141,7 +141,7 @@ namespace HES.Web.Pages.Identity
 
                 SecurityKeySignInModel.RememberMe = PasswordSignInModel.RememberMe;
                 SecurityKeySignInModel.AuthenticatorAssertionRawResponse = await Fido2Service.MakeAssertionRawResponse(UserEmailModel.Email, JSRuntime);
-                var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
+                var response = await JSRuntime.InvokeWebApiPostAsync<AuthorizationResponse>(Routes.ApiLoginWithFido2, SecurityKeySignInModel);
                 response.ThrowIfFailed();
 
                 NavigationManager.NavigateToLocal(ReturnUrl ?? Routes.Dashboard, true);
@@ -163,8 +163,8 @@ namespace HES.Web.Pages.Identity
             try
             {
                 await ButtonSpinner.SpinAsync(async () =>
-                {
-                    var response = await IdentityApiClient.LoginWithPasswordAsync(PasswordSignInModel);
+                {                   
+                    var response = await JSRuntime.InvokeWebApiPostAsync<AuthorizationResponse>(Routes.ApiLoginWithPassword, PasswordSignInModel);
                     response.ThrowIfFailed();
 
                     if (response.Succeeded)

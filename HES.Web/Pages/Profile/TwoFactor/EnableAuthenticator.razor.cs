@@ -1,22 +1,18 @@
-﻿using HES.Core.Enums;
-using HES.Core.Helpers;
+﻿using HES.Core.Constants;
+using HES.Core.Enums;
 using HES.Core.Models.ApplicationUsers;
 using HES.Web.Components;
+using HES.Web.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
 using System;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile.TwoFactor
 {
     public partial class EnableAuthenticator : HESModalBase
     {
-        [Inject] public NavigationManager NavigationManager { get; set; }
-        [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<EnableAuthenticator> Logger { get; set; }
 
@@ -24,12 +20,17 @@ namespace HES.Web.Pages.Profile.TwoFactor
         public SharedKeyInfo SharedKeyInfo { get; set; } = new SharedKeyInfo();
         public string[] RecoveryCodes { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             try
             {
-                await LoadSharedKeyAndQrCodeUriAsync();
-                SetInitialized();
+                if (firstRender)
+                {
+                    await LoadSharedKeyAndQrCodeUriAsync();
+                    SetInitialized();
+                    StateHasChanged();
+                    await GenerateQrCodeAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -39,23 +40,9 @@ namespace HES.Web.Pages.Profile.TwoFactor
             }
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                await GenerateQrCodeAsync();
-            }
-        }
-
         private async Task LoadSharedKeyAndQrCodeUriAsync()
         {
-            var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
-            var response = client.GetAsync("api/Identity/LoadSharedKeyAndQrCodeUri").Result;
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception(await response.Content.ReadAsStringAsync());
-
-            SharedKeyInfo = JsonConvert.DeserializeObject<SharedKeyInfo>(await response.Content.ReadAsStringAsync());
+            SharedKeyInfo = await JSRuntime.InvokeWebApiGetAsync<SharedKeyInfo>(Routes.ApiLoadSharedKeyAndQrCodeUri);
         }
 
         private async Task GenerateQrCodeAsync()
@@ -73,14 +60,8 @@ namespace HES.Web.Pages.Profile.TwoFactor
         private async Task VerifyTwoFactorAsync()
         {
             try
-            {
-                var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
-                var response = await client.PostAsync("api/Identity/VerifyTwoFactor", (new StringContent(JsonConvert.SerializeObject(VerificationCode), Encoding.UTF8, "application/json")));
-
-                if (!response.IsSuccessStatusCode)
-                    throw new Exception(await response.Content.ReadAsStringAsync());
-
-                var verifyTwoFactorTokenInfo = JsonConvert.DeserializeObject<VerifyTwoFactorInfo>(await response.Content.ReadAsStringAsync());
+            {               
+                var verifyTwoFactorTokenInfo = await JSRuntime.InvokeWebApiPostAsync<VerifyTwoFactorInfo>(Routes.ApiVerifyTwoFactor, VerificationCode);
 
                 if (!verifyTwoFactorTokenInfo.IsTwoFactorTokenValid)
                 {

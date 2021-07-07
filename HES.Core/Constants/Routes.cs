@@ -9,8 +9,8 @@
         public const string LoginWithRecoveryCode = "/login-with-recovery-code";
         public const string Lockout = "/lockout";
         public const string AccessDenied = "/access-denied";
-        public const string ResetPassword = "/reset-password";   
-        public const string ConfirmEmailChange = "/confirm-email-change";   
+        public const string ResetPassword = "/reset-password";
+        public const string ConfirmEmailChange = "/confirm-email-change";
 
         public const string Profile = "/profile";
 
@@ -45,6 +45,20 @@
         public const string SamlMetadata = "/saml/metadata";
         public const string SamlDownloadMetadata = "/saml/metadata?download=true";
         public const string SamlDownloadCert = "/saml/cert";
+        
+        public const string ApiLoginWithPassword = "/api/Identity/LoginWithPassword";
+        public const string ApiLoginWithFido2 = "/api/Identity/LoginWithFido2";
+        public const string ApiLogout = "/api/Identity/Logout";
+        public const string ApiRefreshSignIn = "/api/Identity/RefreshSignIn";
 
+        public const string ApiGetTwoFactorInfo = "/api/Identity/GetTwoFactorInfo";
+        public const string ApiGenerateNewTwoFactorRecoveryCodes = "/api/Identity/GenerateNewTwoFactorRecoveryCodes";
+        public const string ApiLoadSharedKeyAndQrCodeUri = "/api/Identity/LoadSharedKeyAndQrCodeUri";
+        public const string ApiVerifyTwoFactor = "/api/Identity/VerifyTwoFactor";
+        public const string ApiResetAuthenticatorKey = "/api/Identity/ResetAuthenticatorKey";
+        public const string ApiDisableTwoFactor = "/api/Identity/DisableTwoFactor";
+        public const string ForgetTwoFactorClient = "/api/Identity/ForgetTwoFactorClient";
+
+        public const string ApiDeletePersonalData = "/api/Identity/DeletePersonalData";
     }
 }
