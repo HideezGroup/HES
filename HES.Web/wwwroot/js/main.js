@@ -90,3 +90,26 @@ function hideModalDialog(dialogId) {
     var modal = bootstrap.Modal.getInstance(document.getElementById(dialogId));
     modal.hide();
 }
+
+async function postAsync(url, data) {
+    let response = await fetch(url, {
+        method: 'POST',
+        body: data,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    return await response.text();
+}
+
+async function getAsync(url) {
+    let response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    return await response.text();
+}

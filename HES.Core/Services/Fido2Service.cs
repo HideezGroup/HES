@@ -257,20 +257,29 @@ namespace HES.Core.Services
             // Store the updated counter
             await UpdateCounter(res.CredentialId, res.Counter);
 
+            // Get user
+            var user = await _userManager.FindByNameAsync(creds.Username);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
+
             // Get authenticator flags
             var authData = new AuthenticatorData(assertionRawResponse.Response.AuthenticatorData);
 
             if (authData.UserPresent && authData.UserVerified)
             {
-                var user = await _userManager.FindByNameAsync(creds.Username);
-                if (user == null)
-                {
-                    throw new HESException(HESCode.UserNotFound);
-                }
-
                 await _signInManager.SignInAsync(user, parameters.RememberMe);
-
                 return AuthorizationResponse.Success(user);
+            }
+                
+            if (authData.UserPresent && !authData.UserVerified)
+            {
+                if (user.AllowPasswordlessByU2F)
+                {
+                    await _signInManager.SignInAsync(user, parameters.RememberMe);
+                    return AuthorizationResponse.Success(user);
+                }
             }
 
             return AuthorizationResponse.Error(HESCode.AuthenticatorNotFIDO2);
@@ -309,7 +318,7 @@ namespace HES.Core.Services
         public async Task<FidoStoredCredential> GetCredentialsById(byte[] id)
         {
             var credentialIdString = Base64Url.Encode(id);
-  
+
             var cred = await _dbContext.FidoStoredCredential.Where(c => c.DescriptorJson.Contains(credentialIdString)).FirstOrDefaultAsync();
 
             return cred;
@@ -322,7 +331,7 @@ namespace HES.Core.Services
 
         public async Task UpdateCounter(byte[] credentialId, uint counter)
         {
-            var credentialIdString = Base64Url.Encode(credentialId);        
+            var credentialIdString = Base64Url.Encode(credentialId);
 
             var cred = await _dbContext.FidoStoredCredential.Where(c => c.DescriptorJson.Contains(credentialIdString)).FirstOrDefaultAsync();
 

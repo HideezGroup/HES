@@ -1,11 +1,12 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
-using HES.Core.Helpers;
 using HES.Core.Interfaces;
 using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
+using HES.Web.Extensions;
 using HES.Web.Pages.Profile.SecurityKeys;
 using HES.Web.Pages.Profile.TwoFactor;
 using Microsoft.AspNetCore.Components;
@@ -14,7 +15,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HES.Web.Pages.Profile
@@ -23,8 +23,6 @@ namespace HES.Web.Pages.Profile
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service FidoService { get; set; }
-        [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
-        [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<SecurityTab> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
@@ -54,10 +52,26 @@ namespace HES.Web.Pages.Profile
                 // Security Key
                 await LoadStoredCredentialsAsync();
 
-                // 2FA
-                await GetTwoFactorInfoAsync();
+                // Continue in OnAfterRenderAsync
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                SetLoadFailed(ex.Message);
+            }
+        }
 
-                SetInitialized();
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            try
+            {
+                if (firstRender)
+                {
+                    // 2FA
+                    await GetTwoFactorInfoAsync();
+                    SetInitialized();
+                    StateHasChanged();
+                }
             }
             catch (Exception ex)
             {
@@ -75,10 +89,9 @@ namespace HES.Web.Pages.Profile
                 await ButtonChangePassword.SpinAsync(async () =>
                 {
                     await ApplicationUserService.UpdateAccountPasswordAsync(ChangePasswordModel);
-                    await IdentityApiClient.RefreshSignInAsync();
+                    await JSRuntime.InvokeWebApiPostVoidAsync(Routes.ApiRefreshSignIn);
                     await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_ChangePassword_Toast, ToastType.Success);
-
-                    ChangePasswordModel = new UserChangePasswordModel() { UserId = CurrentUser.Id };
+                    ChangePasswordModel = new UserChangePasswordModel() { UserId = CurrentUser.Id };               
                 });
             }
             catch (Exception ex)
@@ -157,8 +170,7 @@ namespace HES.Web.Pages.Profile
 
         private async Task GetTwoFactorInfoAsync()
         {
-            var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
-            TwoFactorInfo = await ApplicationUserService.GetTwoFactorInfoAsync(client);
+            TwoFactorInfo = await JSRuntime.InvokeWebApiGetAsync<TwoFactorInfo>(Routes.ApiGetTwoFactorInfo);
         }
 
         private async Task EnableAuthenticatorAsync()
@@ -227,8 +239,7 @@ namespace HES.Web.Pages.Profile
         {
             try
             {
-                var client = await HttpClientHelper.CreateClientAsync(NavigationManager, HttpClientFactory, JSRuntime, Logger);
-                await ApplicationUserService.ForgetBrowserAsync(client);
+                await JSRuntime.InvokeWebApiPostVoidAsync(Routes.ForgetTwoFactorClient);
                 await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_ForgetBrowser_Toast, ToastType.Success);
             }
             catch (Exception ex)

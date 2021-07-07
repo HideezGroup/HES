@@ -34,7 +34,8 @@ namespace HES.Core.Interfaces
         #region SSO
         bool IsSaml2Enabled();
         Task<UserSsoInfo> GetUserSsoInfoAsync(Employee employee);
-        Task EnableSsoAsync(Employee employee);
+        Task EnableSsoAsync(Employee employee, UserSsoSettings settings);
+        Task EditSsoAsync(Employee employee, UserSsoSettings settings);
         Task DisableSsoAsync(Employee employee);
         #endregion
 

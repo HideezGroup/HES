@@ -322,10 +322,8 @@ namespace HES.Core.Services
                 }
 
                 user.FirstName = employee.FirstName;
-                user.LastName = employee.LastName;
-                user.ExternalId = employee.ExternalId;
-
-                await _userManager.UpdateAsync(user);               
+                user.LastName = employee.LastName;    
+                await _userManager.UpdateAsync(user);
             }
         }
 
@@ -430,6 +428,7 @@ namespace HES.Core.Services
             var user = await _dbContext.Users
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Email == employee.Email);
 
             if (user == null)
@@ -444,11 +443,13 @@ namespace HES.Core.Services
                 IsSsoEnabled = user != null,
                 UserEmail = user.Email,
                 UserRole = user.UserRoles.FirstOrDefault().Role.Name,
-                SecurityKeyName = cred.Count > 0 ? Resources.Resource.Display_Added : Resources.Resource.Display_NotAdded
+                SecurityKeyName = cred.Count > 0 ? Resources.Resource.Display_Added : Resources.Resource.Display_NotAdded,
+                ExternalId = user.ExternalId,
+                AllowPasswordlessByU2F = user.AllowPasswordlessByU2F
             };
         }
 
-        public async Task EnableSsoAsync(Employee employee)
+        public async Task EnableSsoAsync(Employee employee, UserSsoSettings settings)
         {
             if (employee == null)
             {
@@ -480,7 +481,8 @@ namespace HES.Core.Services
                 UserName = employee.Email,
                 Email = employee.Email,
                 EmailConfirmed = true,
-                ExternalId = employee.ExternalId,
+                ExternalId = settings.ExternalId,
+                AllowPasswordlessByU2F = settings.AllowPasswordlessByU2F,
                 Culture = CultureConstants.EN
             };
 
@@ -498,6 +500,33 @@ namespace HES.Core.Services
             var roleResult = await _userManager.AddToRoleAsync(user, ApplicationRoles.User);
 
             if (!roleResult.Succeeded)
+            {
+                string errors = string.Empty;
+                foreach (var item in result.Errors)
+                    errors += $"Code: {item.Code} Description: {item.Description} {Environment.NewLine}";
+
+                throw new Exception(errors);
+            }
+        }
+
+        public async Task EditSsoAsync(Employee employee, UserSsoSettings settings)
+        {
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee));
+            }
+
+            var user = await _userManager.FindByIdAsync(employee.Id);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
+
+            user.ExternalId = settings.ExternalId;
+            user.AllowPasswordlessByU2F = settings.AllowPasswordlessByU2F;            
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
             {
                 string errors = string.Empty;
                 foreach (var item in result.Errors)

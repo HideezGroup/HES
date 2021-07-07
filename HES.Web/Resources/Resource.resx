@@ -2008,16 +2008,24 @@
     <value>You can repeat it through {0}</value>
     <comment>new</comment>
   </data>
-  <data name="Identity_ForgotPasswordConfirmation_Description" xml:space="preserve">
-    <value />
+  <data name="EmployeeDetails_EnableSso_Label_AllowPasswordless" xml:space="preserve">
+    <value>Allow passwordless by U2F (unsecure)</value>
+    <comment>new</comment>
   </data>
-  <data name="Identity_ForgotPasswordConfirmation_Title" xml:space="preserve">
-    <value />
+  <data name="EmployeeDetails_EnableSso_Label_ExternalId" xml:space="preserve">
+    <value>External ID (required if configured mapping by External ID)</value>
+    <comment>new</comment>
   </data>
-  <data name="Identity_ForgotPassword_Header" xml:space="preserve">
-    <value />
+  <data name="Btn_EditSettings" xml:space="preserve">
+    <value>Edit settings</value>
+    <comment>new</comment>
   </data>
-  <data name="Identity_ForgotPassword_Title" xml:space="preserve">
-    <value />
+  <data name="EmployeeDetails_EditSso_Title" xml:space="preserve">
+    <value>Edit SSO settings</value>
+    <comment>new</comment>
+  </data>
+  <data name="EmployeeDetails_EditSso_Toast" xml:space="preserve">
+    <value>SSO settings updated.</value>
+    <comment>new</comment>
   </data>
 </root>

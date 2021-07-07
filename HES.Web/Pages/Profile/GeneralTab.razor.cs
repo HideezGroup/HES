@@ -1,12 +1,13 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
+using HES.Web.Extensions;
 using HES.Web.Pages.Profile.PersonalData;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,7 +24,6 @@ namespace HES.Web.Pages.Profile
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IEmailSenderService EmailSenderService { get; set; }
-        [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<ProfilePage> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
@@ -42,7 +42,7 @@ namespace HES.Web.Pages.Profile
                 ApplicationUserService = ScopedServices.GetRequiredService<IApplicationUserService>();
                 EmailSenderService = ScopedServices.GetRequiredService<IEmailSenderService>();
 
-                var email = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity.Name;
+                var email = await GetCurrentUserEmailAsync();
 
                 User = await ApplicationUserService.GetUserByEmailAsync(email);
                 if (User == null)
@@ -80,8 +80,8 @@ namespace HES.Web.Pages.Profile
                 await ButtonUpdateProfile.SpinAsync(async () =>
                 {
                     await ApplicationUserService.UpdateProfileInfoAsync(UserProfileModel);
-                    await IdentityApiClient.RefreshSignInAsync();
-                    await ToastService.ShowToastAsync(Resources.Resource.Profile_General_Profile_Toast, ToastType.Success);
+                    await JSRuntime.InvokeWebApiPostVoidAsync(Routes.ApiRefreshSignIn);                
+                    await ToastService.ShowToastAsync(Resources.Resource.Profile_General_Profile_Toast, ToastType.Success);               
                 });
             }
             catch (Exception ex)

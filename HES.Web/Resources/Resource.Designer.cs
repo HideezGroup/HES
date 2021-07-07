@@ -601,6 +601,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit settings.
+        /// </summary>
+        public static string Btn_EditSettings {
+            get {
+                return ResourceManager.GetString("Btn_EditSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enable.
         /// </summary>
         public static string Btn_Enable {
@@ -1494,11 +1503,47 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit SSO settings.
+        /// </summary>
+        public static string EmployeeDetails_EditSso_Title {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditSso_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SSO settings updated..
+        /// </summary>
+        public static string EmployeeDetails_EditSso_Toast {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EditSso_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Are you sure you want to enable SSO for {0}?.
         /// </summary>
         public static string EmployeeDetails_EnableSso_Body {
             get {
                 return ResourceManager.GetString("EmployeeDetails_EnableSso_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Allow passwordless by U2F (unsecure).
+        /// </summary>
+        public static string EmployeeDetails_EnableSso_Label_AllowPasswordless {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EnableSso_Label_AllowPasswordless", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на External ID (required if configured mapping by External ID).
+        /// </summary>
+        public static string EmployeeDetails_EnableSso_Label_ExternalId {
+            get {
+                return ResourceManager.GetString("EmployeeDetails_EnableSso_Label_ExternalId", resourceCulture);
             }
         }
         
@@ -2156,42 +2201,6 @@ namespace HES.Web.Resources {
         public static string Identity_ConfirmEmailChange_Header {
             get {
                 return ResourceManager.GetString("Identity_ConfirmEmailChange_Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        public static string Identity_ForgotPassword_Header {
-            get {
-                return ResourceManager.GetString("Identity_ForgotPassword_Header", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        public static string Identity_ForgotPassword_Title {
-            get {
-                return ResourceManager.GetString("Identity_ForgotPassword_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        public static string Identity_ForgotPasswordConfirmation_Description {
-            get {
-                return ResourceManager.GetString("Identity_ForgotPasswordConfirmation_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        public static string Identity_ForgotPasswordConfirmation_Title {
-            get {
-                return ResourceManager.GetString("Identity_ForgotPasswordConfirmation_Title", resourceCulture);
             }
         }
         
