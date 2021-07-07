@@ -2028,4 +2028,7 @@
     <value>Налаштування єдиного входу оновлено.</value>
     <comment>new</comment>
   </data>
+  <data name="Profile_Security_DeleteSecurityKey_Toast" xml:space="preserve">
+    <value>Ключ безпеки видалено.</value>
+  </data>
 </root>

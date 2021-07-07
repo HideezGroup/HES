@@ -4815,6 +4815,15 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Security key deleted..
+        /// </summary>
+        public static string Profile_Security_DeleteSecurityKey_Toast {
+            get {
+                return ResourceManager.GetString("Profile_Security_DeleteSecurityKey_Toast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Your account security settings..
         /// </summary>
         public static string Profile_Security_Description {

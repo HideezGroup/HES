@@ -2028,4 +2028,7 @@
     <value>SSO settings updated.</value>
     <comment>new</comment>
   </data>
+  <data name="Profile_Security_DeleteSecurityKey_Toast" xml:space="preserve">
+    <value>Security key deleted.</value>
+  </data>
 </root>

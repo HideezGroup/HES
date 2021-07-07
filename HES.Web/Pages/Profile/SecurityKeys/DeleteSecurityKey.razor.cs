@@ -34,7 +34,7 @@ namespace HES.Web.Pages.Profile.SecurityKeys
             try
             {
                 await FidoService.RemoveSecurityKeyAsync(SecurityKeyId);
-                await ToastService.ShowToastAsync("Security key deleted.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_DeleteSecurityKey_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)
