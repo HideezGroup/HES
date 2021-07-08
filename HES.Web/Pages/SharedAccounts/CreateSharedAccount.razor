@@ -10,7 +10,7 @@ else
         <DataAnnotationsValidator />
         <ValidationErrorMessage @ref="ValidationErrorMessage" />
         <div class="form-group d-flex flex-row align-items-center">
-            <h6 class="text-navyblue mx-0 me-2 text-nowrap">Enter data manually or select from the template:</h6>
+            <h6 class="text-navyblue mx-0 me-2 text-nowrap">@Resource.SharedAccounts_CreateSharedAccount_EnterData</h6>
             <select class="form-select" @onchange="TemplateSelected">
                 <option selected></option>
                 @foreach (var item in Templates)
@@ -40,7 +40,7 @@ else
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label class="control-label text-gray">Login Type</label>
+                    <label class="control-label text-gray">@Resource.Label_LoginType</label>
                     <select class="form-select" @bind="SharedAccount.LoginType">
                         <option selected value="@LoginType.WebApp">@EnumHelper.GetDisplayName(LoginType.WebApp)</option>
                         <option value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
@@ -113,8 +113,8 @@ else
             </div>
         </div>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-            <Button @ref="Button" Text="Create" type="submit" class="btn btn-primary" />
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button @ref="Button" Text="@Resource.Btn_Create" type="submit" class="btn btn-primary" />
         </div>
     </EditForm>
 }

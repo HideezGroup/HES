@@ -8,7 +8,7 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="shared account" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@SharedAccount.Name" CloseAction="ModalDialogCancel" />
     }
     else
     {
@@ -31,7 +31,7 @@ else
                 <ValidationMessage For="@(() => SharedAccountEditModel.Apps)" class="text-danger" />
             </div>
             <div class="form-group">
-                <label class="control-label text-gray">Login Type</label>
+                <Label For="@(() => SharedAccountEditModel.LoginType)" class="text-gray" />
                 <select class="form-select" @bind="SharedAccountEditModel.LoginType">
                     <option selected value="@LoginType.WebApp">@EnumHelper.GetDisplayName(LoginType.WebApp)</option>
                     <option value="@LoginType.Local">@EnumHelper.GetDisplayName(LoginType.Local)</option>
@@ -52,7 +52,7 @@ else
                 case LoginType.Local:
                     <div class="form-group">
                         <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
-                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
+                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="@Resource.Label_UserName" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
@@ -60,8 +60,8 @@ else
                     <div class="form-group">
                         <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
                         <div class="input-group">
-                            <input type="text" @bind="SharedAccountEditModel.Domain" placeholder="Domain" class="form-control" tabindex="4">
-                            <input type="text" @bind="SharedAccountEditModel.Login" placeholder="User Logon Name" class="form-control" tabindex="5">
+                            <input type="text" @bind="SharedAccountEditModel.Domain" placeholder="@Resource.Label_Domain" class="form-control" tabindex="4">
+                            <input type="text" @bind="SharedAccountEditModel.Login" placeholder="@Resource.Label_UserLogonName" class="form-control" tabindex="5">
                         </div>
                         <ValidationMessage For="@(() => SharedAccountEditModel.Domain)" class="text-danger" />
                         <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
@@ -70,21 +70,21 @@ else
                 case LoginType.AzureAD:
                     <div class="form-group">
                         <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
-                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="User Name" class="form-control text-navyblue" tabindex="4" />
+                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="@Resource.Label_UserName" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
                 case LoginType.Microsoft:
                     <div class="form-group">
                         <Label For="@(() => SharedAccountEditModel.Login)" class="text-gray" />
-                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="Email" class="form-control text-navyblue" tabindex="4" />
+                        <InputText @bind-Value="SharedAccountEditModel.Login" placeholder="@Resource.Label_Email" class="form-control text-navyblue" tabindex="4" />
                         <ValidationMessage For="@(() => SharedAccountEditModel.Login)" class="text-danger" />
                     </div>
                     break;
             }
             <div class="form-footer">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-                <Button @ref="Button" Text="Save" type="submit" class="btn btn-primary" />
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                <Button @ref="Button" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }

@@ -28,7 +28,10 @@ namespace HES.Core.Models.API
         public HESCode Code { get; protected set; }
 
         [DataMember]
-        public ApplicationUser User { get; protected set; }
+        public ApplicationUser User { get; protected set; } 
+        
+        [DataMember]
+        public string Cookie { get; set; }
 
         public static AuthorizationResponse Success(ApplicationUser user)
         {

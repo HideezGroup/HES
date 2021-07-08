@@ -1,10 +1,8 @@
-﻿using HES.Core.Constants;
-using HES.Core.Entities;
+﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.AppSettings;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.Filters;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -126,7 +124,7 @@ namespace HES.Web.Pages.Employees
             }
             catch (LdapException ex) when (ex.ResultCode == LdapException.ServerDown)
             {
-                await ToastService.ShowToastAsync("The LDAP server is unavailable.", ToastType.Error);
+                await ToastService.ShowToastAsync(HESException.GetMessage(HESCode.TheLDAPServerIsUnavailable), ToastType.Error);
                 return false;
             }
             catch (Exception ex)
@@ -149,7 +147,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Add hardware vault", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_AddHardwareVault_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -170,7 +168,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete hardware vault", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_DeleteHardwareVault_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -205,7 +203,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Create personal account", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_CreatePersonalAccount_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -227,7 +225,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Add shared account", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_AddSharedAccount_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -271,7 +269,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit account", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_EditPersonalAccount_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -293,7 +291,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit account password", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_EditPersonalAccountPwd_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -311,11 +309,11 @@ namespace HES.Web.Pages.Employees
             RenderFragment body = (builder) =>
             {
                 builder.OpenComponent(0, typeof(EditPersonalAccountOtp));
-                builder.AddAttribute(1, "AccountId", DataTableService.SelectedEntity.Id);
+                builder.AddAttribute(1, nameof(EditPersonalAccountOtp.AccountId), DataTableService.SelectedEntity.Id);
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit account OTP", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_EditPersonalAccountOtp_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -337,7 +335,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Account", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_DeleteAccount_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -403,7 +401,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Hardware vault details", body);
+            await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_HardwareVaultDetails_Title, body);
         }
 
         private async Task OpenDialogShowActivationCodeAsync(HardwareVault hardwareVault)
@@ -417,7 +415,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-           await ModalDialogService.ShowAsync("Activation code", body);            
+            await ModalDialogService.ShowAsync("Activation code", body);
         }
 
         private async Task OpenModalEnableSsoAsync()
@@ -431,7 +429,7 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Enable SSO", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_EnableSso_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -452,7 +450,29 @@ namespace HES.Web.Pages.Employees
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Disable SSO", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_DisableSso_Title, body);
+            var result = await instance.Result;
+
+            if (result.Succeeded)
+            {
+                await LoadEmployeeSsoState();
+                await PageSyncService.UpdateEmployeeDetails(PageId, EmployeeId);
+            }
+        }
+
+        private async Task OpenModalEditSsoAsync()
+        {
+            if (!await VerifyAdUserAsync()) return;
+
+            RenderFragment body = (builder) =>
+            {
+                builder.OpenComponent(0, typeof(EmployeeEditSso));
+                builder.AddAttribute(1, nameof(EmployeeEditSso.Employee), Employee);
+                builder.AddAttribute(2, nameof(EmployeeEditSso.Info), UserSsoInfo);
+                builder.CloseComponent();
+            };
+
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.EmployeeDetails_EditSso_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)

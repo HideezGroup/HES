@@ -52,7 +52,7 @@ namespace HES.Web.Pages.Dashboard
                 builder.CloseComponent();
             };
 
-            await ModalDialogService.ShowAsync("Hardware Vault Tasks", body, ModalDialogSize.Large);
+            await ModalDialogService.ShowAsync(Resources.Resource.Dashboard_HardwareVaultTasks_Title, body, ModalDialogSize.Large);
         }
 
         public void Dispose()

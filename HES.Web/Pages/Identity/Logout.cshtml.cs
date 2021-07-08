@@ -1,3 +1,4 @@
+using HES.Core.Constants;
 using HES.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,22 +19,13 @@ namespace HES.Web.Pages.Identity
             _signInManager = signInManager;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnPost()
         {
-        }
-
-        public async Task<IActionResult> OnPost(string returnUrl = null)
-        {
-            await _signInManager.SignOutAsync();
-
-            if (returnUrl != null)
+            if (_signInManager.IsSignedIn(User))
             {
-                return LocalRedirect(returnUrl);
+                await _signInManager.SignOutAsync();
             }
-            else
-            {
-                return LocalRedirect("/");
-            }
+            return LocalRedirect(Routes.Login);
         }
     }
 }

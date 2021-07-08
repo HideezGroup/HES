@@ -1,13 +1,11 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Models.API;
-using HES.Core.Models.AppUsers;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using HES.Core.Models.Identity;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HES.Core.Interfaces
@@ -33,18 +31,16 @@ namespace HES.Core.Interfaces
 
         #region Profile
         Task UpdateProfileInfoAsync(UserProfileModel parameters);
-        Task ChangeEmailAsync(ChangeEmailModel parameters);
+        Task<string> ChangeEmailAsync(UserChangeEmailModel parameters, string baseUri);
         Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters);
-        Task UpdateAccountPasswordAsync(ChangePasswordModel parameters);
-        Task<TwoFactorInfo> GetTwoFactorInfoAsync(HttpClient httpClient);
-        Task ForgetBrowserAsync(HttpClient httpClient);
-
+        Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters);
         #endregion
 
         #region Email
         Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status);
         Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults);
         Task SendActivateDataProtectionAsync();
+        Task SendUserResetPasswordAsync(string email, string domain);
         #endregion
 
         #region API

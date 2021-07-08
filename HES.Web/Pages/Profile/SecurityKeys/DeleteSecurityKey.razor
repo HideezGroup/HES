@@ -3,14 +3,11 @@
 @if (Initialized)
 {
     <div class="mb-3">
-        Remove security key?
-    </div>
-    <div class="mb-3">
-        If you remove this security key, you will not be able to use it to sign in with your account.
+        @Resource.Profile_Security_DeleteSecurityKey_Body
     </div>
     <div class="form-footer">
-        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
-        <button type="button" @onclick="DeleteSecurityKeyAsync" class="btn btn-danger">Remove</button>
+        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">@Resource.Btn_Cancel </button>
+        <button type="button" @onclick="DeleteSecurityKeyAsync" class="btn btn-danger">@Resource.Btn_Delete</button>
     </div>
 }
 else

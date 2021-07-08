@@ -61,19 +61,19 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 {
                     if (_newLicenseOrder.StartDate < DateTime.Now.Date)
                     {
-                        ValidationErrorMessageNewOrder.DisplayError(nameof(NewLicenseOrder.StartDate), $"Start Date must be at least current date.");
+                        ValidationErrorMessageNewOrder.DisplayError(nameof(NewLicenseOrder.StartDate), string.Format(Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_MustBeAtLeast, Resources.Resource.Label_StartDate));
                         return;
                     }
 
                     if (_newLicenseOrder.EndDate < _newLicenseOrder.StartDate)
                     {
-                        ValidationErrorMessageNewOrder.DisplayError(nameof(NewLicenseOrder.EndDate), $"End Date must not be less than Start Date.");
+                        ValidationErrorMessageNewOrder.DisplayError(nameof(NewLicenseOrder.EndDate), string.Format(Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess, Resources.Resource.Label_EndDate, Resources.Resource.Label_StartDate));
                         return;
                     }
 
                     if (!_newLicenseOrder.HardwareVaults.Where(x => x.Checked).Any())
                     {
-                        ValidationErrorMessageNewOrder.DisplayError(nameof(NewLicenseOrder.HardwareVaults), $"Select at least one hardware vault.");
+                        ValidationErrorMessageNewOrder.DisplayError(nameof(NewLicenseOrder.HardwareVaults), Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne);
                         return;
                     }
 
@@ -88,7 +88,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
                     var checkedHardwareVaults = _newLicenseOrder.HardwareVaults.Where(x => x.Checked).ToList();
                     await LicenseService.CreateOrderAsync(licenseOrder, checkedHardwareVaults);
-                    await ToastService.ShowToastAsync("Order created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.LicenseOrders_CreateLicenseOrder_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
@@ -108,13 +108,13 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 {
                     if (_renewLicenseOrder.EndDate < DateTime.Now)
                     {
-                        ValidationErrorMessageRenewOrder.DisplayError(nameof(RenewLicenseOrder.EndDate), $"End Date must not be less than Start Date.");
+                        ValidationErrorMessageRenewOrder.DisplayError(nameof(RenewLicenseOrder.EndDate), string.Format(Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_MustNotBeLess, Resources.Resource.Label_EndDate, Resources.Resource.Label_StartDate));
                         return;
                     }
 
                     if (!_renewLicenseOrder.HardwareVaults.Where(x => x.Checked).Any())
                     {
-                        ValidationErrorMessageRenewOrder.DisplayError(nameof(RenewLicenseOrder.HardwareVaults), $"Select at least one hardware vault.");
+                        ValidationErrorMessageRenewOrder.DisplayError(nameof(RenewLicenseOrder.HardwareVaults), Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_SelectAtLeastOne);
                         return;
                     }
 
@@ -123,7 +123,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
 
                     if (_renewLicenseOrder.EndDate < maxEndDate)
                     {
-                        ValidationErrorMessageRenewOrder.DisplayError(nameof(RenewLicenseOrder.HardwareVaults), $"The selected End Date less than max end date for selected hardware vaults.");
+                        ValidationErrorMessageRenewOrder.DisplayError(nameof(RenewLicenseOrder.HardwareVaults), string.Format(Resources.Resource.LicenseOrders_CreateLicenseOrder_Error_LessThanMaxEndDate, Resources.Resource.Label_EndDate));
                         return;
                     }
 
@@ -137,7 +137,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                     };
 
                     await LicenseService.CreateOrderAsync(licenseOrder, checkedHardwareVaults);
-                    await ToastService.ShowToastAsync("Order created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.LicenseOrders_CreateLicenseOrder_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

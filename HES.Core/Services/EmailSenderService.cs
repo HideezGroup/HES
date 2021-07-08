@@ -28,20 +28,16 @@ namespace HES.Core.Services
         private readonly IOptions<EmailSettings> _emailSettings;
         private readonly IOptions<ServerSettings> _serverSettings;
         private readonly ILogger<EmailSenderService> _logger;
-        private readonly string _baseAddress;
 
         public EmailSenderService(IHostingEnvironment hostingEnvironment,
                                   IOptions<EmailSettings> emailSettings,
                                   IOptions<ServerSettings> serverSettings,
-                                  IHttpContextAccessor httpContextAccessor,
                                   ILogger<EmailSenderService> logger)
         {
             _hostingEnvironment = hostingEnvironment;
             _emailSettings = emailSettings;
             _serverSettings = serverSettings;
             _logger = logger;
-            _baseAddress = $"{httpContextAccessor?.HttpContext?.Request?.Scheme}://{httpContextAccessor?.HttpContext?.Request?.Host}{httpContextAccessor?.HttpContext?.Request?.PathBase}";
-
         }
 
         private async Task SendAsync(string mailTo, string htmlMessage, string subject, params AlternateView[] alternateViews)
@@ -50,9 +46,9 @@ namespace HES.Core.Services
             {
                 var mailMessage = new MailMessage(_emailSettings.Value.UserName, mailTo);
                 var htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-                htmlView.LinkedResources.Add(CreateImageResource("img_hideez_logo"));
+                htmlView.LinkedResources.Add(CreateImageResource("mail_logo"));
                 mailMessage.AlternateViews.Add(htmlView);
-                if(alternateViews != null & alternateViews.Length > 0)
+                if (alternateViews != null & alternateViews.Length > 0)
                 {
                     foreach (var item in alternateViews)
                     {
@@ -60,7 +56,7 @@ namespace HES.Core.Services
                     }
                 }
                 mailMessage.IsBodyHtml = true;
-                mailMessage.Subject = $"{subject} - {_serverSettings.Value.Name}";
+                mailMessage.Subject = subject;
 
                 using var client = new SmtpClient(_emailSettings.Value.Host, _emailSettings.Value.Port)
                 {
@@ -79,23 +75,25 @@ namespace HES.Core.Services
         public async Task SendLicenseChangedAsync(DateTime createdAt, LicenseOrderStatus status, IList<ApplicationUser> administrators)
         {
             var htmlTemplate = await GetTemplateAsync("mail-license-order-status");
-            var replacement = new Dictionary<string, string>
+
+            foreach (var admin in administrators.Where(x => x.EmailConfirmed == true))
+            {
+                var replacement = new Dictionary<string, string>
                 {
-                    {"{{createdAt}}", createdAt.ToString() },
-                    {"{{status}}", status.ToString() },
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, admin.DisplayName) },
+                    {"{{body}}", Resources.Resource.Email_LicenseChanged_Body },
+                    {"{{description}}", string.Format(Resources.Resource.Email_LicenseChanged_Description, createdAt.ToString(), status.ToString()) },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
                 };
 
-            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+                var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
 
-            foreach (var admin in administrators)
-            {
-                await SendAsync(admin.Email, htmlMessage, "Hideez License Order Status Update");
+                await SendAsync(admin.Email, htmlMessage, Resources.Resource.Email_LicenseChanged_Subject);
             }
         }
 
-        public async Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults, IList<ApplicationUser> administrators)
+        public async Task SendHardwareVaultLicenseStatusAsync(List<HardwareVault> vaults, IList<ApplicationUser> administrators)
         {
-            var htmlMessage = await GetTemplateAsync ("mail-vault-license-status");
             var message = new StringBuilder();
 
             var valid = vaults.Where(d => d.LicenseStatus == VaultLicenseStatus.Valid).OrderBy(d => d.Id).ToList();
@@ -107,13 +105,13 @@ namespace HES.Core.Services
             var warning = vaults.Where(d => d.LicenseStatus == VaultLicenseStatus.Warning).OrderBy(d => d.Id).ToList();
             foreach (var item in warning)
             {
-                message.Append($"{item.Id} - {item.LicenseStatus} (90 days remainin)<br/>");
+                message.Append($"{item.Id} - {item.LicenseStatus} (90 {Resources.Resource.Email_Common_DaysRemainin})<br/>");
             }
 
             var critical = vaults.Where(d => d.LicenseStatus == VaultLicenseStatus.Critical).OrderBy(d => d.Id).ToList();
             foreach (var item in critical)
             {
-                message.Append($"{item.Id} - {item.LicenseStatus} (30 days remainin)<br/>");
+                message.Append($"{item.Id} - {item.LicenseStatus} (30 {Resources.Resource.Email_Common_DaysRemainin})<br/>");
             }
 
             var expired = vaults.Where(d => d.LicenseStatus == VaultLicenseStatus.Expired).OrderBy(d => d.Id).ToList();
@@ -122,64 +120,143 @@ namespace HES.Core.Services
                 message.Append($"{item.Id} - {item.LicenseStatus}<br/>");
             }
 
-            htmlMessage = htmlMessage.Replace("{{message}}", message.ToString());
+            var htmlTemplate = await GetTemplateAsync("mail-vault-license-status");
 
-            foreach (var admin in administrators)
+            foreach (var admin in administrators.Where(x => x.EmailConfirmed == true))
             {
-                await SendAsync(admin.Email, htmlMessage, "Hideez License Status Update");
+                var replacement = new Dictionary<string, string>
+                {
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, admin.DisplayName) },
+                    {"{{body}}", Resources.Resource.Email_HardwareVaultLicenseStatus_Body },
+                    {"{{message}}", message.ToString() },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                };
+                var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+
+                await SendAsync(admin.Email, htmlMessage, Resources.Resource.Email_HardwareVaultLicenseStatus_Subject);
             }
         }
 
         public async Task SendActivateDataProtectionAsync(IList<ApplicationUser> administrators)
         {
-            var htmlMessage = await GetTemplateAsync("mail-activate-data-protection");
-            htmlMessage = htmlMessage.Replace("{{callbackUrl}}", _serverSettings.Value.Url);
+            var htmlTemplate = await GetTemplateAsync("mail-activate-data-protection");
 
-            foreach (var admin in administrators)
+            foreach (var admin in administrators.Where(x => x.EmailConfirmed = true))
             {
-                await SendAsync(admin.Email, htmlMessage, "Action required - Hideez Enterprise Server Status Update");
+                var replacement = new Dictionary<string, string>
+                {
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, admin.DisplayName) },
+                    {"{{body}}", Resources.Resource.Email_ActivateDataProtection_Body },
+                    {"{{btnName}}", Resources.Resource.Email_Common_Btn_Activate },
+                    {"{{callbackUrl}}", _serverSettings.Value.Url },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                };
+
+                var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+
+                await SendAsync(admin.Email, htmlMessage, Resources.Resource.Email_ActivateDataProtection_Subject);
             }
         }
 
         public async Task SendUserInvitationAsync(string email, string callbackUrl)
         {
-            var htmlMessage = await GetTemplateAsync("mail-user-invitation");
-            htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
+            var htmlTemplate = await GetTemplateAsync("mail-user-invitation");
+            var replacement = new Dictionary<string, string>
+            {
+                {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, Resources.Resource.Email_Common_Admin) },
+                {"{{body}}", Resources.Resource.Email_UserInvitation_Body },
+                {"{{linkName}}", Resources.Resource.Email_Common_Link },
+                {"{{callbackUrl}}", callbackUrl },
+                {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+            };
 
-            await SendAsync(email, htmlMessage, "Action required - Invitation to Hideez Enterprise Server");
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+
+            await SendAsync(email, htmlMessage, Resources.Resource.Email_UserInvitation_Subject);
         }
 
-        public async Task SendEmployeeEnableSsoAsync(string email, string callbackUrl)
+        public async Task SendEmployeeEnableSsoAsync(Employee employee, string callbackUrl)
         {
-            var htmlMessage = await GetTemplateAsync ("mail-employee-enable-sso");
-            htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
+            if (string.IsNullOrWhiteSpace(employee.Email))
+            {
+                _logger.LogWarning($"Trying to send an email with an empty email field, employee - {employee.FullName}");
+                return;
+            }
 
-            await SendAsync(email, htmlMessage, "Action required - SSO Enabled to Hideez Enterprise Server");
+            var htmlTemplate = await GetTemplateAsync("mail-employee-enable-sso");
+            var replacement = new Dictionary<string, string>
+                {
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, employee.FullName) },
+                    {"{{body}}", Resources.Resource.Email_EmployeeEnableSso_Body },
+                    {"{{linkName}}", Resources.Resource.Email_Common_Link },
+                    {"{{callbackUrl}}", callbackUrl },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                };
+
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+
+            await SendAsync(employee.Email, htmlMessage, Resources.Resource.Email_EmployeeEnableSso_Subject);
         }
 
-        public async Task SendEmployeeDisableSsoAsync(string email)
+        public async Task SendEmployeeDisableSsoAsync(Employee employee)
         {
-            var htmlMessage = await GetTemplateAsync ("mail-employee-disable-sso");
+            if (string.IsNullOrWhiteSpace(employee.Email))
+            {
+                _logger.LogWarning($"Trying to send an email with an empty email field, employee - {employee.FullName}");
+                return;
+            }
 
-            await SendAsync(email, htmlMessage, "Action required - SSO Disabled to Hideez Enterprise Server");
+            var htmlTemplate = await GetTemplateAsync("mail-employee-disable-sso");
+            var replacement = new Dictionary<string, string>
+                {
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, employee.FullName) },
+                    {"{{body}}", Resources.Resource.Email_EmployeeDisableSso_Body },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                };
+
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+
+            await SendAsync(employee.Email, htmlMessage, Resources.Resource.Email_EmployeeDisableSso_Subject);
         }
 
         public async Task SendUserResetPasswordAsync(string email, string callbackUrl)
         {
-            var htmlMessage = await GetTemplateAsync("mail-user-reset-password");
-            htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
+            var htmlTemplate = await GetTemplateAsync("mail-user-reset-password");
+            var replacement = new Dictionary<string, string>
+                {
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, Resources.Resource.Email_Common_Admin) },
+                    {"{{body}}", Resources.Resource.Email_UserResetPassword_Body },
+                    {"{{btnName}}", Resources.Resource.Email_Common_Btn_ResetPassword },
+                    {"{{callbackUrl}}", callbackUrl },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                };
 
-            await SendAsync(email, htmlMessage, "Action required - Password Reset to Hideez Enterprise Server");
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+
+            await SendAsync(email, htmlMessage, Resources.Resource.Email_UserResetPassword_Subject);
         }
 
-        public async Task SendUserConfirmEmailAsync(string userId, string email, string code)
+        public async Task SendUserConfirmEmailAsync(ApplicationUser user, string newEmail, string callbackUrl)
         {
-            var callbackUrl = HtmlEncoder.Default.Encode($"{_baseAddress}/confirm-email-change?userId={userId}&code={code}&email={email}");
+            if (string.IsNullOrWhiteSpace(user.Email))
+            {
+                _logger.LogWarning($"Trying to send an email with an empty email field, user - {user.DisplayName}");
+                return;
+            }
 
-            var htmlMessage = await GetTemplateAsync("mail-user-confirm-email");
-            htmlMessage = htmlMessage.Replace("{{callbackUrl}}", callbackUrl);
+            var htmlTemplate = await GetTemplateAsync("mail-user-confirm-email");
+            var replacement = new Dictionary<string, string>
+                {
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, user.DisplayName) },
+                    {"{{body}}", Resources.Resource.Email_UserConfirmEmail_Body },
+                    {"{{btnName}}", Resources.Resource.Email_Common_Btn_Confirm },
+                    {"{{callbackUrl}}", callbackUrl },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                };
 
-            await SendAsync(email, htmlMessage, "Action required - Confirm your email to Hideez Enterprise Server");
+            var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
+
+            await SendAsync(newEmail, htmlMessage, Resources.Resource.Email_UserConfirmEmail_Subject);
         }
 
         public async Task SendSoftwareVaultInvitationAsync(Employee employee, SoftwareVaultActivation activation, DateTime validTo)
@@ -222,26 +299,31 @@ namespace HES.Core.Services
 
         public async Task SendHardwareVaultActivationCodeAsync(Employee employee, string code)
         {
-            if (string.IsNullOrWhiteSpace(employee?.Email))
+            if (string.IsNullOrWhiteSpace(employee.Email))
             {
+                _logger.LogWarning($"Trying to send an email with an empty email field, employee - {employee.FullName}");
                 return;
             }
 
             var htmlTemplate = await GetTemplateAsync("mail-hardware-vault-activation-code");
             var replacement = new Dictionary<string, string>
                 {
-                    {"{{employee}}", employee.FullName },
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, employee.FullName) },
+                    {"{{body}}", Resources.Resource.Email_HardwareVaultActivationCode_Body },
                     {"{{code}}", code },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
                 };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
-            await SendAsync(employee.Email, htmlMessage, "Activate Hardware Vault - Hideez Enterprise Server");
+
+            await SendAsync(employee.Email, htmlMessage, Resources.Resource.Email_HardwareVaultActivationCode_Subject);
         }
 
-        public async Task NotifyWhenPasswordAutoChangedAsync(Employee employee, string accountName)
+        public async Task SendNotifyWhenPasswordAutoChangedAsync(Employee employee, string accountName)
         {
-            if (string.IsNullOrWhiteSpace(employee?.Email))
+            if (string.IsNullOrWhiteSpace(employee.Email))
             {
+                _logger.LogWarning($"Trying to send an email with an empty email field, employee - {employee.FullName}");
                 return;
             }
 
@@ -250,13 +332,15 @@ namespace HES.Core.Services
             var htmlTemplate = await GetTemplateAsync("mail-password-auto-changed");
             var replacement = new Dictionary<string, string>
                 {
-                    {"{{employeeName}}", employee.FullName },
-                    {"{{employeeVaults}}", employeeVaults },
-                    {"{{accountName}}", accountName },
+                    {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, employee.FullName) },
+                    {"{{body}}", string.Format(Resources.Resource.Email_NotifyWhenPasswordAutoChanged_Body, accountName, employeeVaults) },
+                    {"{{description}}", Resources.Resource.Email_NotifyWhenPasswordAutoChanged_Description },
+                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
                 };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
-            await SendAsync(employee.Email, htmlMessage, "Password Auto Changed - Hideez Enterprise Server ");
+
+            await SendAsync(employee.Email, htmlMessage, Resources.Resource.Email_NotifyWhenPasswordAutoChanged_Subject);
         }
 
         private async Task<string> GetTemplateAsync(string name)

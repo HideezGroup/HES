@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -29,7 +30,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
 
                 AccessProfile = await HardwareVaultService.GetProfileByIdAsync(HardwareVaultProfileId);
                 if (AccessProfile == null)
-                    throw new Exception("Hardware Vault Profile not found.");
+                    throw new HESException(HESCode.HardwareVaultProfileNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(AccessProfile.Id, out object _);
                 if (!EntityBeingEdited)
@@ -48,7 +49,7 @@ namespace HES.Web.Pages.Settings.HardwareVaultAccessProfile
             try
             {
                 await HardwareVaultService.DeleteProfileAsync(AccessProfile.Id);
-                await ToastService.ShowToastAsync("Hardware vault profile deleted.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.HardwareVaultAccessProfile_DeleteProfile_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

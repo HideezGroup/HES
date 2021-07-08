@@ -13,84 +13,84 @@
                     <WorkstationSessionsFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
                 </FilterForm>
                 <ActionButtons>
-                    <h2 class="text-navyblue mb-0">Workstation Sessions</h2>
+                    <h2 class="text-navyblue mb-0">@Resource.WorkstationSessions_PageTitle</h2>
                 </ActionButtons>
             </DataTableActions>
         </WrapperHeader>
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Start Date"
+                    <DataTableHeaderItem Title="@Resource.Label_StartDate"
                                          TitleWidth="12"
                                          SortColumn="@nameof(WorkstationSession.StartDate)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="End Date"
+                    <DataTableHeaderItem Title="@Resource.Label_EndDate"
                                          TitleWidth="11"
                                          SortColumn="@nameof(WorkstationSession.EndDate)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Unlocked By"
+                    <DataTableHeaderItem Title="@Resource.Label_UnlockedBy"
                                          TitleWidth="11"
                                          SortColumn="@nameof(WorkstationSession.UnlockedBy)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Workstation"
+                    <DataTableHeaderItem Title="@Resource.Label_Workstation"
                                          TitleWidth="8"
                                          SortColumn="@nameof(WorkstationSession.Workstation)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Session"
+                    <DataTableHeaderItem Title="@Resource.Label_Session"
                                          TitleWidth="8"
                                          SortColumn="@nameof(WorkstationSession.UserSession)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Hardware Vault"
+                    <DataTableHeaderItem Title="@Resource.Label_HardwareVault"
                                          TitleWidth="8"
                                          SortColumn="@nameof(WorkstationSession.HardwareVault)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Employee"
+                    <DataTableHeaderItem Title="@Resource.Label_Employee"
                                          TitleWidth="8"
                                          SortColumn="@nameof(WorkstationSession.Employee)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Company"
+                    <DataTableHeaderItem Title="@Resource.Label_Company"
                                          TitleWidth="8"
                                          SortColumn="@nameof(WorkstationSession.Department.Company)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Department"
+                    <DataTableHeaderItem Title="@Resource.Label_Department"
                                          TitleWidth="8"
                                          SortColumn="@nameof(WorkstationSession.Department)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Account"
+                    <DataTableHeaderItem Title="@Resource.Label_Account"
                                          TitleWidth="8"
                                          SortColumn="@nameof(WorkstationSession.Account)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Type"
+                    <DataTableHeaderItem Title="@Resource.Label_AccountType"
                                          TitleWidth="8"
                                          SortColumn="@nameof(WorkstationSession.Account.AccountType)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
@@ -109,7 +109,7 @@
                             }
                             else
                             {
-                            <span class="badge bg-success">Active</span>
+                            <span class="badge bg-success">@Resource.Label_Active</span>
                             }
                     </td>
                     <td>

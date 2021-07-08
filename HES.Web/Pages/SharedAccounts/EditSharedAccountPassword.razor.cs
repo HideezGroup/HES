@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Accounts;
 using HES.Web.Components;
@@ -35,7 +36,7 @@ namespace HES.Web.Pages.SharedAccounts
                 Account = await SharedAccountService.GetSharedAccountByIdAsync(AccountId);
 
                 if (Account == null)
-                    throw new Exception("Account not found");
+                    throw new HESException(HESCode.SharedAccountNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Account.Id, out object _);
                 if (!EntityBeingEdited)
@@ -65,7 +66,7 @@ namespace HES.Web.Pages.SharedAccounts
                 {
                     var vaults = await SharedAccountService.EditSharedAccountPwdAsync(Account, AccountPassword);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
-                    await ToastService.ShowToastAsync("Account password updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.SharedAccounts_EditSharedAccountPassword_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

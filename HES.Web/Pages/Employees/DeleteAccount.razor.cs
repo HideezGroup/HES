@@ -52,7 +52,7 @@ namespace HES.Web.Pages.Employees
             {
                 var account = await EmployeeService.DeleteAccountAsync(Account.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(account.EmployeeId));
-                await ToastService.ShowToastAsync("Account deleted.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_DeleteAccount_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

@@ -11,7 +11,7 @@
         </div>
         <div class="col-auto ps-1">
             <button class="btn btn-primary" @onclick="OpenDialogAddHardwareVaultAsync">
-                Add Hardware Vault
+                @Resource.Btn_AddHardwareVault
             </button>
         </div>
     </div>
@@ -22,12 +22,12 @@
                 <WrapperHeader>
                     <DataTableActions ShowFilterButton="false" RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
                         <ActionButtons>
-                            <h4 class="text-navyblue me-2">Proximity Vaults</h4>
+                            <h4 class="text-navyblue me-2">@Resource.Label_ProximityVaults</h4>
                             @if (DataTableService.SelectedEntity != null)
                             {
-                                <button type="button" @onclick="OpenDialogDeleteHardwareVaultAsync" class="btn btn-light border mx-2" title="Delete hardware vault">
+                                <button type="button" @onclick="OpenDialogDeleteHardwareVaultAsync" class="btn btn-light border mx-2">
                                     <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                    Delete Hardware Vault
+                                    @Resource.Btn_DeleteHardwareVault
                                 </button>
                             }
                         </ActionButtons>
@@ -36,25 +36,25 @@
                 <WrapperBody>
                     <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync" Loading="DataTableService.Loading">
                         <TableHeader>
-                            <DataTableHeaderItem Title="Hardware Vault"
+                            <DataTableHeaderItem Title="@Resource.Label_HardwareVault"
                                                  SortColumn="@nameof(WorkstationHardwareVaultPair.HardwareVault)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Employee"
+                            <DataTableHeaderItem Title="@Resource.Label_Employee"
                                                  SortColumn="@nameof(WorkstationHardwareVaultPair.HardwareVault.Employee)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Company"
+                            <DataTableHeaderItem Title="@Resource.Label_Company"
                                                  SortColumn="@nameof(WorkstationHardwareVaultPair.HardwareVault.Employee.Department.Company)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Department"
+                            <DataTableHeaderItem Title="@Resource.Label_Department"
                                                  SortColumn="@nameof(WorkstationHardwareVaultPair.HardwareVault.Employee.Department)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"

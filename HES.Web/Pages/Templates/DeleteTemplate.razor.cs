@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -30,7 +31,7 @@ namespace HES.Web.Pages.Templates
                 Template = await TemplateService.GetTemplateByIdAsync(TemplateId);
 
                 if (Template == null)
-                    throw new Exception("Template not found.");
+                    throw new HESException(HESCode.TemplateNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Template.Id, out object _);
                 if (!EntityBeingEdited)
@@ -51,9 +52,8 @@ namespace HES.Web.Pages.Templates
             try
             {
                 await TemplateService.DeleteTemplateAsync(Template.Id);
-                await ToastService.ShowToastAsync("Template deleted.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Templates_DeleteTemplate_Toast, ToastType.Success);
                 await ModalDialogClose();
-
             }
             catch (Exception ex)
             {

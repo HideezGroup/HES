@@ -60,11 +60,11 @@ namespace HES.Web.Pages.Templates
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Create Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Templates_CreateTemplate_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
-            {              
+            {
                 await DataTableService.LoadTableDataAsync();
                 await PageSyncService.UpdateTemplates(PageId);
             }
@@ -79,7 +79,7 @@ namespace HES.Web.Pages.Templates
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Templates_EditTemplate_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -98,7 +98,7 @@ namespace HES.Web.Pages.Templates
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Template", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Templates_DeleteTemplate_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -110,7 +110,7 @@ namespace HES.Web.Pages.Templates
 
         public void Dispose()
         {
-            PageSyncService.UpdateTemplatesPage -= UpdateTemplatesPage; 
+            PageSyncService.UpdateTemplatesPage -= UpdateTemplatesPage;
         }
     }
 }

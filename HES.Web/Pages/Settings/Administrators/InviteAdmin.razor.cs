@@ -1,7 +1,7 @@
 ﻿using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -17,7 +17,7 @@ namespace HES.Web.Pages.Settings.Administrators
         [Inject] public ILogger<InviteAdmin> Logger { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
 
-        public Invitation Invitation = new Invitation();
+        public UserInvitation Invitation = new UserInvitation();
         public ValidationErrorMessage ValidationErrorMessage { get; set; }
         public Button ButtonSpinner { get; set; }
 
@@ -29,7 +29,7 @@ namespace HES.Web.Pages.Settings.Administrators
                 {
                     var callBakcUrl = await ApplicationUserService.InviteAdministratorAsync(Invitation.Email, NavigationManager.BaseUri);
                     await EmailSenderService.SendUserInvitationAsync(Invitation.Email, callBakcUrl);
-                    await ToastService.ShowToastAsync("Administrator invited.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Administrators_InviteAdmin_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

@@ -35,13 +35,13 @@ namespace HES.Web.Pages.Settings.Parameters
                  {
                      await LdapService.ValidateCredentialsAsync(LdapSettings);
                      await AppSettingsService.SetLdapSettingsAsync(LdapSettings);
-                     await ToastService.ShowToastAsync("Domain settings updated.", ToastType.Success);
+                     await ToastService.ShowToastAsync(Resources.Resource.Parameters_AddLdapSettings_Toast, ToastType.Success);
                      await ModalDialogClose();
                  });
             }
             catch (LdapException ex) when (ex.ResultCode == LdapException.InvalidCredentials)
             {
-                ValidationErrorMessage.DisplayError(nameof(LdapSettings.Password), "Invalid password");
+                ValidationErrorMessage.DisplayError(nameof(LdapSettings.Password), Resources.Resource.Parameters_AddLdapSettings_InvalidCredentials);
             }
             catch (Exception ex)
             {

@@ -1,0 +1,27 @@
+﻿@inherits HESModalBase
+
+@if (!Initialized)
+{
+    <Loader />
+}
+else
+{
+    <EditForm Model="@Settings" OnValidSubmit="EditEmployeeSsoAsync">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label class="text-gray">@Resource.EmployeeDetails_EnableSso_Label_ExternalId</label>
+            <InputText @bind-Value="Settings.ExternalId" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => Settings.ExternalId)" class="text-danger" />
+        </div>
+        <div class="form-check form-group">
+            <input class="form-check-input" type="checkbox" id="allowPasswordlessByU2F" @bind="Settings.AllowPasswordlessByU2F">
+            <label class="form-check-label" for="allowPasswordlessByU2F">
+                @Resource.EmployeeDetails_EnableSso_Label_AllowPasswordless
+            </label>
+        </div>
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button @ref="ButtonSpinner" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
+        </div>
+    </EditForm>
+}

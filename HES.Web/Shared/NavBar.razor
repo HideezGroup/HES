@@ -24,7 +24,7 @@
             </ol>
         </nav>
     }
-    <a class="btn btn-link ms-auto" href="@Routes.Alarm" role="button" title="Alarm Button">
+    <a class="btn btn-link ms-auto" href="@Routes.Alarm" role="button" title="@Resource.Alarm_PageHeader">
         <img src="/svg/icon-alarm.svg" />
     </a>
     <div class="btn-group no-arrow me-2">
@@ -43,14 +43,14 @@
             <li>
                 <a class="dropdown-item" href="@Routes.Profile">
                     <img src="/svg/icon-profile.svg" />
-                    Profile
+                    @Resource.Label_Profile
                 </a>
             </li>
             <li>
                 <form class="form-inline dropdown-item" method="post" action="@Routes.Logout">
                     <button type="submit" class="nav-link btn btn-link text-dark p-0 w-100 text-start text-decoration-none">
                         <img src="/svg/icon-logout.svg" />
-                        Logout
+                        @Resource.Label_Logout
                     </button>
                 </form>
             </li>

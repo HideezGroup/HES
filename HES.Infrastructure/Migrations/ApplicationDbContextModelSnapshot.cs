@@ -137,8 +137,14 @@ namespace HES.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<bool>("AllowPasswordlessByU2F")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Culture")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Email")
@@ -147,6 +153,9 @@ namespace HES.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ExternalId")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext");
@@ -280,6 +289,9 @@ namespace HES.Infrastructure.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ExternalId")
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
@@ -697,6 +709,13 @@ namespace HES.Infrastructure.Migrations
                     b.Property<string>("Issuer")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
+
+                    b.Property<int>("NameIdentifierField")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NameIdentifierFormat")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("SignatureValidationCertificateBase64")
                         .HasColumnType("longtext");

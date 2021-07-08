@@ -27,7 +27,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 OrgStructureService = ScopedServices.GetRequiredService<IOrgStructureService>();
 
                 PageSyncService.UpdateOrgSructurePositionsPage += UpdateOrgSructurePositionsPage;
- 
+
                 await BreadcrumbsService.SetOrgStructure();
                 await LoadPositionsAsync();
 
@@ -93,7 +93,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Create Position", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.OrgStructure_CreatePosition_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -112,7 +112,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit Position", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.OrgStructure_EditPosition_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -131,7 +131,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Position", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.OrgStructure_DeletePosition_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

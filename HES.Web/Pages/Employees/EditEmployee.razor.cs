@@ -86,13 +86,17 @@ namespace HES.Web.Pages.Employees
                 await ButtonSpinner.SpinAsync(async () =>
                 {
                     await EmployeeService.EditEmployeeAsync(Employee);
-                    await ToastService.ShowToastAsync("Employee updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Employees_EditEmployee_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
             catch (HESException ex) when (ex.Code == HESCode.EmployeeAlreadyExist)
             {
                 ValidationErrorMessage.DisplayError(nameof(Employee.FirstName), ex.Message);
+            }
+            catch (HESException ex) when (ex.Code == HESCode.EmployeeRequiresLastName)
+            {
+                ValidationErrorMessage.DisplayError(nameof(Employee.LastName), ex.Message);
             }
             catch (Exception ex)
             {

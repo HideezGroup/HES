@@ -12,36 +12,36 @@ namespace HES.Core.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        [Required]
-        [Display(Name = "Name")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_AccountName), ResourceType = typeof(Resources.Resource))]
         public string Name { get; set; }
 
-        [Display(Name = "Urls")]
+        [Display(Name = nameof(Resources.Resource.Display_UrlsSeparate), ResourceType = typeof(Resources.Resource))]
         public string Urls { get; set; }
 
-        [Display(Name = "Application")]
+        [Display(Name = nameof(Resources.Resource.Display_AppsSeparate), ResourceType = typeof(Resources.Resource))]
         public string Apps { get; set; }
 
-        [Required]
-        [Display(Name = "Login")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Login), ResourceType = typeof(Resources.Resource))]
         public string Login { get; set; }
 
-        [Display(Name = "Account Type")]
+        [Display(Name = nameof(Resources.Resource.Display_AccountType), ResourceType = typeof(Resources.Resource))]
         public AccountType AccountType { get; set; }
 
-        [Display(Name = "Login Type")]
+        [Display(Name = nameof(Resources.Resource.Display_LoginType), ResourceType = typeof(Resources.Resource))]
         public LoginType LoginType { get; set; }
 
-        [Display(Name = "Created")]
+        [Display(Name = nameof(Resources.Resource.Display_Created), ResourceType = typeof(Resources.Resource))]
         public DateTime CreatedAt { get; set; }
 
-        [Display(Name = "Updated")]
+        [Display(Name = nameof(Resources.Resource.Display_Updated), ResourceType = typeof(Resources.Resource))]
         public DateTime? UpdatedAt { get; set; }
 
-        [Display(Name = "Password Updated")]
+        [Display(Name = nameof(Resources.Resource.Display_PasswordUpdated), ResourceType = typeof(Resources.Resource))]
         public DateTime PasswordUpdatedAt { get; set; }
 
-        [Display(Name = "OTP Updated")]
+        [Display(Name = nameof(Resources.Resource.Display_OtpUpdated), ResourceType = typeof(Resources.Resource))]
         public DateTime? OtpUpdatedAt { get; set; }
 
         public string Password { get; set; }

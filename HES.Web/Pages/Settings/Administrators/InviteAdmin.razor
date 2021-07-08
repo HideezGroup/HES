@@ -9,7 +9,7 @@
         <ValidationMessage For="@(() => Invitation.Email)" class="text-danger" />
     </div>
     <div class="form-footer">
-        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-        <Button @ref="ButtonSpinner" Text="Invite" type="submit" class="btn btn-primary" />
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+        <Button @ref="ButtonSpinner" Text="@Resource.Btn_Invite" type="submit" class="btn btn-primary" />
     </div>
 </EditForm>

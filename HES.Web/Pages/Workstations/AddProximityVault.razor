@@ -19,11 +19,11 @@ else
     @if (AlreadyAdded)
     {
         <div class="alert alert-danger" role="alert">
-            Warning! You are trying to allow proximity on more than one device. This can lead to unstable system behavior.
+            @Resource.Workstations_AddProximityVault_Warning
         </div>
     }
     <div class="form-footer">
-        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Cancel</button>
-        <Button class="btn btn-primary btn-min-w" Text="Add" OnClick="AddVaultAsync" />
+        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+        <Button Text="@Resource.Btn_Add" OnClick="AddVaultAsync" class="btn btn-primary btn-min-w" />
     </div>
 }

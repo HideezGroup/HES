@@ -8,7 +8,7 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="profile" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@AccessProfile.Name" CloseAction="ModalDialogCancel" />
     }
     else
     {
@@ -19,41 +19,41 @@ else
                 <InputText @bind-Value="AccessProfile.Name" class="form-control text-navyblue" />
                 <ValidationMessage For="@(() => AccessProfile.Name)" class="text-danger" />
             </div>
-            <label class="text-gray">Authorization parameters</label>
+            <label class="text-gray">@Resource.HardwareVaultAccessProfile_Label_AuthorizationParameters</label>
             <table class="table border rounded w-100 disable-selection">
                 <thead>
                     <tr>
                         <th></th>
                         <th class="text-center align-middle px-1">
-                            Pairing
+                            @Resource.HardwareVaultAccessProfile_Label_Pairing
                         </th>
                         <th class="text-center align-middle px-1">
-                            Connection
+                            @Resource.HardwareVaultAccessProfile_Label_Connection
                         </th>
                         <th class="text-center align-middle px-1">
-                            Storage Access
+                            @Resource.HardwareVaultAccessProfile_Label_StorageAccess
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            Button
+                            @Resource.HardwareVaultAccessProfile_Label_Button
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Request the device button confirmation for connecting the device to the computer for the first time.">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_Button_Pairing_Title">
                                 <input type="checkbox" class="custom-control-input" disabled checked>
                                 <label class="custom-control-label cursor-default"></label>
                             </div>
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Request the device button confirmation for connecting the device to the computer that is already bonded with the computer. ">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_Button_Connection_Title">
                                 <input type="checkbox" class="custom-control-input" @bind="AccessProfile.ButtonConnection">
                                 <label class="custom-control-label" @onclick="@(() => AccessProfile.ButtonConnection = !AccessProfile.ButtonConnection)"></label>
                             </div>
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Request the device button confirmation when an application is getting access to the device’s storage.">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_Button_StorageAccess_Title">
                                 <input type="checkbox" class="custom-control-input" @bind="AccessProfile.ButtonStorageAccess">
                                 <label class="custom-control-label" @onclick="@(() => AccessProfile.ButtonStorageAccess = !AccessProfile.ButtonStorageAccess)"></label>
                             </div>
@@ -61,22 +61,22 @@ else
                     </tr>
                     <tr>
                         <td>
-                            PIN
+                            @Resource.HardwareVaultAccessProfile_Label_PIN
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Request the PIN-code for connecting the device to the computer for the first time.">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_PIN_Pairing_Title">
                                 <input type="checkbox" class="custom-control-input" @bind="AccessProfile.PinPairing">
                                 <label class="custom-control-label" @onclick="@(() => { AccessProfile.PinPairing = AccessProfile.PinConnection == true ? AccessProfile.PinConnection : !AccessProfile.PinPairing; })"></label>
                             </div>
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Request the PIN-code for connecting the device to the computer that is already bonded with the computer.">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_PIN_Connection_Title">
                                 <input type="checkbox" class="custom-control-input" @bind="AccessProfile.PinConnection">
                                 <label class="custom-control-label" @onclick="@(() => { AccessProfile.PinConnection = !AccessProfile.PinConnection; AccessProfile.PinPairing = true; })"></label>
                             </div>
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Request the PIN-code when an application is getting access to the device’s storage.">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_PIN_StorageAccess_Title">
                                 <input type="checkbox" class="custom-control-input" @bind="AccessProfile.PinStorageAccess">
                                 <label class="custom-control-label" @onclick="@(() => AccessProfile.PinStorageAccess = !AccessProfile.PinStorageAccess)"></label>
                             </div>
@@ -84,22 +84,22 @@ else
                     </tr>
                     <tr>
                         <td>
-                            Server Confirmation
+                            @Resource.HardwareVaultAccessProfile_Label_ServerConfirmation
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Require the server confirmation for connecting the device to the computer for the first time.">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_ServerConfirmation_Pairing_Title">
                                 <input type="checkbox" class="custom-control-input" disabled checked>
                                 <label class="custom-control-label cursor-default"></label>
                             </div>
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Require the server confirmation for connecting the device to the computer that is already bonded with the computer.">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_ServerConfirmation_Connection_Title">
                                 <input type="checkbox" class="custom-control-input" @bind="AccessProfile.MasterKeyConnection">
                                 <label class="custom-control-label" @onclick="@(() => AccessProfile.MasterKeyConnection = !AccessProfile.MasterKeyConnection)"></label>
                             </div>
                         </td>
                         <td class="text-center">
-                            <div class="custom-control custom-checkbox" title="Require the server confirmation when an application is getting access to the device’s storage.">
+                            <div class="custom-control custom-checkbox" title="@Resource.HardwareVaultAccessProfile_Label_ServerConfirmation_StorageAccess_Title">
                                 <input type="checkbox" class="custom-control-input" disabled>
                                 <label class="custom-control-label cursor-default"></label>
                             </div>
@@ -107,15 +107,15 @@ else
                     </tr>
                 </tbody>
             </table>
-            <label class="text-gray">PIN settings</label>
+            <label class="text-gray">@Resource.HardwareVaultAccessProfile_Label_PinSettings</label>
             <table class="table border rounded w-100 disable-selection">
                 <thead></thead>
                 <tbody>
                     <tr>
                         <td>
-                            PIN expiration
+                            @Resource.HardwareVaultAccessProfile_Label_PinExpiration
                         </td>
-                        <td class="text-center ps-1 pe-1" title="After PIN code is expired, the device storage will be locked until the user enters the PIN again.">
+                        <td class="text-center ps-1 pe-1" title="@Resource.HardwareVaultAccessProfile_Label_PinExpiration_Title">
                             <input type="range" class="custom-range" min="1" max="107" step="1" value="@InitPinExpirationValue" @oninput="OnInputPinExpiration">
                         </td>
                         <td class="text-center pin-settings-value">
@@ -124,7 +124,7 @@ else
                     </tr>
                     <tr>
                         <td>
-                            PIN length
+                            @Resource.HardwareVaultAccessProfile_Label_PinLength
                         </td>
                         <td class="text-center ps-1 pe-1">
                             <input type="range" class="custom-range" min="4" max="8" step="1" value="@InitPinLengthValue" @oninput="OnInputPinLength">
@@ -135,9 +135,9 @@ else
                     </tr>
                     <tr>
                         <td>
-                            PIN incorrect entry
+                            @Resource.HardwareVaultAccessProfile_Label_PinIncorrectEntry
                         </td>
-                        <td class="text-center ps-1 pe-1" title="Maximum number of incorrect PIN code entering. After the number of entries is exceeded, the device is locked.">
+                        <td class="text-center ps-1 pe-1" title="@Resource.HardwareVaultAccessProfile_Label_PinIncorrectEntry_Title">
                             <input type="range" class="custom-range" min="3" max="10" step="1" value="@InitPinTryCountValue" @oninput="OnInputPinTryCount">
                         </td>
                         <td class="text-center pin-settings-value">
@@ -147,8 +147,8 @@ else
                 </tbody>
             </table>
             <div class="form-footer">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-                <Button @ref="Button" type="submit" Text="Save" class="btn btn-primary" />
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                <Button @ref="Button" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }

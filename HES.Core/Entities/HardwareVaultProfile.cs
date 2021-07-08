@@ -10,13 +10,19 @@ namespace HES.Core.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        [Required]
+
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Name), ResourceType = typeof(Resources.Resource))]
         public string Name { get; set; }
-        [Display(Name = "Created")]
+
+        [Display(Name = nameof(Resources.Resource.Display_Created), ResourceType = typeof(Resources.Resource))]
         public DateTime CreatedAt { get; set; }
-        [Display(Name = "Updated")]
+
+        [Display(Name = nameof(Resources.Resource.Display_Updated), ResourceType = typeof(Resources.Resource))]
         public DateTime? UpdatedAt { get; set; }
+
         public List<HardwareVault> HardwareVaults { get; set; }
+
         public bool ButtonPairing { get; set; } = true;
         public bool ButtonConnection { get; set; }
         public bool ButtonStorageAccess { get; set; }

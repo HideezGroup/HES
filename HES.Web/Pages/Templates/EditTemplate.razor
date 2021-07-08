@@ -8,7 +8,7 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="template" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@Template.Name" CloseAction="ModalDialogCancel" />
     }
     else
     {
@@ -31,8 +31,8 @@ else
                 <ValidationMessage For="@(() => Template.Apps)" class="text-danger" />
             </div>
             <div class="form-footer">
-                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-                <Button @ref="Button" Text="Save" type="submit" class="btn btn-primary" />
+                <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                <Button @ref="Button" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
             </div>
         </EditForm>
     }

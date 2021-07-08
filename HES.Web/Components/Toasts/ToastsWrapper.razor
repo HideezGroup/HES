@@ -2,11 +2,11 @@
 
 @if (ToastItems != null && ToastItems.Any())
 {
-    <div class="toasts-wrapper">
+    <div class="toasts-wrapper" style="z-index:1200">
         <CascadingValue Value=this>
-            @foreach (var toastItem in ToastItems.OrderBy(x=>x.TimeStamp))
+            @foreach (var toastItem in ToastItems.OrderBy(x => x.TimeStamp))
             {
-                <ToastItem @key="toastItem" ToastInstance="toastItem"/>
+                <ToastItem @key="toastItem" ToastInstance="toastItem" />
             }
         </CascadingValue>
     </div>

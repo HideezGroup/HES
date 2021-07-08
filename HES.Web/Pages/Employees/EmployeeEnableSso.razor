@@ -1,14 +1,28 @@
 ﻿@inherits HESModalBase
 
-@if (Employee == null)
+@if (!Initialized)
 {
     <Loader />
 }
 else
 {
-    <h5 class="text-gray mb-4 text-break">Are you sure you want to enable SSO for @Employee.FullName?</h5>
-    <div class="form-footer">
-        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-        <Button Text="Enable" class="btn btn-primary" OnClick="EnableEmployeeSsoAsync" />
-    </div>
+    <h5 class="text-gray mb-4 text-break">@string.Format(Resource.EmployeeDetails_EnableSso_Body, Employee.FullName)</h5>
+    <EditForm Model="@Settings" OnValidSubmit="EnableEmployeeSsoAsync">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label class="text-gray">@Resource.EmployeeDetails_EnableSso_Label_ExternalId</label>
+            <InputText @bind-Value="Settings.ExternalId" class="form-control text-navyblue" />
+            <ValidationMessage For="@(() => Settings.ExternalId)" class="text-danger" />
+        </div>
+        <div class="form-check form-group">
+            <input class="form-check-input" type="checkbox" id="allowPasswordlessByU2F" @bind="Settings.AllowPasswordlessByU2F">
+            <label class="form-check-label" for="allowPasswordlessByU2F">
+                @Resource.EmployeeDetails_EnableSso_Label_AllowPasswordless
+            </label>
+        </div>
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button @ref="ButtonSpinner" Text="@Resource.Btn_Enable" type="submit" class="btn btn-primary" />
+        </div>
+    </EditForm>
 }

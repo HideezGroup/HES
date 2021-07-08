@@ -60,7 +60,7 @@ namespace HES.Web.Pages.Employees
                 {
                     await EmployeeService.EditPersonalAccountAsync(PersonalAccount);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(PersonalAccount.EmployeeId));
-                    await ToastService.ShowToastAsync("Account updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_EditPersonalAccount_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

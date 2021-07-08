@@ -10,24 +10,39 @@ namespace HES.Core.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        [Required]
-        [Display(Name = "First Name")]
+
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_FirstName), ResourceType = typeof(Resources.Resource))]
         public string FirstName { get; set; }
-        [Display(Name = "Last Name")]
+
+        [Display(Name = nameof(Resources.Resource.Display_LastName), ResourceType = typeof(Resources.Resource))]
         public string LastName { get; set; }
+
+        [Display(Name = nameof(Resources.Resource.Display_Email), ResourceType = typeof(Resources.Resource))]
         [RegularExpression(@"^[a-z0-9][-a-z0-9.!#$%&'*+-=?^_`{|}~\/]+@([-a-z0-9]+\.)+[a-z]{2,5}$", ErrorMessage = "The Email field is not a valid e-mail address.")]
         public string Email { get; set; }
-        [Display(Name = "Phone Number")]
+
+        [Display(Name = nameof(Resources.Resource.Display_PhoneNumber), ResourceType = typeof(Resources.Resource))]
         public string PhoneNumber { get; set; }
-        [Display(Name = "Department")]
+
+        [Display(Name = nameof(Resources.Resource.Display_Department), ResourceType = typeof(Resources.Resource))]
         public string DepartmentId { get; set; }
-        [Display(Name = "Position")]
+
+        [Display(Name = nameof(Resources.Resource.Display_Position), ResourceType = typeof(Resources.Resource))]
         public string PositionId { get; set; }
-        [Display(Name = "Last Seen")]
+
+        [Display(Name = nameof(Resources.Resource.Display_LastSeen), ResourceType = typeof(Resources.Resource))]
         public DateTime? LastSeen { get; set; }
+
         public DateTime? WhenChanged { get; set; }
+
         public string PrimaryAccountId { get; set; }
+
         public string ActiveDirectoryGuid { get; set; }
+
+        [Display(Name = nameof(Resources.Resource.Display_External_Id), ResourceType = typeof(Resources.Resource))]
+        public string ExternalId { get; set; }
+
         public List<Account> Accounts { get; set; }
         public List<HardwareVault> HardwareVaults { get; set; }
         public List<GroupMembership> GroupMemberships { get; set; }
@@ -43,8 +58,9 @@ namespace HES.Core.Entities
         public Position Position { get; set; }
 
         [NotMapped]
-        [Display(Name = "Name")]
+        [Display(Name = nameof(Resources.Resource.Display_Name), ResourceType = typeof(Resources.Resource))]
         public string FullName => $"{FirstName} {LastName}".Trim();
+
         [NotMapped]
         public int VaultsCount => (HardwareVaults == null ? 0 : HardwareVaults.Count) + (SoftwareVaults == null ? 0 : SoftwareVaults.Count);
     }

@@ -9,148 +9,148 @@ else
     <div class="form-group">
         <h4 class="text-navyblue text-truncate">@AccessProfile.Name</h4>
     </div>
-    <label class="text-gray">Authorization parameters</label>
+    <label class="text-gray">@Resource.HardwareVaultAccessProfile_Label_AuthorizationParameters</label>
     <table class="table border rounded w-100 disable-selection">
         <thead>
             <tr>
                 <th></th>
                 <th class="text-center align-middle px-1">
-                    Pairing
+                    @Resource.HardwareVaultAccessProfile_Label_Pairing
                 </th>
                 <th class="text-center align-middle px-1">
-                    Connection
+                    @Resource.HardwareVaultAccessProfile_Label_Connection
                 </th>
                 <th class="text-center align-middle px-1">
-                    Storage Access
+                    @Resource.HardwareVaultAccessProfile_Label_StorageAccess
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    Button
+                    @Resource.HardwareVaultAccessProfile_Label_Button
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.ButtonPairing)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.ButtonConnection)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.ButtonStorageAccess)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
             </tr>
             <tr>
                 <td>
-                    PIN
+                    @Resource.HardwareVaultAccessProfile_Label_PIN
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.PinPairing)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.PinConnection)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.PinStorageAccess)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
             </tr>
             <tr>
                 <td>
-                    Server Confirmation
+                    @Resource.HardwareVaultAccessProfile_Label_ServerConfirmation
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.MasterKeyPairing)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.MasterKeyConnection)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
                 <td class="text-center">
                     @if (AccessProfile.MasterKeyStorageAccess)
                     {
-                        <span class="badge bg-success">Yes</span>
+                        <span class="badge bg-success">@Resource.Label_Yes</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">No</span>
+                        <span class="badge bg-secondary">@Resource.Label_No</span>
                     }
                 </td>
             </tr>
         </tbody>
     </table>
     <div class="form-group">
-        <label class="text-gray">PIN settings</label>
+        <label class="text-gray">@Resource.HardwareVaultAccessProfile_Label_PinSettings</label>
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                PIN expiration
+                @Resource.HardwareVaultAccessProfile_Label_PinExpiration
                 <span class="badge bg-primary">@AccessProfile.PinExpirationString</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                PIN length
+                @Resource.HardwareVaultAccessProfile_Label_PinLength
                 <span class="badge bg-primary">@AccessProfile.PinLength</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                PIN incorrect entry
+                @Resource.HardwareVaultAccessProfile_Label_PinIncorrectEntry
                 <span class="badge bg-primary">@AccessProfile.PinTryCount</span>
             </li>
         </ul>
     </div>
     <div class="form-footer">
-        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Close</button>
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Close</button>
     </div>
 }

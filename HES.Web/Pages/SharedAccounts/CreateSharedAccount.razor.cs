@@ -52,7 +52,7 @@ namespace HES.Web.Pages.SharedAccounts
                 await Button.SpinAsync(async () =>
                 {
                     await SharedAccountService.CreateSharedAccountAsync(SharedAccount);
-                    await ToastService.ShowToastAsync("Account created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.SharedAccounts_CreateSharedAccount_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

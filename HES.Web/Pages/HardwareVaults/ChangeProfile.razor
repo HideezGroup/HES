@@ -8,15 +8,15 @@ else
 {
     if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="hardware vault" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@HardwareVault.Id" CloseAction="ModalDialogCancel" />
     }
     else
     {
         <div class="alert alert-success" role="alert">
-            Change access profile for <b>@HardwareVault.Id</b> vault?
+            @string.Format(Resource.HardwareVaults_ChangeProfile_Body, HardwareVault.Id)
         </div>
         <div>
-            <label class="mb-0 text-gray">Hardware vault profile</label>
+            <label class="text-gray">@Resource.Label_HardwareVaultProfile</label>
             <select id="filterStatus" @bind="SelectedVaultProfileId" class="form-select">
                 @foreach (var item in VaultProfiles)
                 {
@@ -32,8 +32,8 @@ else
             </select>
         </div>
         <div class="form-footer">
-            <button class="btn btn-secondary me-2" @onclick="ModalDialogCancel">Cancel</button>
-            <Button Text="Change" class="btn btn-primary btn-min-w" OnClick="ChangeProfileAsync" />
+            <button class="btn btn-secondary me-2" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button Text="@Resource.Btn_Change" OnClick="ChangeProfileAsync" class="btn btn-primary btn-min-w" />
         </div>
     }
 }

@@ -1,7 +1,7 @@
 ﻿@inherits HESModalBase
 
-<h5 class="text-gray mb-4 ">Confirm deleting license settings.</h5>
+<h5 class="text-gray mb-4 ">@Resource.Parameters_DeleteLicenseSettings_Body</h5>
 <div class="form-footer">
-    <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-    <Button Text="Delete" class="btn btn-danger" OnClick="DeleteAsync" />
+    <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+    <Button Text="@Resource.Btn_Delete" OnClick="DeleteAsync" class="btn btn-danger" />
 </div>

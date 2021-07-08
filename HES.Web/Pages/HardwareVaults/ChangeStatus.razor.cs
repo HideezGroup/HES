@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -36,7 +37,7 @@ namespace HES.Web.Pages.HardwareVaults
 
                 HardwareVault = await HardwareVaultService.GetVaultByIdAsync(HardwareVaultId);
                 if (HardwareVault == null)
-                    throw new Exception("HardwareVault not found.");
+                    throw new HESException(HESCode.HardwareVaultNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(HardwareVault.Id, out object _);
                 if (!EntityBeingEdited)
@@ -58,17 +59,17 @@ namespace HES.Web.Pages.HardwareVaults
                 {
                     case VaultStatus.Active:
                         await HardwareVaultService.ActivateVaultAsync(HardwareVault.Id);
-                        await ToastService.ShowToastAsync("Vault pending activate.", ToastType.Success);
+                        await ToastService.ShowToastAsync(Resources.Resource.HardwareVaults_ChangeStatus_Toast_Activate, ToastType.Success);
                         break;
                     case VaultStatus.Suspended:
                         await HardwareVaultService.SuspendVaultAsync(HardwareVault.Id, StatusDescription);
-                        await ToastService.ShowToastAsync("Vault pending suspend.", ToastType.Success);
+                        await ToastService.ShowToastAsync(Resources.Resource.HardwareVaults_ChangeStatus_Toast_Suspend, ToastType.Success);
                         break;
                     case VaultStatus.Compromised:
                         if (CompromisedIsDisabled)
                             return;
                         await HardwareVaultService.VaultCompromisedAsync(HardwareVault.Id, StatusReason, StatusDescription);
-                        await ToastService.ShowToastAsync("Vault compromised.", ToastType.Success);
+                        await ToastService.ShowToastAsync(Resources.Resource.HardwareVaults_ChangeStatus_Toast_Compromised, ToastType.Success);
                         break;
                 }
        

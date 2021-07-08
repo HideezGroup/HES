@@ -24,7 +24,7 @@ namespace HES.Web.Pages.Settings.Parameters
             try
             {
                 await AppSettingsService.RemoveLicenseSettingsAsync();
-                await ToastService.ShowToastAsync("License settings removed.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Parameters_DeleteLicenseSettings_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

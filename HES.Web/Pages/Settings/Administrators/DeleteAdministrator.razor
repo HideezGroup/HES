@@ -6,9 +6,9 @@
 }
 else
 {
-    <h5 class="text-gray mb-3 text-break">You want to delete administrator @ApplicationUser.Email?</h5>
+    <h5 class="text-gray mb-3 text-break">@string.Format(Resource.Administrators_DeleteAdministrator_Body, ApplicationUser.Email)</h5>
     <div class="form-footer">
-        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-        <Button Class="btn btn-danger" Text="Delete" OnClick="@(async () => await DeleteUserAsync())" />
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+        <Button Class="btn btn-danger" Text="@Resource.Btn_Delete" OnClick="@(async () => await DeleteUserAsync())" />
     </div>
 }

@@ -1,7 +1,7 @@
 ﻿@page "/login-with-recovery-code"
 @model HES.Web.Pages.Identity.LoginWithRecoveryCodeModel
 @{
-    ViewData["Title"] = "Recovery code verification";
+    ViewData["Title"] = Resource.Identity_LoginWithRecoveryCode_Title;
 }
 
 <div class="row h-100 justify-content-center align-items-center">
@@ -9,10 +9,8 @@
         <h1 class="text-navyblue">@ViewData["Title"]</h1>
         @if (Model.ErrorMessage == null)
         {
-
             <p class="text-gray">
-                You have requested to log in with a recovery code. This login will not be remembered until you provide
-                an authenticator app code at log in or disable 2FA and log in again.
+               @Resource.Identity_LoginWithRecoveryCode_Description
             </p>
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -22,7 +20,7 @@
                     <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Log in</button>
+                    <button type="submit" class="btn btn-primary">@Resource.Btn_Login</button>
                 </div>
             </form>
         }

@@ -12,26 +12,26 @@
                     <SharedAccountFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
                 </FilterForm>
                 <ActionButtons>
-                    <button type="button" @onclick="CreateSharedAccountAsync" class="btn btn-primary me-1" title="Create shared account">
-                        Create shared account
+                    <button type="button" @onclick="CreateSharedAccountAsync" class="btn btn-primary me-1">
+                        @Resource.Btn_CreateSharedAccount
                     </button>
                     @if (DataTableService.SelectedEntity != null)
                     {
-                        <button type="button" @onclick="EditSharedAccountAsync" class="btn btn-light border mx-1" title="Edit shared account password">
+                        <button type="button" @onclick="EditSharedAccountAsync" class="btn btn-light border mx-1">
                             <img class="icon-btn" src="/svg/icon-edit.svg" />
-                            Edit
+                            @Resource.Btn_Edit
                         </button>
-                        <button type="button" @onclick="EditSharedAccountPasswordAsync" class="btn btn-light border mx-1" title="Edit shared account password">
+                        <button type="button" @onclick="EditSharedAccountPasswordAsync" class="btn btn-light border mx-1">
                             <img class="icon-btn" src="/svg/icon-password.svg" />
-                            Edit Password
+                            @Resource.Btn_EditPassword
                         </button>
-                        <button type="button" @onclick="EditSharedAccountOTPAsync" class="btn btn-light border mx-1" title="Edit shared account OTP">
+                        <button type="button" @onclick="EditSharedAccountOTPAsync" class="btn btn-light border mx-1">
                             <img class="icon-btn" src="/svg/icon-otp.svg" />
-                            Edit OTP
+                            @Resource.Btn_EditOTP
                         </button>
-                        <button type="button" @onclick="DeleteSharedAccountAsync" class="btn btn-light border mx-1" title="Delete shared account">
+                        <button type="button" @onclick="DeleteSharedAccountAsync" class="btn btn-light border mx-1">
                             <img class="icon-btn" src="/svg/icon-delete.svg" />
-                            Delete
+                            @Resource.Btn_Delete
                         </button>
                     }
                 </ActionButtons>
@@ -40,37 +40,37 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="@nameof(SharedAccount.Name)"
+                    <DataTableHeaderItem Title="@Resource.Label_Name"
                                          SortColumn="@nameof(SharedAccount.Name)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="@nameof(SharedAccount.Urls)"
+                    <DataTableHeaderItem Title="@Resource.Label_Urls"
                                          SortColumn="@nameof(SharedAccount.Urls)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="@nameof(SharedAccount.Apps)"
+                    <DataTableHeaderItem Title="@Resource.Label_Apps"
                                          SortColumn="@nameof(SharedAccount.Apps)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="@nameof(SharedAccount.Login)"
+                    <DataTableHeaderItem Title="@Resource.Label_Login"
                                          SortColumn="@nameof(SharedAccount.Login)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Password updated"
+                    <DataTableHeaderItem Title="@Resource.Label_PasswordUpdated"
                                          SortColumn="@nameof(SharedAccount.PasswordChangedAt)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="OTP updated"
+                    <DataTableHeaderItem Title="@Resource.Label_OtpUpdated"
                                          SortColumn="@nameof(SharedAccount.OtpSecretChangedAt)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
@@ -93,13 +93,13 @@
                     <td>
                         @if (context.PasswordChangedAt != null)
                             {
-                            <span>@context.GetPasswordUpdated.Days day(s)</span>
+                            <span>@context.GetPasswordUpdated.Days @Resource.Label_Days</span>
                             }
                     </td>
                     <td>
                         @if (context.OtpSecretChangedAt != null)
                             {
-                            <span>@context.GetOtpUpdated.Days day(s)</span>
+                            <span>@context.GetOtpUpdated.Days @Resource.Label_Days</span>
                             }
                     </td>
                 </TableRow>

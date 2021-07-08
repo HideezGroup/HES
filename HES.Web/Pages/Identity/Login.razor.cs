@@ -2,6 +2,7 @@
 using HES.Core.Entities;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.API;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Extensions;
@@ -19,6 +20,7 @@ namespace HES.Web.Pages.Identity
     {
         EmailValidation,
         EnterPassword,
+        ForgotPassword,
         SecurityKeyAuthentication,
         SecurityKeyError
     }
@@ -27,7 +29,6 @@ namespace HES.Web.Pages.Identity
     {
         public IApplicationUserService ApplicationUserService { get; set; }
         public IFido2Service Fido2Service { get; set; }
-        [Inject] public IIdentityApiClient IdentityApiClient { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public ILogger<Login> Logger { get; set; }
         [Inject] public UserManager<ApplicationUser> UserManager { get; set; }
@@ -42,6 +43,8 @@ namespace HES.Web.Pages.Identity
         public bool HasSecurityKey { get; set; }
         public string ReturnUrl { get; set; }
         public bool SetFocus { get; set; }
+        public bool SendingDisabled { get; set; }
+        public int TimeToRepeat { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -138,10 +141,10 @@ namespace HES.Web.Pages.Identity
 
                 SecurityKeySignInModel.RememberMe = PasswordSignInModel.RememberMe;
                 SecurityKeySignInModel.AuthenticatorAssertionRawResponse = await Fido2Service.MakeAssertionRawResponse(UserEmailModel.Email, JSRuntime);
-                var response = await IdentityApiClient.LoginWithFido2Async(SecurityKeySignInModel);
+                var response = await JSRuntime.InvokeWebApiPostAsync<AuthorizationResponse>(Routes.ApiLoginWithFido2, SecurityKeySignInModel);
                 response.ThrowIfFailed();
 
-                NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard, true);
+                NavigationManager.NavigateToLocal(ReturnUrl ?? Routes.Dashboard, true);
             }
             catch (JSException ex)
             {
@@ -160,13 +163,13 @@ namespace HES.Web.Pages.Identity
             try
             {
                 await ButtonSpinner.SpinAsync(async () =>
-                {
-                    var response = await IdentityApiClient.LoginWithPasswordAsync(PasswordSignInModel);
+                {                   
+                    var response = await JSRuntime.InvokeWebApiPostAsync<AuthorizationResponse>(Routes.ApiLoginWithPassword, PasswordSignInModel);
                     response.ThrowIfFailed();
 
                     if (response.Succeeded)
                     {
-                        NavigationManager.NavigateTo(ReturnUrl ?? Routes.Dashboard, true);
+                        NavigationManager.NavigateToLocal(ReturnUrl ?? Routes.Dashboard, true);
                         return;
                     }
 
@@ -202,6 +205,43 @@ namespace HES.Web.Pages.Identity
         private void BackToEmailValidation()
         {
             AuthenticationStep = AuthenticationStep.EmailValidation;
+        }
+
+        private void SetForgotPasswordStep()
+        {
+            AuthenticationStep = AuthenticationStep.ForgotPassword;
+        }
+
+        private async Task ResetPasswordAsync()
+        {
+            try
+            {
+                await ApplicationUserService.SendUserResetPasswordAsync(UserEmailModel.Email, NavigationManager.BaseUri);
+                SetTimerToResend();
+            }
+            catch (HESException ex)
+            {
+                SetErrorMessage(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message);
+                SetErrorMessage(ex.Message);
+            }
+        }
+
+        private async void SetTimerToResend()
+        {
+            SendingDisabled = true;
+            TimeToRepeat = 60;
+            while (TimeToRepeat > 0)
+            {
+                TimeToRepeat--;
+                StateHasChanged();
+                await Task.Delay(1000);
+            }
+            SendingDisabled = false;
+            StateHasChanged();
         }
 
         private void SwitchFocus()

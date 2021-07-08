@@ -36,7 +36,7 @@ namespace HES.Web.Pages.SharedAccounts
 
                 SharedAccount = await SharedAccountService.GetSharedAccountByIdAsync(AccountId);
                 if (SharedAccount == null)
-                    throw new Exception("Account not found");
+                    throw new HESException(HESCode.SharedAccountNotFound);
 
                 SharedAccountEditModel = new SharedAccountEditModel().Initialize(SharedAccount);
 
@@ -67,8 +67,8 @@ namespace HES.Web.Pages.SharedAccounts
                 await Button.SpinAsync(async () =>
                 {
                     var vaults = await SharedAccountService.EditSharedAccountAsync(SharedAccountEditModel);
-                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);             
-                    await ToastService.ShowToastAsync("Shared account updated.", ToastType.Success);
+                    RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(vaults);
+                    await ToastService.ShowToastAsync(Resources.Resource.SharedAccounts_EditSharedAccount_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

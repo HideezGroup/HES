@@ -75,7 +75,7 @@ namespace HES.Web.Pages.Settings.Administrators
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Invite Administrator", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Administrators_InviteAdmin_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -91,7 +91,7 @@ namespace HES.Web.Pages.Settings.Administrators
             {
                 var callBakcUrl = await ApplicationUserService.GenerateInviteCallBackUrl(DataTableService.SelectedEntity.Email, NavigationManager.BaseUri);
                 await EmailSenderService.SendUserInvitationAsync(DataTableService.SelectedEntity.Email, callBakcUrl);
-                await ToastService.ShowToastAsync("Administrator invited.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Administrators_ResendInvite_Toast, ToastType.Success);
             }
             catch (Exception ex)
             {
@@ -112,7 +112,7 @@ namespace HES.Web.Pages.Settings.Administrators
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Administrator", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Administrators_DeleteAdministrator_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

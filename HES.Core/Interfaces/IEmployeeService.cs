@@ -1,7 +1,7 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Models.Accounts;
-using HES.Core.Models.AppUsers;
+using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using System.Collections.Generic;
@@ -34,7 +34,8 @@ namespace HES.Core.Interfaces
         #region SSO
         bool IsSaml2Enabled();
         Task<UserSsoInfo> GetUserSsoInfoAsync(Employee employee);
-        Task EnableSsoAsync(Employee employee);
+        Task EnableSsoAsync(Employee employee, UserSsoSettings settings);
+        Task EditSsoAsync(Employee employee, UserSsoSettings settings);
         Task DisableSsoAsync(Employee employee);
         #endregion
 

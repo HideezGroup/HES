@@ -8,7 +8,7 @@ else
 {
     @if (EntityBeingEdited)
     {
-        <EditedByAnother EntityName="order" CloseAction="ModalDialogCancel" />
+        <EditedByAnother EntityName="@Resource.LicenseOrders_EntityName" CloseAction="ModalDialogCancel" />
     }
     else
     {
@@ -40,7 +40,7 @@ else
                         </div>
                     </div>
                     <div class="col-6">
-                        <input type="text" @bind-value="_newLicenseOrder.SearchText" @bind-value:event="oninput" class="form-control is-search mb-2" placeholder="Search" />
+                        <input type="text" @bind-value="_newLicenseOrder.SearchText" @bind-value:event="oninput" class="form-control is-search mb-2" placeholder="@Resource.Label_Search" />
                         <div style="max-height:344px;overflow:auto" class="border">
                             <table class="table table-hover w-100 disable-selection mb-0">
                                 <thead>
@@ -52,7 +52,7 @@ else
                                             </div>
                                         </th>
                                         <th>
-                                            Serial Number
+                                            @Resource.Label_SerialNumber
                                         </th>
                                     </tr>
                                 </thead>
@@ -81,8 +81,8 @@ else
                 </div>
                 <div class="mt-3">
                     <div class="form-footer">
-                        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Cancel</button>
-                        <Button @ref="Button" type="submit" Text="Save" class="btn btn-primary" />
+                        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                        <Button @ref="Button" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
                     </div>
                 </div>
             </EditForm>
@@ -110,7 +110,7 @@ else
                         </div>
                     </div>
                     <div class="col-6">
-                        <input type="text" @bind-value="_renewLicenseOrder.SearchText" @bind-value:event="oninput" class="form-control is-search mb-2" placeholder="Search" />
+                        <input type="text" @bind-value="_renewLicenseOrder.SearchText" @bind-value:event="oninput" class="form-control is-search mb-2" placeholder="@Resource.Label_Search" />
                         <div style="max-height:344px;overflow:auto" class="border">
                             <table class="table table-hover w-100 disable-selection mb-0">
                                 <thead>
@@ -122,7 +122,7 @@ else
                                             </div>
                                         </th>
                                         <th>
-                                            Serial Number
+                                            @Resource.Label_SerialNumber
                                         </th>
                                     </tr>
                                 </thead>
@@ -153,8 +153,8 @@ else
                 </div>
                 <div class="row mt-3">
                     <div class="form-footer">
-                        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Cancel</button>
-                        <Button @ref="Button" type="submit" Text="Save" class="btn btn-primary" />
+                        <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+                        <Button @ref="Button" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary" />
                     </div>
                 </div>
             </EditForm>

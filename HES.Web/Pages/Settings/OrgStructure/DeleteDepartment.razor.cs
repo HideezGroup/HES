@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -26,7 +27,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Department = await OrgStructureService.GetDepartmentByIdAsync(DepartmentId);
                 if (Department == null)
-                    throw new Exception("Department not found.");
+                    throw new HESException(HESCode.DepartmentNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Department.Id, out object _);
                 if (!EntityBeingEdited)
@@ -47,7 +48,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             try
             {
                 await OrgStructureService.DeleteDepartmentAsync(Department.Id);
-                await ToastService.ShowToastAsync("Department removed.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.OrgStructure_DeleteDepartment_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

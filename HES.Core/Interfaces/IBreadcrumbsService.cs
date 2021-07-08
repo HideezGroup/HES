@@ -27,15 +27,7 @@ namespace HES.Core.Interfaces
         Task SetOrgStructure();
         Task SetWorkstations();
         Task SetWorkstationDetails(string name);
-        Task SetTwoFactorAuthentication();
-        Task SetShowRecoveryCodes();
-        Task SetResetAuthenticator();
         Task SetProfile();
-        Task SetPersonalData();
-        Task SetGenerateRecoveryCodes();
-        Task SetEnableAuthenticator();
-        Task SetDisable2fa();
-        Task SetDeletePersonalData();
         Task SetAlarm();
     }
 }

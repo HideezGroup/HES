@@ -5,16 +5,15 @@
     <div class="alert alert-warning" role="alert">
         <p>
             <span class="glyphicon glyphicon-warning-sign"></span>
-            <strong>This action only disables 2FA.</strong>
+            <strong>@Resource.Profile_Security_Disable2fa_Header</strong>
         </p>
         <p>
-            Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key
-            used in an authenticator app you should reset your authenticator keys.
+            @Resource.Profile_Security_Disable2fa_Description
         </p>
     </div>
     <div class="form-footer">
-        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
-        <Button class="btn btn-danger" type="button" Text="Disable" OnClick="DisableTwoFactorAsync" />
+        <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+        <Button class="btn btn-danger" type="button" Text="@Resource.Btn_Disable" OnClick="DisableTwoFactorAsync" />
     </div>
 }
 else

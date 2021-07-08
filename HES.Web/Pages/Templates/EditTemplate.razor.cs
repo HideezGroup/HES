@@ -33,7 +33,7 @@ namespace HES.Web.Pages.Templates
                 Template = await TemplateService.GetTemplateByIdAsync(TemplateId);
 
                 if (Template == null)
-                    throw new Exception("Template not found.");
+                    throw new HESException(HESCode.TemplateNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Template.Id, out object _);
                 if (!EntityBeingEdited)
@@ -62,17 +62,17 @@ namespace HES.Web.Pages.Templates
                 await Button.SpinAsync(async () =>
                 {
                     await TemplateService.EditTemplateAsync(Template);
-                    await ToastService.ShowToastAsync("Template updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.Templates_EditTemplate_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
             catch (HESException ex) when (ex.Code == HESCode.TemplateExist)
             {
-                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Name), ex.Message);
+                ValidationErrorMessage.DisplayError(nameof(Template.Name), ex.Message);
             }
             catch (HESException ex) when (ex.Code == HESCode.IncorrectUrl)
             {
-                ValidationErrorMessage.DisplayError(nameof(SharedAccount.Urls), ex.Message);
+                ValidationErrorMessage.DisplayError(nameof(Template.Urls), ex.Message);
             }
             catch (Exception ex)
             {

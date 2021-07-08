@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -26,7 +27,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Company = await OrgStructureService.GetCompanyByIdAsync(CompanyId);
                 if (Company == null)
-                    throw new Exception("Company not found.");
+                    throw new HESException(HESCode.CompanyNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Company.Id, out object _);
                 if (!EntityBeingEdited)
@@ -47,7 +48,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             try
             {
                 await OrgStructureService.DeleteCompanyAsync(Company.Id);
-                await ToastService.ShowToastAsync("Company removed.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.OrgStructure_DeleteCompany_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

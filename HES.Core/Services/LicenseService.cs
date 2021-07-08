@@ -125,29 +125,29 @@ namespace HES.Core.Services
                 {
                     query = query.Where(x => x.OrderStatus == dataLoadingOptions.Filter.OrderStatus);
                 }
-                if (dataLoadingOptions.Filter.LicenseStartDateStart != null)
+                if (dataLoadingOptions.Filter.LicenseStartDateFrom != null)
                 {
-                    query = query.Where(w => w.StartDate >= dataLoadingOptions.Filter.LicenseStartDateStart);
+                    query = query.Where(w => w.StartDate >= dataLoadingOptions.Filter.LicenseStartDateFrom);
                 }
-                if (dataLoadingOptions.Filter.LicenseStartDateEnd != null)
+                if (dataLoadingOptions.Filter.LicenseStartDateTo != null)
                 {
-                    query = query.Where(x => x.StartDate <= dataLoadingOptions.Filter.LicenseStartDateEnd);
+                    query = query.Where(x => x.StartDate <= dataLoadingOptions.Filter.LicenseStartDateTo);
                 }
-                if (dataLoadingOptions.Filter.LicenseEndDateStart != null)
+                if (dataLoadingOptions.Filter.LicenseEndDateFrom != null)
                 {
-                    query = query.Where(w => w.EndDate >= dataLoadingOptions.Filter.LicenseEndDateStart);
+                    query = query.Where(w => w.EndDate >= dataLoadingOptions.Filter.LicenseEndDateFrom);
                 }
-                if (dataLoadingOptions.Filter.LicenseEndDateEnd != null)
+                if (dataLoadingOptions.Filter.LicenseEndDateTo != null)
                 {
-                    query = query.Where(x => x.EndDate <= dataLoadingOptions.Filter.LicenseEndDateEnd);
+                    query = query.Where(x => x.EndDate <= dataLoadingOptions.Filter.LicenseEndDateTo);
                 }
-                if (dataLoadingOptions.Filter.CreatedDateStart != null)
+                if (dataLoadingOptions.Filter.CreatedAtDateFrom != null)
                 {
-                    query = query.Where(w => w.CreatedAt >= dataLoadingOptions.Filter.CreatedDateStart);
+                    query = query.Where(w => w.CreatedAt >= dataLoadingOptions.Filter.CreatedAtDateFrom);
                 }
-                if (dataLoadingOptions.Filter.CreatedDateEnd != null)
+                if (dataLoadingOptions.Filter.CreatedAtDateTo != null)
                 {
-                    query = query.Where(x => x.CreatedAt <= dataLoadingOptions.Filter.CreatedDateEnd);
+                    query = query.Where(x => x.CreatedAt <= dataLoadingOptions.Filter.CreatedAtDateTo);
                 }
             }
 

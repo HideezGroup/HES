@@ -26,7 +26,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.CreatePositionAsync(Position);
-                    await ToastService.ShowToastAsync("Position created.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.OrgStructure_CreatePosition_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

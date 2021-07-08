@@ -29,7 +29,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
             {
                 Company = await OrgStructureService.GetCompanyByIdAsync(CompanyId);
                 if (Company == null)
-                    throw new Exception("Company not found.");
+                    throw new HESException(HESCode.CompanyNotFound);
 
                 EntityBeingEdited = MemoryCache.TryGetValue(Company.Id, out object _);
                 if (!EntityBeingEdited)
@@ -58,7 +58,7 @@ namespace HES.Web.Pages.Settings.OrgStructure
                 await Button.SpinAsync(async () =>
                 {
                     await OrgStructureService.EditCompanyAsync(Company);
-                    await ToastService.ShowToastAsync("Company updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.OrgStructure_EditCompany_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }

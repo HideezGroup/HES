@@ -14,8 +14,8 @@
                 @if (Employee.ActiveDirectoryGuid != null)
                 {
                     <div>
-                        <span class="badge bg-primary ms-1 my-2" title="Imported from Active Directory">
-                            AD
+                        <span class="badge bg-primary ms-1 my-2" title="@Resource.Title_ImportedFromActiveDirectory">
+                            @Resource.Label_AD
                         </span>
                     </div>
                 }
@@ -25,41 +25,41 @@
                 <ButtonSpinner Class="btn-primary" Text="Add Software Vault" Callback="OpenModalAddSoftwareVaultAsync" />
             </div>*@
         <div class="col-auto ps-1 pe-1">
-            <button type="button" @onclick="OpenDialogAddHardwareVaultAsync" class="btn btn-primary" title="@(Employee.HardwareVaults.Count > 0 ? "Cannot add more than one hardware vault." : "")" disabled="@(Employee.HardwareVaults.Count > 0)">
-                Add Hardware Vault
+            <button type="button" @onclick="OpenDialogAddHardwareVaultAsync" class="btn btn-primary" title="@(Employee.HardwareVaults.Count > 0 ? Resource.Title_CannotAddMoreHardwareVault : string.Empty)" disabled="@(Employee.HardwareVaults.Count > 0)">
+                @Resource.Btn_AddHardwareVault
             </button>
         </div>
         <div class="col-auto ps-1 pe-1">
             <button type="button" class="btn btn-primary" @onclick="OpenDialogCreatePersonalAccountAsync">
-                Create Personal Account
+                @Resource.Btn_CreatePersonalAccount
             </button>
         </div>
         <div class="col-auto ps-1">
             <button type="button" class="btn btn-primary" @onclick="OpenDialogAddSharedAccountAsync">
-                Add Shared Account
+                @Resource.Btn_AddSharedAccount
             </button>
         </div>
     </div>
     @if (Employee.SoftwareVaultInvitations.Count > 0 || Employee.SoftwareVaults.Count > 0 || Employee.HardwareVaults.Count > 0)
     {
         <section>
-            <h4 class="text-navyblue">Vaults</h4>
+            <h4 class="text-navyblue">@Resource.Label_Vaults</h4>
             <ul class="list-group w-100 mb-3">
                 @foreach (var invitation in Employee.SoftwareVaultInvitations.Where(x => x.Status != SoftwareVaultInvitationStatus.Accepted))
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
                             <img class="me-1" src="/svg/icon-mail-sent.svg" />
-                            Software Vault Invite sent @invitation.CreatedAt.ToShortDateString() - @invitation.Status
+                            @Resource.EmployeeDetails_SoftwareVaultInviteSent @invitation.CreatedAt.ToShortDateString() - @invitation.Status
                         </div>
                         <div>
-                            <button type="button" class="btn btn-light border my-1 me-2" title="Resend invitation" @onclick="@(() => OpenDialogResendInvitationAsync(invitation))">
+                            <button type="button" class="btn btn-light border my-1 me-2" title="@Resource.EmployeeDetails_BtnTitle_ResendInvitation" @onclick="@(() => OpenDialogResendInvitationAsync(invitation))">
                                 <img class="icon-btn" src="/svg/icon-email.svg" />
-                                Resend
+                                @Resource.Btn_Resend
                             </button>
-                            <button type="button" class="btn btn-light border my-1 me-2" title="Delete invitation" @onclick="@(() => OpenDialogDeleteInvitationAsync(invitation))">
+                            <button type="button" class="btn btn-light border my-1 me-2" title="@Resource.EmployeeDetails_BtnTitle_DeleteInvitation" @onclick="@(() => OpenDialogDeleteInvitationAsync(invitation))">
                                 <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                Delete
+                                @Resource.Btn_Delete
                             </button>
                         </div>
                     </li>
@@ -69,12 +69,12 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
                             <img src="/svg/icon-software-vault.svg" />
-                            <span class="fw-bold">@softwareVault.Model</span> - @(softwareVault.LicenseEndDate != null ? $"License till {softwareVault.LicenseEndDate.Value.ToShortDateString()}" : "License status None") - @softwareVault.Status
+                            <span class="fw-bold">@softwareVault.Model</span> - @(softwareVault.LicenseEndDate != null ? string.Format(Resource.EmployeeDetails_Label_LicenseTill, softwareVault.LicenseEndDate.Value.ToShortDateString()) : Resource.EmployeeDetails_Label_LicenseNone) - @softwareVault.Status
                         </div>
                         <div>
-                            <button type="button" class="btn btn-light border my-1 me-2" title="Software Vault Details" @onclick="@(() => OpenDialogSoftwareVaultDetailsAsync(softwareVault))">
+                            <button type="button" class="btn btn-light border my-1 me-2" title="@Resource.EmployeeDetails_BtnTitle_SoftwareVaultDetails" @onclick="@(() => OpenDialogSoftwareVaultDetailsAsync(softwareVault))">
                                 <img class="icon-btn" src="/svg/icon-details.svg" />
-                                Details
+                                @Resource.Btn_Details
                             </button>
                         </div>
                     </li>
@@ -86,31 +86,31 @@
                             <img class="me-1" src="/svg/icon-hardware-vault.svg" />
                             <span class="fw-bold me-1">@hardwareVault.Id</span>
                             <span class="me-1">- @(hardwareVault.Status)</span>
-                            <span class="me-2">- @(hardwareVault.LicenseEndDate != null ? $"License till {hardwareVault.LicenseEndDate.Value.ToShortDateString()}" : "License status None")</span>
+                            <span class="me-2">- @(hardwareVault.LicenseEndDate != null ? string.Format(Resource.EmployeeDetails_Label_LicenseTill, hardwareVault.LicenseEndDate.Value.ToShortDateString()) : Resource.EmployeeDetails_Label_LicenseNone)</span>
                             @if (hardwareVault.NeedSync)
                             {
-                                <span class="badge bg-primary me-2">Need Sync</span>
+                                <span class="badge bg-primary me-2">@Resource.Label_NeedSync</span>
                             }
                             @if (hardwareVault.IsOnline)
                             {
-                                <span class="badge bg-success me-2">Online</span>
+                                <span class="badge bg-success me-2">@Resource.Label_Online</span>
                             }
                         </div>
                         <div>
                             @if (hardwareVault.Status == VaultStatus.Suspended || hardwareVault.Status == VaultStatus.Reserved)
                             {
-                                <button type="button" @onclick="@(async () => await OpenDialogShowActivationCodeAsync(hardwareVault))" class="btn btn-light border mx-1" title="Show activation code">
+                                <button type="button" @onclick="@(async () => await OpenDialogShowActivationCodeAsync(hardwareVault))" class="btn btn-light border mx-1" title="@Resource.EmployeeDetails_BtnTitle_ShowActivationCode">
                                     <img class="icon-btn" src="/svg/icon-security.svg" />
-                                    Activation code
+                                    @Resource.Label_ActivationCode
                                 </button>
                             }
-                            <button type="button" class="btn btn-light border mx-2" title="Hardware Vault Details" @onclick="@(async () => await OpenDialogHardwareVaultDetailsAsync(hardwareVault))">
+                            <button type="button" class="btn btn-light border mx-2" title="@Resource.EmployeeDetails_BtnTitle_HardwareVaultDetails" @onclick="@(async () => await OpenDialogHardwareVaultDetailsAsync(hardwareVault))">
                                 <img class="icon-btn" src="/svg/icon-details.svg" />
-                                Details
+                                @Resource.Btn_Details
                             </button>
-                            <button type="button" class="btn btn-light border mx-2" title="Remove hardware vault from employee" @onclick="async () => await OpenDialogRemoveHardwareVaultAsync(hardwareVault)">
+                            <button type="button" class="btn btn-light border mx-2" title="@Resource.EmployeeDetails_BtnTitle_RemoveHardwareVault" @onclick="async () => await OpenDialogRemoveHardwareVaultAsync(hardwareVault)">
                                 <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                Remove
+                                @Resource.Label_Remove
                             </button>
                         </div>
                     </li>
@@ -121,30 +121,32 @@
     @if (EmployeeService.IsSaml2Enabled() && !string.IsNullOrWhiteSpace(Employee.Email) && Employee.HardwareVaults.Count > 0)
     {
         <section>
-            <h4 class="text-navyblue me-2">Single Sign On</h4>
+            <h4 class="text-navyblue me-2">@Resource.Label_SingleSignOn</h4>
             <div class="card mb-3">
                 <div class="card-body d-flex align-items-center py-2" style="min-height:54px;">
                     @if (UserSsoInfo.IsSsoEnabled)
                     {
-                        <span class="fw-bold">SSO Enabled</span>
+                        <span class="fw-bold">@Resource.Label_SSOEnabled</span>
                         <span class="mx-2">-</span>
-                        <span>Login: @UserSsoInfo.UserEmail</span>
-                        <span class="mx-2">-</span>
-                        <span>Security Key: @UserSsoInfo.SecurityKeyName</span>
+                        <span>@Resource.Label_SecurityKey: @UserSsoInfo.SecurityKeyName</span>
                         @if (UserSsoInfo.UserRole != ApplicationRoles.Admin)
                         {
-                            <button type="button" class="btn btn-light border ms-auto me-1" @onclick="OpenModalDisableSsoAsync">
+                            <button type="button" class="btn btn-light border ms-auto me-2" @onclick="OpenModalEditSsoAsync">
+                                <img class="icon-btn" src="/svg/icon-edit.svg" />
+                                @Resource.Btn_EditSettings
+                            </button>
+                            <button type="button" class="btn btn-light border me-1" @onclick="OpenModalDisableSsoAsync">
                                 <img class="icon-btn" src="/svg/icon-sso-disable.svg" />
-                                Disable SSO
+                                @Resource.Btn_DisableSSO
                             </button>
                         }
                     }
                     else
                     {
-                        <span class="fw-bold">SSO Disabled</span>
+                        <span class="fw-bold">@Resource.Label_SSODisabled</span>
                         <button type="button" class="btn btn-light border ms-auto me-1" @onclick="OpenModalEnableSsoAsync">
                             <img class="icon-btn" src="/svg/icon-sso-enable.svg" />
-                            Enable SSO
+                            @Resource.Btn_EnableSSO
                         </button>
                     }
                 </div>
@@ -158,34 +160,34 @@
                 <WrapperHeader>
                     <DataTableActions ShowFilterButton="false" RefreshTable="@DataTableService.LoadTableDataAsync" CollapseFilter="@DataTableService.ShowFilter" SearchTextChanged="@DataTableService.SearchTextChangedAsync">
                         <ActionButtons>
-                            <h4 class="text-navyblue me-2">Accounts</h4>
+                            <h4 class="text-navyblue me-2">@Resource.Label_Accounts</h4>
                             @if (DataTableService.SelectedEntity != null)
                             {
                                 @if (DataTableService.SelectedEntity.Employee.PrimaryAccountId != DataTableService.SelectedEntity.Id)
                                 {
-                                    <button type="button" @onclick="OpenDialogSetAsWorkstationAccountAsync" class="btn btn-light border" title="Set as primary account">
+                                    <button type="button" @onclick="OpenDialogSetAsWorkstationAccountAsync" class="btn btn-light border" title="@Resource.EmployeeDetails_BtnTitle_SetAsPrimary">
                                         <img class="icon-btn" src="/svg/icon-star.svg" />
-                                        Set as primary
+                                        @Resource.Btn_SetAsPrimary
                                     </button>
                                 }
                                 @if (DataTableService.SelectedEntity.AccountType == AccountType.Personal)
                                 {
-                                    <button type="button" @onclick="OpenDialogEditPersonalAccountAsync" class="btn btn-light border mx-2" title="Edit personal account">
+                                    <button type="button" @onclick="OpenDialogEditPersonalAccountAsync" class="btn btn-light border mx-2" title="@Resource.EmployeeDetails_BtnTitle_EditPersonalAccount">
                                         <img class="icon-btn" src="/svg/icon-edit.svg" />
-                                        Edit
+                                        @Resource.Btn_Edit
                                     </button>
-                                    <button type="button" @onclick="OpenDialogEditPersonalAccountPasswordAsync" class="btn btn-light border mx-2" title="Edit personal account password">
+                                    <button type="button" @onclick="OpenDialogEditPersonalAccountPasswordAsync" class="btn btn-light border mx-2" title="@Resource.EmployeeDetails_BtnTitle_EditPersonalAccountPwd">
                                         <img class="icon-btn" src="/svg/icon-password.svg" />
-                                        Edit password
+                                        @Resource.Btn_EditPassword
                                     </button>
-                                    <button type="button" @onclick="OpenDialogEditPersonalAccountOtpAsync" class="btn btn-light border mx-2" title="Edit personal account OTP">
+                                    <button type="button" @onclick="OpenDialogEditPersonalAccountOtpAsync" class="btn btn-light border mx-2" title="@Resource.EmployeeDetails_BtnTitle_EditPersonalAccountOtp">
                                         <img class="icon-btn" src="/svg/icon-otp.svg" />
-                                        Edit OTP
-                                    </button>                               
+                                        @Resource.Btn_EditOTP
+                                    </button>
                                 }
-                                <button type="button" @onclick="OpenDialogDeleteAccountAsync" class="btn btn-light border mx-2" title="Delete account">
+                                <button type="button" @onclick="OpenDialogDeleteAccountAsync" class="btn btn-light border mx-2" title="@Resource.EmployeeDetails_BtnTitle_DeleteAccount">
                                     <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                    Delete
+                                    @Resource.Btn_Delete
                                 </button>
                             }
                         </ActionButtons>
@@ -194,55 +196,56 @@
                 <WrapperBody>
                     <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                         <TableHeader>
-                            <DataTableHeaderItem Title="Name"
+                            <DataTableHeaderItem Title="@Resource.Label_Name"
                                                  SortColumn="@nameof(Account.Name)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="URLs"
+                            <DataTableHeaderItem Title="@Resource.Label_Urls"
                                                  SortColumn="@nameof(Account.Urls)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Apps"
+                            <DataTableHeaderItem Title="@Resource.Label_Apps"
                                                  SortColumn="@nameof(Account.Apps)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Login"
+                            <DataTableHeaderItem Title="@Resource.Label_Login"
                                                  SortColumn="@nameof(Account.Login)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Type"
+                            <DataTableHeaderItem Title="@Resource.Label_Type"
                                                  SortColumn="@nameof(Account.AccountType)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Created"
+                            <DataTableHeaderItem Title="@Resource.Label_Created"
                                                  SortColumn="@nameof(Account.CreatedAt)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Updated"
+                            <DataTableHeaderItem Title="@Resource.Label_Updated"
                                                  SortColumn="@nameof(Account.UpdatedAt)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="Password Updated"
+                            <DataTableHeaderItem Title="@Resource.Label_PasswordUpdated"
                                                  SortColumn="@nameof(Account.PasswordUpdatedAt)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                                  SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                            <DataTableHeaderItem Title="OTP Updated"
+                            <DataTableHeaderItem Title="@Resource.Label_OtpUpdated"
+                                                 SortColumn="@nameof(Account.OtpUpdatedAt)"
                                                  CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                                  CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                                  SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
@@ -252,7 +255,7 @@
                             <td style="vertical-align:middle">
                                 @if (context.Employee.PrimaryAccountId == context.Id)
                                         {
-                                    <span class="badge @(DataTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-success") custom-badge" title="Primary account">
+                                    <span class="badge @(DataTableService.SelectedEntity?.Id == context.Id ? "bg-light text-dark":"bg-success") custom-badge" title="@Resource.EmployeeDetails_Label_PrimaryAccount">
                                         @context.Name
                                     </span>
                                         }
@@ -283,12 +286,12 @@
                                         }
                             </td>
                             <td>
-                                @((DateTime.UtcNow.Date - context.PasswordUpdatedAt.Date).TotalDays) @((DateTime.UtcNow.Date - context.PasswordUpdatedAt.Date).TotalDays == 1 ? " day" : " days" )
+                                @((DateTime.UtcNow.Date - context.PasswordUpdatedAt.Date).TotalDays) @((DateTime.UtcNow.Date - context.PasswordUpdatedAt.Date).TotalDays == 1 ? $" {Resource.Label_Day}" : $" {Resource.Label_Days}" )
                             </td>
                             <td>
                                 @if (context.OtpUpdatedAt != null)
                                         {
-                                    @((DateTime.UtcNow.Date - context.OtpUpdatedAt.Value.Date).TotalDays) @((DateTime.UtcNow.Date - context.OtpUpdatedAt.Value.Date).TotalDays == 1 ? " day" : " days" )
+                                    @((DateTime.UtcNow.Date - context.OtpUpdatedAt.Value.Date).TotalDays) @((DateTime.UtcNow.Date - context.OtpUpdatedAt.Value.Date).TotalDays == 1 ? $" {Resource.Label_Day}" : $" {Resource.Label_Days}" )
                                         }
                             </td>
                         </TableRow>

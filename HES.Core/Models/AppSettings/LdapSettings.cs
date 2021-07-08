@@ -4,18 +4,21 @@ namespace HES.Core.Models.AppSettings
 {
     public class LdapSettings
     {
-        [Required]
-        [Display(Name = "Domain Name")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Dispaly_DomainName), ResourceType = typeof(Resources.Resource))]
         public string Host { get; set; }
-        [Required]
-        [Display(Name = "User Logon Name")]
+
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Dispaly_UserLogonName), ResourceType = typeof(Resources.Resource))]
         public string UserName { get; set; }
-        [Required]
+
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Display_Password), ResourceType = typeof(Resources.Resource))]
         public string Password { get; set; }
 
-        [Required]
-        [Range(1, 180)]
-        [Display(Name = "Auto Password Change")]
+        [Required(ErrorMessageResourceName = nameof(Resources.Resource.Validation_Required), ErrorMessageResourceType = typeof(Resources.Resource))]
+        [Display(Name = nameof(Resources.Resource.Dispaly_AutoPasswordChange), ResourceType = typeof(Resources.Resource))]
+        [Range(1, 180, ErrorMessageResourceName = nameof(Resources.Resource.Validation_Range), ErrorMessageResourceType = typeof(Resources.Resource))]
         public int MaxPasswordAge { get; set; } = 28;
     }
 }

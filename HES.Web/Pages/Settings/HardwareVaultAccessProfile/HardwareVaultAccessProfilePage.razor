@@ -12,24 +12,24 @@
                     <ProfileFilter FilterChanged="DataTableService.FilterChangedAsync" />
                 </FilterForm>
                 <ActionButtons>
-                    <button type="button" @onclick="CreateProfileAsync" class="btn btn-primary me-1" title="Create profile">
-                        Create Profile
+                    <button type="button" @onclick="CreateProfileAsync" class="btn btn-primary me-1">
+                        @Resource.Btn_CreateProfile
                     </button>
                     @if (DataTableService.SelectedEntity != null)
                     {
-                        <button type="button" @onclick="EditProfileAsync" class="btn btn-light border" title="Edit profile">
+                        <button type="button" @onclick="EditProfileAsync" class="btn btn-light border">
                             <img class="icon-btn" src="/svg/icon-edit.svg" />
-                            Edit
+                            @Resource.Btn_Edit
                         </button>
-                        <button type="button" @onclick="DetailsProfileAsync" class="btn btn-light border ms-1" title="Details profile">
+                        <button type="button" @onclick="DetailsProfileAsync" class="btn btn-light border ms-1">
                             <img class="icon-btn" src="/svg/icon-details.svg" />
-                            Details
+                            @Resource.Btn_Details
                         </button>
                         @if (DataTableService.SelectedEntity.Id != "default")
                         {
-                            <button type="button" @onclick="DeleteProfileAsync" class="btn btn-light border ms-1" title="Delete profile">
+                            <button type="button" @onclick="DeleteProfileAsync" class="btn btn-light border ms-1" >
                                 <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                Delete
+                                @Resource.Btn_Delete
                             </button>
                         }
                     }
@@ -39,25 +39,25 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Name"
+                    <DataTableHeaderItem Title="@Resource.Label_Name"
                                          SortColumn="@nameof(HardwareVaultProfile.Name)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Creaated"
+                    <DataTableHeaderItem Title="@Resource.Label_Created"
                                          SortColumn="@nameof(HardwareVaultProfile.CreatedAt)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Updated"
+                    <DataTableHeaderItem Title="@Resource.Label_Updated"
                                          SortColumn="@nameof(HardwareVaultProfile.UpdatedAt)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="HardwareVaults"
+                    <DataTableHeaderItem Title="@Resource.Label_HardwareVaults"
                                          SortColumn="@nameof(HardwareVaultProfile.HardwareVaults)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"

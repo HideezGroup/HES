@@ -74,7 +74,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("License Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_AddLicenseSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -92,7 +92,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_DeleteLicenseSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -114,7 +114,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Domain Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_AddLdapSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -132,7 +132,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_DeleteLdapSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -154,7 +154,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Splunk Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_AddSplunkSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -172,7 +172,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Settings", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_DeleteSplunkSettings_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -194,7 +194,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Add Service Provider", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_AddSaml2RelyingParty_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -213,7 +213,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit Service Provider", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_EditSaml2RelyingParty_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -232,7 +232,7 @@ namespace HES.Web.Pages.Settings.Parameters
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Service Provider", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Parameters_DeleteSaml2RelyingParty_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

@@ -55,11 +55,11 @@ namespace HES.Web.Pages.Employees
                 await EmployeeService.SetAsPrimaryAccountAsync(Account.Employee.Id, Account.Id);
                 var employee = await EmployeeService.GetEmployeeByIdAsync(Account.Employee.Id);
                 RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(employee.Id));
-                await ToastService.ShowToastAsync("Account setted as primary.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_SetAsWorkstationAccount_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)
-            {      
+            {
                 Logger.LogError(ex.Message, ex);
                 await ToastService.ShowToastAsync(ex.Message, ToastType.Error);
                 await ModalDialogCancel();

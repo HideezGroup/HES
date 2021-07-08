@@ -2,37 +2,37 @@
 
 <ul class="list-group mb-3">
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Serial Number</span>
+        <span class="fw-bold">@Resource.Label_SerialNumber</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.Id</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">MAC</span>
+        <span class="fw-bold">@Resource.Label_MAC</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.MAC</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Model</span>
+        <span class="fw-bold">@Resource.Label_Model</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.Model</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">RFID</span>
+        <span class="fw-bold">@Resource.Label_RFID</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.RFID</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Battery</span>
+        <span class="fw-bold">@Resource.Label_Battery</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.Battery%</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Employee</span>
+        <span class="fw-bold">@Resource.Label_Employee</span>
         <span class="mx-1">-</span>
         <span class="text-truncate">@HardwareVault.Employee.FullName</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Last Synced</span>
+        <span class="fw-bold">@Resource.Label_LastSynced</span>
         <span class="mx-1">-</span>
         <span>
             @if (HardwareVault.LastSynced != null)
@@ -42,37 +42,37 @@
         </span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Profile</span>
+        <span class="fw-bold">@Resource.Label_Profile</span>
         <span class="mx-1">-</span>
         <span class="text-truncate">@HardwareVault.HardwareVaultProfile.Name</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Imported At</span>
+        <span class="fw-bold">@Resource.Label_ImportedAt</span>
         <span class="mx-1">-</span>
         <span>@TimeZoneInfo.ConvertTimeFromUtc((DateTime)HardwareVault.ImportedAt, TimeZoneInfo.Local)</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Status</span>
+        <span class="fw-bold">@Resource.Label_Status</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.Status</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Reason</span>
+        <span class="fw-bold">@Resource.Label_Reason</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.StatusReason</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Description</span>
+        <span class="fw-bold">@Resource.Label_Description</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.StatusDescription</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">License Status</span>
+        <span class="fw-bold">@Resource.Label_LicenseStatus</span>
         <span class="mx-1">-</span>
         <span>@HardwareVault.LicenseStatus</span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">License End Date</span>
+        <span class="fw-bold">@Resource.Label_LicenseEndDate</span>
         <span class="mx-1">-</span>
         <span>
             @if (HardwareVault.LicenseEndDate != null)
@@ -82,20 +82,20 @@
         </span>
     </li>
     <li class="list-group-item d-flex align-items-center">
-        <span class="fw-bold">Need Sync</span>
+        <span class="fw-bold">@Resource.Label_NeedSync</span>
         <span class="mx-1">-</span>
         <span>
             @if (HardwareVault.NeedSync)
             {
-                <span>Yes</span>
+            <span>@Resource.Label_Yes</span>
             }
             else
             {
-                <span>No</span>
+        <span>@Resource.Label_No</span>
             }
         </span>
     </li>
 </ul>
 <div class="form-footer">
-    <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Close</button>
+    <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Close</button>
 </div>

@@ -92,7 +92,7 @@ namespace HES.Web.Pages.Employees
             {
                 if (SelectedHardwareVault == null)
                 {
-                    WarningMessage = "Please, select a vault.";
+                    WarningMessage = Resources.Resource.Message_SelectHardwareVault;
                     return;
                 }
 
@@ -113,7 +113,7 @@ namespace HES.Web.Pages.Employees
                     transactionScope.Complete();
                 }
 
-                await ToastService.ShowToastAsync("Vault added", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_AddHardwareVault_Toast, ToastType.Success);
                 await SynchronizationService.HardwareVaultStateChanged(SelectedHardwareVault.Id);
                 await ModalDialogClose();
             }

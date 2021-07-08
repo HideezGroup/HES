@@ -13,44 +13,44 @@
                     <VaultFilter FilterChanged="DataTableService.FilterChangedAsync" />
                 </FilterForm>
                 <ActionButtons>
-                    <Button class="btn btn-primary me-1" Text="Import Vaults" OnClick="ImportVaultsAsync" />
+                    <Button class="btn btn-primary me-1" Text="@Resource.Btn_ImportHardwareVaults" OnClick="ImportVaultsAsync" />
                     @if (DataTableService.SelectedEntity != null)
                     {
-                        <button type="button" @onclick="EditRfidAsync" class="btn btn-light border mx-1" title="Edit RFID">
+                        <button type="button" @onclick="EditRfidAsync" class="btn btn-light border mx-1" title="@Resource.Btn_EditRFID">
                             <img class="icon-btn" src="/svg/icon-edit.svg" />
-                            Edit RFID
+                            @Resource.Btn_EditRFID
                         </button>
                         @if (DataTableService.SelectedEntity.Status == VaultStatus.Locked)
                         {
-                            <button type="button" @onclick="ActivateVaultAsync" class="btn btn-light border mx-1" title="Activate vault">
+                            <button type="button" @onclick="ActivateVaultAsync" class="btn btn-light border mx-1" title="@Resource.Btn_ActivateVault">
                                 <img class="icon-btn" src="/svg/icon-unlock.svg" />
-                                Activate vault
+                                @Resource.Btn_ActivateVault
                             </button>
                         }
                         @if (DataTableService.SelectedEntity.Status == VaultStatus.Active)
                         {
-                            <button type="button" @onclick="SuspendVaultAsync" class="btn btn-light border mx-1" title="Suspend vault">
+                            <button type="button" @onclick="SuspendVaultAsync" class="btn btn-light border mx-1" title="@Resource.Btn_SuspendVault">
                                 <img class="icon-btn" src="/svg/icon-otp.svg" />
-                                Suspend vault
+                                @Resource.Btn_SuspendVault
                             </button>
 
-                            <button type="button" @onclick="ChangeVaultProfileAsync" class="btn btn-light border mx-1" title="Set vault profile">
+                            <button type="button" @onclick="ChangeVaultProfileAsync" class="btn btn-light border mx-1" title="@Resource.Btn_ChangeProfile">
                                 <img class="icon-btn" src="/svg/icon-done.svg" />
-                                Change profile
+                                @Resource.Btn_ChangeProfile
                             </button>
                         }
                         @if (DataTableService.SelectedEntity.Status == VaultStatus.Suspended || DataTableService.SelectedEntity.Status == VaultStatus.Reserved)
                         {
-                            <button type="button" @onclick="ShowActivationCodeAsync" class="btn btn-light border mx-1" title="Show activation code">
+                            <button type="button" @onclick="ShowActivationCodeAsync" class="btn btn-light border mx-1" title="@Resource.HardwareVaults_BtnTitle_ShowActivationCode">
                                 <img class="icon-btn" src="/svg/icon-security.svg" />
-                                Activation code
+                                @Resource.Btn_ActivationCode
                             </button>
                         }
                         @if (DataTableService.SelectedEntity.Status == VaultStatus.Active || DataTableService.SelectedEntity.Status == VaultStatus.Locked || DataTableService.SelectedEntity.Status == VaultStatus.Suspended || DataTableService.SelectedEntity.Status == VaultStatus.Reserved)
                         {
-                            <button type="button" @onclick="CompromisedVaultAsync" class="btn btn-light border mx-1" title="Compromised">
+                            <button type="button" @onclick="CompromisedVaultAsync" class="btn btn-light border mx-1" title="@Resource.HardwareVaults_BtnTitle_VaultCompromised">
                                 <img class="icon-btn" src="/svg/icon-password.svg" />
-                                Vault Is Compromised
+                                @Resource.Btn_VaultCompromised
                             </button>
                         }
                     }
@@ -60,85 +60,85 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="ID"
+                    <DataTableHeaderItem Title="@Resource.Label_Id"
                                          SortColumn="@nameof(HardwareVault.Id)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="MAC"
+                    <DataTableHeaderItem Title="@Resource.Label_MAC"
                                          SortColumn="@nameof(HardwareVault.MAC)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Battery"
+                    <DataTableHeaderItem Title="@Resource.Label_Battery"
                                          SortColumn="@nameof(HardwareVault.Battery)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Firmware"
+                    <DataTableHeaderItem Title="@Resource.Label_Firmware"
                                          SortColumn="@nameof(HardwareVault.Firmware)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Profile"
+                    <DataTableHeaderItem Title="@Resource.Label_Profile"
                                          SortColumn="@nameof(HardwareVault.HardwareVaultProfile)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Status"
+                    <DataTableHeaderItem Title="@Resource.Label_Status"
                                          SortColumn="@nameof(HardwareVault.Status)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Last Synced"
+                    <DataTableHeaderItem Title="@Resource.Label_LastSynced"
                                          SortColumn="@nameof(HardwareVault.LastSynced)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="License Status"
+                    <DataTableHeaderItem Title="@Resource.Label_LicenseStatus"
                                          SortColumn="@nameof(HardwareVault.LicenseStatus)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="License End Date"
+                    <DataTableHeaderItem Title="@Resource.Label_LicenseEndDate"
                                          SortColumn="@nameof(HardwareVault.LicenseEndDate)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Employee"
+                    <DataTableHeaderItem Title="@Resource.Label_Employee"
                                          SortColumn="@nameof(HardwareVault.Employee)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Company"
+                    <DataTableHeaderItem Title="@Resource.Label_Company"
                                          SortColumn="@nameof(HardwareVault.Employee.Department.Company)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Department"
+                    <DataTableHeaderItem Title="@Resource.Label_Department"
                                          SortColumn="@nameof(HardwareVault.Employee.Department)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="@nameof(HardwareVault.Model)"
+                    <DataTableHeaderItem Title="@Resource.Label_Model"
                                          SortColumn="@nameof(HardwareVault.Model)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="@nameof(HardwareVault.RFID)"
+                    <DataTableHeaderItem Title="@Resource.Label_RFID"
                                          SortColumn="@nameof(HardwareVault.RFID)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
@@ -181,7 +181,7 @@
                     <td>
                         @if (context.IsOnline)
                             {
-                            <span class="badge bg-success">Connected</span>
+                            <span class="badge bg-success">@Resource.Label_Connected</span>
                             }
                             else
                             {

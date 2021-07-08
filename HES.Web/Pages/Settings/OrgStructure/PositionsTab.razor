@@ -4,12 +4,12 @@
 {
     <div class="d-flex justify-content-between mb-2">
         <div class="d-flex align-items-center flex-wrap">
-            <button type="button" class="btn btn-primary" title="Create company" @onclick="OpenDialogCreatePositionAsync">
-                Create Position
+            <button type="button" class="btn btn-primary" @onclick="OpenDialogCreatePositionAsync">
+                @Resource.Btn_CreatePosition
             </button>
         </div>
         <div class="d-flex align-items-end flex-nowrap">
-            <input type="text" @bind-value="SearchText" @bind-value:event="oninput" class="form-control is-search" placeholder="Search">
+            <input type="text" @bind-value="SearchText" @bind-value:event="oninput" class="form-control is-search" placeholder="@Resource.Label_Search">
         </div>
     </div>
     <div class="table-responsive mb-3">
@@ -18,7 +18,7 @@
                 <tr>
                     <th @onclick="@(() => SortTable())">
                         <span class="w-100">
-                            Positions
+                            @Resource.Label_Positions
                         </span>
                         <img class="table-sort-arrow @GetSortIcon()" />
                     </th>
@@ -34,13 +34,13 @@
                                     @position.Name
                                 </div>
                                 <div class="d-flex align-items-center flex-nowrap">
-                                    <button type="button" class="btn btn-light border mx-1" title="Edit department" @onclick="@(async () => await OpenDialogEditPositionAsync(position))">
+                                    <button type="button" class="btn btn-light border mx-1" @onclick="@(async () => await OpenDialogEditPositionAsync(position))">
                                         <img class="icon-btn" src="/svg/icon-edit.svg" />
-                                        Edit
+                                        @Resource.Btn_Edit
                                     </button>
-                                    <button type="button" class="btn btn-light border mx-1" title="Delete department" @onclick="@(async () => await OpenDialogDeletePositionAsync(position))">
+                                    <button type="button" class="btn btn-light border mx-1" @onclick="@(async () => await OpenDialogDeletePositionAsync(position))">
                                         <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                        Delete
+                                        @Resource.Btn_Delete
                                     </button>
                                 </div>
                             </div>
@@ -57,5 +57,5 @@ else if (LoadFailed)
 }
 else
 {
-    <Loader />
+    <Loader AbsoluteCenter="true" />
 }

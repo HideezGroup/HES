@@ -49,7 +49,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             try
             {
                 await LicenseService.DeleteOrderAsync(LicenseOrderId);
-                await ToastService.ShowToastAsync("License order deleted.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.LicenseOrders_DeleteLicenseOrder_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

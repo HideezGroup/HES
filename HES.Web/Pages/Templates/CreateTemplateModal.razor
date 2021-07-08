@@ -25,8 +25,8 @@ else
             <ValidationMessage For="@(() => Template.Apps)" class="text-danger" />
         </div>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">Cancel</button>
-            <Button @ref="Button" Text="Create" type="submit" class="btn btn-primary" />
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button @ref="Button" Text="@Resource.Btn_Create" type="submit" class="btn btn-primary" />
         </div>
     </EditForm>
 }

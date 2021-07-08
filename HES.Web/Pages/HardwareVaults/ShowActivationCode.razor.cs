@@ -1,5 +1,6 @@
 ﻿using HES.Core.Entities;
 using HES.Core.Enums;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Web.Components;
 using Microsoft.AspNetCore.Components;
@@ -33,7 +34,7 @@ namespace HES.Web.Pages.HardwareVaults
 
                 HardwareVault = await HardwareVaultService.GetVaultByIdAsync(HardwareVaultId);
                 if (HardwareVault == null)
-                    throw new Exception("HardwareVault not found.");
+                    throw new HESException(HESCode.HardwareVaultNotFound);
 
                 Code = await HardwareVaultService.GetVaultActivationCodeAsync(HardwareVault.Id);
             }

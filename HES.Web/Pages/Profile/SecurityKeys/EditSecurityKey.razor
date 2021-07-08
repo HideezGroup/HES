@@ -2,14 +2,18 @@
 
 @if (Initialized)
 {
-    <div class="form-group">
-        <label class="form-label">Name</label>
-        <input type="text" class="form-control" @bind-value="SecurityKeyName" @bind-value:event="oninput" />
-    </div>
-    <div class="form-footer">
-        <button type="button" @onclick="ModalDialogCancel" class="btn btn-secondary">Cancel</button>
-        <button type="button" @onclick="UpdateSecurityKeyAsync" class="btn btn-danger">Save</button>
-    </div>
+    <EditForm Model="EditSecurityKeyModel" OnValidSubmit="UpdateSecurityKeyAsync">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <Label For="@(() => EditSecurityKeyModel.Name)" class="text-gray" />
+            <InputText @bind-Value="EditSecurityKeyModel.Name" class="form-control" />
+            <ValidationMessage For="@(() => EditSecurityKeyModel.Name)" class="text-danger" />
+        </div>    
+        <div class="form-footer">
+            <button type="button" class="btn btn-secondary" @onclick="ModalDialogCancel">@Resource.Btn_Cancel</button>
+            <Button @ref="ButtonSpinner" Text="@Resource.Btn_Save" type="submit" class="btn btn-danger" />
+        </div>
+    </EditForm>
 }
 else
 {

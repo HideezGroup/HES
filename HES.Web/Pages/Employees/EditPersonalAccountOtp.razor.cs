@@ -58,7 +58,7 @@ namespace HES.Web.Pages.Employees
                 {
                     await EmployeeService.EditPersonalAccountOtpAsync(Account, AccountOtp);
                     RemoteDeviceConnectionsService.StartUpdateHardwareVaultAccounts(await EmployeeService.GetEmployeeVaultIdsAsync(Account.EmployeeId));
-                    await ToastService.ShowToastAsync("Account OTP updated.", ToastType.Success);
+                    await ToastService.ShowToastAsync(Resources.Resource.EmployeeDetails_EditPersonalAccountOtp_Toast, ToastType.Success);
                     await ModalDialogClose();
                 });
             }
@@ -75,13 +75,13 @@ namespace HES.Web.Pages.Employees
         }
 
         protected override async Task ModalDialogCancel()
-        { 
-            EmployeeService.UnchangedPersonalAccount(Account);       
+        {
+            EmployeeService.UnchangedPersonalAccount(Account);
             await base.ModalDialogCancel();
         }
 
         public void Dispose()
-        {    
+        {
             if (!EntityBeingEdited)
                 MemoryCache.Remove(Account.Id);
         }

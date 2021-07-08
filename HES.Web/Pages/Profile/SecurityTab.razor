@@ -2,8 +2,8 @@
 
 @if (Initialized)
 {
-    <p class="text-muted text-center">Your account security settings.</p>
-    <h5 class="card-title">Change Password</h5>
+    <p class="text-muted text-center">@Resource.Profile_Security_Description</p>
+    <h5 class="card-title">@Resource.Profile_Security_ChangePassword_Header</h5>
     <div class="card mb-5">
         <div class="card-body">
             <EditForm Model="ChangePasswordModel" OnValidSubmit="ChangePasswordAsync">
@@ -24,12 +24,12 @@
                     <ValidationMessage For="@(() => ChangePasswordModel.ConfirmPassword)" class="text-danger" />
                 </div>
                 <div class="text-center py-3">
-                    <Button @ref="ButtonChangePassword" Text="Save" type="submit" class="btn btn-primary w-25" />
+                    <Button @ref="ButtonChangePassword" Text="@Resource.Btn_Save" type="submit" class="btn btn-primary w-25" />
                 </div>
             </EditForm>
         </div>
     </div>
-    <h5 class="card-title">Security Keys</h5>
+    <h5 class="card-title">@Resource.Profile_Security_SecurityKeys_Header</h5>
     <div class="card mb-5">
         <div class="card-body">
             @foreach (var credential in StoredCredentials)
@@ -37,65 +37,65 @@
                 <div class="border rounded p-3 d-flex justify-content-between align-items-center mb-2">
                     <div>
                         <span class="d-block fw-bold">@credential.SecurityKeyName</span>
-                        <small class="text-muted">Registration Date: @credential.RegDate.ToLocalTime().ToShortDateString()</small>
+                        <small class="text-muted">@Resource.Profile_Security_SecurityKeys_RegistrationDate: @credential.RegDate.ToLocalTime().ToShortDateString()</small>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-outline-secondary" @onclick="@(async () =>  await EditSecurityKeyAsync(credential.Id))">Edit</button>
-                        <button type="button" class="btn btn-outline-secondary ms-1" @onclick="@(async () =>  await DeleteSecurityKeyAsync(credential.Id))">Delete</button>
+                        <button type="button" class="btn btn-outline-secondary" @onclick="@(async () =>  await EditSecurityKeyAsync(credential.Id))">@Resource.Btn_Edit</button>
+                        <button type="button" class="btn btn-outline-secondary ms-1" @onclick="@(async () =>  await DeleteSecurityKeyAsync(credential.Id))">@Resource.Btn_Delete</button>
                     </div>
                 </div>
             }
             <div class="text-center py-3">
-                <button @onclick="AddSecurityKeyAsync" class="btn btn-primary w-25">Add Security Key</button>
+                <button @onclick="AddSecurityKeyAsync" class="btn btn-primary w-25">@Resource.Btn_AddSecurityKey</button>
             </div>
         </div>
     </div>
-    <h5 class="card-title">Two-factor authentication (2FA)</h5>
+    <h5 class="card-title">@Resource.Profile_Security_2FA_Header</h5>
     <div class="card mb-5">
         <div class="card-body">
-            <h5 class="mb-4">Authenticator app</h5>
+            <h5 class="mb-4">@Resource.Profile_Security_2FA_SubHeader_AuthenticatorApp</h5>
             @if (!TwoFactorInfo.HasAuthenticator)
             {
-                <button @onclick="EnableAuthenticatorAsync" class="btn btn-primary">Add authenticator app</button>
+                <button @onclick="EnableAuthenticatorAsync" class="btn btn-primary">@Resource.Btn_AddAuthenticatorApp</button>
             }
             else
             {
-                <button @onclick="EnableAuthenticatorAsync" class="btn btn-primary">Setup authenticator app</button>
-                <button @onclick="ResetAuthenticatorAsync" class="btn btn-outline-danger">Reset authenticator app</button>
+                <button @onclick="EnableAuthenticatorAsync" class="btn btn-primary">@Resource.Btn_SetupAuthenticatorApp</button>
+                <button @onclick="ResetAuthenticatorAsync" class="btn btn-outline-danger">@Resource.Btn_ResetAuthenticatorApp</button>
             }
             @if (TwoFactorInfo.Is2faEnabled)
             {
                 <hr />
-                <h5 class="mb-4">Manage 2FA</h5> if (TwoFactorInfo.RecoveryCodesLeft == 0)
+                <h5 class="mb-4">@Resource.Profile_Security_2FA_SubHeader_Manage2FA</h5> if (TwoFactorInfo.RecoveryCodesLeft == 0)
                 {
                     <div class="alert alert-danger">
-                        <strong>You have no recovery codes left.</strong>
-                        <p>You must generate a new set of recovery codes before you can log in with a recovery code.</p>
-                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">Generate Recovery Codes</button>
+                        <strong>@Resource.Profile_Security_2FA_NoRecoveryCodes_Header</strong>
+                        <p>@Resource.Profile_Security_2FA_NoRecoveryCodes_Description</p>
+                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">@Resource.Btn_GenerateRecoveryCodes</button>
                     </div>
                 }
                 else if (TwoFactorInfo.RecoveryCodesLeft == 1)
                 {
                     <div class="alert alert-danger">
-                        <strong>You have 1 recovery code left.</strong>
-                        <p>You can generate a new set of recovery codes.</p>
-                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">Generate Recovery Codes</button>
+                        <strong>@Resource.Profile_Security_2FA_1RecoveryCodes_Header</strong>
+                        <p>@Resource.Profile_Security_2FA_1RecoveryCodes_Description</p>
+                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">@Resource.Btn_GenerateRecoveryCodes</button>
                     </div>
                 }
                 else if (TwoFactorInfo.RecoveryCodesLeft <= 3)
                 {
                     <div class="alert alert-warning">
-                        <strong>You have @TwoFactorInfo.RecoveryCodesLeft recovery codes left.</strong>
-                        <p>You should generate a new set of recovery codes.</p>
-                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">Generate Recovery Codes</button>
+                        <strong>@string.Format(Resource.Profile_Security_2FA_HaveRecoveryCodes_Header, TwoFactorInfo.RecoveryCodesLeft)</strong>
+                        <p>@Resource.Profile_Security_2FA_HaveRecoveryCodes_Description</p>
+                        <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-warning">@Resource.Btn_GenerateRecoveryCodes</button>
                     </div>
                 }
                 if (TwoFactorInfo.IsMachineRemembered)
                 {
-                    <button type="button" class="btn btn-primary" @onclick="ForgetBrowserAsync">Forget this browser</button>
+                    <button type="button" class="btn btn-primary" @onclick="ForgetBrowserAsync">@Resource.Btn_ForgetThisBrowser</button>
                 }
-                <button @onclick="Disable2FaAsync" class="btn btn-danger">Disable 2FA</button>
-                <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-danger">Reset recovery codes</button>
+                <button @onclick="Disable2FaAsync" class="btn btn-danger">@Resource.Btn_Disable2FA</button>
+                <button @onclick="GenerateRecoveryCodesAsync" class="btn btn-outline-danger">@Resource.Btn_ResetRecoveryCodes</button>
             }
         </div>
     </div>

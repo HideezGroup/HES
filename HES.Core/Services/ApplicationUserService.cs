@@ -4,20 +4,17 @@ using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.API;
-using HES.Core.Models.AppUsers;
 using HES.Core.Models.DataTableComponent;
 using HES.Core.Models.Filters;
 using HES.Core.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -53,6 +50,10 @@ namespace HES.Core.Services
 
         public async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return null;
+            }
             return await _userManager.FindByEmailAsync(email);
         }
 
@@ -114,7 +115,7 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.EmailAlreadyTaken);
             }
 
-            var user = new ApplicationUser { UserName = email, Email = email };
+            var user = new ApplicationUser { UserName = email, Email = email, Culture = CultureConstants.EN };
             var password = Guid.NewGuid().ToString();
 
             var result = await _userManager.CreateAsync(user, password);
@@ -142,10 +143,8 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.UserNotFound);
             }
 
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callbackUrl = $"{domain.TrimEnd('/')}{Routes.Invite}?code={WebUtility.UrlEncode(code)}&Email={email}";
-
-            return HtmlEncoder.Default.Encode(callbackUrl);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);    
+            return CreateCallbackUrl(domain, $"{Routes.Invite}?code={WebUtility.UrlEncode(code)}&Email={email}");
         }
 
         public async Task<ApplicationUser> DeleteUserAsync(string userId)
@@ -185,9 +184,7 @@ namespace HES.Core.Services
             var code = await _userManager.GenerateUserTokenAsync(user, _registerSecurityKeyTokenProvoderName, _registerSecurityKeyTokenProvoderPurpose);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            var callbackUrl = $"{domain.TrimEnd('/')}{Routes.RegisterSecurityKey}?code={code}&email={email}";
-
-            return HtmlEncoder.Default.Encode(callbackUrl);
+            return CreateCallbackUrl(domain, $"{Routes.RegisterSecurityKey}?code={code}&email={email}");
         }
 
         public async Task<bool> VerifyRegisterSecurityKeyTokenAsync(ApplicationUser user, string code)
@@ -211,6 +208,7 @@ namespace HES.Core.Services
             user.FirstName = parameters.FirstName;
             user.LastName = parameters.LastName;
             user.PhoneNumber = parameters.PhoneNumber;
+            user.ExternalId = parameters.ExternalId;
 
             var userResult = await _userManager.UpdateAsync(user);
 
@@ -220,7 +218,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task ChangeEmailAsync(ChangeEmailModel parameters)
+        public async Task<string> ChangeEmailAsync(UserChangeEmailModel parameters, string baseUri)
         {
             if (parameters == null)
             {
@@ -242,7 +240,7 @@ namespace HES.Core.Services
             var code = await _userManager.GenerateChangeEmailTokenAsync(user, parameters.NewEmail);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            await _emailSenderService.SendUserConfirmEmailAsync(user.Id, parameters.NewEmail, code);
+            return CreateCallbackUrl(baseUri, $"{Routes.ConfirmEmailChange}?userId={user.Id}&code={code}&email={parameters.NewEmail}");
         }
 
         public async Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters)
@@ -284,7 +282,7 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task UpdateAccountPasswordAsync(ChangePasswordModel parameters)
+        public async Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters)
         {
             if (parameters == null)
             {
@@ -310,28 +308,6 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task<TwoFactorInfo> GetTwoFactorInfoAsync(HttpClient httpClient)
-        {
-            var response = await httpClient.GetAsync("api/Identity/GetTwoFactorInfo");
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
-            }
-
-            return JsonConvert.DeserializeObject<TwoFactorInfo>(await response.Content.ReadAsStringAsync());
-        }
-
-        public async Task ForgetBrowserAsync(HttpClient httpClient)
-        {
-            var response = await httpClient.PostAsync("api/Identity/ForgetTwoFactorClient", new StringContent(string.Empty));
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception(await response.Content.ReadAsStringAsync());
-            }
-        }
-
         #endregion
 
         #region Email
@@ -345,7 +321,7 @@ namespace HES.Core.Services
         public async Task SendHardwareVaultLicenseStatus(List<HardwareVault> vaults)
         {
             var administrators = await GetAllAdministratorsAsync();
-            await _emailSenderService.SendHardwareVaultLicenseStatus(vaults, administrators);
+            await _emailSenderService.SendHardwareVaultLicenseStatusAsync(vaults, administrators);
         }
 
         public async Task SendActivateDataProtectionAsync()
@@ -354,7 +330,33 @@ namespace HES.Core.Services
             await _emailSenderService.SendActivateDataProtectionAsync(administrators);
         }
 
+        public async Task SendUserResetPasswordAsync(string email, string domain)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new HESException(HESCode.UserNotFound);
+            }
+
+            if (!user.EmailConfirmed)
+            {
+                throw new HESException(HESCode.InvitationNotConfirmed);
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var callbackUrl = $"{domain.TrimEnd('/')}{Routes.ResetPassword}?code={code}&email={email}";
+
+            await _emailSenderService.SendUserResetPasswordAsync(email, HtmlEncoder.Default.Encode(callbackUrl));
+        }
+
         #endregion
+
+        private string CreateCallbackUrl(string host, string path)
+        {
+            return HtmlEncoder.Default.Encode($"{host.TrimEnd('/')}{path}");
+        }
 
         #region API
 

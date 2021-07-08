@@ -8,51 +8,51 @@ else
         <DataAnnotationsValidator />
         <div class="row">
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">ID</label>
+                <Label For="@(() => Filter.Id)" class="form-label text-gray" />
                 <InputText id="filterVaultId" @bind-Value="Filter.Id" class="form-control" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">MAC</label>
+                <Label For="@(() => Filter.MAC)" class="form-label text-gray" />
                 <InputText id="filterMac" @bind-Value="Filter.MAC" class="form-control" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">RFID</label>
+                <Label For="@(() => Filter.RFID)" class="form-label text-gray" />
                 <InputText id="filterRfid" @bind-Value="Filter.RFID" class="form-control" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Battery</label>
+                <Label For="@(() => Filter.Battery)" class="form-label text-gray" />
                 <select id="filterBattery" @bind="Filter.Battery" class="form-select">
                     <option selected></option>
-                    <option value="low">Low</option>
-                    <option value="high">High</option>
+                    <option value="low">@Resource.Label_Low</option>
+                    <option value="high">@Resource.Label_High</option>
                 </select>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Firmware</label>
+                <Label For="@(() => Filter.Firmware)" class="form-label text-gray" />
                 <InputText id="filterFirmware" @bind-Value="Filter.Firmware" class="form-control" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Last Synced Start Date</label>
+                <Label For="@(() => Filter.LastSyncedStartDate)" class="form-label text-gray" />
                 <DateTimePicker @bind-Value="Filter.LastSyncedStartDate" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Last Synced End Date</label>
+                <Label For="@(() => Filter.LastSyncedEndDate)" class="form-label text-gray" />
                 <DateTimePicker @bind-Value="Filter.LastSyncedEndDate" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Employee</label>
+                <Label For="@(() => Filter.Employee)" class="form-label text-gray" />
                 <InputText id="filterEmployee" @bind-Value="Filter.Employee" class="form-control" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Company</label>
+                <Label For="@(() => Filter.Company)" class="form-label text-gray" />
                 <InputText id="filterCompany" @bind-Value="Filter.Company" class="form-control" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Department</label>
+                <Label For="@(() => Filter.Department)" class="form-label text-gray" />
                 <InputText id="filterDepartment" @bind-Value="Filter.Department" class="form-control" />
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Vault Status</label>
+                <Label For="@(() => Filter.Status)" class="form-label text-gray" />
                 <select id="filterVaultStatus" @bind="Filter.Status" class="form-select">
                     <option selected></option>
                     @foreach (var item in VaultStatusList)
@@ -62,7 +62,7 @@ else
                 </select>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">License Status</label>
+                <Label For="@(() => Filter.LicenseStatus)" class="form-label text-gray" />
                 <select id="filterStatus" @bind="Filter.LicenseStatus" class="form-select">
                     <option selected></option>
                     @foreach (var item in LicenseStatusList)
@@ -72,12 +72,12 @@ else
                 </select>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 form-group">
-                <label class="mb-0 text-gray">Till License End Date</label>
+                <Label For="@(() => Filter.LicenseEndDate)" class="form-label text-gray" />
                 <InputDate id="filterLicenseEndDate" @bind-Value="Filter.LicenseEndDate" class="form-control" />
             </div>
             <div class="col align-self-end text-end form-group">
-                <Button Text="Clear" class="btn btn-secondary" OnClick="ClearAsync"/>
-                <Button @ref="ButtonSpinner" Text="Filter" type="submit" class="btn btn-primary" />
+                <Button Text="@Resource.Btn_Clear" OnClick="ClearAsync" class="btn btn-secondary" />
+                <Button @ref="ButtonSpinner" Text="@Resource.Btn_Filter" type="submit" class="btn btn-primary" />
             </div>
         </div>
     </EditForm>

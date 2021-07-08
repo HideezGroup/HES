@@ -1,7 +1,7 @@
 ﻿@namespace HES.Web.Components
-<h5 class="mb-3">The @EntityName is currently being edited by another admin</h5>
+<h5 class="mb-3">@string.Format(Resource.Label_EditedByAnother, EntityName)</h5>
 <div class="text-end">
-    <button type="button" class="btn btn-secondary" @onclick="@(async () => await  CloseAction.InvokeAsync(this))">Close</button>
+    <button type="button" class="btn btn-secondary" @onclick="@(async () => await  CloseAction.InvokeAsync(this))">@Resource.Btn_Close</button>
 </div>
 
 @code {

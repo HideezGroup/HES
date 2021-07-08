@@ -52,7 +52,8 @@ namespace HES.Infrastructure.Data
                     Email = adminEmail,
                     EmailConfirmed = true,
                     FirstName = "admin",
-                    LastName = "hideez"
+                    LastName = "hideez",
+                    Culture = CultureConstants.EN
                 };
                 await userManager.CreateAsync(admin, adminPassword);
                 // Add admin to role

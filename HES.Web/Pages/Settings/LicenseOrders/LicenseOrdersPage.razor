@@ -12,30 +12,30 @@
                     <LicenseOrderFilterComponent FilterChanged="DataTableService.FilterChangedAsync" />
                 </FilterForm>
                 <ActionButtons>
-                    <Button Text="Refresh Licenses" OnClick="UpdateLicenseInfoAsync" class="btn btn-primary mx-1" />
-                    <button type="button" @onclick="CreateLicenseOrderAsync" class="btn btn-primary mx-1" title="New Order">
-                        New Order
+                    <Button Text="@Resource.Btn_RefreshLicenses" OnClick="RefreshLicenseInfoAsync" class="btn btn-primary mx-1" />
+                    <button type="button" @onclick="CreateLicenseOrderAsync" class="btn btn-primary mx-1">
+                        @Resource.Btn_NewOrder
                     </button>
                     @if (DataTableService.SelectedEntity != null)
                     {
                         if (DataTableService.SelectedEntity.OrderStatus == LicenseOrderStatus.New)
                         {
-                            <button type="button" @onclick="SendLicenseOrderAsync" class="btn btn-light border mx-1" title="Send license order">
+                            <button type="button" @onclick="SendLicenseOrderAsync" class="btn btn-light border mx-1">
                                 <img class="icon-btn" src="/svg/icon-send.svg" />
-                                Send
+                                @Resource.Btn_Send
                             </button>
-                            <button type="button" @onclick="EditLicenseOrderAsync" class="btn btn-light border mx-1" title="Edit license order">
+                            <button type="button" @onclick="EditLicenseOrderAsync" class="btn btn-light border mx-1">
                                 <img class="icon-btn" src="/svg/icon-edit.svg" />
-                                Edit
+                                @Resource.Btn_Edit
                             </button>
-                            <button type="button" @onclick="DeleteLicenseOrderAsync" class="btn btn-light border mx-1" title="Delete license order">
+                            <button type="button" @onclick="DeleteLicenseOrderAsync" class="btn btn-light border mx-1">
                                 <img class="icon-btn" src="/svg/icon-delete.svg" />
-                                Delete
+                                @Resource.Btn_Delete
                             </button>
                         }
-                        <button type="button" @onclick="LicenseOrderDetailsAsync" class="btn btn-light border mx-1" title="License order details">
+                        <button type="button" @onclick="LicenseOrderDetailsAsync" class="btn btn-light border mx-1">
                             <img class="icon-btn" src="/svg/icon-details.svg" />
-                            Details
+                            @Resource.Btn_Details
                         </button>
                     }
                 </ActionButtons>
@@ -44,49 +44,49 @@
         <WrapperBody>
             <DataTable Items="DataTableService.Entities" SelectedItem="DataTableService.SelectedEntity" SelecedItemChanged="DataTableService.SelectedItemChangedAsync">
                 <TableHeader>
-                    <DataTableHeaderItem Title="Contact Email"
+                    <DataTableHeaderItem Title="@Resource.Label_ContactEmail"
                                          TitleWidth="16"
                                          SortColumn="@nameof(LicenseOrder.ContactEmail)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Note"
+                    <DataTableHeaderItem Title="@Resource.Label_Note"
                                          TitleWidth="20"
                                          SortColumn="@nameof(LicenseOrder.Note)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Prolong"
+                    <DataTableHeaderItem Title="@Resource.Label_Prolong"
                                          TitleWidth="8"
                                          SortColumn="@nameof(LicenseOrder.ProlongExistingLicenses)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Start Date"
+                    <DataTableHeaderItem Title="@Resource.Label_StartDate"
                                          TitleWidth="14"
                                          SortColumn="@nameof(LicenseOrder.StartDate)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="End Date"
+                    <DataTableHeaderItem Title="@Resource.Label_EndDate"
                                          TitleWidth="14"
                                          SortColumn="@nameof(LicenseOrder.EndDate)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Created At"
+                    <DataTableHeaderItem Title="@Resource.Label_Created"
                                          TitleWidth="14"
                                          SortColumn="@nameof(LicenseOrder.CreatedAt)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
                                          CurrentSortDirection="@DataTableService.DataLoadingOptions.SortDirection"
                                          SortedColumnChanged="DataTableService.SortedColumnChangedAsync"
                                          SortDirectionChanged="DataTableService.SortDirectionChangedAsync" />
-                    <DataTableHeaderItem Title="Order Status"
+                    <DataTableHeaderItem Title="@Resource.Label_OrderStatus"
                                          TitleWidth="14"
                                          SortColumn="@nameof(LicenseOrder.OrderStatus)"
                                          CurrentSortedColumn="@DataTableService.DataLoadingOptions.SortedColumn"
@@ -104,11 +104,11 @@
                     <td>
                         @if (context.ProlongExistingLicenses)
                             {
-                            <span class="badge bg-success">Yes</span>
+                            <span class="badge bg-success">@Resource.Label_Yes</span>
                             }
                             else
                             {
-                            <span class="badge bg-secondary">No</span>
+                            <span class="badge bg-secondary">@Resource.Label_No</span>
                             }
                     </td>
                     <td>

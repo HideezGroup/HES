@@ -107,13 +107,13 @@ namespace HES.Web.Pages.Workstations
             {
                 if (SelectedHardwareVault == null)
                 {
-                    WarningMessage = "Please, select a vault.";
+                    WarningMessage = Resources.Resource.Message_SelectHardwareVault;
                     return;
                 }
 
                 await WorkstationService.CreateWorkstationHardwareVaultPairAsync(WorkstationId, SelectedHardwareVault.Id);
                 await RemoteWorkstationConnectionsService.UpdateProximitySettingsAsync(WorkstationId, await WorkstationService.GetWorkstationHardwareVaultPairSettingsAsync(WorkstationId));
-                await ToastService.ShowToastAsync("Vault added", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Workstations_AddProximityVault_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

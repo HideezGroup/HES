@@ -1,4 +1,5 @@
 ﻿using HES.Core.Entities;
+using HES.Core.Exceptions;
 using HES.Core.Interfaces;
 using HES.Core.Models.Filters;
 using HES.Web.Components;
@@ -54,7 +55,7 @@ namespace HES.Web.Pages.Workstations
         {
             Workstation = await WorkstationService.GetWorkstationByIdAsync(WorkstationId);
             if (Workstation == null)
-                throw new Exception("Workstation not found.");
+                throw new HESException(HESCode.WorkstationNotFound);
         }
 
         private async Task OpenDialogAddHardwareVaultAsync()
@@ -66,7 +67,7 @@ namespace HES.Web.Pages.Workstations
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Add Proximity Vault", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Workstations_AddProximityVault_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -82,11 +83,10 @@ namespace HES.Web.Pages.Workstations
             {
                 builder.OpenComponent(0, typeof(DeleteProximityVault));
                 builder.AddAttribute(1, nameof(DeleteProximityVault.WorkstationProximityVault), DataTableService.SelectedEntity);
-                builder.AddAttribute(2, nameof(DeleteProximityVault.WorkstationId), WorkstationId);
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete Proximity Vault", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.Workstations_DeleteProximityVault_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)

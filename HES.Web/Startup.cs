@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -138,7 +141,6 @@ namespace HES.Web
             services.AddScoped<ISoftwareVaultService, SoftwareVaultService>();
             services.AddScoped<IBreadcrumbsService, BreadcrumbsService>();
             services.AddScoped<IFido2Service, Fido2Service>();
-            services.AddScoped<IIdentityApiClient, IdentityApiClient>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IDataProtectionService, DataProtectionService>();
@@ -256,6 +258,23 @@ namespace HES.Web
 
             #endregion
 
+            #region Localization
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo(CultureConstants.EN),
+                    new CultureInfo(CultureConstants.UA)
+                };
+                options.DefaultRequestCulture = new RequestCulture(CultureConstants.EN);
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
+            #endregion
+
             services.AddMvc().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
             services.AddRazorPages();
@@ -286,6 +305,8 @@ namespace HES.Web
                     app.UseHsts();
                 }
             }
+
+            app.UseRequestLocalization();
 
             app.UseStatusCodePages();
             app.UseStaticFiles();

@@ -51,14 +51,14 @@ namespace HES.Web.Pages.Settings.LicenseOrders
             });
         }
 
-        private async Task UpdateLicenseInfoAsync()
+        private async Task RefreshLicenseInfoAsync()
         {
             try
             {
                 await LicenseService.UpdateLicenseOrdersAsync();
                 await LicenseService.UpdateHardwareVaultsLicenseStatusAsync();
                 await DataTableService.LoadTableDataAsync();
-                await ToastService.ShowToastAsync("License info updated.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.LicenseOrders_RefreshLicenseInfo_Toast, ToastType.Success);
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Create License Order", body, ModalDialogSize.Large);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.LicenseOrders_CreateLicenseOrder_Title, body, ModalDialogSize.Large);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -94,7 +94,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Send License Order", body, ModalDialogSize.Default);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.LicenseOrders_SendLicenseOrder_Title, body, ModalDialogSize.Default);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -113,7 +113,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("License Order Details", body, ModalDialogSize.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.LicenseOrders_DetailsLicenseOrder_Title, body, ModalDialogSize.ExtraLarge);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -132,7 +132,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Edit License Order", body, ModalDialogSize.ExtraLarge);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.LicenseOrders_EditLicenseOrder_Title, body, ModalDialogSize.ExtraLarge);
             var result = await instance.Result;
 
             if (result.Succeeded)
@@ -151,7 +151,7 @@ namespace HES.Web.Pages.Settings.LicenseOrders
                 builder.CloseComponent();
             };
 
-            var instance = await ModalDialogService.ShowAsync("Delete License Order", body);
+            var instance = await ModalDialogService.ShowAsync(Resources.Resource.LicenseOrders_DeleteLicenseOrder_Title, body);
             var result = await instance.Result;
 
             if (result.Succeeded)

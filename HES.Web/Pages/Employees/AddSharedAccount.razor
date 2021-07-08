@@ -8,9 +8,9 @@ else
 {
     @if (SharedAccounts.Count == 0)
     {
-        <h6 class="mb-3">There are no accounts, you can create a shared account on the <a href="/SharedAccounts">Shared Accounts</a> page.</h6>
+        <h6 class="mb-3">@Resource.EmployeeDetails_AddSharedAccount_NoAccounts</h6>
         <div class="text-end">
-            <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Close</button>
+            <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Close</button>
         </div>
     }
     else
@@ -27,16 +27,16 @@ else
                 </div>
             </div>
             <div class="col">
-                <div><b>Name</b>: @SelectedSharedAccount.Name</div>
-                <div><b>Urls</b>: @SelectedSharedAccount.Urls</div>
-                <div><b>Apps</b>: @SelectedSharedAccount.Apps</div>
-                <div><b>Login Type</b>: @EnumHelper.GetDisplayName(SelectedSharedAccount.LoginType)</div>
-                <div><b>Login</b>: @SelectedSharedAccount.Login</div>
+                <div><b>@Resource.Label_Name</b>: @SelectedSharedAccount.Name</div>
+                <div><b>@Resource.Label_Urls</b>: @SelectedSharedAccount.Urls</div>
+                <div><b>@Resource.Label_Apps</b>: @SelectedSharedAccount.Apps</div>
+                <div><b>@Resource.Label_LoginType</b>: @EnumHelper.GetDisplayName(SelectedSharedAccount.LoginType)</div>
+                <div><b>@Resource.Label_Login</b>: @SelectedSharedAccount.Login</div>
             </div>
         </div>
         <div class="form-footer">
-            <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">Close</button>
-            <Button Text="Add" OnClick="AddSharedAccoountAsync" class="btn btn-primary btn-min-w" />
+            <button type="button" class="btn btn-secondary btn-min-w" @onclick="ModalDialogCancel">@Resource.Btn_Close</button>
+            <Button Text="@Resource.Btn_Add" OnClick="AddSharedAccoountAsync" class="btn btn-primary btn-min-w" />
         </div>
     }
 }
