@@ -9,6 +9,7 @@ using HES.Core.Models.AppSettings;
 using HES.Core.Services;
 using HES.Infrastructure;
 using HES.Web.Components;
+using HES.Web.Middleware;
 using HES.Web.Providers;
 using ITfoxtec.Identity.Saml2;
 using ITfoxtec.Identity.Saml2.MvcCore;
@@ -329,6 +330,8 @@ namespace HES.Web
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Server API v1");
             });
+
+            app.UseMiddleware<HeadersMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
