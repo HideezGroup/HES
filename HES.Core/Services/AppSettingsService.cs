@@ -35,7 +35,7 @@ namespace HES.Core.Services
 
         public async Task<LicensingSettings> GetLicenseSettingsAsync()
         {
-            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Licensing);
+            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == AppConstants.Licensing);
             if (settings == null)
             {
                 return null;
@@ -58,13 +58,13 @@ namespace HES.Core.Services
 
             var json = JsonSerializer.Serialize(licSettings);
 
-            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
+            var appSettings = await _dbContext.AppSettings.FindAsync(AppConstants.Licensing);
 
             if (appSettings == null)
             {
                 appSettings = new AppSettings()
                 {
-                    Id = ServerConstants.Licensing,
+                    Id = AppConstants.Licensing,
                     Value = json
                 };
                 _dbContext.AppSettings.Add(appSettings);
@@ -80,7 +80,7 @@ namespace HES.Core.Services
 
         public async Task RemoveLicenseSettingsAsync()
         {
-            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
+            var appSettings = await _dbContext.AppSettings.FindAsync(AppConstants.Licensing);
             if (appSettings != null)
             {
                 _dbContext.AppSettings.Remove(appSettings);
@@ -94,7 +94,7 @@ namespace HES.Core.Services
 
         public async Task<LdapSettings> GetLdapSettingsAsync()
         {
-            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Ldap);
+            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == AppConstants.Ldap);
             if (settings == null)
             {
                 return null;
@@ -117,13 +117,13 @@ namespace HES.Core.Services
 
             var json = JsonSerializer.Serialize(ldapSettings);
 
-            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
+            var appSettings = await _dbContext.AppSettings.FindAsync(AppConstants.Ldap);
 
             if (appSettings == null)
             {
                 appSettings = new AppSettings()
                 {
-                    Id = ServerConstants.Ldap,
+                    Id = AppConstants.Ldap,
                     Value = json
                 };
                 _dbContext.AppSettings.Add(appSettings);
@@ -139,7 +139,7 @@ namespace HES.Core.Services
 
         public async Task RemoveLdapSettingsAsync()
         {
-            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
+            var appSettings = await _dbContext.AppSettings.FindAsync(AppConstants.Ldap);
             if (appSettings != null)
             {
                 _dbContext.AppSettings.Remove(appSettings);
@@ -153,7 +153,7 @@ namespace HES.Core.Services
 
         public async Task<AlarmState> GetAlarmStateAsync()
         {
-            var alarmState = _memoryCache.Get<AlarmState>(ServerConstants.Alarm);
+            var alarmState = _memoryCache.Get<AlarmState>(AppConstants.Alarm);
 
             if (alarmState != null)
             {
@@ -166,7 +166,7 @@ namespace HES.Core.Services
 
             if (!File.Exists(_path))
             {
-                _memoryCache.Set(ServerConstants.Alarm, alarmState);
+                _memoryCache.Set(AppConstants.Alarm, alarmState);
                 return alarmState;
             }
 
@@ -184,7 +184,7 @@ namespace HES.Core.Services
                 }
 
                 alarmState = JsonSerializer.Deserialize<AlarmState>(json);
-                _memoryCache.Set(ServerConstants.Alarm, alarmState);
+                _memoryCache.Set(AppConstants.Alarm, alarmState);
             }
             catch (Exception ex)
             {
@@ -196,7 +196,7 @@ namespace HES.Core.Services
 
         public async Task SetAlarmStateAsync(AlarmState alarmState)
         {
-            _memoryCache.Set(ServerConstants.Alarm, alarmState);
+            _memoryCache.Set(AppConstants.Alarm, alarmState);
 
             try
             {
@@ -219,21 +219,21 @@ namespace HES.Core.Services
 
         public async Task<SplunkSettings> GetSplunkSettingsAsync()
         {
-            if (_cache.TryGetValue(ServerConstants.Splunk, out object value))
+            if (_cache.TryGetValue(AppConstants.Splunk, out object value))
             {
                 return (SplunkSettings)value;
             }
 
-            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == ServerConstants.Splunk);
+            var settings = await _dbContext.AppSettings.FirstOrDefaultAsync(x => x.Id == AppConstants.Splunk);
             if (settings == null)
             {
-                _cache.AddOrUpdate(ServerConstants.Splunk, settings, (key, existing) => settings);
+                _cache.AddOrUpdate(AppConstants.Splunk, settings, (key, existing) => settings);
                 return null;
             }
 
             var deserialized = JsonSerializer.Deserialize<SplunkSettings>(settings.Value);
             deserialized.Token = _dataProtectionService.Decrypt(deserialized.Token);
-            _cache.AddOrUpdate(ServerConstants.Splunk, deserialized, (key, existing) => deserialized);
+            _cache.AddOrUpdate(AppConstants.Splunk, deserialized, (key, existing) => deserialized);
             return deserialized;
         }
 
@@ -248,13 +248,13 @@ namespace HES.Core.Services
 
             var json = JsonSerializer.Serialize(splunkSettings);
 
-            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            var appSettings = await _dbContext.AppSettings.FindAsync(AppConstants.Splunk);
 
             if (appSettings == null)
             {
                 appSettings = new AppSettings()
                 {
-                    Id = ServerConstants.Splunk,
+                    Id = AppConstants.Splunk,
                     Value = json
                 };
                 _dbContext.AppSettings.Add(appSettings);
@@ -266,18 +266,18 @@ namespace HES.Core.Services
             }
 
             await _dbContext.SaveChangesAsync();
-            _cache.TryRemove(ServerConstants.Splunk, out object _);
+            _cache.TryRemove(AppConstants.Splunk, out object _);
         }
 
         public async Task RemoveSplunkSettingsAsync()
         {
-            var appSettings = await _dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            var appSettings = await _dbContext.AppSettings.FindAsync(AppConstants.Splunk);
             if (appSettings != null)
             {
                 _dbContext.AppSettings.Remove(appSettings);
                 await _dbContext.SaveChangesAsync();
             }
-            _cache.TryRemove(ServerConstants.Splunk, out object _);
+            _cache.TryRemove(AppConstants.Splunk, out object _);
         }
 
         #endregion
@@ -286,14 +286,14 @@ namespace HES.Core.Services
 
         public async Task<List<SamlRelyingParty>> GetSaml2RelyingPartiesAsync()
         {
-            if (_cache.TryGetValue(ServerConstants.Saml2Sp, out object value))
+            if (_cache.TryGetValue(AppConstants.Saml2Sp, out object value))
             {
                 return (List<SamlRelyingParty>)value;
             }
 
             var relyingParties = await _dbContext.SamlRelyingParties.AsNoTracking().ToListAsync();
 
-            _cache.AddOrUpdate(ServerConstants.Saml2Sp, relyingParties, (key, existing) => relyingParties);
+            _cache.AddOrUpdate(AppConstants.Saml2Sp, relyingParties, (key, existing) => relyingParties);
 
             return relyingParties;
         }
@@ -328,7 +328,7 @@ namespace HES.Core.Services
             _dbContext.SamlRelyingParties.Add(relyingParty);
             await _dbContext.SaveChangesAsync();
 
-            _cache.TryRemove(ServerConstants.Saml2Sp, out object _);
+            _cache.TryRemove(AppConstants.Saml2Sp, out object _);
         }
 
         public async Task EditSaml2RelyingPartyAsync(SamlRelyingParty relyingParty)
@@ -356,7 +356,7 @@ namespace HES.Core.Services
             _dbContext.SamlRelyingParties.Update(relyingParty);
             await _dbContext.SaveChangesAsync();
 
-            _cache.TryRemove(ServerConstants.Saml2Sp, out object _);
+            _cache.TryRemove(AppConstants.Saml2Sp, out object _);
         }
 
         public void UnchangedSaml2RelyingParty(SamlRelyingParty relyingParty)
@@ -376,7 +376,7 @@ namespace HES.Core.Services
             _dbContext.SamlRelyingParties.Remove(relyingParty);
             await _dbContext.SaveChangesAsync();
 
-            _cache.TryRemove(ServerConstants.Saml2Sp, out object _);
+            _cache.TryRemove(AppConstants.Saml2Sp, out object _);
         }
 
         #endregion

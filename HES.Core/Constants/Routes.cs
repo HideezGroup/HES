@@ -41,6 +41,7 @@
         public const string LicenseOrders = "/settings/license-orders";
         public const string OrgStructure = "/settings/org-structure";
         public const string Parameters = "/settings/parameters";
+        public const string Update = "/update";
 
         public const string SamlMetadata = "/saml/metadata";
         public const string SamlDownloadMetadata = "/saml/metadata?download=true";

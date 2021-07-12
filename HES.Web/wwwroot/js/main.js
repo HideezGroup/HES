@@ -24,7 +24,7 @@ function ToggleSidebarClass() {
     $('.icon-arrow').toggleClass('toggled');
     $('.copyright').toggleClass('toggled');
     $('.loading').toggleClass('toggled');
-    $('.icon-hideez').toggleClass('toggled');
+    $('.icon-brand').toggleClass('toggled');
 }
 
 function collapseSub(subId) {    

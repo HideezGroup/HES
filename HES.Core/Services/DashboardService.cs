@@ -37,7 +37,7 @@ namespace HES.Core.Services
 
         public string GetServerVersion()
         {
-            return ServerConstants.Version;
+            return AppConstants.Version;
         }
 
         public async Task<int> GetHardwareVaultTasksCount()
@@ -76,7 +76,7 @@ namespace HES.Core.Services
                 CardLogo = "/svg/logo-server.svg",
                 LeftText = Resources.Resource.Dashboard_ServerCard_LeftText,
                 LeftValue = $"{GetServerVersion()}",
-                LeftLink = Resources.Resource.Dashboard_ServerCard_LeftLink,
+                LeftLink = Routes.Update,
                 RightText = Resources.Resource.Dashboard_ServerCard_RightText,
                 RightValue = $"{await GetHardwareVaultTasksCount()}",
                 RightLink = "#",

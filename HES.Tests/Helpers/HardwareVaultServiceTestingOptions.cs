@@ -33,7 +33,7 @@ namespace HES.Tests.Helpers
 
             _dbContext.HardwareVaultProfiles.Add(new HardwareVaultProfile
             {
-                Id = ServerConstants.DefaulHardwareVaultProfileId,
+                Id = AppConstants.DefaulHardwareVaultProfileId,
                 Name = "Default"
             });
             _dbContext.SaveChangesAsync();
@@ -66,7 +66,7 @@ namespace HES.Tests.Helpers
                     Model = "ST102",
                     RFID = $"{i}{i}{i}",
                     Firmware = "3.5.2",
-                    HardwareVaultProfileId = ServerConstants.DefaulHardwareVaultProfileId,
+                    HardwareVaultProfileId = AppConstants.DefaulHardwareVaultProfileId,
                     Status = VaultStatus.Ready,
                     ImportedAt = DateTime.Now
                 };

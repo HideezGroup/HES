@@ -216,11 +216,8 @@
   <data name="Dashboard_HardwareVaultsCard_VaultLocked" xml:space="preserve">
     <value>Vault locked</value>
   </data>
-  <data name="Dashboard_ServerCard_LeftLink" xml:space="preserve">
-    <value>https://github.com/HideezGroup/HES</value>
-  </data>
   <data name="Dashboard_ServerCard_LeftText" xml:space="preserve">
-    <value>HES version</value>
+    <value>Server Version</value>
   </data>
   <data name="Dashboard_ServerCard_LongPendingTasks" xml:space="preserve">
     <value>Long pending tasks</value>
@@ -229,7 +226,7 @@
     <value>Hardware Vault Tasks</value>
   </data>
   <data name="Dashboard_ServerCard_Title" xml:space="preserve">
-    <value>Hideez Enterprise Server</value>
+    <value>Server</value>
   </data>
   <data name="Dashboard_WorkstationsCard_LeftText" xml:space="preserve">
     <value>Registered</value>
@@ -535,10 +532,10 @@
     <value>Workstation</value>
   </data>
   <data name="Email_ActivateDataProtection_Body" xml:space="preserve">
-    <value>Your Hideez Enterprise Server has been restarted. Please activate the data protection on the server by clicking this button:</value>
+    <value>Your server has been restarted. Please activate the data protection on the server by clicking this button:</value>
   </data>
   <data name="Email_ActivateDataProtection_Subject" xml:space="preserve">
-    <value>Action required - Hideez Enterprise Server Status Update</value>
+    <value>Action required - Activate the data protection</value>
   </data>
   <data name="Email_Common_Admin" xml:space="preserve">
     <value>Administrator</value>
@@ -562,67 +559,67 @@
     <value>link</value>
   </data>
   <data name="Email_Common_YourServer" xml:space="preserve">
-    <value>Your Hideez Enterprise Server</value>
+    <value>Your {0}</value>
   </data>
   <data name="Email_EmployeeDisableSso_Body" xml:space="preserve">
-    <value>You've turned off the option SSO via Hideez Enterprise Server.</value>
+    <value>You've turned off the option SSO for your account.</value>
   </data>
   <data name="Email_EmployeeDisableSso_Subject" xml:space="preserve">
-    <value>SSO Disabled to Hideez Enterprise Server</value>
+    <value>SSO Disabled for your account</value>
   </data>
   <data name="Email_EmployeeEnableSso_Body" xml:space="preserve">
-    <value>You've turned on the option SSO via Hideez Enterprise Server. Please complete the setup by adding a security key using this</value>
+    <value>You've turned on the option SSO to your account. Please complete the setup by adding a security key using this</value>
   </data>
   <data name="Email_EmployeeEnableSso_Subject" xml:space="preserve">
-    <value>SSO Enabled to Hideez Enterprise Server</value>
+    <value>SSO Enabled for your account</value>
   </data>
   <data name="Email_HardwareVaultActivationCode_Body" xml:space="preserve">
     <value>Your hardware vault activation code:</value>
   </data>
   <data name="Email_HardwareVaultActivationCode_Subject" xml:space="preserve">
-    <value>Activate Hardware Vault - Hideez Enterprise Server</value>
+    <value>Activate Hardware Vault</value>
   </data>
   <data name="Email_HardwareVaultLicenseStatus_Body" xml:space="preserve">
-    <value>Some of your Hideez Key devices have changes in their license status. Please review the list below and take action if required.</value>
+    <value>Some of your Security Keys devices have changes in their license status. Please review the list below and take action if required.</value>
   </data>
   <data name="Email_HardwareVaultLicenseStatus_Subject" xml:space="preserve">
-    <value>Hideez License Status Update</value>
+    <value>License Status Update</value>
   </data>
   <data name="Email_LicenseChanged_Body" xml:space="preserve">
-    <value>Thank you for placing the order on Hideez licenses.</value>
+    <value>Thank you for placing the order on licenses.</value>
   </data>
   <data name="Email_LicenseChanged_Description" xml:space="preserve">
-    <value>The status of your Hideez License order of {0} has been changed to {1}</value>
+    <value>The status of your license order of {0} has been changed to {1}</value>
   </data>
   <data name="Email_LicenseChanged_Subject" xml:space="preserve">
-    <value>Hideez License Order Status Update</value>
+    <value>License Order Status Update</value>
   </data>
   <data name="Email_NotifyWhenPasswordAutoChanged_Body" xml:space="preserve">
-    <value>Your password for your domain account {0} has been automatically changed and uploaded to your Hideez Key device {1}.</value>
+    <value>Your password for your domain account {0} has been automatically changed and uploaded to your Security Key {1}.</value>
   </data>
   <data name="Email_NotifyWhenPasswordAutoChanged_Description" xml:space="preserve">
     <value>Please use it at the next login. Please note that your computer will need a connection to the server to sync data.</value>
   </data>
   <data name="Email_NotifyWhenPasswordAutoChanged_Subject" xml:space="preserve">
-    <value>Password Auto Changed - Hideez Enterprise Server</value>
+    <value>Password Auto Changed</value>
   </data>
   <data name="Email_UserConfirmEmail_Body" xml:space="preserve">
     <value>Please confirm your account by clicking on the button:</value>
   </data>
   <data name="Email_UserConfirmEmail_Subject" xml:space="preserve">
-    <value>Action required - Confirm your email to Hideez Enterprise Server</value>
+    <value>Action required - Confirm your email</value>
   </data>
   <data name="Email_UserInvitation_Body" xml:space="preserve">
-    <value>You've been invited to Hideez Enterprise Server. Please confirm the invitation by entering a new password using this</value>
+    <value>You've been invited to server. Please confirm the invitation by entering a new password using this</value>
   </data>
   <data name="Email_UserInvitation_Subject" xml:space="preserve">
-    <value>Action required - Invitation to Hideez Enterprise Server</value>
+    <value>Action required - Invitation</value>
   </data>
   <data name="Email_UserResetPassword_Body" xml:space="preserve">
     <value>To secure your account, please reset your password by clicking on the button:</value>
   </data>
   <data name="Email_UserResetPassword_Subject" xml:space="preserve">
-    <value>Action required - Password Reset to Hideez Enterprise Server</value>
+    <value>Action required - Password reset</value>
   </data>
   <data name="Enum_Email" xml:space="preserve">
     <value>Email</value>

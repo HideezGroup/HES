@@ -19,8 +19,8 @@ namespace HES.Core.Services
 {
     public class LdapService : ILdapService
     {
-        private const string _syncGroupName = "Hideez Key Owners";
-        private const string _pwdChangeGroupName = "Hideez Auto Password Change";
+        public const string LdapSyncGroupName = "Security Key Owners";
+        public const string LdapPwdChangeGroupName = "Security Key Auto Password Change";
 
         private readonly IEmployeeService _employeeService;
         private readonly IOrgStructureService _orgStructureService;
@@ -71,7 +71,7 @@ namespace HES.Core.Services
             connection.Bind(LdapConnection.LdapV3, ldapCredentials.UserName, ldapCredentials.Password);
 
             var dn = GetDnFromHost(ldapSettings.Host);
-            var groupFilter = $"(&(objectCategory=group)(name={_syncGroupName}))";
+            var groupFilter = $"(&(objectCategory=group)(name={LdapSyncGroupName}))";
             var groupResponse = connection.Search(dn, LdapConnection.ScopeSub, groupFilter, null, false);
 
             var groups = GetEntries(groupResponse);
@@ -163,7 +163,7 @@ namespace HES.Core.Services
             connection.Bind(LdapConnection.LdapV3, ldapCredentials.UserName, ldapCredentials.Password);
 
             var dn = GetDnFromHost(ldapSettings.Host);
-            var groupFilter = $"(&(objectCategory=group)(name={_pwdChangeGroupName}))";
+            var groupFilter = $"(&(objectCategory=group)(name={LdapPwdChangeGroupName}))";
             var groupResponse = connection.Search(dn, LdapConnection.ScopeSub, groupFilter, null, false);
 
             var groups = GetEntries(groupResponse);
@@ -297,7 +297,7 @@ namespace HES.Core.Services
             connection.Bind(LdapConnection.LdapV3, ldapCredentials.UserName, ldapCredentials.Password);
 
             var dn = GetDnFromHost(ldapSettings.Host);
-            var filter = $"(&(objectCategory=group)(name={_syncGroupName}))";
+            var filter = $"(&(objectCategory=group)(name={LdapSyncGroupName}))";
             var response = connection.Search(dn, LdapConnection.ScopeSub, filter, null, false);
 
             var groups = GetEntries(response);

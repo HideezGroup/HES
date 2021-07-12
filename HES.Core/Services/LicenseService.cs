@@ -1,4 +1,5 @@
-﻿using HES.Core.Entities;
+﻿using HES.Core.Constants;
+using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
@@ -53,7 +54,7 @@ namespace HES.Core.Services
             }
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(licensing.ApiAddress);
+            client.BaseAddress = new Uri(AppConstants.LicenseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;

@@ -1175,10 +1175,10 @@ div.dataTables_scrollHead table.dataTable {
     width: calc(100vw - 68px);
 }
 
-.icon-hideez.toggled {
+.icon-brand.toggled {
     width: 35px;
-    -webkit-mask: url('../svg/hideez-sidebar-min.svg');
-    mask: url('../svg/hideez-sidebar-min.svg');
+    -webkit-mask: url('../svg/brand-logo-sidebar-min.svg');
+    mask: url('../svg/brand-logo-sidebar-min.svg');
 }
 
 @media (max-width: 768px) {
@@ -1312,19 +1312,19 @@ div.dataTables_scrollHead table.dataTable {
 /*#endregion*/
 
 /*#region Icons*/
-.icon-hideez {
+.icon-brand {
     width: 191px;
     height: 34px;
     background: #FFF;
-    -webkit-mask: url('../svg/hideez-sidebar.svg');
-    mask: url('../svg/hideez-sidebar.svg');
+    -webkit-mask: url('../svg/brand-logo-sidebar.svg');
+    mask: url('../svg/brand-logo-sidebar.svg');
 }
 
 @media (max-width: 768px) {
-    .icon-hideez {
+    .icon-brand {
         width: 35px;
-        -webkit-mask: url('../svg/hideez-sidebar-min.svg');
-        mask: url('../svg/hideez-sidebar-min.svg');
+        -webkit-mask: url('../svg/brand-logo-sidebar-min.svg');
+        mask: url('../svg/brand-logo-sidebar-min.svg');
     }
 }
 

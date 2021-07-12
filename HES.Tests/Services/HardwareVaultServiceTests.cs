@@ -83,7 +83,7 @@ namespace HES.Tests.Services
 
             var result = await _hardwareVaultService.GetVaultByIdAsync(_testingOptions.HardwareVaultId);
 
-            Assert.Equal(ServerConstants.DefaulHardwareVaultProfileId, result.HardwareVaultProfileId);
+            Assert.Equal(AppConstants.DefaulHardwareVaultProfileId, result.HardwareVaultProfileId);
             Assert.Null(result.EmployeeId);
             Assert.Null(result.MasterPassword);
             Assert.Equal(VaultStatus.Ready, result.Status);

@@ -39,7 +39,7 @@ namespace HES.Infrastructure.Data
             var roleResult = await roleManager.RoleExistsAsync(ApplicationRoles.Admin);
             if (!roleResult)
             {
-                string adminEmail = "admin@hideez.com";
+                string adminEmail = "admin@server";
                 string adminPassword = "admin";            
 
                 // Create roles
@@ -52,7 +52,7 @@ namespace HES.Infrastructure.Data
                     Email = adminEmail,
                     EmailConfirmed = true,
                     FirstName = "admin",
-                    LastName = "hideez",
+                    LastName = "server",
                     Culture = CultureConstants.EN
                 };
                 await userManager.CreateAsync(admin, adminPassword);

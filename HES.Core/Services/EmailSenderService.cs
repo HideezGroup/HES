@@ -4,7 +4,6 @@ using HES.Core.Interfaces;
 using HES.Core.Models.AppSettings;
 using HES.Core.Models.SoftwareVault;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using QRCoder;
@@ -17,7 +16,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace HES.Core.Services
@@ -46,7 +44,7 @@ namespace HES.Core.Services
             {
                 var mailMessage = new MailMessage(_emailSettings.Value.UserName, mailTo);
                 var htmlView = AlternateView.CreateAlternateViewFromString(htmlMessage, Encoding.UTF8, MediaTypeNames.Text.Html);
-                htmlView.LinkedResources.Add(CreateImageResource("mail_logo"));
+                htmlView.LinkedResources.Add(CreateImageResource("mail-logo"));
                 mailMessage.AlternateViews.Add(htmlView);
                 if (alternateViews != null & alternateViews.Length > 0)
                 {
@@ -83,7 +81,7 @@ namespace HES.Core.Services
                     {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, admin.DisplayName) },
                     {"{{body}}", Resources.Resource.Email_LicenseChanged_Body },
                     {"{{description}}", string.Format(Resources.Resource.Email_LicenseChanged_Description, createdAt.ToString(), status.ToString()) },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
 
                 var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
@@ -129,7 +127,7 @@ namespace HES.Core.Services
                     {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, admin.DisplayName) },
                     {"{{body}}", Resources.Resource.Email_HardwareVaultLicenseStatus_Body },
                     {"{{message}}", message.ToString() },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
                 var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
 
@@ -148,8 +146,8 @@ namespace HES.Core.Services
                     {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, admin.DisplayName) },
                     {"{{body}}", Resources.Resource.Email_ActivateDataProtection_Body },
                     {"{{btnName}}", Resources.Resource.Email_Common_Btn_Activate },
-                    {"{{callbackUrl}}", _serverSettings.Value.Url },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{callbackUrl}}", _serverSettings.Value.ServerUrl },
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
 
                 var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
@@ -167,7 +165,7 @@ namespace HES.Core.Services
                 {"{{body}}", Resources.Resource.Email_UserInvitation_Body },
                 {"{{linkName}}", Resources.Resource.Email_Common_Link },
                 {"{{callbackUrl}}", callbackUrl },
-                {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
             };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
@@ -190,7 +188,7 @@ namespace HES.Core.Services
                     {"{{body}}", Resources.Resource.Email_EmployeeEnableSso_Body },
                     {"{{linkName}}", Resources.Resource.Email_Common_Link },
                     {"{{callbackUrl}}", callbackUrl },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
@@ -211,7 +209,7 @@ namespace HES.Core.Services
                 {
                     {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, employee.FullName) },
                     {"{{body}}", Resources.Resource.Email_EmployeeDisableSso_Body },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
@@ -228,7 +226,7 @@ namespace HES.Core.Services
                     {"{{body}}", Resources.Resource.Email_UserResetPassword_Body },
                     {"{{btnName}}", Resources.Resource.Email_Common_Btn_ResetPassword },
                     {"{{callbackUrl}}", callbackUrl },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
@@ -251,7 +249,7 @@ namespace HES.Core.Services
                     {"{{body}}", Resources.Resource.Email_UserConfirmEmail_Body },
                     {"{{btnName}}", Resources.Resource.Email_Common_Btn_Confirm },
                     {"{{callbackUrl}}", callbackUrl },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
@@ -311,7 +309,7 @@ namespace HES.Core.Services
                     {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, employee.FullName) },
                     {"{{body}}", Resources.Resource.Email_HardwareVaultActivationCode_Body },
                     {"{{code}}", code },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);
@@ -335,7 +333,7 @@ namespace HES.Core.Services
                     {"{{dear}}", string.Format(Resources.Resource.Email_Common_Dear, employee.FullName) },
                     {"{{body}}", string.Format(Resources.Resource.Email_NotifyWhenPasswordAutoChanged_Body, accountName, employeeVaults) },
                     {"{{description}}", Resources.Resource.Email_NotifyWhenPasswordAutoChanged_Description },
-                    {"{{yourServer}}", Resources.Resource.Email_Common_YourServer }
+                    {"{{yourServer}}", string.Format(Resources.Resource.Email_Common_YourServer, _serverSettings.Value.ServerFullName) }
                 };
 
             var htmlMessage = AddDataToTemplate(htmlTemplate, replacement);

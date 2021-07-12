@@ -70,14 +70,6 @@ namespace HES.Web
                 configuration["EmailSender:Password"] = email_pwd;
             }
 
-            var srv_name = configuration["SRV_NAME"];
-            var srv_url = configuration["SRV_URL"];
-            if (srv_name != null && srv_url != null)
-            {
-                configuration["ServerSettings:Name"] = srv_name;
-                configuration["ServerSettings:Url"] = srv_url;
-            }
-
             var dataprotectoin_pwd = configuration["DATAPROTECTION_PWD"];
             if (dataprotectoin_pwd != null)
             {
@@ -95,6 +87,12 @@ namespace HES.Web
             #region SAML
 
             Saml2Enabled = SamlHelper.IsEnabled(configuration);
+
+            #endregion
+
+            #region Server
+
+            AppConstants.SetServerSettings(configuration);
 
             #endregion
 
@@ -284,7 +282,7 @@ namespace HES.Web
             // Register the Swagger generator
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HES API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Server API", Version = "v1" });
             });
         }
 
@@ -329,7 +327,7 @@ namespace HES.Web
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HES API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Server API v1");
             });
 
             app.UseEndpoints(endpoints =>
@@ -343,7 +341,7 @@ namespace HES.Web
 
             using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var logger = scope.ServiceProvider.GetService<ILogger<Startup>>();
-            logger.LogInformation($"Server started {ServerConstants.Version}");
+            logger.LogInformation($"Server started {AppConstants.Version}");
         }
     }
 }

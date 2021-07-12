@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace HES.Core.Models.AppSettings
+﻿namespace HES.Core.Models.AppSettings
 {
     public class ServerSettings
     {
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        [Url]
-        public string Url { get; set; }
+        public string ServerUrl { get; set; }
+        public string ServerFullName { get; set; }
+        public string ServerShortName { get; set; }
+        public string CompanyName { get; set; }
+        public bool ReverseProxyHandleSSL { get; set; }
     }
 }

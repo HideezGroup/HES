@@ -1386,17 +1386,17 @@
         What confidential data is stored in the DB?
     &lt;/h5&gt;
     &lt;p&gt;
-        The database stores Device Keys – encryption keys that provide access to the information stored on the Hideez Key. Passwords and OTP Secrets that are awaiting transfer to devices are also temporarily stored in the DB.
-        Passwords to the “Shared Account” are permanently stored in the database. If Data Protection is turned off, all passwords and keys are stored in plain text. If you have a Device Key and the device itself, you can read all the content of the Hideez Key memory.
+        The database stores Device Keys – encryption keys that provide access to the information stored on the Security Key. Passwords and OTP Secrets that are awaiting transfer to devices are also temporarily stored in the DB.
+        Passwords to the “Shared Account” are permanently stored in the database. If Data Protection is turned off, all passwords and keys are stored in plain text. If you have a Device Key and the device itself, you can read all the content of the Security Key memory.
     &lt;/p&gt;
     &lt;h5&gt;
         Do I need to enable Data Protection?
     &lt;/h5&gt;
     &lt;p&gt;
-        First of all, you need to evaluate which employees have a direct to potential access to the HES database.
+        First of all, you need to evaluate which employees have a direct to potential access to the server database.
         If some of them should not have access to the sensitive data listed above than Data Protection must be enabled.
         Please also note, that the data can be physically read from the HDD/SDD on which it is stored. It is necessary to consider the possibility of both software and physical access to the data.
-        In some cases, for example, if the HES and the database server are running on the same physical server that can be accessed by a limited number of trusted people, then Data Protection can be omitted.
+        In some cases, for example, if the web application and the database server are running on the same physical server that can be accessed by a limited number of trusted people, then Data Protection can be omitted.
     &lt;/p&gt;
     &lt;h5&gt;
         How does it work?
@@ -1415,12 +1415,12 @@
         Risks and best practices
     &lt;/h5&gt;
     &lt;p&gt;
-        The main risk of Data Protection use is the password loss for its activation. In such a case, you lose access to the encrypted data on the server, as well as access to all the data on all of your Hideez Key devices.
+        The main risk of Data Protection use is the password loss for its activation. In such a case, you lose access to the encrypted data on the server, as well as access to all the data on all of your Security Keys.
         All the devices will have to undergo manual reset procedure with full memory wipe, and then to be bonded again with the employees. All the accounts should be added to the devices from scratch.
         Therefore we recommend that the password to Data Protection should be known to several employees and preferably stored on a safe physical token (vault).
         &lt;br /&gt;
         &lt;br /&gt;
-        In case of using Data Protection, there is a risk that the HES server can be temporarily unavailable due to emergency restart until the activation password to Data Protection is entered. However, it should not affect the company operations, since all the accounts are stored on employees’ devices and can be used without a connection to the HES server.
+        In case of using Data Protection, there is a risk that the server can be temporarily unavailable due to emergency restart until the activation password to Data Protection is entered. However, it should not affect the company operations, since all the accounts are stored on employees’ devices and can be used without a connection to the server.
         &lt;br /&gt;
         &lt;br /&gt;
         An update of the Data Protection password should be done according to the company’s information security regulations.
@@ -1535,7 +1535,7 @@
     <value>All of your devices already have a license. If you want to renew them, go to the "Renew License" tab.</value>
   </data>
   <data name="LicenseOrders_CreateLicenseOrder_DontHaveDevices" xml:space="preserve">
-    <value>You don't have any Hideez devices yet. You can place an order at &lt;a href="https://hideez.com/pages/hideez-enterprise" role="button"&gt;hideez.com&lt;/a&gt;</value>
+    <value>You don't have any Security keys yet.</value>
   </data>
   <data name="LicenseOrders_CreateLicenseOrder_DontHaveLicenseToRenew" xml:space="preserve">
     <value>You don't have any licenses that can be renewed. To purchase new licenses, go to the "New License" tab.</value>
@@ -2030,5 +2030,33 @@
   </data>
   <data name="Profile_Security_DeleteSecurityKey_Toast" xml:space="preserve">
     <value>Security key deleted.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Header" xml:space="preserve">
+    <value>How does it work?
+</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_BodyLine1" xml:space="preserve">
+    <value>Create 2 groups in your Active Directory &lt;span class="fw-bold"&gt;{0}&lt;/span&gt; and &lt;span class="fw-bold"&gt;{1}&lt;/span&gt;.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_BodyLine2" xml:space="preserve">
+    <value>Users added to the &lt;span class="fw-bold"&gt;{0}&lt;/span&gt; group in the AD will be automatically imported to the {1} during synchronization.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_BodyLine3" xml:space="preserve">
+    <value>If the user is a member of both the &lt;span class="fw-bold"&gt;{0}&lt;/span&gt; and &lt;span class="fw-bold"&gt;{1}&lt;/span&gt; groups, then the domain account will be imported during synchronization, and a new password will be generated.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_BodyLine4" xml:space="preserve">
+    <value>When the new password is written into the Security Key simultaneously, it will be changed in the AD. From this time, the user has to use his Security Key to login. Further scheduled password changes will follow the same algorithm.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_BodyLine5" xml:space="preserve">
+    <value>If the user is removed from the &lt;span class="fw-bold"&gt;{0}&lt;/span&gt; group, the automatic password change logic stops working.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_BodyLine6" xml:space="preserve">
+    <value>If the user is removed from the &lt;span class="fw-bold"&gt;{0}&lt;/span&gt; group, he remains in the {1} employees list, but the key is deleted from him.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_BodyLine7" xml:space="preserve">
+    <value>Synchronization with AD is done once an hour. Automatic password change is done according to the settings. To have this working, make sure you added to the {0} settings the AD administrator's credentials with permissions to get users and groups from the AD and change user's passwords.</value>
+  </data>
+  <data name="Employees_SyncEmployeesWithAD_Toast" xml:space="preserve">
+    <value>Users synced.</value>
   </data>
 </root>

@@ -329,7 +329,7 @@ namespace HES.Core.Services
             }
 
             // AppSettings
-            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
+            var domainSettings = await dbContext.AppSettings.FindAsync(AppConstants.Ldap);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -338,7 +338,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
-            var licenseSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
+            var licenseSettings = await dbContext.AppSettings.FindAsync(AppConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);
@@ -347,7 +347,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 licenseSettings.Value = json;
             }
-            var splunkSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            var splunkSettings = await dbContext.AppSettings.FindAsync(AppConstants.Splunk);
             if (splunkSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<SplunkSettings>(splunkSettings.Value);
@@ -446,7 +446,7 @@ namespace HES.Core.Services
             }
 
             // AppSettings     
-            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
+            var domainSettings = await dbContext.AppSettings.FindAsync(AppConstants.Ldap);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -454,7 +454,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
-            var licenseSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
+            var licenseSettings = await dbContext.AppSettings.FindAsync(AppConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);
@@ -462,7 +462,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 licenseSettings.Value = json;
             }
-            var splunkSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            var splunkSettings = await dbContext.AppSettings.FindAsync(AppConstants.Splunk);
             if (splunkSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<SplunkSettings>(splunkSettings.Value);
@@ -544,7 +544,7 @@ namespace HES.Core.Services
             }
 
             // AppSettings
-            var domainSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Ldap);
+            var domainSettings = await dbContext.AppSettings.FindAsync(AppConstants.Ldap);
             if (domainSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LdapSettings>(domainSettings.Value);
@@ -552,7 +552,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 domainSettings.Value = json;
             }
-            var licenseSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Licensing);
+            var licenseSettings = await dbContext.AppSettings.FindAsync(AppConstants.Licensing);
             if (licenseSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<LicensingSettings>(licenseSettings.Value);
@@ -560,7 +560,7 @@ namespace HES.Core.Services
                 var json = JsonConvert.SerializeObject(settings);
                 licenseSettings.Value = json;
             }  
-            var splunkSettings = await dbContext.AppSettings.FindAsync(ServerConstants.Splunk);
+            var splunkSettings = await dbContext.AppSettings.FindAsync(AppConstants.Splunk);
             if (splunkSettings != null)
             {
                 var settings = JsonConvert.DeserializeObject<SplunkSettings>(splunkSettings.Value);

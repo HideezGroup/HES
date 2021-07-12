@@ -1133,8 +1133,8 @@ namespace HES.Web.Resources {
         ///        What confidential data is stored in the DB?
         ///    &lt;/h5&gt;
         ///    &lt;p&gt;
-        ///        The database stores Device Keys – encryption keys that provide access to the information stored on the Hideez Key. Passwords and OTP Secrets that are awaiting transfer to devices are also temporarily stored in the DB.
-        ///        Passwords to the “Sh [остаток строки не уместился]&quot;;.
+        ///        The database stores Device Keys – encryption keys that provide access to the information stored on the Security Key. Passwords and OTP Secrets that are awaiting transfer to devices are also temporarily stored in the DB.
+        ///        Passwords to the “ [остаток строки не уместился]&quot;;.
         /// </summary>
         public static string DataProtection_MainDescription {
             get {
@@ -1737,11 +1737,93 @@ namespace HES.Web.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Create 2 groups in your Active Directory &lt;span class=&quot;fw-bold&quot;&gt;{0}&lt;/span&gt; and &lt;span class=&quot;fw-bold&quot;&gt;{1}&lt;/span&gt;..
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_BodyLine1 {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_BodyLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Users added to the &lt;span class=&quot;fw-bold&quot;&gt;{0}&lt;/span&gt; group in the AD will be automatically imported to the {1} during synchronization..
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_BodyLine2 {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_BodyLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на If the user is a member of both the &lt;span class=&quot;fw-bold&quot;&gt;{0}&lt;/span&gt; and &lt;span class=&quot;fw-bold&quot;&gt;{1}&lt;/span&gt; groups, then the domain account will be imported during synchronization, and a new password will be generated..
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_BodyLine3 {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_BodyLine3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на When the new password is written into the Security Key simultaneously, it will be changed in the AD. From this time, the user has to use his Security Key to login. Further scheduled password changes will follow the same algorithm..
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_BodyLine4 {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_BodyLine4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на If the user is removed from the &lt;span class=&quot;fw-bold&quot;&gt;{0}&lt;/span&gt; group, the automatic password change logic stops working..
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_BodyLine5 {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_BodyLine5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на If the user is removed from the &lt;span class=&quot;fw-bold&quot;&gt;{0}&lt;/span&gt; group, he remains in the {1} employees list, but the key is deleted from him..
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_BodyLine6 {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_BodyLine6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Synchronization with AD is done once an hour. Automatic password change is done according to the settings. To have this working, make sure you added to the {0} settings the AD administrator&apos;s credentials with permissions to get users and groups from the AD and change user&apos;s passwords..
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_BodyLine7 {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_BodyLine7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на How does it work?
+        ///.
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_Header {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Sync with Active Directory.
         /// </summary>
         public static string Employees_SyncEmployeesWithAD_Title {
             get {
                 return ResourceManager.GetString("Employees_SyncEmployeesWithAD_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Users synced..
+        /// </summary>
+        public static string Employees_SyncEmployeesWithAD_Toast {
+            get {
+                return ResourceManager.GetString("Employees_SyncEmployeesWithAD_Toast", resourceCulture);
             }
         }
         

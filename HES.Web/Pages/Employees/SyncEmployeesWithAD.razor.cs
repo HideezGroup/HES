@@ -48,7 +48,7 @@ namespace HES.Web.Pages.Employees
             {
                 await LdapService.SyncUsersAsync(LdapSettings);
                 await LdapService.ChangePasswordWhenExpiredAsync(LdapSettings);
-                await ToastService.ShowToastAsync("Users synced.", ToastType.Success);
+                await ToastService.ShowToastAsync(Resources.Resource.Employees_SyncEmployeesWithAD_Toast, ToastType.Success);
                 await ModalDialogClose();
             }
             catch (Exception ex)

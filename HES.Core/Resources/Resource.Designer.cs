@@ -358,16 +358,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на https://github.com/HideezGroup/HES.
-        /// </summary>
-        public static string Dashboard_ServerCard_LeftLink {
-            get {
-                return ResourceManager.GetString("Dashboard_ServerCard_LeftLink", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на HES version.
+        ///   Ищет локализованную строку, похожую на Server Version.
         /// </summary>
         public static string Dashboard_ServerCard_LeftText {
             get {
@@ -394,7 +385,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на Server.
         /// </summary>
         public static string Dashboard_ServerCard_Title {
             get {
@@ -1312,7 +1303,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Your Hideez Enterprise Server has been restarted. Please activate the data protection on the server by clicking this button:.
+        ///   Ищет локализованную строку, похожую на Your server has been restarted. Please activate the data protection on the server by clicking this button:.
         /// </summary>
         public static string Email_ActivateDataProtection_Body {
             get {
@@ -1321,7 +1312,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Action required - Hideez Enterprise Server Status Update.
+        ///   Ищет локализованную строку, похожую на Action required - Activate the data protection.
         /// </summary>
         public static string Email_ActivateDataProtection_Subject {
             get {
@@ -1393,7 +1384,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Your Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на Your {0}.
         /// </summary>
         public static string Email_Common_YourServer {
             get {
@@ -1402,7 +1393,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You&apos;ve turned off the option SSO via Hideez Enterprise Server..
+        ///   Ищет локализованную строку, похожую на You&apos;ve turned off the option SSO for your account..
         /// </summary>
         public static string Email_EmployeeDisableSso_Body {
             get {
@@ -1411,7 +1402,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на SSO Disabled to Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на SSO Disabled for your account.
         /// </summary>
         public static string Email_EmployeeDisableSso_Subject {
             get {
@@ -1420,7 +1411,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You&apos;ve turned on the option SSO via Hideez Enterprise Server. Please complete the setup by adding a security key using this.
+        ///   Ищет локализованную строку, похожую на You&apos;ve turned on the option SSO to your account. Please complete the setup by adding a security key using this.
         /// </summary>
         public static string Email_EmployeeEnableSso_Body {
             get {
@@ -1429,7 +1420,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на SSO Enabled to Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на SSO Enabled for your account.
         /// </summary>
         public static string Email_EmployeeEnableSso_Subject {
             get {
@@ -1447,7 +1438,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Activate Hardware Vault - Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на Activate Hardware Vault.
         /// </summary>
         public static string Email_HardwareVaultActivationCode_Subject {
             get {
@@ -1456,7 +1447,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Some of your Hideez Key devices have changes in their license status. Please review the list below and take action if required..
+        ///   Ищет локализованную строку, похожую на Some of your Security Keys devices have changes in their license status. Please review the list below and take action if required..
         /// </summary>
         public static string Email_HardwareVaultLicenseStatus_Body {
             get {
@@ -1465,7 +1456,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hideez License Status Update.
+        ///   Ищет локализованную строку, похожую на License Status Update.
         /// </summary>
         public static string Email_HardwareVaultLicenseStatus_Subject {
             get {
@@ -1474,7 +1465,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Thank you for placing the order on Hideez licenses..
+        ///   Ищет локализованную строку, похожую на Thank you for placing the order on licenses..
         /// </summary>
         public static string Email_LicenseChanged_Body {
             get {
@@ -1483,7 +1474,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на The status of your Hideez License order of {0} has been changed to {1}.
+        ///   Ищет локализованную строку, похожую на The status of your license order of {0} has been changed to {1}.
         /// </summary>
         public static string Email_LicenseChanged_Description {
             get {
@@ -1492,7 +1483,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Hideez License Order Status Update.
+        ///   Ищет локализованную строку, похожую на License Order Status Update.
         /// </summary>
         public static string Email_LicenseChanged_Subject {
             get {
@@ -1501,7 +1492,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Your password for your domain account {0} has been automatically changed and uploaded to your Hideez Key device {1}..
+        ///   Ищет локализованную строку, похожую на Your password for your domain account {0} has been automatically changed and uploaded to your Security Key {1}..
         /// </summary>
         public static string Email_NotifyWhenPasswordAutoChanged_Body {
             get {
@@ -1519,7 +1510,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Password Auto Changed - Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на Password Auto Changed.
         /// </summary>
         public static string Email_NotifyWhenPasswordAutoChanged_Subject {
             get {
@@ -1537,7 +1528,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Action required - Confirm your email to Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на Action required - Confirm your email.
         /// </summary>
         public static string Email_UserConfirmEmail_Subject {
             get {
@@ -1546,7 +1537,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You&apos;ve been invited to Hideez Enterprise Server. Please confirm the invitation by entering a new password using this.
+        ///   Ищет локализованную строку, похожую на You&apos;ve been invited to server. Please confirm the invitation by entering a new password using this.
         /// </summary>
         public static string Email_UserInvitation_Body {
             get {
@@ -1555,7 +1546,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Action required - Invitation to Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на Action required - Invitation.
         /// </summary>
         public static string Email_UserInvitation_Subject {
             get {
@@ -1573,7 +1564,7 @@ namespace HES.Core.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Action required - Password Reset to Hideez Enterprise Server.
+        ///   Ищет локализованную строку, похожую на Action required - Password reset.
         /// </summary>
         public static string Email_UserResetPassword_Subject {
             get {

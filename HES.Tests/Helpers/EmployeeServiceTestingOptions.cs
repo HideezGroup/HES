@@ -103,9 +103,9 @@ namespace HES.Tests.Helpers
                 var employee = new Employee
                 {
                     Id = $"{i}",
-                    FirstName = $"Test{i}",
-                    LastName = $"Hideez{i}",
-                    Email = $"th.{i}@hideez.com",
+                    FirstName = $"fn{i}",
+                    LastName = $"ln{i}",
+                    Email = $"e.{i}@example.com",
                     PhoneNumber = $"380{i}"
                 };
 

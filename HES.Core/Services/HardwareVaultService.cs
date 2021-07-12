@@ -241,9 +241,13 @@ namespace HES.Core.Services
         public async Task ImportVaultsAsync()
         {
             var licensing = await _appSettingsService.GetLicenseSettingsAsync();
+            if (licensing == null)
+            {
+                throw new HESException(HESCode.ApiKeyEmpty);
+            }
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(licensing.ApiAddress);
+            client.BaseAddress = new Uri(AppConstants.LicenseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -332,7 +336,7 @@ namespace HES.Core.Services
                     NeedSync = false,
                     EmployeeId = null,
                     MasterPassword = null,
-                    HardwareVaultProfileId = ServerConstants.DefaulHardwareVaultProfileId,
+                    HardwareVaultProfileId = AppConstants.DefaulHardwareVaultProfileId,
                     ImportedAt = DateTime.UtcNow,
                     HasNewLicense = hardwareVaultLicense == null ? false : true,
                     LicenseStatus = VaultLicenseStatus.None,
@@ -443,7 +447,7 @@ namespace HES.Core.Services
             vault.LastSynced = DateTime.UtcNow;
             vault.EmployeeId = null;
             vault.MasterPassword = null;
-            vault.HardwareVaultProfileId = ServerConstants.DefaulHardwareVaultProfileId;
+            vault.HardwareVaultProfileId = AppConstants.DefaulHardwareVaultProfileId;
             vault.Status = VaultStatus.Ready;
             vault.StatusReason = VaultStatusReason.None;
             vault.StatusDescription = null;
@@ -691,7 +695,7 @@ namespace HES.Core.Services
 
                     _dbContext.Accounts.UpdateRange(accounts);
                     await _dbContext.SaveChangesAsync();
-                }    
+                }
 
                 await _workstationService.DeleteWorkstationHardwareVaultPairsByVaultIdAsync(vaultId);
 
