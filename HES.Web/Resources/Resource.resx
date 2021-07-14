@@ -1409,7 +1409,7 @@
         The password to Data Protection can be placed in a config file or Environment Variables on the server to avoid manual input. In this case, the server can reboot without administrator involvement. Such a scenario also means that only authorized persons should have access to the server.
         &lt;br /&gt;
         &lt;br /&gt;
-        The password to Data Protection can be changed. To do this, enter the current password and a new password twice in the HES interface. All data in the DB will be re-encrypted.
+        The password to Data Protection can be changed. To do this, enter the current password and a new password twice in the server interface. All data in the DB will be re-encrypted.
     &lt;/p&gt;
     &lt;h5&gt;
         Risks and best practices
