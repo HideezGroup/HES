@@ -3,6 +3,7 @@ using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.API;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
 using HES.Web.Extensions;
@@ -47,7 +48,8 @@ namespace HES.Web.Pages.Profile
                 User = await ApplicationUserService.GetUserByEmailAsync(email);
                 if (User == null)
                 {
-                    throw new HESException(HESCode.UserNotFound);
+                    NavigationManager.NavigateTo(Routes.Login, true);
+                    return;
                 }
 
                 UserProfileModel = new UserProfileModel
@@ -79,8 +81,8 @@ namespace HES.Web.Pages.Profile
             {
                 await ButtonUpdateProfile.SpinAsync(async () =>
                 {
-                    await ApplicationUserService.UpdateProfileInfoAsync(UserProfileModel);
-                    await JSRuntime.InvokeWebApiPostVoidAsync(Routes.ApiRefreshSignIn);                
+                    var response = await JSRuntime.InvokeWebApiPostAsync<IdentityResponse>(Routes.ApiUpdateProfileInfo, UserProfileModel);
+                    response.ThrowIfFailed();
                     await ToastService.ShowToastAsync(Resources.Resource.Profile_General_Profile_Toast, ToastType.Success);               
                 });
             }

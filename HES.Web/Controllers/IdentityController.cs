@@ -394,6 +394,8 @@ namespace HES.Web.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
+                    var user = await _userManager.GetUserAsync(User);
+                    await _userManager.UpdateSecurityStampAsync(user);
                     await _signInManager.SignOutAsync();                 
                 }
                 return AuthorizationResponse.Success(null);
@@ -408,19 +410,17 @@ namespace HES.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RefreshSignIn()
+        public async Task<IdentityResponse> UpdateProfileInfo(UserProfileModel parameters)
         {
-            try
-            {
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                await _signInManager.RefreshSignInAsync(user);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
-            }
+            return await _applicationUserService.UpdateProfileInfoAsync(parameters);
+        }
+        
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IdentityResponse> UpdateAccountPassword(UserChangePasswordModel parameters)
+        {
+            return await _applicationUserService.UpdateAccountPasswordAsync(parameters);
         }
 
         #endregion

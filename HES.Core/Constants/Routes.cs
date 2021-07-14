@@ -50,7 +50,8 @@
         public const string ApiLoginWithPassword = "/api/Identity/LoginWithPassword";
         public const string ApiLoginWithFido2 = "/api/Identity/LoginWithFido2";
         public const string ApiLogout = "/api/Identity/Logout";
-        public const string ApiRefreshSignIn = "/api/Identity/RefreshSignIn";
+        public const string ApiUpdateProfileInfo = "/api/Identity/UpdateProfileInfo";
+        public const string ApiUpdateAccountPassword = "/api/Identity/UpdateAccountPassword";
 
         public const string ApiGetTwoFactorInfo = "/api/Identity/GetTwoFactorInfo";
         public const string ApiGenerateNewTwoFactorRecoveryCodes = "/api/Identity/GenerateNewTwoFactorRecoveryCodes";

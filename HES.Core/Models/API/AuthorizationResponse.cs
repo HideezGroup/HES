@@ -29,9 +29,6 @@ namespace HES.Core.Models.API
 
         [DataMember]
         public ApplicationUser User { get; protected set; } 
-        
-        [DataMember]
-        public string Cookie { get; set; }
 
         public static AuthorizationResponse Success(ApplicationUser user)
         {

@@ -3,6 +3,7 @@ using HES.Core.Entities;
 using HES.Core.Enums;
 using HES.Core.Exceptions;
 using HES.Core.Interfaces;
+using HES.Core.Models.API;
 using HES.Core.Models.ApplicationUsers;
 using HES.Core.Models.Identity;
 using HES.Web.Components;
@@ -43,7 +44,8 @@ namespace HES.Web.Pages.Profile
                 CurrentUser = await ApplicationUserService.GetUserByEmailAsync(await GetCurrentUserEmailAsync());
                 if (CurrentUser == null)
                 {
-                    throw new HESException(HESCode.UserNotFound);
+                    NavigationManager.NavigateTo(Routes.Login, true);
+                    return;
                 }
 
                 // Password
@@ -88,10 +90,10 @@ namespace HES.Web.Pages.Profile
             {
                 await ButtonChangePassword.SpinAsync(async () =>
                 {
-                    await ApplicationUserService.UpdateAccountPasswordAsync(ChangePasswordModel);
-                    await JSRuntime.InvokeWebApiPostVoidAsync(Routes.ApiRefreshSignIn);
+                    var response = await JSRuntime.InvokeWebApiPostAsync<IdentityResponse>(Routes.ApiUpdateAccountPassword, ChangePasswordModel);
+                    response.ThrowIfFailed();
                     await ToastService.ShowToastAsync(Resources.Resource.Profile_Security_ChangePassword_Toast, ToastType.Success);
-                    ChangePasswordModel = new UserChangePasswordModel() { UserId = CurrentUser.Id };               
+                    ChangePasswordModel = new UserChangePasswordModel() { UserId = CurrentUser.Id };
                 });
             }
             catch (Exception ex)

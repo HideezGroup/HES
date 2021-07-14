@@ -23,6 +23,8 @@ namespace HES.Web.Pages.Identity
         {
             if (_signInManager.IsSignedIn(User))
             {
+                var user = await _signInManager.UserManager.GetUserAsync(User);
+                await _signInManager.UserManager.UpdateSecurityStampAsync(user);
                 await _signInManager.SignOutAsync();
             }
             return LocalRedirect(Routes.Login);

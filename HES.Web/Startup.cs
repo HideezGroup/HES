@@ -18,6 +18,7 @@ using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
 using ITfoxtec.Identity.Saml2.Util;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -201,6 +202,7 @@ namespace HES.Web
                 options.Lockout.AllowedForNewUsers = true;
             });
 
+
             #endregion
 
             #region Cookie
@@ -236,7 +238,8 @@ namespace HES.Web
                             context.Response.Redirect(context.RedirectUri);
                         }
                         return Task.CompletedTask;
-                    }
+                    },
+                    OnValidatePrincipal = CookieValidator.ValidateAsync
                 };
             });
 
@@ -280,6 +283,7 @@ namespace HES.Web
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 
             // Register the Swagger generator
             services.AddSwaggerGen(c =>
@@ -332,8 +336,8 @@ namespace HES.Web
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Server API v1");
             });
-        
-            app.UseMiddleware<HeadersMiddleware>();
+
+            app.UseMiddleware<SecurityHeadersMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

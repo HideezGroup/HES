@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace HES.Web.Middleware
 {
-    public class HeadersMiddleware
+    public class SecurityHeadersMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public HeadersMiddleware(RequestDelegate next)
+        public SecurityHeadersMiddleware(RequestDelegate next)
         {
             _next = next;
         }

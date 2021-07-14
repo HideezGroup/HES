@@ -30,10 +30,8 @@ namespace HES.Core.Interfaces
         #endregion
 
         #region Profile
-        Task UpdateProfileInfoAsync(UserProfileModel parameters);
         Task<string> ChangeEmailAsync(UserChangeEmailModel parameters, string baseUri);
-        Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters);
-        Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters);
+        Task ConfirmEmailChangeAsync(UserConfirmEmailChangeModel parameters);    
         #endregion
 
         #region Email
@@ -45,6 +43,8 @@ namespace HES.Core.Interfaces
 
         #region API
         Task<AuthorizationResponse> LoginWithPasswordAsync(PasswordSignInModel parameters);
+        Task<IdentityResponse> UpdateProfileInfoAsync(UserProfileModel parameters);
+        Task<IdentityResponse> UpdateAccountPasswordAsync(UserChangePasswordModel parameters);
         #endregion
     }
 }

@@ -143,7 +143,7 @@ namespace HES.Core.Services
                 throw new HESException(HESCode.UserNotFound);
             }
 
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);    
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             return CreateCallbackUrl(domain, $"{Routes.Invite}?code={WebUtility.UrlEncode(code)}&Email={email}");
         }
 
@@ -197,26 +197,7 @@ namespace HES.Core.Services
 
         #region Profile
 
-        public async Task UpdateProfileInfoAsync(UserProfileModel parameters)
-        {
-            var user = await GetUserByIdAsync(parameters.UserId);
-            if (user == null)
-            {
-                throw new HESException(HESCode.UserNotFound);
-            }
 
-            user.FirstName = parameters.FirstName;
-            user.LastName = parameters.LastName;
-            user.PhoneNumber = parameters.PhoneNumber;
-            user.ExternalId = parameters.ExternalId;
-
-            var userResult = await _userManager.UpdateAsync(user);
-
-            if (!userResult.Succeeded)
-            {
-                throw new Exception(HESException.GetIdentityResultErrors(userResult.Errors));
-            }
-        }
 
         public async Task<string> ChangeEmailAsync(UserChangeEmailModel parameters, string baseUri)
         {
@@ -282,32 +263,6 @@ namespace HES.Core.Services
             }
         }
 
-        public async Task UpdateAccountPasswordAsync(UserChangePasswordModel parameters)
-        {
-            if (parameters == null)
-            {
-                throw new ArgumentNullException(nameof(parameters));
-            }
-
-            var user = await GetUserByIdAsync(parameters.UserId);
-            if (user == null)
-            {
-                throw new HESException(HESCode.UserNotFound);
-            }
-
-            var isValidPassword = await _userManager.CheckPasswordAsync(user, parameters.OldPassword);
-            if (!isValidPassword)
-            {
-                throw new HESException(HESCode.IncorrectCurrentPassword);
-            }
-
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, parameters.OldPassword, parameters.NewPassword);
-            if (!changePasswordResult.Succeeded)
-            {
-                throw new Exception(HESException.GetIdentityResultErrors(changePasswordResult.Errors));
-            }
-        }
-
         #endregion
 
         #region Email
@@ -360,7 +315,6 @@ namespace HES.Core.Services
 
         #region API
 
-        // Only API call
         public async Task<AuthorizationResponse> LoginWithPasswordAsync(PasswordSignInModel parameters)
         {
             try
@@ -397,6 +351,82 @@ namespace HES.Core.Services
             catch (Exception ex)
             {
                 return AuthorizationResponse.Error(ex.Message);
+            }
+        }
+
+        public async Task<IdentityResponse> UpdateProfileInfoAsync(UserProfileModel parameters)
+        {
+            try
+            {
+                var user = await GetUserByIdAsync(parameters.UserId);
+                if (user == null)
+                {
+                    throw new HESException(HESCode.UserNotFound);
+                }
+
+                user.FirstName = parameters.FirstName;
+                user.LastName = parameters.LastName;
+                user.PhoneNumber = parameters.PhoneNumber;
+                user.ExternalId = parameters.ExternalId;
+
+                var userResult = await _userManager.UpdateAsync(user);
+                if (!userResult.Succeeded)
+                {
+                    throw new Exception(HESException.GetIdentityResultErrors(userResult.Errors));
+                }
+
+                await _signInManager.RefreshSignInAsync(user);
+
+                return IdentityResponse.Success();
+            }
+            catch (HESException ex)
+            {
+                return IdentityResponse.Error(ex.Code);
+            }
+            catch (Exception ex)
+            {
+                return IdentityResponse.Error(ex.Message);
+            }
+        }
+
+        public async Task<IdentityResponse> UpdateAccountPasswordAsync(UserChangePasswordModel parameters)
+        {
+            try
+            {
+                if (parameters == null)
+                {
+                    throw new ArgumentNullException(nameof(parameters));
+                }
+
+                var user = await GetUserByIdAsync(parameters.UserId);
+                if (user == null)
+                {
+                    throw new HESException(HESCode.UserNotFound);
+                }
+
+                var isValidPassword = await _userManager.CheckPasswordAsync(user, parameters.OldPassword);
+                if (!isValidPassword)
+                {
+                    throw new HESException(HESCode.IncorrectCurrentPassword);
+                }
+
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, parameters.OldPassword, parameters.NewPassword);
+                if (!changePasswordResult.Succeeded)
+                {
+                    throw new Exception(HESException.GetIdentityResultErrors(changePasswordResult.Errors));
+                }
+
+                await _signInManager.RefreshSignInAsync(user);
+
+                return IdentityResponse.Success();
+            }
+            catch (HESException ex)
+            {
+                return IdentityResponse.Error(ex.Code);
+            }
+            catch (Exception ex)
+            {
+                return IdentityResponse.Error(ex.Message);
             }
         }
 
